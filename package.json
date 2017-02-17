@@ -11,7 +11,6 @@
     "url": "https://github.com/ONSdigital/ras-backstage-ui"
   },
   "author": "ONS Digital",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ONSdigital/ras-backstage-ui/issues"
   },
@@ -25,8 +24,30 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-rimraf": "^0.2.1",
+    "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-typescript": "^3.1.5",
-    "typescript": "^2.1.6"
+    "typescript": "^2.1.6",
+    "@types/node": "^6.0.46",
+    "@types/jasmine": "2.5.36"
+  },
+  "dependencies": {
+    "@angular-redux/core": "^5.1.0",
+    "@angular-redux/router": "^6.0.1",
+    "@angular-redux/store": "^6.0.1",
+    "@angular/common": "~2.4.0",
+    "@angular/compiler": "~2.4.0",
+    "@angular/core": "~2.4.0",
+    "@angular/forms": "~2.4.0",
+    "@angular/http": "~2.4.0",
+    "@angular/platform-browser": "~2.4.0",
+    "@angular/platform-browser-dynamic": "~2.4.0",
+    "@angular/router": "~3.4.0",
+    "angular-in-memory-web-api": "~0.2.4",
+    "core-js": "^2.4.1",
+    "redux": "^3.6.0",
+    "rxjs": "5.0.1",
+    "systemjs": "0.19.40",
+    "zone.js": "^0.7.4"
   }
 }
