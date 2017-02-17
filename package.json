@@ -1,0 +1,32 @@
+{
+  "name": "ras-backstage-ui",
+  "version": "0.0.1",
+  "description": "Client application for internal users (Respondent account services)",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ONSdigital/ras-backstage-ui"
+  },
+  "author": "ONS Digital",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ONSdigital/ras-backstage-ui/issues"
+  },
+  "homepage": "https://github.com/ONSdigital/ras-backstage-ui",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-rimraf": "^0.2.1",
+    "gulp-sourcemaps": "^2.4.1",
+    "gulp-typescript": "^3.1.5",
+    "typescript": "^2.1.6"
+  }
+}
