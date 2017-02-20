@@ -1,9 +1,4 @@
-/**
- * System configuration for Angular samples
- * Adjust as necessary for your application needs.
- */
-(function (global) {
-  System.config({
+System.config({
     paths: {
       // paths serve as alias
       'npm:': 'node_modules/'
@@ -22,6 +17,10 @@
       '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
       '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+
+      '@angular-redux/core':       'npm:@angular-redux/core',
+      '@angular-redux/router':     'npm:@angular-redux/router',
+      '@angular-redux/store':      'npm:@angular-redux/store',
 
       // other libraries
       'lodash':                    'npm:lodash',
@@ -55,6 +54,18 @@
         main: './dist/index.js',
         defaultExtension: 'js'
       },
+      '@angular-redux/core': {
+        main: 'lib/index.js',
+        defaultExtension: 'js'
+      },
+      '@angular-redux/router': {
+        main: 'lib/es5/index.js',
+        defaultExtension: 'js'
+      },
+      '@angular-redux/store': {
+        main: 'lib/index.js',
+        defaultExtension: 'js'
+      },
       'ng2-redux': {
         main: './index.js',
         defaultExtension: 'js'
@@ -68,5 +79,4 @@
         defaultExtension: 'js'
       }
     }
-  });
-})(this);
+});

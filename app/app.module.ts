@@ -1,7 +1,8 @@
-import { applyMiddleware, Store, compose, createStore } from 'redux';
-import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
-import { NgReduxRouterModule, NgReduxRouter } from 'ng2-redux-router';
 import { NgModule } from '@angular/core';
+
+import { applyMiddleware, Store, compose, createStore } from 'redux';
+import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
+import { NgReduxRouterModule, NgReduxRouter } from '@angular-redux/router';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +19,7 @@ const createLogger = require('redux-logger');
 
 @NgModule({
     imports: [
-        NgReduxModule.forRoot(),
+        NgReduxModule,
         NgReduxRouterModule,
         BrowserModule,
 
