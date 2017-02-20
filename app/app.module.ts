@@ -1,16 +1,15 @@
+import { applyMiddleware, Store, compose, createStore } from 'redux';
+import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
+import { NgReduxRouterModule, NgReduxRouter } from 'ng2-redux-router';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { applyMiddleware, Store, compose, createStore } from 'redux';
-import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/core';
-import { NgReduxRouter } from '@angular-redux/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import rootReducer from './app.reducer';
 import { AppComponent } from './app.component';
 import { IAppState } from './app-state.interface';
 
-//const createLogger = require('redux-logger');
+const createLogger = require('redux-logger');
 
 /**
  * Redux dev tools don't work well Angular 2 + zones.
@@ -19,7 +18,8 @@ import { IAppState } from './app-state.interface';
 
 @NgModule({
     imports: [
-        NgReduxModule,
+        NgReduxModule.forRoot(),
+        NgReduxRouterModule,
         BrowserModule,
 
         AppRoutingModule
@@ -42,7 +42,7 @@ export class AppModule {
             rootReducer,
             {},
             compose(
-                //applyMiddleware(createLogger()),
+                applyMiddleware(createLogger()),
                 (devTools.isEnabled() ? devTools.enhancer() : null))
         );
 
