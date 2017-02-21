@@ -10,12 +10,17 @@ import rootReducer from './app.reducer';
 import { AppComponent } from './app.component';
 import { IAppState } from './app-state.interface';
 
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { Home } from './shared/home/home.component';
+
 const createLogger = require('redux-logger');
+
 
 /**
  * Redux dev tools don't work well Angular 2 + zones.
  */
 //const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;*/
+
 
 @NgModule({
     imports: [
@@ -26,7 +31,9 @@ const createLogger = require('redux-logger');
         AppRoutingModule
     ],
     declarations: [
-        AppComponent
+        AppComponent,
+        PageNotFoundComponent,
+        Home
     ],
     bootstrap: [
         AppComponent
@@ -39,7 +46,17 @@ export class AppModule {
         private devTools: DevToolsExtension,
         private ngReduxRouter: NgReduxRouter) {
 
-        const store: Store<any> = createStore(
+        this.ngRedux.configureStore(
+            rootReducer,
+            {},
+            [
+                createLogger()
+            ],
+            devTools.isEnabled() ? [ devTools.enhancer() ] : []
+        );
+        ngReduxRouter.initialize();
+
+        /*const store: Store<any> = createStore(
             rootReducer,
             {},
             compose(
@@ -48,6 +65,6 @@ export class AppModule {
         );
 
         this.ngRedux.provideStore(store);
-        this.ngReduxRouter.initialize(/* args */);
+        this.ngReduxRouter.initialize(/!* args *!/);*/
     }
 }

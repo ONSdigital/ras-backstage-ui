@@ -1,8 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const appRoutes:Routes = [
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
+import { Home } from './shared/home/home.component';
 
+const appRoutes:Routes = [
+    {
+        path: '',
+        component: Home
+    },
+    {
+        path: '**',
+        component: PageNotFoundComponent
+    }
 ];
 
 @NgModule({
