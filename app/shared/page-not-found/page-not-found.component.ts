@@ -6,7 +6,4 @@ import {uiComponentDecoratorHelper as cdh} from '../utils';
     filename: __filename
 }))
 export class PageNotFoundComponent {
-    constructor() {
-        console.log(3);
-    }
 }

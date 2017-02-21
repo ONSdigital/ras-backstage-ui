@@ -13,8 +13,6 @@ export class AppComponent {
 
     constructor(private router: Router) {
 
-        console.log(2);
-
         /**
          * Used to assist Angular Augury
          */

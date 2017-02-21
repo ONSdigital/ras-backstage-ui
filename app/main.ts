@@ -3,6 +3,11 @@ import * as $ from 'jquery';
 
 import {AppModule} from './app.module';
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+import { enableProdMode } from '@angular/core';
 
-console.log(1);
+// Enable production mode unless running locally
+if (!/localhost/.test(document.location.host)) {
+    enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule);
