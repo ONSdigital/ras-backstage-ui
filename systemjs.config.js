@@ -23,11 +23,9 @@ System.config({
       '@angular-redux/store':      'npm:@angular-redux/store',
 
       // other libraries
-      'lodash':                    'npm:lodash',
+      'lodash':                    'npm:odash',
       'symbol-observable':         'npm:symbol-observable',
       'redux':                     'npm:redux',
-      'ng2-redux':                 'npm:ng2-redux/lib',
-      'ng2-redux-router':          'npm:ng2-redux-router/lib/es5',
       'redux-logger':              'npm:redux-logger',
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
@@ -64,14 +62,6 @@ System.config({
       },
       '@angular-redux/store': {
         main: 'lib/index.js',
-        defaultExtension: 'js'
-      },
-      'ng2-redux': {
-        main: './index.js',
-        defaultExtension: 'js'
-      },
-      'ng2-redux-router': {
-        main: './index.js',
         defaultExtension: 'js'
       },
       'symbol-observable': {

@@ -1,6 +1,11 @@
 .idea
 dist
 
+#aot related
+app/**/*.css
+app/**/*.js
+aot/*
+
 # Logs
 logs
 *.log

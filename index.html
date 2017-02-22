@@ -19,7 +19,9 @@
     </script>
 
     <link rel="stylesheet" type="text/css" href="dist/styles.css" />
-    <script src="node_modules/redux/dist/redux.js"></script>
+
+    <!-- For aot compiler (prod temporary solution from https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) -->
+    <script>window.module = 'aot';</script>
 </head>
 
 <body>

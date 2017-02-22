@@ -1,13 +1,15 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
-import {uiComponentDecoratorHelper as cdh} from './shared/utils';
+//import {uiComponentDecoratorHelper as cdh} from './shared/utils';
 
-@Component(cdh({
+@Component({
     selector: 'my-app',
+    moduleId: module.id, // For aot compiler relative paths
 
-    filename: __filename
-}))
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.css']
+})
 export class AppComponent {
     public path: string = '';
 

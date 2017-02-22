@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 
-import {uiComponentDecoratorHelper as cdh} from '../utils';
+//import {uiComponentDecoratorHelper as cdh} from '../utils';
 
-@Component(cdh({
-    filename: __filename
-}))
+@Component({
+    moduleId: module.id, // For aot compiler relative paths
+
+    templateUrl: 'page-not-found.component.html'
+})
 export class PageNotFoundComponent {
 }
