@@ -67,7 +67,7 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('sass:prod', function () {
+gulp.task('sass:prod', ['clean:all'], function () {
 
     return gulp.src('./app/**/*.scss')
         .pipe(sass().on('error', sass.logError))
