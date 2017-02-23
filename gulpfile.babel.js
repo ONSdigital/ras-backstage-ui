@@ -6,13 +6,22 @@ import { server as liteServer } from 'lite-server';
 import sass from 'gulp-sass';
 
 
+/* ===== Clean directories ===== */
+gulp.task('clean:all', () => {
+
+    return gulp.src('./dist/*', { read: false })
+        .pipe(rimraf());
+});
+
 gulp.task('clean:javascript', () => {
 
-    gulp.src(['./dist/**/*.js', './dist/**/*.js.map'], { read: false })
+    return gulp.src(['./dist/**/*.js', './dist/**/*.js.map'], { read: false })
         .pipe(rimraf());
 
 });
 
+
+/* ===== Typescript ===== */
 function runTypscript(src, dest, tsconfig) {
 
     let tsProject = typescript.createProject(tsconfig);
@@ -30,12 +39,16 @@ gulp.task('typescript', ['clean:javascript'], () => {
 	return runTypscript('./app/**/*.ts', './dist', 'tsconfig.json');
 });
 
-gulp.task('typescript:prod', ['sass:prod'], () => {
-    runTypscript('./aot/**/*.ts', './aot', 'tsconfig-aot.json');
+gulp.task('typescript:prod:aot', ['clean:all', 'sass:prod'], () => {
+    return runTypscript('./aot/**/*.ts', './aot', 'tsconfig-aot.json');
+});
+
+gulp.task('typescript:prod', ['clean:all', 'sass:prod', 'typescript:prod:aot'], () => {
     return runTypscript('./app/**/*.ts', './app', 'tsconfig-aot.json');
 });
 
 
+/* ===== HTML ===== */
 gulp.task('html', function () {
 
     return gulp.src(['./app/**/*.html'])
@@ -43,6 +56,7 @@ gulp.task('html', function () {
 });
 
 
+/* ===== Styles ===== */
 gulp.task('sass', function () {
 
     return gulp.src('./app/**/*.scss')
@@ -66,6 +80,7 @@ gulp.task('sass:global', function () {
 });
 
 
+/* ===== Watch tasks ===== */
 gulp.task('watch:typescript', ['typescript'],  function () {
 	gulp.watch("./app/**/*.ts", ['typescript']);
 });
@@ -83,9 +98,13 @@ gulp.task('watch:sass:global', ['sass:global'], function () {
 });
 
 
-// Tools
-gulp.task('dev', ['watch:typescript', 'watch:html', 'watch:sass', 'watch:sass:global'], () => {
+/* ===== Server ===== */
+gulp.task('server', () => {
     liteServer();
 });
 
-gulp.task('prod', ['typescript:prod', 'html', 'sass:global']);
+
+/* ===== Tools ===== */
+gulp.task('dev', ['watch:typescript', 'watch:html', 'watch:sass', 'watch:sass:global', 'server']);
+
+gulp.task('prod', ['typescript:prod', 'sass:global']);

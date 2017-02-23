@@ -13,7 +13,7 @@ import { IAppState } from './app-state.interface';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { Home } from './shared/home/home.component';
 
-const createLogger = require('redux-logger');
+//const createLogger = require('redux-logger');
 
 
 /**
@@ -49,9 +49,10 @@ export class AppModule {
         this.ngRedux.configureStore(
             rootReducer,
             {},
-            [
+            null,
+            /*[
                 createLogger()
-            ],
+            ],*/
             devTools.isEnabled() ? [ devTools.enhancer() ] : []
         );
         ngReduxRouter.initialize();
