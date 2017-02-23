@@ -4,6 +4,7 @@ dist
 #aot related
 app/**/*.css
 app/**/*.js
+app/**/*.js.map
 aot/*
 
 # Logs
