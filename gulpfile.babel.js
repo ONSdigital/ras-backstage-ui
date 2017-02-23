@@ -17,11 +17,13 @@ gulp.task('clean:all', () => {
         .pipe(rimraf());
 });
 
+/*
 gulp.task('clean:javascript', () => {
 
-    return gulp.src(['./dist/**/*.js', './dist/**/*.js.map'], { read: false })
+    return gulp.src(['./dist/!**!/!*.js', './dist/!**!/!*.js.map'], { read: false })
         .pipe(rimraf());
 });
+*/
 
 
 /* ===== Typescript ===== */
@@ -38,21 +40,21 @@ function runTypscript(src, dest, tsconfig) {
         .pipe(gulp.dest(dest));
 }
 
-gulp.task('typescript', ['clean:javascript'], () => {
+gulp.task('typescript', ['clean:all'], () => {
 	return runTypscript('./app/**/*.ts', './dist', 'tsconfig.json');
 });
 
-gulp.task('typescript:prod:aot', ['aot:prod', 'clean:all', 'sass:prod'], () => {
+gulp.task('typescript:prod:aot', ['aot:prod'], () => {
     return runTypscript('./aot/**/*.ts', './aot', 'tsconfig-aot.json');
 });
 
-gulp.task('typescript:prod', ['clean:all', 'sass:prod', 'typescript:prod:aot'], () => {
+gulp.task('typescript:prod', ['typescript:prod:aot'], () => {
     return runTypscript('./app/**/*.ts', './app', 'tsconfig-aot.json');
 });
 
 
 /* ===== HTML ===== */
-gulp.task('html', function () {
+gulp.task('html', ['clean:all'], () => {
 
     return gulp.src(['./app/**/*.html'])
         .pipe(gulp.dest('./dist'));
@@ -60,21 +62,14 @@ gulp.task('html', function () {
 
 
 /* ===== Styles ===== */
-gulp.task('sass', function () {
+gulp.task('sass', ['clean:all'], () => {
 
     return gulp.src('./app/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('sass:prod', ['clean:all'], function () {
-
-    return gulp.src('./app/**/*.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./app'));
-});
-
-gulp.task('sass:global', function () {
+gulp.task('sass:global', ['clean:all'], () => {
 
     return gulp.src('./styles.scss')
         .pipe(sass().on('error', sass.logError))
@@ -82,21 +77,23 @@ gulp.task('sass:global', function () {
 
 });
 
+//gulp.task('sass:global:prod', ['clean:all', 'sass:global']);
+
 
 /* ===== Watch tasks ===== */
-gulp.task('watch:typescript', ['typescript'],  function () {
+gulp.task('watch:typescript', ['typescript'], () => {
 	gulp.watch("./app/**/*.ts", ['typescript']);
 });
 
-gulp.task('watch:html', ['html'], function () {
+gulp.task('watch:html', ['html'], () => {
     gulp.watch('./app/**/*.html', ['html']);
 });
 
-gulp.task('watch:sass', ['sass'], function () {
+gulp.task('watch:sass', ['sass'], () => {
     gulp.watch('./app/**/*.scss', ['sass']);
 });
 
-gulp.task('watch:sass:global', ['sass:global'], function () {
+gulp.task('watch:sass:global', ['sass:global'], () => {
     gulp.watch('./styles.scss', ['sass:global']);
 });
 
@@ -115,7 +112,7 @@ function startServer(configPath) {
     });
 }
 
-gulp.task('server:dev', () => {
+gulp.task('server:dev', ['typescript'], () => {
     startServer('./bs-config-dev.js');
 });
 
@@ -125,7 +122,7 @@ gulp.task('server:prod', () => {
 
 
 /* ===== Minification/Uglification ===== */
-gulp.task('aot:prod', () => {
+gulp.task('aot:prod', ['clean:all'], () => {
 
     /* Workaround for aot to work with gulp */
     return gulp.src('./gulpfile.babel.js', {read: false})
