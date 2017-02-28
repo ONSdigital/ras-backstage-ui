@@ -23,7 +23,7 @@ System.config({
       '@angular-redux/store':      'npm:@angular-redux/store',
 
       // other libraries
-      'lodash':                    'npm:odash',
+      'lodash':                    'npm:lodash',
       'symbol-observable':         'npm:symbol-observable',
       'redux':                     'npm:redux',
       'redux-logger':              'npm:redux-logger',
