@@ -17,13 +17,29 @@ gulp.task('clean:all', () => {
         .pipe(rimraf());
 });
 
-/*
 gulp.task('clean:javascript', () => {
 
-    return gulp.src(['./dist/!**!/!*.js', './dist/!**!/!*.js.map'], { read: false })
+    return gulp.src(['./dist/**/*.js', './dist/**/*.js.map'], { read: false })
         .pipe(rimraf());
 });
-*/
+
+gulp.task('clean:html', () => {
+
+    return gulp.src(['./dist/**/*.html'], { read: false })
+        .pipe(rimraf());
+});
+
+gulp.task('clean:css', () => {
+
+    return gulp.src(['./dist/**/*.css'], { read: false })
+        .pipe(rimraf());
+});
+
+gulp.task('clean:global:css', () => {
+
+    return gulp.src(['./dist/**/*.css'], { read: false })
+        .pipe(rimraf());
+});
 
 
 /* ===== Typescript ===== */
@@ -40,7 +56,7 @@ function runTypscript(src, dest, tsconfig) {
         .pipe(gulp.dest(dest));
 }
 
-gulp.task('typescript', ['clean:all'], () => {
+gulp.task('typescript', ['clean:javascript'], () => {
 	return runTypscript('./app/**/*.ts', './dist', 'tsconfig.json');
 });
 
@@ -54,7 +70,7 @@ gulp.task('typescript:prod', ['typescript:prod:aot'], () => {
 
 
 /* ===== HTML ===== */
-gulp.task('html', ['clean:all'], () => {
+gulp.task('html', ['clean:html'], () => {
 
     return gulp.src(['./app/**/*.html'])
         .pipe(gulp.dest('./dist'));
@@ -62,7 +78,7 @@ gulp.task('html', ['clean:all'], () => {
 
 
 /* ===== Styles ===== */
-gulp.task('sass', ['clean:all'], () => {
+gulp.task('sass', ['clean:css'], () => {
 
     return gulp.src('./app/**/*.scss')
         .pipe(sass().on('error', sass.logError))

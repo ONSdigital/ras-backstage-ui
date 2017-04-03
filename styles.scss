@@ -1,8 +1,60 @@
-html {
-    font-size : 100%;
-}
+$responsive: true;
+$s: './static/s';
 
-body {
-    margin : 0;
-    font-family : arial;
-}
+/**
+ * Src
+ */
+@import "../sdc-global-design-patterns/assets/sass/partials/helpers/functions";
+@import "../sdc-global-design-patterns/assets/sass/partials/helpers/mixins";
+@import "../sdc-global-design-patterns/assets/sass/partials/helpers/mq";
+
+@import "../sdc-global-design-patterns/assets/sass/partials/vars/colors";
+@import "../sdc-global-design-patterns/assets/sass/partials/vars/forms";
+@import "../sdc-global-design-patterns/assets/sass/partials/vars/grid";
+@import "../sdc-global-design-patterns/assets/sass/partials/vars/typography";
+@import "../sdc-global-design-patterns/assets/sass/partials/vars/vars";
+
+
+
+/**
+ * Fake hosted styles
+ */
+@import "../sdc-global-design-patterns/assets/sass/partials/vendor/normalize";
+
+@import "../sdc-global-design-patterns/assets/sass/partials/base/global";
+@import "../sdc-global-design-patterns/assets/sass/partials/base/typography";
+@import "../sdc-global-design-patterns/assets/sass/partials/base/forms";
+
+
+/**
+ * Structure/layout
+ */
+@import "../sdc-global-design-patterns/assets/sass/partials/objects/container";
+@import "../sdc-global-design-patterns/assets/sass/partials/objects/page";
+@import "../sdc-global-design-patterns/assets/sass/partials/objects/type-scale";
+
+@import "../sdc-global-design-patterns/components/badge/badge";
+@import "../sdc-global-design-patterns/components/bar/bar";
+@import "../sdc-global-design-patterns/components/button/buttons";
+@import "../sdc-global-design-patterns/components/header/header";
+@import "../sdc-global-design-patterns/components/panel/panel";
+@import "../sdc-global-design-patterns/components/skip";
+
+@import "../sdc-global-design-patterns/components/03-grid/grid";
+@import "../sdc-global-design-patterns/components/footer/footer";
+@import "../sdc-global-design-patterns/components/list/list";
+
+@import "../sdc-global-design-patterns/components/field/field";
+/*@import "../sdc-global-design-patterns/components/guidance/guidance";
+@import "../sdc-global-design-patterns/components/input/input";
+@import "../sdc-global-design-patterns/components/label/label";
+@import "../sdc-global-design-patterns/components/logo/logo";*/
+
+
+/**
+ * Missing in pattern library
+ */
+//@import "../../../../common/assets/styles/partials/objects/section";
+
+
+//@import "./common-overrides";
