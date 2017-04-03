@@ -29,15 +29,21 @@ gulp.task('clean:html', () => {
         .pipe(rimraf());
 });
 
-gulp.task('clean:css', () => {
+gulp.task('clean:css:dev', () => {
 
-    return gulp.src(['./dist/**/*.css'], { read: false })
+    return gulp.src(['./dist/**/*.css', '!dist/styles.css'], { read: false })
         .pipe(rimraf());
 });
 
-gulp.task('clean:global:css', () => {
+gulp.task('clean:css:prod', () => {
 
-    return gulp.src(['./dist/**/*.css'], { read: false })
+    return gulp.src(['./app/**/*.css'], { read: false })
+        .pipe(rimraf());
+});
+
+gulp.task('clean:css:global', () => {
+
+    return gulp.src(['./dist/styles.css'], { read: false })
         .pipe(rimraf());
 });
 
@@ -69,7 +75,7 @@ gulp.task('typescript:prod', ['typescript:prod:aot'], () => {
 });
 
 
-/* ===== HTML ===== */
+/* ===== HTML (dev only) ===== */
 gulp.task('html', ['clean:html'], () => {
 
     return gulp.src(['./app/**/*.html'])
@@ -78,25 +84,38 @@ gulp.task('html', ['clean:html'], () => {
 
 
 /* ===== Styles ===== */
-gulp.task('sass', ['clean:css'], () => {
-
-    return gulp.src('./app/**/*.scss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./dist'));
-});
-
-gulp.task('sass:global', ['clean:all'], () => {
+function sassGlobal() {
 
     return gulp.src('./styles.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest('./dist'));
+}
 
+function sassNgComponents(dest) {
+
+    return gulp.src('./app/**/*.scss')
+        .pipe(sass().on('error', sass.logError))
+        .pipe(gulp.dest(dest));
+}
+
+gulp.task('sass:dev', ['clean:css:dev'], () => {
+    return sassNgComponents('./dist');
 });
 
-//gulp.task('sass:global:prod', ['clean:all', 'sass:global']);
+gulp.task('sass:prod', ['clean:all'], () => {
+    return sassNgComponents('./app');
+});
+
+gulp.task('sass:global:dev', ['clean:css:global'], () => {
+    return sassGlobal();
+});
+
+gulp.task('sass:global:prod', ['clean:all'], () => {
+    return sassGlobal();
+});
 
 
-/* ===== Watch tasks ===== */
+/* ===== Watch tasks (dev only) ===== */
 gulp.task('watch:typescript', ['typescript'], () => {
 	gulp.watch("./app/**/*.ts", ['typescript']);
 });
@@ -105,12 +124,12 @@ gulp.task('watch:html', ['html'], () => {
     gulp.watch('./app/**/*.html', ['html']);
 });
 
-gulp.task('watch:sass', ['sass'], () => {
-    gulp.watch('./app/**/*.scss', ['sass']);
+gulp.task('watch:sass', ['sass:dev'], () => {
+    gulp.watch('./app/**/*.scss', ['sass:dev']);
 });
 
-gulp.task('watch:sass:global', ['sass:global'], () => {
-    gulp.watch('./styles.scss', ['sass:global']);
+gulp.task('watch:sass:global', ['sass:global:dev'], () => {
+    gulp.watch('./styles.scss', ['sass:global:dev']);
 });
 
 
@@ -138,7 +157,7 @@ gulp.task('server:prod', () => {
 
 
 /* ===== Minification/Uglification ===== */
-gulp.task('aot:prod', ['clean:all'], () => {
+gulp.task('aot:prod', ['sass:prod'], () => {
 
     /* Workaround for aot to work with gulp */
     return gulp.src('./gulpfile.babel.js', {read: false})
@@ -157,6 +176,6 @@ gulp.task('rollup:prod', ['typescript:prod'], () => {
 
 
 /* ===== Tools ===== */
-gulp.task('dev', ['watch:typescript', 'watch:html', 'watch:sass', 'watch:sass:global', 'server:dev']);
+gulp.task('dev', ['clean:css:prod', 'watch:typescript', 'watch:html', 'watch:sass', 'watch:sass:global', 'server:dev']);
 
-gulp.task('prod', ['rollup:prod', 'sass:global']);
+gulp.task('prod', ['rollup:prod', 'sass:global:prod']);
