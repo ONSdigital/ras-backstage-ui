@@ -1,0 +1,15 @@
+<h2>Collection Exercises</h2>
+<table>
+    <tr>
+        <th>Survey Reference</th>
+        <th>State</th>
+        <th>MPS Date</th>
+    </tr>
+    <tr *ngFor="let collectionExercise of collectionExercises">
+        <td>{{ collectionExercise.survey_ref }}</td>
+        <td>{{ collectionExercise.state }}</td>
+        <td>{{ collectionExercise.key_dates.mps?.date || '' }}</td>
+    </tr>
+</table>
+
+<button (click)="update_click_handler.next(this.updateStub);">Click me</button>
