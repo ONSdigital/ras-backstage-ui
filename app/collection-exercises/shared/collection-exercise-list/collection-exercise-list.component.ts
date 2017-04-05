@@ -1,16 +1,12 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 
-import { CollectionExercise } from '../collection-exercise.model';
-
 @Component({
     moduleId: module.id,
-    selector: 'ons-collection-exercise-list'
+    selector: 'ons-collection-exercise-list',
+    templateUrl: './collection-exercise-list.component.html'
 })
 export class CollectionExerciseList {
 
-    @Input() collectionExercises:Array<CollectionExercise>;
-    @Input() updateStub:Array<CollectionExercise>;
-
-    @Output() update_click_handler = new EventEmitter();
+    @Input() collectionExercises:Array<any>;
 
 }
