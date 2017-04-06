@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CollectionExercises } from './collection-exercises.component';
 import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
+import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
 
 const collectionExercisesRoutes:Routes = [
     {
@@ -12,6 +13,10 @@ const collectionExercisesRoutes:Routes = [
             {
                 path: '',
                 component: CollectionExerciseListContainer
+            },
+            {
+                path: ':collection-exercise-ref',
+                component: CollectionExerciseDetailsContainer
             }
         ]
     }

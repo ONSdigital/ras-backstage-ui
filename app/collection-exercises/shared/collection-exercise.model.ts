@@ -6,3 +6,7 @@ export interface CollectionExercise {
     state: String;
     survey_ref: String
 }
+
+export interface CollectionExerciseDetailsViewModel {
+    surveyTitle: String;
+}

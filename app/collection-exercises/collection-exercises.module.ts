@@ -9,6 +9,8 @@ import { CollectionExerciseRoutingModule } from './collection-exercises-routing.
 import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
 import { CollectionExerciseList } from './shared/collection-exercise-list/collection-exercise-list.component';
 import { CollectionExercises } from './collection-exercises.component';
+import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
+import { CollectionExerciseDetails } from './shared/collection-exercise-details/collection-exercise-details.component';
 
 @NgModule({
     imports: [
@@ -21,7 +23,9 @@ import { CollectionExercises } from './collection-exercises.component';
     declarations: [
         CollectionExercises,
         CollectionExerciseListContainer,
-        CollectionExerciseList
+        CollectionExerciseList,
+        CollectionExerciseDetailsContainer,
+        CollectionExerciseDetails
     ]
 })
 export class CollectionExerciseModule {}
