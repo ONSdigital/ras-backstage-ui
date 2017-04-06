@@ -44,21 +44,6 @@ $s: './static/s';
 @import "../sdc-global-design-patterns/components/list/list";
 
 @import "../sdc-global-design-patterns/components/field/field";
-/*@import "../sdc-global-design-patterns/components/guidance/guidance";
-@import "../sdc-global-design-patterns/components/input/input";
-@import "../sdc-global-design-patterns/components/label/label";
-@import "../sdc-global-design-patterns/components/logo/logo";*/
-
-
-/**
- * Missing in pattern library
- */
-//@import "../../../../common/assets/styles/partials/objects/section";
-
-
-//@import "./common-overrides";
-
-
 
 
 /**
@@ -76,32 +61,6 @@ $s: './static/s';
     }
 }
 
-.breadcrumb {
-    list-style: none;
-    padding-left: 0;
-    margin-top: 0.3rem;
-
-    .breadcrumb__item {
-        list-style: none;
-        display: inline-block;
-        color: #666;
-
-        &::after {
-            content: " >  ";
-            margin: 0 0.3rem;
-        }
-    }
-
-    .breadcrumb__item-link {
-        text-decoration: none;
-        color: #666;
-
-        &:hover {
-            text-decoration: underline;
-            color: #222;
-        }
-    }
-}
 
 .header {
     padding : .5em;
@@ -112,3 +71,20 @@ $s: './static/s';
         }
     }
 }
+
+.collection-exercise-component {
+    .breadcrumb-component.breadcrumb {
+        margin-top : -40px;
+    }
+}
+
+
+/**
+ * Patches
+ */
+dd.grid__col {
+    margin-left : 0;
+}
+/**
+ * End Patches
+ */

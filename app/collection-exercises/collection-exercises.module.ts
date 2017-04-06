@@ -12,6 +12,8 @@ import { CollectionExercises } from './collection-exercises.component';
 import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
 import { CollectionExerciseDetails } from './shared/collection-exercise-details/collection-exercise-details.component';
 
+import { Breadcrumb } from '../shared/breadcrumb/breadcrumb.component';
+
 @NgModule({
     imports: [
         HttpModule,
@@ -25,7 +27,9 @@ import { CollectionExerciseDetails } from './shared/collection-exercise-details/
         CollectionExerciseListContainer,
         CollectionExerciseList,
         CollectionExerciseDetailsContainer,
-        CollectionExerciseDetails
+        CollectionExerciseDetails,
+
+        Breadcrumb
     ]
 })
 export class CollectionExerciseModule {}

@@ -1,1 +1,42 @@
-<h1>Collection Exercise</h1>
+<div class="collection-exercise-details-component">
+    <h1 class="saturn">{{ collectionExerciseDetails.surveyTitle }}</h1>
+
+    <div class="panel panel--simple panel--info">
+
+        <div class="grid">
+            <dl class="survey-info">
+                <dt class="survey-info__title grid__col col-3@m">
+                    Inquiry code:
+                </dt>
+                <dd class="survey-info__data grid__col col-9@m">
+                    {{ collectionExerciseDetails.inquiryCode }}
+                </dd>
+                <dt class="survey-info__title grid__col col-3@m">
+                    Reference period:
+                </dt>
+                <dd class="survey-info__data grid__col col-9@m">
+                    {{ collectionExerciseDetails.referencePeriod }}
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+
+    <h2 class="neptune">Collection instruments</h2>
+
+    <ul>
+        <li>
+            674 Excel files loaded - <a href="bres-2016-seft-cis.csv">Download list (CSV)</a>
+        </li>
+        <li>
+            No collection instruments available
+        </li>
+        <li>
+            674 Excel files ready to load &nbsp;<button class="btn btn--small btn--secondary btn--border">Load files</button>
+        </li>
+    </ul>
+
+</div>

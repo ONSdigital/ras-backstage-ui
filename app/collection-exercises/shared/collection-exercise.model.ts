@@ -8,5 +8,7 @@ export interface CollectionExercise {
 }
 
 export interface CollectionExerciseDetailsViewModel {
-    surveyTitle: String;
+    surveyTitle:String;
+    inquiryCode:String;
+    referencePeriod:String;
 }

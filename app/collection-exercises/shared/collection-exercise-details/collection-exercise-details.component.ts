@@ -1,5 +1,7 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
 
+import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+
 @Component({
     moduleId: module.id,
     selector: 'ons-collection-exercise-details',
@@ -7,7 +9,6 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
 })
 export class CollectionExerciseDetails {
 
-    @Input() surveyTitle:Array<any>;
-    @Input() collecttionExerciseDetails:Array<any>;
+    @Input() collectionExerciseDetails:CollectionExerciseDetailsViewModel;
 
 }

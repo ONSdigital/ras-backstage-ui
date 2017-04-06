@@ -1,5 +1,7 @@
-<ul>
-    <li *ngFor="let collectionExercise of collectionExercises">
-        <a routerLink="{{ collectionExercise.link }}">{{ collectionExercise.title }}</a>
-    </li>
-</ul>
+<div class="collection-exercise-list-component">
+    <ul>
+        <li *ngFor="let collectionExercise of collectionExercises">
+            <a routerLink="{{ collectionExercise.link }}">{{ collectionExercise.title }}</a>
+        </li>
+    </ul>
+</div>

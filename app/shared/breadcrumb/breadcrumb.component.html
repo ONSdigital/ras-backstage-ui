@@ -1,0 +1,12 @@
+<div class="breadcrumb-component breadcrumb">
+    <ul>
+        <li class="breadcrumb__item mercury" *ngFor="let item of trail">
+            <span *ngIf="!item.isCurrent && item.link">
+                <a routerLink="{{ item.link }}" class="breadcrumb__item-link">{{ item.label }}</a>
+            </span>
+            <span *ngIf="item.isCurrent">
+                {{ item.label }}
+            </span>
+        </li>
+    </ul>
+</div>
