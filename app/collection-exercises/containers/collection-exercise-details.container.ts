@@ -37,6 +37,7 @@ export class CollectionExerciseDetailsContainer {
     };
 
     constructor(
-        private route:ActivatedRoute) {}
+        private route:ActivatedRoute,
+        private router:Router) {}
 
 }

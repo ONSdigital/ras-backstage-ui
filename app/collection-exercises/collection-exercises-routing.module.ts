@@ -12,11 +12,17 @@ const collectionExercisesRoutes:Routes = [
         children: [
             {
                 path: '',
-                component: CollectionExerciseListContainer
+                component: CollectionExerciseListContainer/*,
+                data: {
+                    breadcrumb: "Collection Exercises"
+                }*/
             },
             {
                 path: ':collection-exercise-ref',
-                component: CollectionExerciseDetailsContainer
+                component: CollectionExerciseDetailsContainer/*,
+                data: {
+                    breadcrumb: "Collection Exercises Details"
+                }*/
             }
         ]
     }

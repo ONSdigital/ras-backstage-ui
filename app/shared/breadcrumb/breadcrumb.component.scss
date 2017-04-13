@@ -12,9 +12,12 @@
         display: inline-block;
         color: #666;
 
-        &::after {
-            content: " >  ";
-            margin: 0 0.3rem;
+        + .breadcrumb__item {
+
+            &::before {
+                content: ">";
+                margin: -1px .2rem 0 .4rem;
+            }
         }
     }
 
