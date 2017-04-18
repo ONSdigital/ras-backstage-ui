@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CollectionExercisesDetailsResolver } from './collection-exercises-details.resolver';
+
 import { CollectionExercises } from './collection-exercises.component';
 import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
 import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
@@ -24,7 +26,7 @@ const collectionExercisesRoutes:Routes = [
                 path: ':collection-exercise-ref',
                 component: CollectionExerciseDetailsContainer,
                 data: {
-                    breadcrumb: (data:any) => {
+                    breadcrumb: (dataResolved:any) => {
 
                         /**
                          * Get resolved data from end point
@@ -43,6 +45,9 @@ const collectionExercisesRoutes:Routes = [
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        CollectionExercisesDetailsResolver
     ]
 })
 export class CollectionExerciseRoutingModule {}

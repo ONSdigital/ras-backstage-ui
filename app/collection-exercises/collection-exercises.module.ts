@@ -6,10 +6,8 @@ import { RouterModule } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
-
-//import { Breadcrumb } from '../shared/breadcrumb/breadcrumb.component';
-
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
+
 import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
 import { CollectionExerciseList } from './shared/collection-exercise-list/collection-exercise-list.component';
 import { CollectionExercises } from './collection-exercises.component';
@@ -30,9 +28,7 @@ import { CollectionExerciseDetails } from './shared/collection-exercise-details/
         CollectionExerciseListContainer,
         CollectionExerciseList,
         CollectionExerciseDetailsContainer,
-        CollectionExerciseDetails/*,
-
-        Breadcrumb*/
+        CollectionExerciseDetails
     ]
 })
 export class CollectionExerciseModule {}

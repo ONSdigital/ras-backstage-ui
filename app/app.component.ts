@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {BreadcrumbService} from "./shared/breadcrumb/breadcrumb.service";
-
-//import {uiComponentDecoratorHelper as cdh} from './shared/utils';
 
 @Component({
     selector: 'my-app',
