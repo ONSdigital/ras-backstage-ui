@@ -7,7 +7,10 @@ import { Home } from './shared/home/home.component';
 const appRoutes:Routes = [
     {
         path: '',
-        component: Home
+        component: Home,
+        data: {
+            breadcrumb: "Home"
+        }
     },
     {
         path: '**',

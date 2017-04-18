@@ -5,9 +5,6 @@ import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
 
 @Component({
     template: `
-        <ons-breadcrumb
-            [trail]="breadCrumbTrail"></ons-breadcrumb>
-            
         <h1 class="saturn">Collection exercises</h1>
         <ons-collection-exercise-list
             [collectionExercises]="collectionExercisesList"></ons-collection-exercise-list>

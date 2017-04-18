@@ -1,10 +1,14 @@
 <div class="breadcrumb-component breadcrumb">
     <ul>
-        <li class="breadcrumb__item mercury" *ngFor="let item of trail">
-            <span *ngIf="!item.isCurrent && item.link">
+        <li class="breadcrumb__item mercury">
+            <span>
+                <a routerLink="/" class="breadcrumb__item-link">Home</a>
+            </span>
+        </li><li class="breadcrumb__item mercury" *ngFor="let item of trail; let last = last">
+            <span *ngIf="!last && item.link">
                 <a routerLink="{{ item.link }}" class="breadcrumb__item-link">{{ item.label }}</a>
             </span>
-            <span *ngIf="item.isCurrent">
+            <span *ngIf="last">
                 {{ item.label }}
             </span>
         </li>

@@ -9,20 +9,29 @@ const collectionExercisesRoutes:Routes = [
     {
         path: 'collection-exercises',
         component: CollectionExercises,
+        data: {
+            breadcrumb: "Collection Exercises"
+        },
         children: [
             {
                 path: '',
-                component: CollectionExerciseListContainer/*,
+                component: CollectionExerciseListContainer,
                 data: {
-                    breadcrumb: "Collection Exercises"
-                }*/
+                    breadcrumb: null
+                }
             },
             {
                 path: ':collection-exercise-ref',
-                component: CollectionExerciseDetailsContainer/*,
+                component: CollectionExerciseDetailsContainer,
                 data: {
-                    breadcrumb: "Collection Exercises Details"
-                }*/
+                    breadcrumb: (data:any) => {
+
+                        /**
+                         * Get resolved data from end point
+                         */
+                        return 'Bres 2016';
+                    }
+                }
             }
         ]
     }

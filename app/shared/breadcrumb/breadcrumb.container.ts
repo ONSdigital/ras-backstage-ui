@@ -3,6 +3,8 @@ import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from "@
 
 import { BreadcrumbItem, ROUTE_DATA_BREADCRUMB } from '../../shared/breadcrumb/breadcrumb-item.model';
 
+import { isFunction } from '../../shared/utils';
+
 @Component({
     selector: 'ons-breadcrumb-container',
     template: `
@@ -12,7 +14,6 @@ import { BreadcrumbItem, ROUTE_DATA_BREADCRUMB } from '../../shared/breadcrumb/b
 export class BreadcrumbContainer {
 
     private breadCrumbTrail:Array<BreadcrumbItem> = [];
-    private url:String;
 
     constructor(
         private route:ActivatedRoute,
@@ -21,7 +22,12 @@ export class BreadcrumbContainer {
     ngOnInit() {
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
             let root: ActivatedRoute = this.route.root;
+
+            console.log(root);
+
             this.breadCrumbTrail = this.breadcrumbItems(root);
+
+            console.log(this.breadCrumbTrail);
         });
     }
 
@@ -36,34 +42,39 @@ export class BreadcrumbContainer {
             return breadcrumbItems;
         }
 
-        for (let child of children) {
-            console.log(child);
+        for(let child of children) {
 
             if (child.outlet !== PRIMARY_OUTLET) {
                 continue;
             }
 
-            if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
-                return this.breadcrumbItems(child, this.url, breadcrumbItems);
+            if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB) ||
+                child.snapshot.data[ROUTE_DATA_BREADCRUMB] === null) {
+
+                return this.breadcrumbItems(child, url, breadcrumbItems);
             }
 
             console.log(2);
 
             let routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
 
-            this.url += `/${routeURL}`;
+            url += `/${routeURL}`;
+
+            console.log(url);
+
+            let dataLabel = child.snapshot.data[ROUTE_DATA_BREADCRUMB];
 
             let breadcrumbItem:BreadcrumbItem = {
-                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                label: isFunction(dataLabel) ? dataLabel(child.snapshot.data) : dataLabel,
                 params: child.snapshot.params,
-                link: this.url
+                link: url
             };
 
             breadcrumbItems.push(breadcrumbItem);
 
             console.log(3);
 
-            return this.breadcrumbItems(child, this.url, breadcrumbItems);
+            return this.breadcrumbItems(child, url, breadcrumbItems);
         }
     }
 
