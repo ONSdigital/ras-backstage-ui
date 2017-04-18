@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CollectionExercisesDetailsResolver } from './collection-exercises-details.resolver';
+import { CollectionExercisesDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details.resolver';
 
 import { CollectionExercises } from './collection-exercises.component';
-import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
-import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
+import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
+import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
 
 const collectionExercisesRoutes:Routes = [
     {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
-import { CollectionExercisesService } from './collection-exercises.service';
+import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+import { CollectionExercisesService } from '../../collection-exercises.service';
 
 @Injectable()
 export class CollectionExercisesDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {

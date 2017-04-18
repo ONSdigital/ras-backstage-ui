@@ -8,10 +8,10 @@ import 'rxjs/add/operator/toPromise';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
 
-import { CollectionExerciseListContainer } from './containers/collection-exercise-list.container';
+import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseList } from './shared/collection-exercise-list/collection-exercise-list.component';
 import { CollectionExercises } from './collection-exercises.component';
-import { CollectionExerciseDetailsContainer } from './containers/collection-exercise-details.container';
+import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetails } from './shared/collection-exercise-details/collection-exercise-details.component';
 
 @NgModule({
