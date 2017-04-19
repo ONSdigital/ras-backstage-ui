@@ -1,9 +1,9 @@
 export interface CollectionExercise {
     id?: Number;
-    key_dates: Object;
+    //key_dates: Object;
     period: String;
-    samples: Array<any>;
-    state: String;
+    //samples: Array<any>;
+    //state: String;
     survey_ref: String
 }
 
