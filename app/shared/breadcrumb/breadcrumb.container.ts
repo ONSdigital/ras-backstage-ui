@@ -22,12 +22,7 @@ export class BreadcrumbContainer {
     ngOnInit() {
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
             let root: ActivatedRoute = this.route.root;
-
-            console.log(root);
-
             this.breadCrumbTrail = this.breadcrumbItems(root);
-
-            console.log(this.breadCrumbTrail);
         });
     }
 
@@ -54,13 +49,9 @@ export class BreadcrumbContainer {
                 return this.breadcrumbItems(child, url, breadcrumbItems);
             }
 
-            console.log(2);
-
             let routeURL: string = child.snapshot.url.map(segment => segment.path).join("/");
 
             url += `/${routeURL}`;
-
-            console.log(url);
 
             let dataLabel = child.snapshot.data[ROUTE_DATA_BREADCRUMB];
 
@@ -71,8 +62,6 @@ export class BreadcrumbContainer {
             };
 
             breadcrumbItems.push(breadcrumbItem);
-
-            console.log(3);
 
             return this.breadcrumbItems(child, url, breadcrumbItems);
         }

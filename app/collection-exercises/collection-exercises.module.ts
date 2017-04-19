@@ -8,6 +8,8 @@ import 'rxjs/add/operator/toPromise';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
 
+import { CollectionExercisesService } from './collection-exercises.service';
+
 import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseList } from './shared/collection-exercise-list/collection-exercise-list.component';
 import { CollectionExercises } from './collection-exercises.component';
@@ -29,6 +31,9 @@ import { CollectionExerciseDetails } from './shared/collection-exercise-details/
         CollectionExerciseList,
         CollectionExerciseDetailsContainer,
         CollectionExerciseDetails
+    ],
+    providers: [
+        CollectionExercisesService
     ]
 })
 export class CollectionExerciseModule {}

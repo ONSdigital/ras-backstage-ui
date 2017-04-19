@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CollectionExercisesDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details.resolver';
-
 import { CollectionExercises } from './collection-exercises.component';
 import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
+import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details-resolver.service';
+
+import { CollectionExercise } from './shared/collection-exercise.model';
 
 const collectionExercisesRoutes:Routes = [
     {
@@ -25,8 +26,15 @@ const collectionExercisesRoutes:Routes = [
             {
                 path: ':collection-exercise-ref',
                 component: CollectionExerciseDetailsContainer,
+                resolve: {
+                    details: CollectionExerciseDetailsResolver
+                },
                 data: {
                     breadcrumb: (dataResolved:any) => {
+
+                        let collectionExercise:CollectionExercise = dataResolved.details;
+
+                        console.log('resolved', collectionExercise);
 
                         /**
                          * Get resolved data from end point
@@ -47,7 +55,7 @@ const collectionExercisesRoutes:Routes = [
         RouterModule
     ],
     providers: [
-        CollectionExercisesDetailsResolver
+        CollectionExerciseDetailsResolver
     ]
 })
 export class CollectionExerciseRoutingModule {}

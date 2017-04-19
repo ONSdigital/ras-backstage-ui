@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
+//import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
 
 @Component({
     template: `
@@ -12,7 +12,7 @@ import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
 })
 export class CollectionExerciseListContainer {
 
-    private breadCrumbTrail:Array<BreadcrumbItem> = [
+    /*private breadCrumbTrail:Array<BreadcrumbItem> = [
         {
             label: 'Home',
             link: '/'
@@ -22,7 +22,7 @@ export class CollectionExerciseListContainer {
             link: '/collection-exercises',
             isCurrent: true
         }
-    ];
+    ];*/
 
     private collectionExercisesList:Array<any> = [
         {

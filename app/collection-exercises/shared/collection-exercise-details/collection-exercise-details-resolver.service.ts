@@ -5,7 +5,7 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
 import { CollectionExercisesService } from '../../collection-exercises.service';
 
 @Injectable()
-export class CollectionExercisesDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
+export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
 
     constructor(
         private collectionExerciseSVC:CollectionExercisesService) {}
@@ -16,6 +16,8 @@ export class CollectionExercisesDetailsResolver implements Resolve<CollectionExe
 
         return this.collectionExerciseSVC.getCollectionExercise(id)
             .then((collectionExerciseView:CollectionExerciseDetailsViewModel) => {
+
+                console.log(collectionExerciseView);
 
                 if(collectionExerciseView) {
 

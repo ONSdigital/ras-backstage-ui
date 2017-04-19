@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { CollectionExerciseDetailsViewModel } from '../shared/collection-exercise.model';
-import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
+import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 
 @Component({
     template: `
@@ -12,7 +11,7 @@ import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
 })
 export class CollectionExerciseDetailsContainer {
 
-    private breadCrumbTrail:Array<BreadcrumbItem> = [
+    /*private breadCrumbTrail:Array<BreadcrumbItem> = [
         {
             label: 'Home',
             link: '/'
@@ -26,7 +25,7 @@ export class CollectionExerciseDetailsContainer {
             link: '/collection-exercises/bres-2016',
             isCurrent: true
         }
-    ];
+    ];*/
 
     private collectionExerciseDetails:CollectionExerciseDetailsViewModel = {
         surveyTitle: 'Business Register and Employment Survey - 2016',
