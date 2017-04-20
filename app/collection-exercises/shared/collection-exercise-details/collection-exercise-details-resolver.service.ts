@@ -1,43 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
+/*import { select } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';*/
+
+import { CollectionExercise } from '../collection-exercise.model';
 import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
-import { CollectionExercisesService } from '../../collection-exercises.service';
+import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
 
+    /*@select('collectionExercises')
+    private collectionExercisesStore: Observable<Array<CollectionExercise>>;
+    private collectionExercisesSubscription:Subscription;*/
+
     constructor(
-        private collectionExerciseSVC:CollectionExercisesService) {}
+        private collectionExercisesActions:CollectionExercisesActions) {}
 
     resolve(route:ActivatedRouteSnapshot):Promise<CollectionExerciseDetailsViewModel> {
 
         let id = route.params['id'];
 
-        return this.collectionExerciseSVC.getCollectionExercise(id)
-            .then((collectionExerciseView:CollectionExerciseDetailsViewModel) => {
+        /**
+         * TODO
+         * Check store/dispatch Redux action first
+         */
 
-                console.log(collectionExerciseView);
+        return this.collectionExercisesActions
+            .retrieveCollectionExercise(id)
+            .then((collectionExercise:CollectionExercise) => {
 
-                if(collectionExerciseView) {
+                console.log(collectionExercise);
 
-                    /**
-                     * Dispatch Redux event then return
-                     * ...
-                     */
-
-                    return collectionExerciseView;
-                }
-                else {
+                return collectionExercise || (():null => {
 
                     /**
                      * Handle error - not found
                      * ...
                      */
+                    console.log('Could not find collection exercise.');
 
                     return null;
-
-                }
+                });
             });
     }
 }

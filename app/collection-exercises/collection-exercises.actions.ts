@@ -14,23 +14,14 @@ export class CollectionExercisesActions {
         private ngRedux: NgRedux<any>,
         private collectionExercisesService:CollectionExercisesService) {}
 
-    public getCollectionExercise(ref:string) {
+    public retrieveCollectionExercise(ref:string) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
             collectionExerciseRef: ref
         });
 
-
-        /**
-         * Check data store first for existing collection exercise - ?
-         */
-
-
-        /**
-         * Call service if doesn't exist
-         */
-        this.collectionExercisesService
+        return this.collectionExercisesService
             .getCollectionExercise(ref)
             .then((payload:any) => {
 
@@ -40,6 +31,7 @@ export class CollectionExercisesActions {
                  */
 
                 this.receivedCollectionExercise(payload.data.collectionExercise);
+                return payload;
             });
     }
 
@@ -50,7 +42,7 @@ export class CollectionExercisesActions {
          */
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RECEIVED_SINGLE,
-            collectionExercises: collectionExercise
+            collectionExercise: collectionExercise
         });
     }
 }

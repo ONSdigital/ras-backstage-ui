@@ -13,7 +13,7 @@ import { CollectionExercise } from '../collection-exercise.model';
     template: `
         <ons-collection-exercise-details
             [collectionExerciseDetails]="collectionExerciseDetails"
-            (load_cis_click_handler)="onCollectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
+            (load_cis_click_handler)="collectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
     `,
 })
 export class CollectionExerciseDetailsContainer implements OnInit {
@@ -38,14 +38,14 @@ export class CollectionExerciseDetailsContainer implements OnInit {
         private collectionExerciseActions:CollectionExercisesActions) {}
 
     ngOnInit() {
-        this.collectionExercisesStore
+        this.collectionExercisesSubscription = this.collectionExercisesStore
             .subscribe((collectionExercises: any) => {
 
                 /**
                  * Map to correct collection exercise
                  */
-                console.log(collectionExercises);
-                //this.collectionExercises = collectionExercises.items;
+                console.log('Container: ', collectionExercises);
+                //this.collectionExercises = collectionExercises.items; //Save collection exercises under items
             });
     }
 
@@ -53,7 +53,7 @@ export class CollectionExerciseDetailsContainer implements OnInit {
         this.collectionExercisesSubscription.unsubscribe();
     }
 
-    private onCollectionInstrumentLoadClick_handler() {
-        this.collectionExerciseActions.getCollectionExercise('123');
+    private collectionInstrumentLoadClick_handler() {
+        console.log('load ci');
     }
 }
