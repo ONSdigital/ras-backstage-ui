@@ -32,15 +32,9 @@ const collectionExercisesRoutes:Routes = [
                 data: {
                     breadcrumb: (dataResolved:any) => {
 
-                        let viewModel:CollectionExerciseDetailsViewModel
-                            = dataResolved.viewModel;
+                        let viewModel:CollectionExerciseDetailsViewModel = dataResolved.viewModel;
 
-                        console.log('resolved', viewModel);
-
-                        /**
-                         * Get resolved data from end point
-                         */
-                        return 'Bres 2016';
+                        return viewModel.surveyAbbr;
                     }
                 }
             }

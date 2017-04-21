@@ -39,6 +39,19 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                     return null;
                 }
 
+
+                /**
+                 * Dispatch redux action to update surveys & collection instruments
+                 */
+                /*if(payload.data.collectionExercise['@survey']) {
+                    this.receivedSurvey(payload.data.collectionExercise['@survey']);
+                }
+
+                if(payload.data.collectionExercise['@collectionInstrument']) {
+                    this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
+                }*/
+
+
                 let survey = payload.data.collectionExercise['@survey'];
 
                 /**
@@ -47,7 +60,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                 let viewModel:CollectionExerciseDetailsViewModel = {
                     surveyTitle: survey.name,
                     inquiryCode: survey.inquiryCode,
-                    referencePeriod: 'period here'
+                    referencePeriod: 'period here',
+                    surveyAbbr: 'Bres 2016 different'
                 };
 
                 return viewModel;

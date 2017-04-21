@@ -11,4 +11,5 @@ export interface CollectionExerciseDetailsViewModel {
     surveyTitle:String;
     inquiryCode:String;
     referencePeriod:String;
+    surveyAbbr:String;
 }

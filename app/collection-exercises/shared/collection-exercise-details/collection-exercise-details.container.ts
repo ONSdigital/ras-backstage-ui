@@ -29,7 +29,8 @@ export class CollectionExerciseDetailsContainer implements OnInit {
     private collectionExerciseViewModel:CollectionExerciseDetailsViewModel = {
         surveyTitle: 'Business Register and Employment Survey - 2016',
         inquiryCode: '221',
-        referencePeriod: '1 Jan 2016 - 31 Dec 2016'
+        referencePeriod: '1 Jan 2016 - 31 Dec 2016',
+        surveyAbbr: 'Bres 2016'
     };
 
     constructor(
@@ -46,23 +47,6 @@ export class CollectionExerciseDetailsContainer implements OnInit {
             .subscribe((data:{ viewModel:CollectionExerciseDetailsViewModel }) => {
                 this.collectionExerciseViewModel = data.viewModel;
             });
-
-
-        /*this.collectionExerciseSubscription = this.collectionExercisesStore
-            .find((collectionExercises:Array<CollectionExercise>, index:number) => {
-                return true;
-            })
-            .subscribe((collectionExercises:Array<CollectionExercise>) => {
-
-                /!**
-                 * TODO
-                 * Map to correct collection exercise - observable map
-                 * Create collectionExerciseViewModel from collectionExercise, survey, collectionInstrument
-                 *!/
-
-                console.log('Container: ', collectionExercises);
-                //this.collectionExerciseViewModel = ?; //Save collection exercises under items
-            });*/
     }
 
     ngOnDestroy() {
