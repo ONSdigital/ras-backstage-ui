@@ -6,7 +6,7 @@ import { CollectionExerciseListContainer } from './shared/collection-exercise-li
 import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details-resolver.service';
 
-import { CollectionExercise } from './shared/collection-exercise.model';
+import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
 const collectionExercisesRoutes:Routes = [
     {
@@ -27,14 +27,15 @@ const collectionExercisesRoutes:Routes = [
                 path: ':collection-exercise-ref',
                 component: CollectionExerciseDetailsContainer,
                 resolve: {
-                    details: CollectionExerciseDetailsResolver
+                    viewModel: CollectionExerciseDetailsResolver
                 },
                 data: {
                     breadcrumb: (dataResolved:any) => {
 
-                        let collectionExercise:CollectionExercise = dataResolved.details;
+                        let viewModel:CollectionExerciseDetailsViewModel
+                            = dataResolved.viewModel;
 
-                        console.log('resolved', collectionExercise);
+                        console.log('resolved', viewModel);
 
                         /**
                          * Get resolved data from end point

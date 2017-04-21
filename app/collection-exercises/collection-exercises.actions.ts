@@ -3,6 +3,7 @@ import { NgRedux } from '@angular-redux/store';
 
 import { CollectionExercise } from './shared/collection-exercise.model';
 import { CollectionExercisesService } from "./collection-exercises.service";
+import { CollectionExerciseDetailsViewModel } from "./shared/collection-exercise.model";
 
 @Injectable()
 export class CollectionExercisesActions {
@@ -26,11 +27,21 @@ export class CollectionExercisesActions {
             .then((payload:any) => {
 
                 /**
-                 * Reducer to normalise data first to keep entities in data store dry before saving.
+                 * Normalise data first to keep entities in data store dry before saving.
                  * Update data store
                  */
 
                 this.receivedCollectionExercise(payload.data.collectionExercise);
+
+
+                /*if(payload.data.collectionExercise['@survey']) {
+                    this.receivedSurvey(payload.data.collectionExercise['@survey']);
+                }
+
+                if(payload.data.collectionExercise['@collectionInstrument']) {
+                    this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
+                }*/
+
                 return payload;
             });
     }

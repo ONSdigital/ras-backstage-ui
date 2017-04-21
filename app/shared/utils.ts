@@ -18,6 +18,6 @@ export function uiComponentDecoratorHelper(opts: any) {
     );
 }
 
-export function isFunction (obj) {
+export function isFunction (obj:any) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
 }

@@ -10,7 +10,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
             [collectionExercises]="collectionExercisesList"></ons-collection-exercise-list>
     `,
 })
-export class CollectionExerciseListContainer {
+export class CollectionExerciseListContainer implements OnInit {
 
     /*private breadCrumbTrail:Array<BreadcrumbItem> = [
         {
@@ -33,5 +33,9 @@ export class CollectionExerciseListContainer {
 
     constructor(
         private route:ActivatedRoute) {}
+
+    ngOnInit() {
+
+    }
 
 }

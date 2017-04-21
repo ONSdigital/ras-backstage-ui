@@ -19,9 +19,9 @@ export class CollectionExercisesService {
                     id: 123,
                     period: {},
                     '@survey': {
-                        inquiryCode: 221,
-                        name: "Business Register and Emploment Survey",
-                        abbr: "bres"
+                        inquiryCode: 22122,
+                        name: "Business Register and Emploment Survey different",
+                        abbr: "bres different"
                     }
                 }
             }

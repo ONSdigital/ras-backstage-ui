@@ -30,20 +30,27 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
         return this.collectionExercisesActions
             .retrieveCollectionExercise(id)
-            .then((collectionExercise:CollectionExercise) => {
+            .then((payload:{ data:{ collectionExercise:CollectionExercise } }) => {
 
-                console.log(collectionExercise);
+                console.log('Resolver: ', payload.data);
 
-                return collectionExercise || (():null => {
-
-                    /**
-                     * Handle error - not found
-                     * ...
-                     */
+                if(!payload.data.collectionExercise) {
                     console.log('Could not find collection exercise.');
-
                     return null;
-                });
+                }
+
+                let survey = payload.data.collectionExercise['@survey'];
+
+                /**
+                 * Transform data and return view model
+                 */
+                let viewModel:CollectionExerciseDetailsViewModel = {
+                    surveyTitle: survey.name,
+                    inquiryCode: survey.inquiryCode,
+                    referencePeriod: 'period here'
+                };
+
+                return viewModel;
             });
     }
 }
