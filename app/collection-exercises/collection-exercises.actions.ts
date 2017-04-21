@@ -9,20 +9,21 @@ export class CollectionExercisesActions {
 
     static RETRIEVE_SINGLE = 'COLLECTION_EXERCISE_RETRIEVE';
     static RECEIVED_SINGLE = 'COLLECTION_EXERCISE_RECEIVED';
+    static LOAD_COLLECTION_INSTRUMENT_BUNDLE = 'COLLECTION_INSTRUMENT_BUNDLE_LOAD';
 
     constructor(
         private ngRedux: NgRedux<any>,
         private collectionExercisesService:CollectionExercisesService) {}
 
-    public retrieveCollectionExercise(ref:string) {
+    public retrieveCollectionExercise(collectionExerciseRef:string) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
-            collectionExerciseRef: ref
+            collectionExerciseRef: collectionExerciseRef
         });
 
         return this.collectionExercisesService
-            .getCollectionExercise(ref)
+            .getCollectionExercise(collectionExerciseRef)
             .then((payload:any) => {
 
                 /**
@@ -37,12 +38,19 @@ export class CollectionExercisesActions {
 
     public receivedCollectionExercise(collectionExercise:CollectionExercise) {
 
-        /**
-         * Update data store
-         */
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RECEIVED_SINGLE,
             collectionExercise: collectionExercise
+        });
+    }
+
+    public putCollectionInstrumentBundle(collectionExerciseRef:String) {
+
+        console.log('Put collection instrument for collection exercise: ', collectionExerciseRef);
+
+        this.ngRedux.dispatch({
+            type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
+            collectionExerciseRef: collectionExerciseRef
         });
     }
 }

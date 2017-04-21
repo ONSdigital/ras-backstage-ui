@@ -51,20 +51,25 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                     this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
                 }*/
 
+                let collectonExercise = payload.data.collectionExercise;
+
 
                 let survey = payload.data.collectionExercise['@survey'];
 
                 /**
                  * Transform data and return view model
                  */
-                let viewModel:CollectionExerciseDetailsViewModel = {
-                    surveyTitle: survey.name,
-                    inquiryCode: survey.inquiryCode,
-                    referencePeriod: 'period here',
-                    surveyAbbr: 'Bres 2016 different'
-                };
-
-                return viewModel;
+                return this.createViewModel(collectonExercise, survey, {});
             });
+    }
+
+    private createViewModel(collectionExercise:CollectionExercise, survey:any, collectionInstrument:any):CollectionExerciseDetailsViewModel {
+
+        return {
+            surveyTitle: survey.name,
+            inquiryCode: survey.inquiryCode,
+            referencePeriod: 'period here',
+            surveyAbbr: 'Bres 2016 different'
+        };
     }
 }

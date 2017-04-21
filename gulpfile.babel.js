@@ -62,8 +62,12 @@ function runTypscript(src, dest, tsconfig) {
         .pipe(gulp.dest(dest));
 }
 
+/**
+ * TODO
+ * Move main- scripts out of app
+ */
 gulp.task('typescript', ['clean:javascript'], () => {
-	return runTypscript('./app/**/*.ts', './dist', 'tsconfig.json');
+	return runTypscript(['./app/**/*.ts', '!./app/main-aot.ts'], './dist', 'tsconfig.json');
 });
 
 gulp.task('typescript:prod:aot', ['aot:prod'], () => {
@@ -117,7 +121,7 @@ gulp.task('sass:global:prod', ['clean:all'], () => {
 
 /* ===== Watch tasks (dev only) ===== */
 gulp.task('watch:typescript', ['typescript'], () => {
-	gulp.watch("./app/**/*.ts", ['typescript']);
+	gulp.watch(["./app/**/*.ts", "!./app/main-aot.ts"], ['typescript']);
 });
 
 gulp.task('watch:html', ['html'], () => {
