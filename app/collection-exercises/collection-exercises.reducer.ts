@@ -15,7 +15,7 @@ export default function(state: any = INIT_STATE, action: any) {
 
     switch(action.type) {
         case CollectionExercisesActions.RECEIVED_SINGLE:
-            console.log('Reducer: ', state);
+            console.log('Reducer: ', state, action);
 
             let existingItem,
 

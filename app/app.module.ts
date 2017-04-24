@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { IAppState } from './app-state.interface';
 
 import { CollectionExerciseModule } from './collection-exercises/collection-exercises.module';
+import { SecureMessagesModule } from './secure-messages/secure-messages.module';
 
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { Home } from './shared/home/home.component';
@@ -31,6 +32,7 @@ import { Home } from './shared/home/home.component';
         BrowserModule,
 
         CollectionExerciseModule,
+        SecureMessagesModule,
         AppRoutingModule
     ],
     declarations: [
