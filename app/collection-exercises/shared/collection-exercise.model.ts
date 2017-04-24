@@ -1,15 +1,15 @@
 export interface CollectionExercise {
-    id?: Number;
-    //key_dates: Object;
-    period: String;
-    //samples: Array<any>;
-    //state: String;
-    survey_ref: String
+    id?:Number;
+    //key_dates:Object;
+    period:{ abbr:string };
+    //samples:Array<any>;
+    //state:string;
+    survey_ref:string
 }
 
 export interface CollectionExerciseDetailsViewModel {
-    surveyTitle:String;
-    inquiryCode:String;
-    referencePeriod:String;
-    surveyAbbr:String;
+    surveyTitle:string;
+    inquiryCode:string;
+    referencePeriod:string;
+    surveyAbbr:string;
 }

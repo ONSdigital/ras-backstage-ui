@@ -39,7 +39,6 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                     return null;
                 }
 
-
                 /**
                  * Dispatch redux action to update surveys & collection instruments
                  */
@@ -69,7 +68,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
             referencePeriod: 'period here',
-            surveyAbbr: 'Bres 2016 different'
+            surveyAbbr: survey.abbr + ' ' + collectionExercise.period.abbr
         };
     }
 }

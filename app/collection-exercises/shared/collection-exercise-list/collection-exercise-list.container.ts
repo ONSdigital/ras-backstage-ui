@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-//import { BreadcrumbItem } from '../../shared/breadcrumb/breadcrumb-item.model';
-
 @Component({
     template: `
         <h1 class="saturn">Collection exercises</h1>
@@ -11,18 +9,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
     `,
 })
 export class CollectionExerciseListContainer implements OnInit {
-
-    /*private breadCrumbTrail:Array<BreadcrumbItem> = [
-        {
-            label: 'Home',
-            link: '/'
-        },
-        {
-            label: 'Collection exercises',
-            link: '/collection-exercises',
-            isCurrent: true
-        }
-    ];*/
 
     private collectionExercisesList:Array<any> = [
         {

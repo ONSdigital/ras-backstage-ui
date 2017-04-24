@@ -4,24 +4,17 @@ export class CollectionExercisesService {
 
     getCollectionExercise(id:string):Promise<any> {
 
-        /**
-         * Get collection exercise from the server
-         */
-        /*let ce:CollectionExercise = {
-            surveyTitle: 'kergk',
-            inquiryCode: 'reget',
-            referencePeriod: 'erheh'
-        };*/
-
         let payload:any = {
             data: {
                 collectionExercise: {
                     id: 123,
-                    period: {},
+                    period: {
+                        abbr: "2017"
+                    },
                     '@survey': {
-                        inquiryCode: 22122,
-                        name: "Business Register and Emploment Survey different",
-                        abbr: "bres different"
+                        inquiryCode: 221,
+                        name: "Business Register and Emploment Survey",
+                        abbr: "BRES"
                     }
                 }
             }

@@ -72,9 +72,17 @@ $s: './static/s';
     }
 }
 
-.collection-exercise-component {
+.collection-exercise-component,
+.secure-messages-component{
     .breadcrumb-component.breadcrumb {
         margin-top : -40px;
+    }
+}
+
+.secure-messages-component {
+    > ul {
+        padding-left : 0;
+        list-style-type : none;
     }
 }
 
