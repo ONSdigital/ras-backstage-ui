@@ -8,7 +8,7 @@ import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-
 
 import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
-const collectionExercisesRoutes:Routes = [
+export const collectionExercisesRoutes:Routes = [
     {
         path: 'collection-exercises',
         component: CollectionExercises,

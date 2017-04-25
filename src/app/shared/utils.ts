@@ -1,11 +1,11 @@
-export function uiComponentDecoratorHelper(opts: any) {
+/*export function uiComponentDecoratorHelper(opts: any) {
 
     var styleUrls = opts.styleUrls || [];
     opts.filename && styleUrls.push(opts.filename.replace('.js', '.css').replace(/^\//,""));
 
-    /**
+    /!**
      * Supplement component metadata with automated values.
-     */
+     *!/
     return Object.assign({},
         (opts.styleUrls || opts.filename) ? {
             styleUrls: opts.styleUrls ? opts.styleUrls : [(opts.filename ? opts.filename.replace('.js', '.css').replace(/^\//,"") : '')]
@@ -16,7 +16,7 @@ export function uiComponentDecoratorHelper(opts: any) {
         } : null,
         opts
     );
-}
+}*/
 
 export function isFunction (obj:any) {
     return !!(obj && obj.constructor && obj.call && obj.apply);

@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-    selector: 'my-app',
+    selector: 'ons-backstage-ui',
     moduleId: module.id, // For aot compiler relative paths
 
-    templateUrl: 'app.component.html',
-    styleUrls: ['app.component.css']
+    //styleUrls: ['app.component.css'],
+    templateUrl: 'app.component.html'
 })
 export class AppComponent {
     public path: string = '';
