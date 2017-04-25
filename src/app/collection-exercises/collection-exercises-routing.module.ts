@@ -30,17 +30,19 @@ export const collectionExercisesRoutes:Routes = [
                     viewModel: CollectionExerciseDetailsResolver
                 },
                 data: {
-                    breadcrumb: (dataResolved:any) => {
-
-                        let viewModel:CollectionExerciseDetailsViewModel = dataResolved.viewModel;
-
-                        return viewModel.surveyAbbr;
-                    }
+                    breadcrumb: resolveCollectionExerciseDetailsBreadcrumb
                 }
             }
         ]
     }
 ];
+
+export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved:any):string {
+
+    let viewModel:CollectionExerciseDetailsViewModel = dataResolved.viewModel;
+
+    return viewModel.surveyAbbr;
+}
 
 @NgModule({
     imports: [
