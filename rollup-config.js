@@ -5,7 +5,7 @@ import uglify      from 'rollup-plugin-uglify'
 import replace     from 'rollup-plugin-replace';
 
 export default {
-    entry: 'app/main-aot.js',
+    entry: 'src/app/main-aot.js',
     dest: 'dist/build.js', // output a single application bundle
     sourceMap: false,
     format: 'iife',
