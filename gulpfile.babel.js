@@ -10,6 +10,8 @@ import source from 'vinyl-source-stream';
 
 import rollupConfig from './rollup-config';
 
+let appRoot = './src/app';
+
 /* ===== Clean directories ===== */
 gulp.task('clean:all', () => {
 
@@ -37,7 +39,7 @@ gulp.task('clean:css:dev', () => {
 
 gulp.task('clean:css:prod', () => {
 
-    return gulp.src(['./app/**/*.css'], { read: false })
+    return gulp.src([appRoot + '/**/*.css'], { read: false })
         .pipe(rimraf());
 });
 
@@ -67,7 +69,7 @@ function runTypscript(src, dest, tsconfig) {
  * Move main- scripts out of app
  */
 gulp.task('typescript', ['clean:javascript'], () => {
-	return runTypscript(['./app/**/*.ts', '!./app/main-aot.ts'], './dist', 'tsconfig.json');
+	return runTypscript([appRoot + '/**/*.ts', '!' + appRoot + '/main-aot.ts'], './dist', 'tsconfig.json');
 });
 
 gulp.task('typescript:prod:aot', ['aot:prod'], () => {
@@ -75,14 +77,14 @@ gulp.task('typescript:prod:aot', ['aot:prod'], () => {
 });
 
 gulp.task('typescript:prod', ['typescript:prod:aot'], () => {
-    return runTypscript('./app/**/*.ts', './app', 'tsconfig-aot.json');
+    return runTypscript(appRoot + '/**/*.ts', appRoot, 'tsconfig-aot.json');
 });
 
 
 /* ===== HTML (dev only) ===== */
 gulp.task('html', ['clean:html'], () => {
 
-    return gulp.src(['./app/**/*.html'])
+    return gulp.src([appRoot + '/**/*.html'])
         .pipe(gulp.dest('./dist'));
 });
 
@@ -97,7 +99,7 @@ function sassGlobal() {
 
 function sassNgComponents(dest) {
 
-    return gulp.src('./app/**/*.scss')
+    return gulp.src(appRoot + '/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(dest));
 }
@@ -107,7 +109,7 @@ gulp.task('sass:dev', ['clean:css:dev'], () => {
 });
 
 gulp.task('sass:prod', ['clean:all'], () => {
-    return sassNgComponents('./app');
+    return sassNgComponents(appRoot);
 });
 
 gulp.task('sass:global:dev', ['clean:css:global'], () => {
@@ -121,15 +123,15 @@ gulp.task('sass:global:prod', ['clean:all'], () => {
 
 /* ===== Watch tasks (dev only) ===== */
 gulp.task('watch:typescript', ['typescript'], () => {
-	gulp.watch(["./app/**/*.ts", "!./app/main-aot.ts"], ['typescript']);
+	gulp.watch([appRoot + "/**/*.ts", "!" + appRoot + "/main-aot.ts"], ['typescript']);
 });
 
 gulp.task('watch:html', ['html'], () => {
-    gulp.watch('./app/**/*.html', ['html']);
+    gulp.watch(appRoot + '/**/*.html', ['html']);
 });
 
 gulp.task('watch:sass', ['sass:dev'], () => {
-    gulp.watch('./app/**/*.scss', ['sass:dev']);
+    gulp.watch(appRoot + '/**/*.scss', ['sass:dev']);
 });
 
 gulp.task('watch:sass:global', ['sass:global:dev'], () => {

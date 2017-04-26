@@ -2,9 +2,9 @@
 dist
 
 #aot related
-app/**/*.css
-app/**/*.js
-app/**/*.js.map
+src/app/**/*.css
+src/app/**/*.js
+src/app/**/*.js.map
 aot/*
 
 # Logs
