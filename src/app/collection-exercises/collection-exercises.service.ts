@@ -1,4 +1,18 @@
-import { CollectionExercise } from "./shared/collection-exercise.model";
+function temp_createCollectionExercise() {
+
+    return {
+        id: 123,
+        link: 'bres-2017',
+        period: {
+            abbr: "2017"
+        },
+        '@survey': {
+            inquiryCode: 221,
+            name: "Business Register and Emploment Survey",
+            abbr: "BRES"
+        }
+    };
+}
 
 export class CollectionExercisesService {
 
@@ -6,17 +20,24 @@ export class CollectionExercisesService {
 
         let payload:any = {
             data: {
-                collectionExercise: {
-                    id: 123,
-                    period: {
-                        abbr: "2017"
-                    },
-                    '@survey': {
-                        inquiryCode: 221,
-                        name: "Business Register and Emploment Survey",
-                        abbr: "BRES"
-                    }
-                }
+                collectionExercise: temp_createCollectionExercise()
+            }
+        };
+
+        return Promise.resolve(payload);
+    }
+
+    getCollectionExercises():Promise<any> {
+
+        let payload:any = {
+            data: {
+                collectionExercises: [
+                    temp_createCollectionExercise(),
+                    temp_createCollectionExercise(),
+                    temp_createCollectionExercise(),
+                    temp_createCollectionExercise(),
+                    temp_createCollectionExercise()
+                ]
             }
         };
 

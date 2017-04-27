@@ -5,8 +5,7 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@a
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';*/
 
-import { CollectionExercise } from '../collection-exercise.model';
-import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()

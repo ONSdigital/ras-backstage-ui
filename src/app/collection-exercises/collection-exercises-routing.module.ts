@@ -5,6 +5,7 @@ import { CollectionExercises } from './collection-exercises.component';
 import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details-resolver.service';
+import { CollectionExerciseListResolver } from './shared/collection-exercise-list/collection-exercise-list-resolver.service';
 
 import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
@@ -19,6 +20,9 @@ export const collectionExercisesRoutes:Routes = [
             {
                 path: '',
                 component: CollectionExerciseListContainer,
+                resolve: {
+                    viewModel: CollectionExerciseListResolver
+                },
                 data: {
                     breadcrumb: null
                 }
@@ -52,7 +56,8 @@ export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved:any):str
         RouterModule
     ],
     providers: [
-        CollectionExerciseDetailsResolver
+        CollectionExerciseDetailsResolver,
+        CollectionExerciseListResolver
     ]
 })
 export class CollectionExerciseRoutingModule {}

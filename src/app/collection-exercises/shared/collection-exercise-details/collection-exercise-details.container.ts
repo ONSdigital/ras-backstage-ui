@@ -14,7 +14,7 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
             (load_cis_click_handler)="collectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
     `,
 })
-export class CollectionExerciseDetailsContainer implements OnInit {
+export class CollectionExerciseDetailsContainer implements OnInit, OnDestroy {
 
     private routeSubscription:Subscription;
     private viewModel:CollectionExerciseDetailsViewModel;

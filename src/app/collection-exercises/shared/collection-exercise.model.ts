@@ -13,3 +13,7 @@ export interface CollectionExerciseDetailsViewModel {
     referencePeriod:string;
     surveyAbbr:string;
 }
+
+export interface CollectionExerciseListViewModel {
+    collectionExercises:Array<any>
+}
