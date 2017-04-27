@@ -43,4 +43,10 @@ export class CollectionExercisesService {
 
         return Promise.resolve(payload);
     }
+
+    putCollectionInstrumentBundle(collectionExerciseRef:string):Promise<any> {
+
+        return Promise.resolve();
+
+    }
 }

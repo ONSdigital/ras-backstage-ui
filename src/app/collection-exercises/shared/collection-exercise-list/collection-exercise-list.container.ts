@@ -16,13 +16,6 @@ export class CollectionExerciseListContainer implements OnInit, OnDestroy {
     private routeSubscription:Subscription;
     private viewModel:CollectionExerciseListViewModel;
 
-    /*private collectionExercisesList:Array<any> = [
-        {
-            surveyTitle: 'Business Register and Employment Survey - 2016',
-            link: '/collection-exercises/bres-2016'
-        }
-    ];*/
-
     constructor(
         private route:ActivatedRoute) {}
 

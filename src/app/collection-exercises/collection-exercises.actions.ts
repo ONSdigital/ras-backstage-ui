@@ -70,7 +70,7 @@ export class CollectionExercisesActions {
         });
     }
 
-    public putCollectionInstrumentBundle(collectionExerciseRef:String) {
+    public loadCollectionInstrumentBundle(collectionExerciseRef:string) {
 
         console.log('Put collection instrument for collection exercise: ', collectionExerciseRef);
 
@@ -78,5 +78,8 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
             collectionExerciseRef: collectionExerciseRef
         });
+
+        return this.collectionExercisesService
+            .putCollectionInstrumentBundle(collectionExerciseRef);
     }
 }

@@ -40,6 +40,6 @@ export class CollectionExerciseDetailsContainer implements OnInit, OnDestroy {
     }
 
     private collectionInstrumentLoadClick_handler() {
-        this.collectionExerciseActions.putCollectionInstrumentBundle('123');
+        this.collectionExerciseActions.loadCollectionInstrumentBundle('123');
     }
 }
