@@ -11,6 +11,8 @@ import {Router} from '@angular/router';
 export class AppComponent {
     public path: string = '';
 
+    private title:string = 'ONS Business Surveys';
+
     constructor(
         private router: Router) {
 
