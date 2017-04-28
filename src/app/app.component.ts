@@ -5,13 +5,11 @@ import {Router} from '@angular/router';
     selector: 'ons-backstage-ui',
     moduleId: module.id, // For aot compiler relative paths
 
-    //styleUrls: ['app.component.css'],
+    //styleUrls: ['app.component.scss'],
     templateUrl: 'app.component.html'
 })
 export class AppComponent {
     public path: string = '';
-
-    private title:string = 'ONS Business Surveys';
 
     constructor(
         private router: Router) {
