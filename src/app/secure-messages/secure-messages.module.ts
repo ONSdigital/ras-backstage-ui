@@ -7,8 +7,11 @@ import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
 import { SecureMessages } from './secure-messages.component';
-import { SecureMessagesList } from './shared/secure-messages-list/secure-messages-list.component';
-import { SecureMessagesListContainer } from './shared/secure-messages-list/secure-messages-list.container';
+import { SecureMessagesList } from './secure-messages-list/secure-messages-list.component';
+import { SecureMessagesListContainer } from './secure-messages-list/secure-messages-list.container';
+import { SecureMessageCreate } from './secure-message-create/secure-message-create.component';
+import { SecureMessageCreateContainer } from './secure-message-create/secure-message-create.container';
+import { SecureMessageForm } from './shared/secure-message-form/secure-message-form.component';
 
 @NgModule({
     imports: [
@@ -22,7 +25,10 @@ import { SecureMessagesListContainer } from './shared/secure-messages-list/secur
     declarations: [
         SecureMessages,
         SecureMessagesList,
-        SecureMessagesListContainer
+        SecureMessagesListContainer,
+        SecureMessageCreate,
+        SecureMessageCreateContainer,
+        SecureMessageForm
     ],
     providers: [
         /*SecureMessagesService,
