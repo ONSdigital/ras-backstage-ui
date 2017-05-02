@@ -7,6 +7,9 @@ src/app/**/*.js
 src/app/**/*.js.map
 aot/*
 
+#Test
+coverage
+
 # Logs
 logs
 *.log
