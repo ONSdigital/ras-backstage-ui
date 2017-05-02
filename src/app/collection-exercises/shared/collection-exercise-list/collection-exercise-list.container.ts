@@ -8,7 +8,7 @@ import { CollectionExerciseListViewModel } from '../collection-exercise.model';
     template: `
         <h1 class="saturn">Collection exercises</h1>
         <ons-collection-exercise-list
-            [collectionExercises]="viewModel.collectionExercises"></ons-collection-exercise-list>
+            [collectionExercises]="viewModel.collectionExercises | async"></ons-collection-exercise-list>
     `,
 })
 export class CollectionExerciseListContainer implements OnInit, OnDestroy {
