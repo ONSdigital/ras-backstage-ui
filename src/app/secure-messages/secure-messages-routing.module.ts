@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SecureMessages } from './secure-messages.component';
-import { SecureMessagesListContainer } from './secure-messages-list/secure-messages-list.container';
-import { SecureMessageCreateContainer } from './secure-message-create/secure-message-create.container';
+import { SecureMessagesComponent } from './secure-messages.component';
+import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
+import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 
-const SecureMessagesRoutes:Routes = [
+const SecureMessagesRoutes: Routes = [
     {
         path: 'secure-messages',
-        component: SecureMessages,
+        component: SecureMessagesComponent,
         data: {
-            breadcrumb: "Secure Messages"
+            breadcrumb: 'Secure Messages'
         },
         children: [
             {
                 path: '',
-                component: SecureMessagesListContainer,
+                component: SecureMessagesListContainerComponent,
                 data: {
                     breadcrumb: null
                 }
             },
             {
                 path: 'create-message',
-                component: SecureMessageCreateContainer,
+                component: SecureMessageCreateContainerComponent,
                 data: {
                     breadcrumb: 'Create message'
                 }
@@ -39,5 +39,4 @@ const SecureMessagesRoutes:Routes = [
         RouterModule
     ]
 })
-export class SecureMessagesRoutingModule {}
-
+export class SecureMessagesRoutingModule { }

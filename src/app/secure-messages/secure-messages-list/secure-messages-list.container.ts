@@ -11,8 +11,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
             [secureMessages]="secureMessagesList"></ons-secure-messages-list>
     `,
 })
-export class SecureMessagesListContainer  {
+export class SecureMessagesListContainerComponent {
 
-    private secureMessagesList:Array<any> = [{}];
+    public secureMessagesList: Array<any> = [{}];
 
 }

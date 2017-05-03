@@ -7,6 +7,4 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
         <ons-secure-message-form></ons-secure-message-form>
     `,
 })
-export class SecureMessageCreateContainer  {
-
-}
+export class SecureMessageCreateContainerComponent { }

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { CollectionExerciseListViewModel, CollectionExercise } from "../collection-exercise.model";
+import { CollectionExerciseListViewModel, CollectionExercise } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
 export class CollectionExerciseListResolver implements Resolve<CollectionExerciseListViewModel> {
 
     constructor(
-        private collectionExercisesActions:CollectionExercisesActions) {}
+        private collectionExercisesActions: CollectionExercisesActions) { }
 
-    resolve(route:ActivatedRouteSnapshot):Promise<CollectionExerciseListViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseListViewModel> {
 
         return this.collectionExercisesActions
             .retrieveCollectionExercises()
-            .then((payload: { data: { collectionExercises:Array<CollectionExercise> } }) => {
+            .then((payload: { data: { collectionExercises: Array<CollectionExercise> } }) => {
 
                 /**
                  * Update store with new survey data from list received
@@ -28,12 +28,12 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
             });
     }
 
-    private createViewModel(collectionExerciseArr:Array<CollectionExercise>):CollectionExerciseListViewModel {
+    private createViewModel(collectionExerciseArr: Array<CollectionExercise>): CollectionExerciseListViewModel {
 
         return {
-            collectionExercises: collectionExerciseArr.map((collectionExercise:any) => {
+            collectionExercises: collectionExerciseArr.map((collectionExercise: any) => {
 
-                let survey = collectionExercise['@survey'];
+                const survey = collectionExercise['@survey'];
 
                 return {
                     surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,

@@ -1,17 +1,13 @@
-import { TestBed, async, inject, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute } from '@angular/router';
-import { Component } from '@angular/core';
 import 'rxjs/add/operator/filter';
 import Jasmine = jasmine.Jasmine;
-import { Observable } from 'rxjs';
 
 import { CollectionExerciseModule } from '../../collection-exercises.module';
-import { CollectionExerciseListContainer } from './collection-exercise-list.container';
+import { CollectionExerciseListContainerComponent } from './collection-exercise-list.container';
 
-let fixture:ComponentFixture<any>,
-    instance:any,
-    route:any;
+let fixture: ComponentFixture<any>,
+    instance: any;
 
 
 function createActivatedRouteData() {
@@ -19,7 +15,6 @@ function createActivatedRouteData() {
         viewModel: createViewModel()
     };
 }
-
 
 function createViewModel() {
     return {
@@ -31,7 +26,7 @@ function createViewModel() {
                 surveyAbbr: 'BRES'
             }
         ]
-    }
+    };
 }
 
 describe('CollectionExerciseListContainer component', () => {
@@ -49,7 +44,7 @@ describe('CollectionExerciseListContainer component', () => {
         }));
 
         it('should create the component', async(() => {
-            fixture = TestBed.createComponent(CollectionExerciseListContainer);
+            fixture = TestBed.createComponent(CollectionExerciseListContainerComponent);
             instance = fixture.componentInstance;
 
             fixture.detectChanges();
@@ -61,10 +56,10 @@ describe('CollectionExerciseListContainer component', () => {
             expect(app).toBeTruthy();
         }));
 
-        it('should assign view model data from activated route', inject([ActivatedRoute], (activatedRoute:ActivatedRoute) => {
-            let routeData = createActivatedRouteData();
+        it('should assign view model data from activated route', async(() => {
+            const routeData = createActivatedRouteData();
 
-            fixture = TestBed.createComponent(CollectionExerciseListContainer);
+            fixture = TestBed.createComponent(CollectionExerciseListContainerComponent);
             instance = fixture.componentInstance;
 
             fixture.detectChanges();

@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CollectionExercises } from './collection-exercises.component';
-import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
-import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
+import { CollectionExercisesComponent } from './collection-exercises.component';
+import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
+import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details-resolver.service';
 import { CollectionExerciseListResolver } from './shared/collection-exercise-list/collection-exercise-list-resolver.service';
 
 import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
-export const collectionExercisesRoutes:Routes = [
+export const collectionExercisesRoutes: Routes = [
     {
         path: 'collection-exercises',
-        component: CollectionExercises,
+        component: CollectionExercisesComponent,
         data: {
-            breadcrumb: "Collection Exercises"
+            breadcrumb: 'Collection Exercises'
         },
         children: [
             {
                 path: '',
-                component: CollectionExerciseListContainer,
+                component: CollectionExerciseListContainerComponent,
                 resolve: {
                     viewModel: CollectionExerciseListResolver
                 },
@@ -29,7 +29,7 @@ export const collectionExercisesRoutes:Routes = [
             },
             {
                 path: ':collection-exercise-ref',
-                component: CollectionExerciseDetailsContainer,
+                component: CollectionExerciseDetailsContainerComponent,
                 resolve: {
                     viewModel: CollectionExerciseDetailsResolver
                 },
@@ -41,9 +41,9 @@ export const collectionExercisesRoutes:Routes = [
     }
 ];
 
-export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved:any):string {
+export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved: any): string {
 
-    let viewModel:CollectionExerciseDetailsViewModel = dataResolved.viewModel;
+    const viewModel: CollectionExerciseDetailsViewModel = dataResolved.viewModel;
 
     return viewModel.surveyAbbr;
 }
@@ -60,4 +60,4 @@ export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved:any):str
         CollectionExerciseListResolver
     ]
 })
-export class CollectionExerciseRoutingModule {}
+export class CollectionExerciseRoutingModule { }

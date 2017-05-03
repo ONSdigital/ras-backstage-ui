@@ -2,22 +2,22 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
-let fixture:ComponentFixture<any>,
-    instance:Component,
-    page:Page;
+let fixture: ComponentFixture<any>,
+    instance: Component,
+    page: Page;
 
 class Page {
 
-    titleBar:HTMLElement;
+    titleBar: HTMLElement;
 
     addPageElements() {
-        this.titleBar = fixture.debugElement.nativeElement.querySelector('.bar__title')
+        this.titleBar = fixture.debugElement.nativeElement.querySelector('.bar__title');
     }
 }
 
-function createComponent(component:any) {
+function createComponent(component: any) {
 
     fixture = TestBed.createComponent(component);
     instance = fixture.componentInstance;

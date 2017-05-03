@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { Breadcrumb } from './breadcrumb.component';
-import { BreadcrumbContainer } from './breadcrumb.container';
+import { BreadcrumbComponent } from './breadcrumb.component';
+import { BreadcrumbContainerComponent } from './breadcrumb.container';
 
 @NgModule({
     imports: [
@@ -11,12 +11,12 @@ import { BreadcrumbContainer } from './breadcrumb.container';
         RouterModule
     ],
     declarations: [
-        Breadcrumb,
-        BreadcrumbContainer,
+        BreadcrumbComponent,
+        BreadcrumbContainerComponent,
     ],
     exports: [
-        Breadcrumb,
-        BreadcrumbContainer
+        BreadcrumbComponent,
+        BreadcrumbContainerComponent
     ]
 })
 export class BreadcrumbModule {}
