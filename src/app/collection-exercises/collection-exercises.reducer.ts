@@ -19,26 +19,26 @@ export default function(state: any = INIT_STATE, action: any) {
 
             let existingItem;
 
+            /**
+             * TODO
+             * Below will be a typical pattern for saving/updating data store, should be abstracted.
+             *
+             * Create new items array of collection exercises for new state
+             * @type {Array}
+             */
+            const items = Object.assign([], state.items.map((collectionExercise: CollectionExercise) => {
+
+                const obj: CollectionExercise = Object.assign({}, collectionExercise);
+
                 /**
-                 * TODO
-                 * Below will be a typical pattern for saving/updating data store, should be abstracted.
-                 *
-                 * Create new items array of collection exercises for new state
-                 * @type {Array}
+                 * If an item with same identifier is found, save a reference to its new object for merging data
                  */
-                const items = Object.assign([], state.items.map((collectionExercise: CollectionExercise) => {
+                if (collectionExercise.id === action.collectionExercise.id) {
+                    existingItem = obj;
+                }
 
-                    const obj: CollectionExercise = Object.assign({}, collectionExercise);
-
-                    /**
-                     * If an item with same identifier is found, save a reference to its new object for merging data
-                     */
-                    if (collectionExercise.id === action.collectionExercise.id) {
-                        existingItem = obj;
-                    }
-
-                    return obj;
-                }));
+                return obj;
+            }));
 
             /**
              * TODO
