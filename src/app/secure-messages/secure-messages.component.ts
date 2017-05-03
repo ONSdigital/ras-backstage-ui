@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['secure-messages.component.scss'],
     templateUrl: 'secure-messages.component.html'
 })
-export class SecureMessages {}
+export class SecureMessagesComponent {}

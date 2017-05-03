@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
     selector: 'ons-secure-message-create',
     templateUrl: './secure-message-create.component.html'
 })
-export class SecureMessageCreate {}
+export class SecureMessageCreateComponent {}

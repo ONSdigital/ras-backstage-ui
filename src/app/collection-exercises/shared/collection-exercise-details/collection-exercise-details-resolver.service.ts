@@ -16,11 +16,11 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     private collectionExercisesSubscription:Subscription;*/
 
     constructor(
-        private collectionExercisesActions:CollectionExercisesActions) {}
+        private collectionExercisesActions: CollectionExercisesActions) { }
 
-    resolve(route:ActivatedRouteSnapshot):Promise<CollectionExerciseDetailsViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseDetailsViewModel> {
 
-        let id = route.params['id'];
+        const id = route.params['id'];
 
         /**
          * TODO
@@ -29,11 +29,11 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
         return this.collectionExercisesActions
             .retrieveCollectionExercise(id)
-            .then((payload:{ data:{ collectionExercise:CollectionExercise } }) => {
+            .then((payload: { data: { collectionExercise: CollectionExercise } }) => {
 
                 console.log('Resolver: ', payload.data);
 
-                if(!payload.data.collectionExercise) {
+                if (!payload.data.collectionExercise) {
                     console.log('Could not find collection exercise.');
                     return null;
                 }
@@ -49,10 +49,9 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                     this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
                 }*/
 
-                let collectonExercise = payload.data.collectionExercise;
+                const collectonExercise = payload.data.collectionExercise;
 
-
-                let survey = payload.data.collectionExercise['@survey'];
+                const survey = payload.data.collectionExercise['@survey'];
 
                 /**
                  * Transform data and return view model
@@ -61,7 +60,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
             });
     }
 
-    private createViewModel(collectionExercise:CollectionExercise, survey:any, collectionInstrument:any):CollectionExerciseDetailsViewModel {
+    private createViewModel(collectionExercise: CollectionExercise, survey: any, collectionInstrument: any):
+        CollectionExerciseDetailsViewModel {
 
         return {
             surveyTitle: survey.name,

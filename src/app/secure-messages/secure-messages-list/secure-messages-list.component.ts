@@ -7,8 +7,8 @@ import { SecureMessage } from '../shared/secure-message.model';
     selector: 'ons-secure-messages-list',
     templateUrl: './secure-messages-list.component.html'
 })
-export class SecureMessagesList {
+export class SecureMessagesListComponent {
 
-    @Input() secureMessages:Array<SecureMessage>;
+    @Input() secureMessages: Array<SecureMessage>;
 
 }

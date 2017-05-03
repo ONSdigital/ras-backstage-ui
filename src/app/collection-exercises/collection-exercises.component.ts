@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     styleUrls: ['collection-exercises.component.scss'],
     templateUrl: 'collection-exercises.component.html'
 })
-export class CollectionExercises {}
+export class CollectionExercisesComponent {}

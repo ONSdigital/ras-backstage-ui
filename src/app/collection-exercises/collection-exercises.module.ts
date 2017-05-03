@@ -10,12 +10,12 @@ import { CollectionExerciseRoutingModule } from './collection-exercises-routing.
 
 import { CollectionExercisesService } from './collection-exercises.service';
 
-import { CollectionExerciseListContainer } from './shared/collection-exercise-list/collection-exercise-list.container';
-import { CollectionExerciseList } from './shared/collection-exercise-list/collection-exercise-list.component';
-import { CollectionExercises } from './collection-exercises.component';
-import { CollectionExerciseDetailsContainer } from './shared/collection-exercise-details/collection-exercise-details.container';
-import { CollectionExerciseDetails } from './shared/collection-exercise-details/collection-exercise-details.component';
-import { CollectionExercisesActions } from "./collection-exercises.actions";
+import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
+import { CollectionExerciseListComponent } from './shared/collection-exercise-list/collection-exercise-list.component';
+import { CollectionExercisesComponent } from './collection-exercises.component';
+import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
+import { CollectionExerciseDetailsComponent } from './shared/collection-exercise-details/collection-exercise-details.component';
+import { CollectionExercisesActions } from './collection-exercises.actions';
 
 @NgModule({
     imports: [
@@ -27,15 +27,15 @@ import { CollectionExercisesActions } from "./collection-exercises.actions";
         CollectionExerciseRoutingModule
     ],
     declarations: [
-        CollectionExercises,
-        CollectionExerciseListContainer,
-        CollectionExerciseList,
-        CollectionExerciseDetailsContainer,
-        CollectionExerciseDetails
+        CollectionExercisesComponent,
+        CollectionExerciseListContainerComponent,
+        CollectionExerciseListComponent,
+        CollectionExerciseDetailsContainerComponent,
+        CollectionExerciseDetailsComponent
     ],
     providers: [
         CollectionExercisesService,
         CollectionExercisesActions
     ]
 })
-export class CollectionExerciseModule {}
+export class CollectionExerciseModule { }

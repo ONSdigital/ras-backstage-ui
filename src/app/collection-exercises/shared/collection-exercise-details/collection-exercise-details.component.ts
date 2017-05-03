@@ -7,10 +7,10 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
     selector: 'ons-collection-exercise-details',
     templateUrl: './collection-exercise-details.component.html'
 })
-export class CollectionExerciseDetails {
+export class CollectionExerciseDetailsComponent {
 
-    @Input() collectionExerciseDetails:CollectionExerciseDetailsViewModel;
+    @Input() collectionExerciseDetails: CollectionExerciseDetailsViewModel;
 
-    @Output() load_cis_click_handler:EventEmitter<any> = new EventEmitter();
+    @Output() load_cis_click_handler: EventEmitter<any> = new EventEmitter();
 
 }

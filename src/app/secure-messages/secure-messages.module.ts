@@ -6,12 +6,12 @@ import { RouterModule } from '@angular/router';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
-import { SecureMessages } from './secure-messages.component';
-import { SecureMessagesList } from './secure-messages-list/secure-messages-list.component';
-import { SecureMessagesListContainer } from './secure-messages-list/secure-messages-list.container';
-import { SecureMessageCreate } from './secure-message-create/secure-message-create.component';
-import { SecureMessageCreateContainer } from './secure-message-create/secure-message-create.container';
-import { SecureMessageForm } from './shared/secure-message-form/secure-message-form.component';
+import { SecureMessagesComponent } from './secure-messages.component';
+import { SecureMessagesListComponent } from './secure-messages-list/secure-messages-list.component';
+import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
+import { SecureMessageCreateComponent } from './secure-message-create/secure-message-create.component';
+import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
+import { SecureMessageFormComponent } from './shared/secure-message-form/secure-message-form.component';
 
 @NgModule({
     imports: [
@@ -23,12 +23,12 @@ import { SecureMessageForm } from './shared/secure-message-form/secure-message-f
         SecureMessagesRoutingModule
     ],
     declarations: [
-        SecureMessages,
-        SecureMessagesList,
-        SecureMessagesListContainer,
-        SecureMessageCreate,
-        SecureMessageCreateContainer,
-        SecureMessageForm
+        SecureMessagesComponent,
+        SecureMessagesListComponent,
+        SecureMessagesListContainerComponent,
+        SecureMessageCreateComponent,
+        SecureMessageCreateContainerComponent,
+        SecureMessageFormComponent
     ],
     providers: [
         /*SecureMessagesService,
