@@ -8,13 +8,15 @@ import { CollectionExerciseListViewModel } from '../collection-exercise.model';
     template: `
         <h1 class="saturn">Collection exercises</h1>
         <ons-collection-exercise-list
-            [collectionExercises]="viewModel.collectionExercises | async"></ons-collection-exercise-list>
+            [collectionExercises]="viewModel.collectionExercises"></ons-collection-exercise-list>
     `,
 })
 export class CollectionExerciseListContainer implements OnInit, OnDestroy {
 
-    private routeSubscription:Subscription;
-    private viewModel:CollectionExerciseListViewModel;
+    public routeSubscription:Subscription;
+    public viewModel:CollectionExerciseListViewModel = {
+        collectionExercises: []
+    };
 
     constructor(
         private route:ActivatedRoute) {}
@@ -23,7 +25,9 @@ export class CollectionExerciseListContainer implements OnInit, OnDestroy {
 
         this.routeSubscription = this.route.data
             .subscribe((data:{ viewModel:CollectionExerciseListViewModel }) => {
-                this.viewModel = data.viewModel;
+                if(data.viewModel) {
+                    this.viewModel = data.viewModel;
+                }
             });
     }
 
