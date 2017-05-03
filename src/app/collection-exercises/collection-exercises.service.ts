@@ -1,3 +1,5 @@
+import { Injectable } from '@angular/core';
+
 function temp_createCollectionExercise() {
 
     return {
@@ -14,6 +16,7 @@ function temp_createCollectionExercise() {
     };
 }
 
+@Injectable()
 export class CollectionExercisesService {
 
     getCollectionExercise(id: string): Promise<any> {
