@@ -6,18 +6,18 @@ import { CollectionExercise } from './shared/collection-exercise.model';
  * This type could be common pattern
  * @type {{isFetching: boolean; items: Array}}
  */
-let INIT_STATE:{ isFetching:Boolean, items:Array<CollectionExercise> } = {
+const INIT_STATE: { isFetching: Boolean, items: Array<CollectionExercise> } = {
     isFetching: false,
     items: []
 };
 
 export default function(state: any = INIT_STATE, action: any) {
 
-    switch(action.type) {
+    switch (action.type) {
         case CollectionExercisesActions.RECEIVED_SINGLE:
             console.log('Reducer: ', state, action);
 
-            let existingItem,
+            let existingItem;
 
                 /**
                  * TODO
@@ -26,14 +26,14 @@ export default function(state: any = INIT_STATE, action: any) {
                  * Create new items array of collection exercises for new state
                  * @type {Array}
                  */
-                items = Object.assign([], state.items.map((collectionExercise:CollectionExercise) => {
+                const items = Object.assign([], state.items.map((collectionExercise: CollectionExercise) => {
 
-                    let obj:CollectionExercise = Object.assign({}, collectionExercise);
+                    const obj: CollectionExercise = Object.assign({}, collectionExercise);
 
                     /**
                      * If an item with same identifier is found, save a reference to its new object for merging data
                      */
-                    if(collectionExercise.id === action.collectionExercise.id) {
+                    if (collectionExercise.id === action.collectionExercise.id) {
                         existingItem = obj;
                     }
 

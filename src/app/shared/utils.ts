@@ -18,6 +18,6 @@
     );
 }*/
 
-export function isFunction (obj:any) {
+export function isFunction(obj: any) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
 }

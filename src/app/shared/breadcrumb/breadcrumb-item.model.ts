@@ -1,8 +1,8 @@
 export interface BreadcrumbItem {
-    label:String;
-    link:String;
-    params?:any;
-    isCurrent?:Boolean;
+    label: String;
+    link: String;
+    params?: any;
+    isCurrent?: Boolean;
 }
 
-export const ROUTE_DATA_BREADCRUMB:string = 'breadcrumb';
+export const ROUTE_DATA_BREADCRUMB = 'breadcrumb';

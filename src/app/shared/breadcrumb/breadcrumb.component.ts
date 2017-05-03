@@ -9,8 +9,8 @@ import { BreadcrumbItem } from './breadcrumb-item.model';
     styleUrls: ['breadcrumb.component.scss'],
     templateUrl: 'breadcrumb.component.html'
 })
-export class Breadcrumb {
+export class BreadcrumbComponent {
 
-    @Input() trail:Array<BreadcrumbItem>;
+    @Input() trail: Array<BreadcrumbItem>;
 
 }

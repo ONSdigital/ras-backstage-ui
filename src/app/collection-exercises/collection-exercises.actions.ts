@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 
 import { CollectionExercise } from './shared/collection-exercise.model';
-import { CollectionExercisesService } from "./collection-exercises.service";
+import { CollectionExercisesService } from './collection-exercises.service';
 
 @Injectable()
 export class CollectionExercisesActions {
@@ -15,9 +15,9 @@ export class CollectionExercisesActions {
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private collectionExercisesService:CollectionExercisesService) {}
+        private collectionExercisesService: CollectionExercisesService) { }
 
-    public retrieveCollectionExercise(collectionExerciseRef:string) {
+    public retrieveCollectionExercise(collectionExerciseRef: string) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
@@ -26,7 +26,7 @@ export class CollectionExercisesActions {
 
         return this.collectionExercisesService
             .getCollectionExercise(collectionExerciseRef)
-            .then((payload:any) => {
+            .then((payload: any) => {
 
                 /**
                  * Normalise data first to keep entities in data store dry before saving
@@ -38,7 +38,7 @@ export class CollectionExercisesActions {
             });
     }
 
-    public receivedCollectionExercise(collectionExercise:CollectionExercise) {
+    public receivedCollectionExercise(collectionExercise: CollectionExercise) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RECEIVED_SINGLE,
@@ -54,7 +54,7 @@ export class CollectionExercisesActions {
 
         return this.collectionExercisesService
             .getCollectionExercises()
-            .then((payload:any) => {
+            .then((payload: any) => {
 
                 this.receivedCollectionExercises(payload.data.collectionExercises);
 
@@ -62,7 +62,7 @@ export class CollectionExercisesActions {
             });
     }
 
-    public receivedCollectionExercises(collectionExerciseArr:Array<CollectionExercise>) {
+    public receivedCollectionExercises(collectionExerciseArr: Array<CollectionExercise>) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RECEIVED_ALL,
@@ -70,7 +70,7 @@ export class CollectionExercisesActions {
         });
     }
 
-    public loadCollectionInstrumentBundle(collectionExerciseRef:string) {
+    public loadCollectionInstrumentBundle(collectionExerciseRef: string) {
 
         console.log('Put collection instrument for collection exercise: ', collectionExerciseRef);
 

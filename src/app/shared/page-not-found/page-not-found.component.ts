@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 
-//import {uiComponentDecoratorHelper as cdh} from '../utils';
+// import {uiComponentDecoratorHelper as cdh} from '../utils';
 
 @Component({
     moduleId: module.id, // For aot compiler relative paths

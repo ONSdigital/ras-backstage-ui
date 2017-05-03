@@ -14,15 +14,15 @@ import { CollectionExerciseModule } from './collection-exercises/collection-exer
 import { SecureMessagesModule } from './secure-messages/secure-messages.module';
 
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
-import { Home } from './shared/home/home.component';
+import { HomeComponent } from './shared/home/home.component';
 
-//const createLogger = require('redux-logger');
+// const createLogger = require('redux-logger');
 
 
 /**
  * Redux dev tools don't work well Angular 2 + zones.
  */
-//const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;*/
+// const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;*/
 
 
 @NgModule({
@@ -38,7 +38,7 @@ import { Home } from './shared/home/home.component';
     declarations: [
         AppComponent,
         PageNotFoundComponent,
-        Home
+        HomeComponent
     ],
     bootstrap: [
         AppComponent
@@ -53,12 +53,14 @@ export class AppModule {
 
         this.ngRedux.configureStore(
             rootReducer,
-            {},
+            {
+                collectionExercises: []
+            },
             null,
             /*[
                 createLogger()
             ],*/
-            devTools.isEnabled() ? [ devTools.enhancer() ] : []
+            devTools.isEnabled() ? [devTools.enhancer()] : []
         );
         ngReduxRouter.initialize();
 

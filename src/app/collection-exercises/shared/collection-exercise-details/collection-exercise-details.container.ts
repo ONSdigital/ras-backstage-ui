@@ -14,15 +14,15 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
             (load_cis_click_handler)="collectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
     `,
 })
-export class CollectionExerciseDetailsContainer implements OnInit, OnDestroy {
+export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDestroy {
 
-    private routeSubscription:Subscription;
-    private viewModel:CollectionExerciseDetailsViewModel;
+    private routeSubscription: Subscription;
+    public viewModel: CollectionExerciseDetailsViewModel;
 
     constructor(
-        private route:ActivatedRoute,
-        private router:Router,
-        private collectionExerciseActions:CollectionExercisesActions) {}
+        private route: ActivatedRoute,
+        private router: Router,
+        private collectionExerciseActions: CollectionExercisesActions) { }
 
     ngOnInit() {
 
@@ -30,7 +30,7 @@ export class CollectionExerciseDetailsContainer implements OnInit, OnDestroy {
          * Check resolved params from route instead of reading Redux data store directly
          */
         this.routeSubscription = this.route.data
-            .subscribe((data:{ viewModel:CollectionExerciseDetailsViewModel }) => {
+            .subscribe((data: { viewModel: CollectionExerciseDetailsViewModel }) => {
                 this.viewModel = data.viewModel;
             });
     }
@@ -39,7 +39,7 @@ export class CollectionExerciseDetailsContainer implements OnInit, OnDestroy {
         this.routeSubscription.unsubscribe();
     }
 
-    private collectionInstrumentLoadClick_handler() {
+    public collectionInstrumentLoadClick_handler() {
         this.collectionExerciseActions.loadCollectionInstrumentBundle('123');
     }
 }

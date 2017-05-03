@@ -5,8 +5,8 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
     selector: 'ons-collection-exercise-list',
     templateUrl: './collection-exercise-list.component.html'
 })
-export class CollectionExerciseList {
+export class CollectionExerciseListComponent {
 
-    @Input() collectionExercises:Array<any>;
+    @Input() collectionExercises: Array<any>;
 
 }

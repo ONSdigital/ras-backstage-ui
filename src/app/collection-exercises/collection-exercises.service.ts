@@ -4,21 +4,21 @@ function temp_createCollectionExercise() {
         id: 123,
         link: 'bres-2017',
         period: {
-            abbr: "2017"
+            abbr: '2017'
         },
         '@survey': {
             inquiryCode: 221,
-            name: "Business Register and Emploment Survey",
-            abbr: "BRES"
+            name: 'Business Register and Emploment Survey',
+            abbr: 'BRES'
         }
     };
 }
 
 export class CollectionExercisesService {
 
-    getCollectionExercise(id:string):Promise<any> {
+    getCollectionExercise(id: string): Promise<any> {
 
-        let payload:any = {
+        const payload: any = {
             data: {
                 collectionExercise: temp_createCollectionExercise()
             }
@@ -27,9 +27,9 @@ export class CollectionExercisesService {
         return Promise.resolve(payload);
     }
 
-    getCollectionExercises():Promise<any> {
+    getCollectionExercises(): Promise<any> {
 
-        let payload:any = {
+        const payload: any = {
             data: {
                 collectionExercises: [
                     temp_createCollectionExercise(),
@@ -44,7 +44,7 @@ export class CollectionExercisesService {
         return Promise.resolve(payload);
     }
 
-    putCollectionInstrumentBundle(collectionExerciseRef:string):Promise<any> {
+    putCollectionInstrumentBundle(collectionExerciseRef: string): Promise<any> {
 
         return Promise.resolve();
 
