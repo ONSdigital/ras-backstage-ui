@@ -1,11 +1,19 @@
 # Backstage UI
-Angular application for internal ONS staff to manage collecion exercises. To utilise an accompanying API.
+Angular application for internal ONS staff to manage collection exercises. To utilise an accompanying API.
 
 ## Development
+
+### Global development dependencies
+Angular CLI:
+npm install -g @angular/cli
+
 ### Compile app for development with watches
 Using a command line tool, from the project root:
 * Run `gulp dev`
 
+### Run linting using Angular CLI
+Using a command line tool, from the project root:
+* Run `ng lint`
 
 ## Production build
 ### Compile app with aot and enableProdMode enabled
