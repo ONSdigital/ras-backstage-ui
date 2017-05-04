@@ -13,8 +13,10 @@ import { CollectionExerciseListViewModel } from '../collection-exercise.model';
 })
 export class CollectionExerciseListContainerComponent implements OnInit, OnDestroy {
 
-    private routeSubscription: Subscription;
-    public viewModel: CollectionExerciseListViewModel;
+    public routeSubscription: Subscription;
+    public viewModel: CollectionExerciseListViewModel = {
+        collectionExercises: []
+    };
 
     constructor(
         private route: ActivatedRoute) { }
@@ -22,8 +24,10 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
     ngOnInit() {
 
         this.routeSubscription = this.route.data
-            .subscribe((data: { viewModel: CollectionExerciseListViewModel }) => {
-                this.viewModel = data.viewModel;
+            .subscribe((data:{ viewModel: CollectionExerciseListViewModel }) => {
+                if (data.viewModel) {
+                    this.viewModel = data.viewModel;
+                }
             });
     }
 

@@ -54,7 +54,10 @@ export class AppModule {
         this.ngRedux.configureStore(
             rootReducer,
             {
-                collectionExercises: []
+                collectionExercises: {
+                    isFetching: false,
+                    items: []
+                }
             },
             null,
             /*[
