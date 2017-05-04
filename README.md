@@ -12,10 +12,8 @@ Using a command line tool, from the project root:
 * Run `gulp dev`
 
 ### Run unit tests using Angular CLI
-Without coverage:
-* Run `ng test`
-With Istabul code coverage report generation:
-* Run `ng test --code-coverage`
+* Run `ng test` to run tests without code coverage report generation
+* Run `ng test --code-coverage` to run tests with code coverage report generation
 
 ### Run linting using Angular CLI
 Using a command line tool, from the project root:
