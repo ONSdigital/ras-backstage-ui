@@ -11,6 +11,12 @@ npm install -g @angular/cli
 Using a command line tool, from the project root:
 * Run `gulp dev`
 
+### Run unit tests using Angular CLI
+Without coverage:
+* Run `ng test`
+With Istabul code coverage report generation:
+* Run `ng test --code-coverage`
+
 ### Run linting using Angular CLI
 Using a command line tool, from the project root:
 * Run `ng lint`
