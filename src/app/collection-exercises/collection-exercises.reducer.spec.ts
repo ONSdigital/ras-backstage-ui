@@ -1,5 +1,3 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-
 import collectionExerciseReducer from './collection-exercises.reducer';
 import { CollectionExercisesActions } from './collection-exercises.actions';
 
