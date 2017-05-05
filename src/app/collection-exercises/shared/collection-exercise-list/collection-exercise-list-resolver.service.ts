@@ -28,6 +28,10 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
             });
     }
 
+    /**
+     * TODO
+     * Refactor to import transformer to change collectionExerciseArr in appropriate viewModel
+     */
     private createViewModel(collectionExerciseArr: Array<CollectionExercise>): CollectionExerciseListViewModel {
 
         return {
