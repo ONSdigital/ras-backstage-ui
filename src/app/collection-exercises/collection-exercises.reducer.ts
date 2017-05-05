@@ -19,6 +19,24 @@ export default function(state: any = INIT_STATE, action: any) {
 
             let existingItem;
 
+            const collectionExercise = action.collectionExercise;
+
+            /**
+             * Guard
+             *
+             * TODO
+             * Below belongs to model validator
+             */
+
+            if (!collectionExercise
+                || !collectionExercise.id
+                || !collectionExercise.period
+                || !collectionExercise.period.abbr
+                || !collectionExercise.survey_ref) {
+
+                return state;
+            }
+
             /**
              * TODO
              * Below will be a typical pattern for saving/updating data store, should be abstracted.
