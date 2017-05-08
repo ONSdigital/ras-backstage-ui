@@ -1,5 +1,5 @@
 <div class="collection-exercise-details-component">
-    <h1 class="saturn">{{ collectionExerciseDetails.surveyTitle }}</h1>
+    <h1 class="saturn">{{ collectionExerciseDetails?.surveyTitle }}</h1>
 
     <div class="panel panel--simple panel--info">
 
@@ -9,13 +9,13 @@
                     Inquiry code:
                 </dt>
                 <dd class="survey-info__data grid__col col-8@m">
-                    {{ collectionExerciseDetails.inquiryCode }}
+                    {{ collectionExerciseDetails?.inquiryCode }}
                 </dd>
                 <dt class="survey-info__title grid__col col-4@m">
                     Reference period:
                 </dt>
                 <dd class="survey-info__data grid__col col-8@m">
-                    {{ collectionExerciseDetails.referencePeriod }}
+                    {{ collectionExerciseDetails?.referencePeriod }}
                 </dd>
             </dl>
         </div>
@@ -37,7 +37,7 @@
         <li>
             674 Excel files ready to load &nbsp;
             <button
-                class="btn btn--small btn--secondary btn--border"
+                class="js_load_cis_click_handler btn btn--small btn--secondary btn--border"
                 (click)="load_cis_click_handler.next();">Load files</button>
         </li>
     </ul>

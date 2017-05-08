@@ -29,7 +29,7 @@ function createViewModel() {
     };
 }
 
-describe('CollectionExerciseListContainer component', () => {
+describe('CollectionExerciseListContainerComponent component', () => {
 
     describe('when testing a default component setup', () => {
 
@@ -52,8 +52,8 @@ describe('CollectionExerciseListContainer component', () => {
                 fixture.detectChanges();
             });
 
-            const app = fixture.debugElement.componentInstance;
-            expect(app).toBeTruthy();
+            const comp = fixture.debugElement.componentInstance;
+            expect(comp).toBeTruthy();
         }));
 
         it('should assign view model data from activated route', async(() => {
