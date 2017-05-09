@@ -68,7 +68,17 @@ $s: './static/s';
     .header__logo {
         > a {
             display : inline-block;
+            color : #fff;
+            text-decoration : none;
         }
+    }
+}
+
+.logo {
+    .logo__img {
+        width: 32px;
+        height: 32px;
+        margin-right: 0.5rem;
     }
 }
 
