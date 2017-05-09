@@ -8,7 +8,18 @@ describe('CollectionExerciseListResolver service', () => {
     beforeEach(() => {
         mockCollectionExercisesActions = {
             retrieveCollectionExercises: function () {
-                return Promise.resolve();
+                return Promise.resolve({
+                    data: {
+                        collectionExercises: [{
+                            period: '01 Jan',
+                            '@survey': {
+                                name: 'Test survey',
+                                inquiryCode: '987',
+                                abbr: 'ABC'
+                            }
+                        }]
+                    }
+                });
             }
         };
 
