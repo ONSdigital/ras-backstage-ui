@@ -15,5 +15,5 @@ export interface CollectionExerciseDetailsViewModel {
 }
 
 export interface CollectionExerciseListViewModel {
-    collectionExercises: Array<CollectionExerciseDetailsViewModel>;
+    collectionExercises: Array<any>;
 }
