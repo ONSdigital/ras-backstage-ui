@@ -38,7 +38,7 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
 
                 // TOOD get servey details
                 return {
-                    surveyTitle: 'survey.name' + ' - ' + 'collectionExercise.period.abbr',
+                    surveyTitle: 'Business Register and Emploment Survey' + ' - ' + '2017',
                     link: 'collectionExercise.link'
                 };
 
