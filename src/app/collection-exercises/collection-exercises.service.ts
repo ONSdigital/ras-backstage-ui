@@ -1,55 +1,48 @@
 import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 
-function temp_createCollectionExercise() {
+// Import RxJs required methods
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
-    return {
-        id: 123,
-        link: 'bres-2017',
-        period: {
-            abbr: '2017'
-        },
-        '@survey': {
-            inquiryCode: 221,
-            name: 'Business Register and Emploment Survey',
-            abbr: 'BRES'
-        }
-    };
-}
+import { CollectionExercise } from './shared/collection-exercise.model';
 
 @Injectable()
 export class CollectionExercisesService {
 
-    getCollectionExercise(id: string): Promise<any> {
+    // TODO get this from a config file
+    private BASE_URL = 'http://localhost:8000/api/';
 
-        const payload: any = {
-            data: {
-                collectionExercise: temp_createCollectionExercise()
-            }
-        };
+    constructor(private http: Http) { }
 
-        return Promise.resolve(payload);
+    // Get a single collection exercise
+    getCollectionExercise(id: number): Observable<CollectionExercise> {
+
+        return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
+
+            // Call .json() on the response to return data
+            .map((res: Response) => res.json().data.collectionExercise || {})
+
+            // Handle any errors
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
-    getCollectionExercises(): Promise<any> {
+    // Fetch all existing collection exercises
+    getCollectionExercises(): Observable<CollectionExercise[]> {
 
-        const payload: any = {
-            data: {
-                collectionExercises: [
-                    temp_createCollectionExercise(),
-                    temp_createCollectionExercise(),
-                    temp_createCollectionExercise(),
-                    temp_createCollectionExercise(),
-                    temp_createCollectionExercise()
-                ]
-            }
-        };
+        return this.http.get(this.BASE_URL + 'collection-exercises')
 
-        return Promise.resolve(payload);
+            // Call .json() on the response to return data
+            .map((res: Response) => res.json().data || {})
+
+            // Handle any errors
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     putCollectionInstrumentBundle(collectionExerciseRef: string): Promise<any> {
 
+        // TODO refactor to use on Observable instead
         return Promise.resolve();
-
     }
 }

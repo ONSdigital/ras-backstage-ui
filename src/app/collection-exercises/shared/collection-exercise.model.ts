@@ -1,5 +1,5 @@
 export interface CollectionExercise {
-    id?: Number;
+    id?: number;
     // key_dates:Object;
     period: { abbr: string };
     // samples:Array<any>;

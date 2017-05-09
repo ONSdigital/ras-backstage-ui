@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
+import { Observable } from 'rxjs/Observable';
 import { CollectionExerciseListViewModel, CollectionExercise } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
@@ -10,35 +10,44 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
     constructor(
         private collectionExercisesActions: CollectionExercisesActions) { }
 
-    resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseListViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseListViewModel> {
 
-        return this.collectionExercisesActions
-            .retrieveCollectionExercises()
-            .then((payload: { data: { collectionExercises: Array<CollectionExercise> } }) => {
+        /**
+         * TODO
+         * Check store/dispatch Redux action first
+         */
 
-                /**
-                 * Update store with new survey data from list received
-                 */
+        /**
+         * Update store with new survey data from list received
+         */
 
-                /**
-                 * Update store with new collection instrument data from list received
-                 */
+        /**
+         * Update store with new collection instrument data from list received
+         */
 
-                return this.createViewModel(payload.data.collectionExercises);
-            });
+        const observable = this.collectionExercisesActions.retrieveCollectionExercises()
+            .map((collectionExercises: Array<CollectionExercise>) => this.createViewModel(collectionExercises));
+
+        return observable;
     }
 
     private createViewModel(collectionExerciseArr: Array<CollectionExercise>): CollectionExerciseListViewModel {
 
         return {
-            collectionExercises: collectionExerciseArr.map((collectionExercise: any) => {
+            collectionExercises: collectionExerciseArr.map((collectionExercise: CollectionExercise) => {
 
-                const survey = collectionExercise['@survey'];
-
+                // TOOD get servey details
                 return {
-                    surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
-                    link: collectionExercise.link
+                    surveyTitle: 'survey.name' + ' - ' + 'collectionExercise.period.abbr',
+                    link: 'collectionExercise.link'
                 };
+
+                // const survey = collectionExercise['@survey'];
+                //
+                // return {
+                //     surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
+                //     link: collectionExercise.link
+                // };
             })
         };
     }

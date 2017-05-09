@@ -24,7 +24,7 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
     ngOnInit() {
 
         this.routeSubscription = this.route.data
-            .subscribe((data:{ viewModel: CollectionExerciseListViewModel }) => {
+            .subscribe((data: { viewModel: CollectionExerciseListViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
                 }
