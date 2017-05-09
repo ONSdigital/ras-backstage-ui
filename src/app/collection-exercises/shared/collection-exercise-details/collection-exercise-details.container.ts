@@ -31,7 +31,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
          */
         this.routeSubscription = this.route.data
             .subscribe((data: { viewModel: CollectionExerciseDetailsViewModel }) => {
-                this.viewModel = data.viewModel;
+                if (data.viewModel) {
+                    this.viewModel = data.viewModel;
+                }
             });
     }
 
