@@ -1,13 +1,16 @@
 [{
-    "id": "500",
+    "urn": "500",
+    "inquiryCode": "221",
     "name": "Business Register and Employment Survey",
-    "abbr": "bres"
+    "abbr": "BRES"
 }, {
-    "id": "501",
+    "urn": "501",
+    "inquiryCode": "222",
     "name": "Business Register and Employment Survey 2",
     "abbr": "bres2"
 }, {
-    "id": "502",
+    "urn": "500",
+    "inquiryCode": "223",
     "name": "Business Register and Employment Survey 3",
     "abbr": "bres3"
 }]

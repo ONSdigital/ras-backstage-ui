@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';*/
 
 import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
@@ -22,9 +23,17 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
         const id = route.params['id'];
 
+        const survey = {
+            urn: '500',
+            inquiryCode: '221',
+            name: 'Business Register and Employment Survey',
+            abbr: 'BRES'
+        };
 
         const observable = this.collectionExercisesActions.retrieveCollectionExercise(id)
-            .map((collectionExercise: CollectionExercise) => this.createViewModel(collectionExercise, {}, {}));
+            .map((collectionExercise: CollectionExercise) =>
+                this.createViewModel(collectionExercise, survey, {})
+            );
 
         return observable;
 
@@ -49,14 +58,14 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     /**
      * Transform data and return view model
      */
-    private createViewModel(collectionExercise: CollectionExercise, survey: any, collectionInstrument: any):
+    private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrument: any):
         CollectionExerciseDetailsViewModel {
 
         return {
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
             referencePeriod: 'period here',
-            surveyAbbr: survey.abbr + ' ' + collectionExercise.period.abbr
+            surveyAbbr: survey.abbr + ' - ' + collectionExercise.period.abbr
         };
     }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { CollectionExerciseListViewModel, CollectionExercise } from '../collection-exercise.model';
+import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
@@ -25,8 +26,15 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
          * Update store with new collection instrument data from list received
          */
 
+         const survey = {
+             urn: '500',
+             inquiryCode: '221',
+             name: 'Business Register and Employment Survey',
+             abbr: 'BRES'
+         };
+
         const observable = this.collectionExercisesActions.retrieveCollectionExercises()
-            .map((collectionExercises: Array<CollectionExercise>) => this.createViewModel(collectionExercises));
+            .map((collectionExercises: Array<CollectionExercise>) => this.createViewModel(collectionExercises, survey));
 
         return observable;
     }
@@ -35,16 +43,20 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
      * TODO
      * Refactor to import transformer to change collectionExerciseArr in appropriate viewModel
      */
-    private createViewModel(collectionExerciseArr: Array<CollectionExercise>): CollectionExerciseListViewModel {
+    private createViewModel(collectionExerciseArr: Array<CollectionExercise>, survey: Survey): CollectionExerciseListViewModel {
 
         return {
             collectionExercises: collectionExerciseArr.map((collectionExercise: CollectionExercise) => {
 
                 // TOOD get servey details
                 return {
-                    surveyTitle: 'Business Register and Emploment Survey' + ' - ' + '2017',
-                    link: 'collectionExercise.link'
+                    surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
+                    link: 'bres-2017'
                 };
+
+                // 'id': '500',
+                // 'name': 'Business Register and Employment Survey',
+                // 'abbr': 'bres'
 
                 // const survey = collectionExercise['@survey'];
                 //
