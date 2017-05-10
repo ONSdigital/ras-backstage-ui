@@ -1,6 +1,6 @@
 <div class="collection-exercise-list-component">
     <ul>
-        <li *ngFor="let collectionExercise of collectionExercises">
+        <li class="collection-exercise-summary" *ngFor="let collectionExercise of collectionExercises">
             <a routerLink="{{ collectionExercise.link }}">{{ collectionExercise.surveyTitle }}</a>
         </li>
     </ul>
