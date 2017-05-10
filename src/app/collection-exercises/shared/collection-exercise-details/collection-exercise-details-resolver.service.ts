@@ -21,7 +21,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
     resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseDetailsViewModel> {
 
-        const id = route.params['id'];
+        const id = route.params['collection-exercise-ref'];
 
         const survey = {
             urn: '500',
@@ -64,7 +64,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         return {
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
-            referencePeriod: 'period here',
+            referencePeriod: 'The period will appear here',
             surveyAbbr: survey.abbr + ' - ' + collectionExercise.period.abbr
         };
     }

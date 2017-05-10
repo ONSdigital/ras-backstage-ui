@@ -1,10 +1,22 @@
 export interface CollectionExercise {
     id?: number;
-    // key_dates:Object;
-    period: { abbr: string };
-    // samples:Array<any>;
-    // state:string;
-    survey_ref: string;
+    link: string;
+    period: {
+        type: string,
+        abbr: string,
+        from: {
+            day: string,
+            month: string,
+            year: string
+        },
+        to: {
+            day: string,
+            month: string,
+            year: string
+        }
+    };
+    surveyId: string;
+    collectionInstrumentBundleIds: [string];
 }
 
 export interface CollectionExerciseDetailsViewModel {

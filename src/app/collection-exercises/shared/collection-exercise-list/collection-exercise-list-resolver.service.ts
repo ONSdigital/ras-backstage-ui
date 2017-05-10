@@ -48,22 +48,10 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
         return {
             collectionExercises: collectionExerciseArr.map((collectionExercise: CollectionExercise) => {
 
-                // TOOD get servey details
                 return {
                     surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
-                    link: 'bres-2017'
+                    link: collectionExercise.link
                 };
-
-                // 'id': '500',
-                // 'name': 'Business Register and Employment Survey',
-                // 'abbr': 'bres'
-
-                // const survey = collectionExercise['@survey'];
-                //
-                // return {
-                //     surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
-                //     link: collectionExercise.link
-                // };
             })
         };
     }
