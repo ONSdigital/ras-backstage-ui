@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-/*import { select } from '@angular-redux/store';
+//import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/defaultIfEmpty';
+import 'rxjs/add/operator/find';
+
+import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';*/
+import { Subscription } from 'rxjs/Subscription';
 
 import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
@@ -11,9 +15,10 @@ import { CollectionExercisesActions } from '../../collection-exercises.actions';
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
 
-    /*@select('collectionExercises')
+    @select('collectionExercises')
     private collectionExercisesStore: Observable<Array<CollectionExercise>>;
-    private collectionExercisesSubscription:Subscription;*/
+    private collectionExercisesSubscription:Subscription;
+    private collectionExercises: Array<CollectionExercise> = [];
 
     constructor(
         private collectionExercisesActions: CollectionExercisesActions) { }
@@ -21,6 +26,43 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseDetailsViewModel> {
 
         const id = route.params['id'];
+
+
+        /*let subject: Observable<CollectionExercise> = this.collectionExercisesStore
+            .find((value: Array<CollectionExercise>, index: number) => {
+                return true;
+            })
+            .defaultIfEmpty();*/
+
+
+
+        /*let subject: Observable = Observable
+            .combineLatest(
+                collectionExercisesStore,
+                this.collectionExercisesActions.retrieveCollectionExercise(id)
+            );*/
+
+
+
+
+
+        /*let existingCollectionExercise: CollectionExercise;
+
+        this.collectionExercisesStore
+            .subscribe((collectionExercises: any) => {
+                this.collectionExercises = collectionExercises.items;
+            });
+
+        existingCollectionExercise = this.collectionExercises
+            .find((collectionExercise: CollectionExercise) => collectionExercise.id === id);
+
+        console.log(existingCollectionExercise);
+
+        if (!existingCollectionExercise) {
+
+        }*/
+
+
 
         /**
          * TODO
