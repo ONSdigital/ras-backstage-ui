@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-
+import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { select } from '@angular-redux/store';
 // import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/operator/find';
@@ -18,7 +17,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
     @select('collectionExercises')
     private collectionExercisesStore: Observable<Array<CollectionExercise>>;
-    private collectionExercisesSubscription: Subscription;
+    private collectionExercisesSubscription:Subscription;
     private collectionExercises: Array<CollectionExercise> = [];
 
     constructor(

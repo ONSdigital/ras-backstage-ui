@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { CollectionExerciseListResolver } from './collection-exercise-list-resolver.service';
 
 let mockCollectionExercisesActions: any,
@@ -8,18 +9,15 @@ describe('CollectionExerciseListResolver service', () => {
     beforeEach(() => {
         mockCollectionExercisesActions = {
             retrieveCollectionExercises: function () {
-                return Promise.resolve({
-                    data: {
-                        collectionExercises: [{
-                            period: '01 Jan',
-                            '@survey': {
-                                name: 'Test survey',
-                                inquiryCode: '987',
-                                abbr: 'ABC'
-                            }
-                        }]
+
+                return Observable.of([{
+                    period: '01 Jan',
+                    '@survey': {
+                        name: 'Test survey',
+                        inquiryCode: '987',
+                        abbr: 'ABC'
                     }
-                });
+                }]);
             }
         };
 
@@ -31,7 +29,9 @@ describe('CollectionExerciseListResolver service', () => {
         it('should call the collection exercises service to retrieve a list of collection exercises', () => {
             spyOn(mockCollectionExercisesActions, 'retrieveCollectionExercises').and.callThrough();
 
-            resolverSvc.resolve({});
+            const fakeRouter: any = {};
+
+            resolverSvc.resolve(fakeRouter);
 
             expect(mockCollectionExercisesActions.retrieveCollectionExercises).toHaveBeenCalled();
         });
