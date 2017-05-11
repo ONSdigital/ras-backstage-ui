@@ -54,7 +54,14 @@ describe('CollectionExerciseListComponent component', () => {
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
 
-                expect(listItems.length).toEqual(2);
+                // console.log(fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEMS"]'));
+                //
+                // console.log(fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEMS"]').childNodes.length);
+
+
+                expect(fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEM_*]').length).toEqual(2);
+
+                // expect(listItems.length).toEqual(2);
                 expect(listItems[0].nativeNode.innerText).toEqual('Test survey name');
                 expect(listItems[1].nativeNode.innerText).toEqual('Another test survey name');
 

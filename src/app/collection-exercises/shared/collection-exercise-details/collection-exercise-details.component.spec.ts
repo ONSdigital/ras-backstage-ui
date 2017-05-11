@@ -32,7 +32,7 @@ describe('CollectionExerciseDetailsComponent component', () => {
     }));
 
 
-    it('should initialise with correct template data', async(() => {
+    it('should initialise with correct collection exercise template data', async(() => {
         fixture = TestBed.createComponent(CollectionExerciseDetailsComponent);
         instance = fixture.componentInstance;
 
@@ -46,13 +46,52 @@ describe('CollectionExerciseDetailsComponent component', () => {
         fixture.whenStable().then(() => {
             fixture.detectChanges();
 
-            const headingEl = fixture.debugElement.query(By.css('h1')).nativeElement,
-                inquiryCodeEl = fixture.debugElement.query(By.css('.inquiry-code')).nativeElement,
-                referencePeriodEl = fixture.debugElement.query(By.css('.reference-period')).nativeElement;
+            expect(fixture.nativeElement.querySelector('[data-test="SURVEY_TITLE"]').innerHTML)
+                .toEqual('Test survey name');
 
-            expect(headingEl.innerText).toEqual('Test survey name');
-            expect(inquiryCodeEl.innerText).toEqual('789');
-            expect(referencePeriodEl.innerText).toEqual('Jan 2018');
+            expect(fixture.nativeElement.querySelector('[data-test="INQUIRY_CODE_LABEL"]').innerHTML)
+                .toEqual('Inquiry code:');
+
+            expect(fixture.nativeElement.querySelector('[data-test="INQUIRY_CODE_VALUE"]').innerHTML)
+                .toEqual('789');
+
+
+            expect(fixture.nativeElement.querySelector('[data-test="REFERENCE_PERIOD_LABEL"]').innerHTML)
+                .toEqual('Reference period:');
+
+            expect(fixture.nativeElement.querySelector('[data-test="REFERENCE_PERIOD_VALUE"]').innerHTML)
+                .toEqual('Jan 2018');
+        });
+    }));
+
+    it('should initialise with correct collection instruments template data', async(() => {
+        fixture = TestBed.createComponent(CollectionExerciseDetailsComponent);
+        instance = fixture.componentInstance;
+
+        instance.collectionExerciseDetails = {
+            surveyTitle: 'Test survey name',
+            inquiryCode: 789,
+            referencePeriod: 'Jan 2018'
+        };
+
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+
+            expect(fixture.nativeElement.querySelector('[data-test="COLLECTION_INSTRUMENTS_HEADING"]').innerHTML)
+                .toEqual('Collection instruments');
+
+            expect(fixture.nativeElement.querySelector('[data-test="NO_COLLECTION_INSTRUMENTS_AVAILABLE_MESSAGE"]').innerHTML)
+                .toEqual('No collection instruments available');
+
+            expect(fixture.nativeElement.querySelector('[data-test="READY_TO_LOAD_MESSAGE"]').innerHTML)
+                .toEqual('674 Excel files ready to load');
+
+            expect(fixture.nativeElement.querySelector('[data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"]').innerHTML)
+                .toEqual('Load files');
+
+            expect(fixture.nativeElement.querySelector('[data-test="LOADED_FILES_COUNT"]').innerHTML)
+                .toEqual('674 Excel files loaded');
         });
     }));
 });
