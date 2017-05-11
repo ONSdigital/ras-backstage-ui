@@ -1,5 +1,5 @@
-//@include font-face(Lato, "#{$static}/fonts/lato/latolatin-regular-webfont", $weight: 400, $style: null, $exts: eot woff2 woff ttf svg);
-//@include font-face(Lato, "#{$static}/fonts/lato/latolatin-bold-webfont", $weight: 600, $style: null, $exts: eot woff2 woff ttf svg);
+@include font-face(Lato, "/assets/fonts/lato/latolatin-regular-webfont", $weight: 400, $style: null, $exts: eot woff2 woff ttf svg);
+@include font-face(Lato, "/assets/fonts/lato/latolatin-bold-webfont", $weight: 600, $style: null, $exts: eot woff2 woff ttf svg);
 
 html {
   font-size: 18px;
