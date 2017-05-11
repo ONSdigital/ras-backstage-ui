@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Client application for internal users (Respondent account services)",
   "engines": {
-    "node": "6.2.2",
-    "npm": "3.9.5"
+    "node": "6.10.2",
+    "npm": "3.10.10"
   },
   "repository": {
     "type": "git",
