@@ -7,12 +7,12 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
 import { Survey } from './shared/survey.model';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SurveysService {
 
-    // TODO get this from a config file
-    private BASE_URL = 'http://localhost:8000/api/';
+    private BASE_URL = environment.endpoints.survey;
 
     constructor(private http: Http) { }
 

@@ -33,6 +33,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             .subscribe((data: { viewModel: CollectionExerciseDetailsViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
+
+                    // TODO remove this
+                    console.log(this.viewModel);
                 }
             });
     }

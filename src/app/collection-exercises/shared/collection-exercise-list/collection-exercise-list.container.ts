@@ -27,6 +27,9 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
             .subscribe((data: { viewModel: CollectionExerciseListViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
+
+                    // TODO remove this
+                    console.log(this.viewModel);
                 }
             });
     }
