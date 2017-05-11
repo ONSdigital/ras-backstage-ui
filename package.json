@@ -83,6 +83,7 @@
     "protractor": "~5.1.0",
     "redux": "^3.6.0",
     "redux-logger": "^2.8.1",
+    "replace-in-file": "^2.5.0",
     "rimraf": "^2.5.4",
     "rollup": "^0.41.4",
     "rollup-plugin-commonjs": "^7.0.0",

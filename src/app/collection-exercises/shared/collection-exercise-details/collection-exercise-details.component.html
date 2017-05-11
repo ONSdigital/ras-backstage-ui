@@ -1,44 +1,32 @@
 <div class="collection-exercise-details-component">
-    <h1 class="saturn">{{ collectionExerciseDetails?.surveyTitle }}</h1>
+    <h1 data-test="SURVEY_TITLE" class="saturn">{{ collectionExerciseDetails?.surveyTitle }}</h1>
 
     <div class="panel panel--simple panel--info">
 
         <div class="grid">
             <dl class="survey-info">
-                <dt class="survey-info__title grid__col col-4@m">
-                    Inquiry code:
-                </dt>
-                <dd class="survey-info__data grid__col col-8@m inquiry-code">
-                    {{ collectionExerciseDetails?.inquiryCode }}
-                </dd>
-                <dt class="survey-info__title grid__col col-4@m">
-                    Reference period:
-                </dt>
-                <dd class="survey-info__data grid__col col-8@m reference-period">
-                    {{ collectionExerciseDetails?.referencePeriod }}
-                </dd>
+                <dt data-test="INQUIRY_CODE_LABEL" class="survey-info__title grid__col col-4@m">Inquiry code:</dt>
+                <dd data-test="INQUIRY_CODE_VALUE" class="survey-info__data grid__col col-8@m inquiry-code">{{ collectionExerciseDetails?.inquiryCode }}</dd>
+                <dt data-test="REFERENCE_PERIOD_LABEL" class="survey-info__title grid__col col-4@m">Reference period:</dt>
+                <dd data-test="REFERENCE_PERIOD_VALUE" class="survey-info__data grid__col col-8@m reference-period">{{ collectionExerciseDetails?.referencePeriod }}</dd>
             </dl>
         </div>
-
     </div>
 
-    <br />
-    <br />
-
-    <h2 class="neptune">Collection instruments</h2>
+    <h2 data-test="COLLECTION_INSTRUMENTS_HEADING" class="neptune collection-instruments-heading">Collection instruments</h2>
 
     <ul>
         <li>
-            674 Excel files loaded - <a href="bres-2016-seft-cis.csv">Download list (CSV)</a>
+            <span data-test="NO_COLLECTION_INSTRUMENTS_AVAILABLE_MESSAGE">No collection instruments available</span>
         </li>
         <li>
-            No collection instruments available
-        </li>
-        <li>
-            674 Excel files ready to load &nbsp;
-            <button
+            <span data-test="READY_TO_LOAD_MESSAGE">674 Excel files ready to load</span>
+            <button data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"
                 class="js_load_cis_click_handler btn btn--small btn--secondary btn--border"
                 (click)="load_cis_click_handler.next();">Load files</button>
+        </li>
+        <li>
+            <span data-test="LOADED_FILES_COUNT">674 Excel files loaded</span> - <a href="bres-2016-seft-cis.csv" data-test="DOWNLOAD_CSV_LINK">Download list (CSV)</a>
         </li>
     </ul>
 
