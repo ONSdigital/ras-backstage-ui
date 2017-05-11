@@ -58,7 +58,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
             resolverSvc.resolve({
                 params: {
-                    id: 123
+                    'collection-exercise-ref': 100
                 }
             });
 
