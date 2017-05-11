@@ -47,23 +47,19 @@ describe('CollectionExerciseListComponent component', () => {
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
-            fixture.detectChanges();
+            const item0 = fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEM_0"]');
+            const item1 = fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEM_1"]');
+            const item2 = fixture.nativeElement.querySelector('[data-test="COLLECTION_EXERCISE_LIST_ITEM_2"]');
 
-            const listItems = fixture.debugElement.queryAllNodes(By.css('.collection-exercise-summary'));
+            expect(item0).not.toBeNull();
+            expect(item1).not.toBeNull();
+            expect(item2).toBeNull();
 
-            fixture.whenStable().then(() => {
-                fixture.detectChanges();
+            expect(item0.innerText).toEqual(instance.collectionExercises[0].surveyTitle);
+            expect(item0.href).toContain(instance.collectionExercises[0].link);
 
-                expect(listItems.length).toEqual(2);
-                expect(listItems[0].nativeNode.innerText).toEqual('Test survey name');
-                expect(listItems[1].nativeNode.innerText).toEqual('Another test survey name');
-
-                const anchor1 = listItems[0].nativeNode.children[0],
-                    anchor2 = listItems[1].nativeNode.children[0];
-
-                expect(anchor1.href).toContain('/collection-exercise/1');
-                expect(anchor2.href).toContain('/collection-exercise/2');
-            });
+            expect(item1.innerText).toEqual(instance.collectionExercises[1].surveyTitle);
+            expect(item1.href).toContain(instance.collectionExercises[1].link);
         });
     }));
 

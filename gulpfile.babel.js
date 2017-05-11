@@ -7,45 +7,48 @@ import sass from 'gulp-sass';
 import shell from 'gulp-shell';
 import rollup from 'rollup-stream';
 import source from 'vinyl-source-stream';
-
 import rollupConfig from './rollup-config';
+import replace from 'replace-in-file';
 
-let appRoot = './src/app';
+const paths = {
+    appRoot: './src/app',
+    dist: './dist',
+};
 
 /* ===== Clean directories ===== */
 gulp.task('clean:all', () => {
 
-    return gulp.src(['./dist/*', './aot'], { read: false })
+    return gulp.src([paths.dist + '/*', './aot'], { read: false })
         .pipe(rimraf());
 });
 
 gulp.task('clean:javascript', () => {
 
-    return gulp.src(['./dist/**/*.js', './dist/**/*.js.map'], { read: false })
+    return gulp.src([paths.dist + '/**/*.js', paths.dist + '/**/*.js.map'], { read: false })
         .pipe(rimraf());
 });
 
 gulp.task('clean:html', () => {
 
-    return gulp.src(['./dist/**/*.html'], { read: false })
+    return gulp.src([paths.dist + '/**/*.html'], { read: false })
         .pipe(rimraf());
 });
 
 gulp.task('clean:css:dev', () => {
 
-    return gulp.src(['./dist/**/*.css', '!dist/styles.css'], { read: false })
+    return gulp.src([paths.dist + '/**/*.css', '!dist/styles.css'], { read: false })
         .pipe(rimraf());
 });
 
 gulp.task('clean:css:prod', () => {
 
-    return gulp.src([appRoot + '/**/*.css'], { read: false })
+    return gulp.src([paths.appRoot + '/**/*.css'], { read: false })
         .pipe(rimraf());
 });
 
 gulp.task('clean:css:global', () => {
 
-    return gulp.src(['./dist/styles.css'], { read: false })
+    return gulp.src([paths.dist + '/styles.css'], { read: false })
         .pipe(rimraf());
 });
 
@@ -69,7 +72,7 @@ function runTypscript(src, dest, tsconfig) {
  * Move main- scripts out of app
  */
 gulp.task('typescript', ['clean:javascript'], () => {
-	return runTypscript([appRoot + '/**/*.ts', '!' + appRoot + '/main-aot.ts'], './dist', 'tsconfig.json');
+	return runTypscript([paths.appRoot + '/**/*.ts', '!' + paths.appRoot + '/main-aot.ts'], paths.dist, 'tsconfig.json');
 });
 
 gulp.task('typescript:prod:aot', ['aot:prod'], () => {
@@ -77,15 +80,15 @@ gulp.task('typescript:prod:aot', ['aot:prod'], () => {
 });
 
 gulp.task('typescript:prod', ['typescript:prod:aot'], () => {
-    return runTypscript(appRoot + '/**/*.ts', appRoot, 'tsconfig-aot.json');
+    return runTypscript(paths.appRoot + '/**/*.ts', paths.appRoot, 'tsconfig-aot.json');
 });
 
 
 /* ===== HTML (dev only) ===== */
 gulp.task('html', ['clean:html'], () => {
 
-    return gulp.src([appRoot + '/**/*.html'])
-        .pipe(gulp.dest('./dist'));
+    return gulp.src([paths.appRoot + '/**/*.html'])
+        .pipe(gulp.dest(paths.dist));
 });
 
 
@@ -94,22 +97,22 @@ function sassGlobal() {
 
     return gulp.src('./styles.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(paths.dist));
 }
 
 function sassNgComponents(dest) {
 
-    return gulp.src(appRoot + '/**/*.scss')
+    return gulp.src(paths.appRoot + '/**/*.scss')
         .pipe(sass().on('error', sass.logError))
         .pipe(gulp.dest(dest));
 }
 
 gulp.task('sass:dev', ['clean:css:dev'], () => {
-    return sassNgComponents('./dist');
+    return sassNgComponents(paths.dist);
 });
 
 gulp.task('sass:prod', ['clean:all'], () => {
-    return sassNgComponents(appRoot);
+    return sassNgComponents(paths.appRoot);
 });
 
 gulp.task('sass:global:dev', ['clean:css:global'], () => {
@@ -123,15 +126,15 @@ gulp.task('sass:global:prod', ['clean:all'], () => {
 
 /* ===== Watch tasks (dev only) ===== */
 gulp.task('watch:typescript', ['typescript'], () => {
-	gulp.watch([appRoot + "/**/*.ts", "!" + appRoot + "/main-aot.ts"], ['typescript']);
+	gulp.watch([paths.appRoot + "/**/*.ts", "!" + paths.appRoot + "/main-aot.ts"], ['typescript']);
 });
 
 gulp.task('watch:html', ['html'], () => {
-    gulp.watch(appRoot + '/**/*.html', ['html']);
+    gulp.watch(paths.appRoot + '/**/*.html', ['html']);
 });
 
 gulp.task('watch:sass', ['sass:dev'], () => {
-    gulp.watch(appRoot + '/**/*.scss', ['sass:dev']);
+    gulp.watch(paths.appRoot + '/**/*.scss', ['sass:dev']);
 });
 
 gulp.task('watch:sass:global', ['sass:global:dev'], () => {
@@ -176,8 +179,29 @@ gulp.task('rollup:prod', ['typescript:prod'], () => {
 
     return rollup(rollupConfig)
         .pipe(source('build.js'))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest(paths.dist));
 
+});
+
+// Task to remove all the data-test=\".....\" HTML attributes from the code in the dist folder
+gulp.task('remove-test-tags', (callback) => {
+
+    const removeTags = {
+
+        files: [
+            paths.dist + '/**/*.js'
+        ],
+
+        // Replacement to make
+        from: /\s(attr.)?data-test=\\".*?\\"/g,
+        to: ''
+    };
+
+    try {
+        let changedFiles = replace.sync(removeTags);
+    } catch (error) {
+        console.error('Error occurred:', error);
+    }
 });
 
 
