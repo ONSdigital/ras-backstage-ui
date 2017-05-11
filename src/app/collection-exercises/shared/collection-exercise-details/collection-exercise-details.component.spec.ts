@@ -38,7 +38,7 @@ describe('CollectionExerciseDetailsComponent component', () => {
 
         instance.collectionExerciseDetails = {
             surveyTitle: 'Test survey name',
-            inquiryCode: 789,
+            inquiryCode: '789',
             referencePeriod: 'Jan 2018'
         };
 
@@ -47,20 +47,19 @@ describe('CollectionExerciseDetailsComponent component', () => {
             fixture.detectChanges();
 
             expect(fixture.nativeElement.querySelector('[data-test="SURVEY_TITLE"]').innerHTML)
-                .toEqual('Test survey name');
+                .toEqual(instance.collectionExerciseDetails.surveyTitle);
 
             expect(fixture.nativeElement.querySelector('[data-test="INQUIRY_CODE_LABEL"]').innerHTML)
                 .toEqual('Inquiry code:');
 
             expect(fixture.nativeElement.querySelector('[data-test="INQUIRY_CODE_VALUE"]').innerHTML)
-                .toEqual('789');
-
+                .toEqual(instance.collectionExerciseDetails.inquiryCode);
 
             expect(fixture.nativeElement.querySelector('[data-test="REFERENCE_PERIOD_LABEL"]').innerHTML)
                 .toEqual('Reference period:');
 
             expect(fixture.nativeElement.querySelector('[data-test="REFERENCE_PERIOD_VALUE"]').innerHTML)
-                .toEqual('Jan 2018');
+                .toEqual(instance.collectionExerciseDetails.referencePeriod);
         });
     }));
 

@@ -193,7 +193,7 @@ gulp.task('remove-test-tags', (callback) => {
         ],
 
         // Replacement to make
-        from: /\s(attr.)?data-test=\\".*?[A-z]\\"g,
+        from: /\s(attr.)?data-test=\\".*?\\"/g,
         to: ''
     };
 

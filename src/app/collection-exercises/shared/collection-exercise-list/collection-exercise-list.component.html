@@ -1,5 +1,5 @@
 <div>
-    <ul data-test="COLLECTION_EXERCISE_LIST_ITEMS">
+    <ul>
         <li *ngFor="let collectionExercise of collectionExercises; let i = index">
             <a attr.data-test="COLLECTION_EXERCISE_LIST_ITEM_{{i}}" routerLink="{{ collectionExercise.link }}">{{ collectionExercise.surveyTitle }}</a>
         </li>

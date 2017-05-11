@@ -18,7 +18,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
     @select('collectionExercises')
     private collectionExercisesStore: Observable<Array<CollectionExercise>>;
-    private collectionExercisesSubscription:Subscription;
+    private collectionExercisesSubscription: Subscription;
     private collectionExercises: Array<CollectionExercise> = [];
 
     constructor(
