@@ -6,43 +6,37 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
-import { CollectionExercise } from './shared/collection-exercise.model';
+import { Survey } from './shared/survey.model';
 
 @Injectable()
-export class CollectionExercisesService {
+export class SurveysService {
 
     // TODO get this from a config file
     private BASE_URL = 'http://localhost:8000/api/';
 
     constructor(private http: Http) { }
 
-    // Get a single collection exercise
-    getCollectionExercise(id: number): Observable<CollectionExercise> {
+    // Get a single survey
+    getSurvey(urn: string): Observable<Survey> {
 
-        return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
+        return this.http.get(this.BASE_URL + 'surveys/' + urn)
 
             // Call .json() on the response to return data
-            .map((res: Response) => res.json().data.collectionExercise || {})
+            .map((res: Response) => res.json().data.Survey || {})
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
-    // Fetch all existing collection exercises
-    getCollectionExercises(): Observable<CollectionExercise[]> {
+    // Fetch all existing surveys
+    getSurveys(): Observable<Survey[]> {
 
-        return this.http.get(this.BASE_URL + 'collection-exercises')
+        return this.http.get(this.BASE_URL + 'surveys')
 
             // Call .json() on the response to return data
             .map((res: Response) => res.json().data || {})
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-    putCollectionInstrumentBundle(collectionExerciseRef: string): Promise<any> {
-
-        // TODO refactor to use on Observable instead
-        return Promise.resolve();
     }
 }

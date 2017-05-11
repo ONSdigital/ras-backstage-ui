@@ -1,0 +1,62 @@
+{
+    "data": [{
+        "id": "100",
+        "link": "bres-2015",
+        "period": {
+            "type": "annual",
+            "abbr": "2015",
+            "from": {
+                "day": "01",
+                "month": "01",
+                "year": "2015"
+            },
+            "to": {
+                "day": "01",
+                "month": "01",
+                "year": "2015"
+            }
+        },
+        "surveyId": "500",
+        "collectionInstrumentBundleIds": ["700"]
+    }, {
+
+        "id": "101",
+        "link": "bres-2016",
+        "period": {
+            "type": "annual",
+            "abbr": "2016",
+            "from": {
+                "day": "02",
+                "month": "02",
+                "year": "2016"
+            },
+            "to": {
+                "day": "02",
+                "month": "02",
+                "year": "2016"
+            }
+        },
+        "surveyId": "501",
+        "collectionInstrumentBundleIds": ["701"]
+    }, {
+
+        "id": "102",
+        "link": "bres-2017",
+        "period": {
+            "type": "annual",
+            "abbr": "2017",
+            "from": {
+                "day": "03",
+                "month": "03",
+                "year": "2017"
+            },
+            "to": {
+                "day": "03",
+                "month": "03",
+                "year": "2017"
+            }
+        },
+        "surveyId": "501",
+        "collectionInstrumentBundleIds": ["701", "702"]
+    }]
+}

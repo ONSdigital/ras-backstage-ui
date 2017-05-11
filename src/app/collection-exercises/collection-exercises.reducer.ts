@@ -44,14 +44,12 @@ export default function(state: any = INIT_STATE, action: any) {
              * Create new items array of collection exercises for new state
              * @type {Array}
              */
-            const items = Object.assign([], state.items.map((collectionExercise: CollectionExercise) => {
+            const items = Object.assign([], state.items.map((item: CollectionExercise) => {
 
-                const obj: CollectionExercise = Object.assign({}, collectionExercise);
+                const obj: CollectionExercise = Object.assign({}, item);
 
-                /**
-                 * If an item with same identifier is found, save a reference to its new object for merging data
-                 */
-                if (collectionExercise.id === action.collectionExercise.id) {
+                // If an item with same identifier is found, save a reference to its new object for merging data
+                if (item.id === action.item.id) {
                     existingItem = obj;
                 }
 

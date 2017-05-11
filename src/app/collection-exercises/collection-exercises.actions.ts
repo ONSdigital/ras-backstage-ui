@@ -17,25 +17,23 @@ export class CollectionExercisesActions {
         private ngRedux: NgRedux<any>,
         private collectionExercisesService: CollectionExercisesService) { }
 
-    public retrieveCollectionExercise(collectionExerciseRef: string) {
+    public retrieveCollectionExercise(id: number) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
-            collectionExerciseRef: collectionExerciseRef
+            id: id
         });
 
-        return this.collectionExercisesService
-            .getCollectionExercise(collectionExerciseRef)
-            .then((payload: any) => {
+        const observable = this.collectionExercisesService.getCollectionExercise(id);
 
-                /**
-                 * Normalise data first to keep entities in data store dry before saving
-                 * Update data store
-                 */
-                this.receivedCollectionExercise(payload.data.collectionExercise);
-
-                return payload;
-            });
+        observable.subscribe(
+            // Normalise data first to keep entities in data store dry before saving
+            // Update data store
+            (collectionExercise: CollectionExercise) => {
+                this.receivedCollectionExercise(collectionExercise);
+            }
+        );
+        return observable;
     }
 
     public receivedCollectionExercise(collectionExercise: CollectionExercise) {
@@ -52,14 +50,12 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.RETRIEVE_ALL
         });
 
-        return this.collectionExercisesService
-            .getCollectionExercises()
-            .then((payload: any) => {
+        const observable = this.collectionExercisesService.getCollectionExercises();
+        observable.subscribe(
+            (collectionExercises: CollectionExercise[]) => this.receivedCollectionExercises(collectionExercises)
+        );
 
-                this.receivedCollectionExercises(payload.data.collectionExercises);
-
-                return payload;
-            });
+        return observable;
     }
 
     public receivedCollectionExercises(collectionExerciseArr: Array<CollectionExercise>) {
@@ -70,16 +66,15 @@ export class CollectionExercisesActions {
         });
     }
 
-    public loadCollectionInstrumentBundle(collectionExerciseRef: string) {
+    public loadCollectionInstrumentBundle(id: string) {
 
-        console.log('Put collection instrument for collection exercise: ', collectionExerciseRef);
+        console.log('Put collection instrument for collection exercise: ', id);
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
-            collectionExerciseRef: collectionExerciseRef
+            id: id
         });
 
-        return this.collectionExercisesService
-            .putCollectionInstrumentBundle(collectionExerciseRef);
+        return this.collectionExercisesService.putCollectionInstrumentBundle(id);
     }
 }

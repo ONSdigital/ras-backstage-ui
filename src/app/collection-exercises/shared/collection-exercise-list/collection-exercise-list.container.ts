@@ -9,7 +9,7 @@ import { CollectionExerciseListViewModel } from '../collection-exercise.model';
         <h1 class="saturn">Collection exercises</h1>
         <ons-collection-exercise-list
             [collectionExercises]="viewModel.collectionExercises"></ons-collection-exercise-list>
-    `,
+    `
 })
 export class CollectionExerciseListContainerComponent implements OnInit, OnDestroy {
 
@@ -24,7 +24,7 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
     ngOnInit() {
 
         this.routeSubscription = this.route.data
-            .subscribe((data:{ viewModel: CollectionExerciseListViewModel }) => {
+            .subscribe((data: { viewModel: CollectionExerciseListViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
                 }

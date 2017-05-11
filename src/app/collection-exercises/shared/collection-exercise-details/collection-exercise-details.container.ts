@@ -12,7 +12,7 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
         <ons-collection-exercise-details
             [collectionExerciseDetails]="viewModel"
             (load_cis_click_handler)="collectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
-    `,
+    `
 })
 export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDestroy {
 

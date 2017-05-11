@@ -1,0 +1,24 @@
+{
+    "data": {
+        "collectionExercise": {
+            "id": 100,
+            "link": "bres-2016",
+            "period": {
+                "type": "annual",
+                "abbr": "2016",
+                "from": {
+                    "day": "01",
+                    "month": "01",
+                    "year": "2016"
+                },
+                "to": {
+                    "day": "01",
+                    "month": "01",
+                    "year": "2016"
+                }
+            },
+            "surveyId": "500",
+            "collectionInstrumentBundleIds": ["700"]
+        }
+    }
+}

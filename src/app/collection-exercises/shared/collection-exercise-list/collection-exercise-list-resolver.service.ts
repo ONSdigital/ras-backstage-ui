@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-
+import { Observable } from 'rxjs/Observable';
 import { CollectionExerciseListViewModel, CollectionExercise } from '../collection-exercise.model';
+import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
@@ -10,34 +11,42 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
     constructor(
         private collectionExercisesActions: CollectionExercisesActions) { }
 
-    resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseListViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseListViewModel> {
 
-        return this.collectionExercisesActions
-            .retrieveCollectionExercises()
-            .then((payload: { data: { collectionExercises: Array<CollectionExercise> } }) => {
+        /**
+         * TODO
+         * Check store/dispatch Redux action first
+         */
 
-                /**
-                 * Update store with new survey data from list received
-                 */
+        /**
+         * Update store with new survey data from list received
+         */
 
-                /**
-                 * Update store with new collection instrument data from list received
-                 */
+        /**
+         * Update store with new collection instrument data from list received
+         */
 
-                return this.createViewModel(payload.data.collectionExercises);
-            });
+         const survey = {
+             urn: '500',
+             inquiryCode: '221',
+             name: 'Business Register and Employment Survey',
+             abbr: 'BRES'
+         };
+
+        const observable = this.collectionExercisesActions.retrieveCollectionExercises()
+            .map((collectionExercises: Array<CollectionExercise>) => this.createViewModel(collectionExercises, survey));
+
+        return observable;
     }
 
     /**
      * TODO
      * Refactor to import transformer to change collectionExerciseArr in appropriate viewModel
      */
-    private createViewModel(collectionExerciseArr: Array<CollectionExercise>): CollectionExerciseListViewModel {
+    private createViewModel(collectionExerciseArr: Array<CollectionExercise>, survey: Survey): CollectionExerciseListViewModel {
 
         return {
-            collectionExercises: collectionExerciseArr.map((collectionExercise: any) => {
-
-                const survey = collectionExercise['@survey'];
+            collectionExercises: collectionExerciseArr.map((collectionExercise: CollectionExercise) => {
 
                 return {
                     surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,

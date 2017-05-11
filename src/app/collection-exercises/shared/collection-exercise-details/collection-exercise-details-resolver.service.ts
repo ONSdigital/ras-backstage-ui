@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-//import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/defaultIfEmpty';
-import 'rxjs/add/operator/find';
-
 import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+// import 'rxjs/add/observable/combineLatest';
+import 'rxjs/add/operator/defaultIfEmpty';
+import 'rxjs/add/operator/find';
 
 import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 @Injectable()
@@ -17,15 +17,29 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
     @select('collectionExercises')
     private collectionExercisesStore: Observable<Array<CollectionExercise>>;
-    private collectionExercisesSubscription:Subscription;
+    private collectionExercisesSubscription: Subscription;
     private collectionExercises: Array<CollectionExercise> = [];
 
     constructor(
         private collectionExercisesActions: CollectionExercisesActions) { }
 
-    resolve(route: ActivatedRouteSnapshot): Promise<CollectionExerciseDetailsViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseDetailsViewModel> {
 
-        const id = route.params['id'];
+        const id = route.params['collection-exercise-ref'];
+
+        const survey = {
+            urn: '500',
+            inquiryCode: '221',
+            name: 'Business Register and Employment Survey',
+            abbr: 'BRES'
+        };
+
+        const observable = this.collectionExercisesActions.retrieveCollectionExercise(id)
+            .map((collectionExercise: CollectionExercise) =>
+                this.createViewModel(collectionExercise, survey, {})
+            );
+
+        return observable;
 
 
         /*let subject: Observable<CollectionExercise> = this.collectionExercisesStore
@@ -69,47 +83,30 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
          * Check store/dispatch Redux action first
          */
 
-        return this.collectionExercisesActions
-            .retrieveCollectionExercise(id)
-            .then((payload: { data: { collectionExercise: CollectionExercise } }) => {
+        /**
+         * Dispatch redux action to update surveys & collection instruments
+         */
+        /*if(payload.data.collectionExercise['@survey']) {
+            this.receivedSurvey(payload.data.collectionExercise['@survey']);
+        }
 
-                console.log('Resolver: ', payload.data);
+        if(payload.data.collectionExercise['@collectionInstrument']) {
+            this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
+        }*/
 
-                if (!payload.data.collectionExercise) {
-                    console.log('Could not find collection exercise.');
-                    return null;
-                }
-
-                /**
-                 * Dispatch redux action to update surveys & collection instruments
-                 */
-                /*if(payload.data.collectionExercise['@survey']) {
-                    this.receivedSurvey(payload.data.collectionExercise['@survey']);
-                }
-
-                if(payload.data.collectionExercise['@collectionInstrument']) {
-                    this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
-                }*/
-
-                const collectonExercise = payload.data.collectionExercise;
-
-                const survey = payload.data.collectionExercise['@survey'];
-
-                /**
-                 * Transform data and return view model
-                 */
-                return this.createViewModel(collectonExercise, survey, {});
-            });
     }
 
-    private createViewModel(collectionExercise: CollectionExercise, survey: any, collectionInstrument: any):
+    /**
+     * Transform data and return view model
+     */
+    private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrument: any):
         CollectionExerciseDetailsViewModel {
 
         return {
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
-            referencePeriod: 'period here',
-            surveyAbbr: survey.abbr + ' ' + collectionExercise.period.abbr
+            referencePeriod: 'The period will appear here',
+            surveyAbbr: survey.abbr + ' - ' + collectionExercise.period.abbr
         };
     }
 }
