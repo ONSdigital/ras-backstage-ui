@@ -43,6 +43,8 @@ export const collectionExercisesRoutes: Routes = [
 
 export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved: any): string {
 
+    console.log('breadcrumb: ', dataResolved);
+
     const viewModel: CollectionExerciseDetailsViewModel = dataResolved.viewModel;
 
     return viewModel.surveyAbbr;
