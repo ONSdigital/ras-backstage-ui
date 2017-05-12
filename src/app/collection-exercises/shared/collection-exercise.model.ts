@@ -1,5 +1,5 @@
 export interface CollectionExercise {
-    id?: number;
+    urn: string;
     link: string;
     period: {
         type: string,
@@ -24,6 +24,11 @@ export interface CollectionExerciseDetailsViewModel {
     inquiryCode: string;
     referencePeriod: string;
     surveyAbbr: string;
+    collectionInstrumentBatch: {
+        count: string;
+        current: string;
+        status: string;
+    };
 }
 
 export interface CollectionExerciseListViewModel {

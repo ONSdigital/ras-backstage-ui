@@ -71,7 +71,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
         instance = fixture.componentInstance;
 
-        button = fixture.debugElement.query(By.css('.js_load_cis_click_handler'));
+        button = fixture.debugElement.query(By.css('.load-ci-batch-button'));
 
         instance.collectionExerciseActions = {
             loadCollectionInstrumentBundle: function () {}

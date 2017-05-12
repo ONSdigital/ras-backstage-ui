@@ -75,6 +75,6 @@ export class CollectionExercisesActions {
             id: id
         });
 
-        return this.collectionExercisesService.putCollectionInstrumentBundle(id);
+        return this.collectionExercisesService.loadCollectionInstrumentBatch(id);
     }
 }

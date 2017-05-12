@@ -1,19 +1,19 @@
 {
     "data": {
         "collectionExercise": {
-            "id": 100,
+            "urn": "BRES",
             "link": "bres-2016",
             "period": {
                 "type": "annual",
                 "abbr": "2016",
                 "from": {
-                    "day": "01",
-                    "month": "01",
+                    "day": "1",
+                    "month": "Jan",
                     "year": "2016"
                 },
                 "to": {
-                    "day": "01",
-                    "month": "01",
+                    "day": "31",
+                    "month": "Dec",
                     "year": "2016"
                 }
             },

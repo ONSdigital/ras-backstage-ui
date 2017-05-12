@@ -17,18 +17,13 @@ export class CollectionInstrumentsService {
     constructor(private http: Http) { }
 
     // Get the status of a collection instrument upload
-
-    // TODO: CollectionInstrumentStatus instead of any?
     getStatus(surveyRef: string, collectionExerciseRef: string): Observable<any> {
 
         return this.http.get(this.BASE_URL + 'status/' + surveyRef + '/' + collectionExerciseRef)
 
-            // Call .json() on the response to return data
-            // .map((res: Response) => res.json().data.Survey || {})
-            .map((res: Response) => console.log(res.json())
-        );
+            .map((res: Response) => res.json() || {})
 
             // Handle any errors
-            // .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 }

@@ -1,7 +1,7 @@
 <div class="collection-exercise-details-component">
     <h1 data-test="SURVEY_TITLE" class="saturn">{{ collectionExerciseDetails?.surveyTitle }}</h1>
 
-    <div class="panel panel--simple panel--info">
+    <div class="panel panel--simple panel--info survey-info-panel">
 
         <div class="grid">
             <dl class="survey-info">
@@ -16,17 +16,20 @@
     <h2 data-test="COLLECTION_INSTRUMENTS_HEADING" class="neptune collection-instruments-heading">Collection instruments</h2>
 
     <ul>
-        <li>
+        <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined ||
+            collectionExerciseDetails?.collectionInstrumentBatch.current < collectionExerciseDetails?.collectionInstrumentBatch.count">
             <span data-test="NO_COLLECTION_INSTRUMENTS_AVAILABLE_MESSAGE">No collection instruments available</span>
         </li>
-        <li>
-            <span data-test="READY_TO_LOAD_MESSAGE">674 Excel files ready to load</span>
+
+        <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === 'pending'">
+            <span data-test="READY_TO_LOAD_MESSAGE">{{ collectionExerciseDetails?.collectionInstrumentBatch.count }} Excel files ready to load</span>
             <button data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"
-                class="js_load_cis_click_handler btn btn--small btn--secondary btn--border"
+                class="load-ci-batch-button btn btn--small btn--secondary btn--border"
                 (click)="load_cis_click_handler.next();">Load files</button>
         </li>
-        <li>
-            <span data-test="LOADED_FILES_COUNT">674 Excel files loaded</span> - <a href="bres-2016-seft-cis.csv" data-test="DOWNLOAD_CSV_LINK">Download list (CSV)</a>
+
+        <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === 'active'">
+            <span data-test="LOADED_FILES_COUNT">{{ collectionExerciseDetails?.collectionInstrumentBatch.count }} Excel files loaded</span> - <a href="bres-2016-seft-cis.csv" data-test="DOWNLOAD_CSV_LINK">Download list (CSV)</a>
         </li>
     </ul>
 

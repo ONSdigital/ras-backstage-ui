@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { CollectionExerciseDetailsResolver } from './collection-exercise-details-resolver.service';
 
 let mockCollectionExercisesActions: any,
+    mockCollectionInstrumentsService: any,
     resolverSvc: any;
 
 describe('CollectionExerciseDetailsResolver service', () => {
@@ -12,43 +13,34 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 return Observable.of({
                     data: {
                         collectionExercise: {
-                            'id': 100,
+                            'urn': 'BRES',
                             'link': 'bres-2016',
                             'period': {
                                 'type': 'annual',
                                 'abbr': '2016',
                                 'from': {
-                                    'day': '01',
-                                    'month': '01',
+                                    'day': '1',
+                                    'month': 'Jan',
                                     'year': '2016'
                                 },
                                 'to': {
-                                    'day': '01',
-                                    'month': '01',
+                                    'day': '31',
+                                    'month': 'Dec',
                                     'year': '2016'
                                 }
-                            }
+                            },
+                            'surveyId': '500',
+                            'collectionInstrumentBundleIds': ['700']
                         }
                     }
                 });
-
-                // TODO fix this test
-                // return Promise.resolve({
-                //     data: {
-                //         collectionExercise: {
-                //             period: '01 Jan',
-                //             '@survey': {
-                //                 name: 'Test survey',
-                //                 inquiryCode: '987',
-                //                 abbr: 'ABC'
-                //             }
-                //         }
-                //     }
-                // });
             }
         };
 
-        resolverSvc = new CollectionExerciseDetailsResolver(mockCollectionExercisesActions);
+        // TODO
+        mockCollectionInstrumentsService = {};
+
+        resolverSvc = new CollectionExerciseDetailsResolver(mockCollectionExercisesActions, mockCollectionInstrumentsService);
     });
 
     describe('resolve [method]', () => {
@@ -64,6 +56,14 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
             expect(mockCollectionExercisesActions.retrieveCollectionExercise).toHaveBeenCalled();
             expect(mockCollectionExercisesActions.retrieveCollectionExercise).toHaveBeenCalledWith(100);
+        });
+    });
+
+    describe('Helper methods', () => {
+        it('should correctly format a collection exercise reference period', () => {
+
+            // TODO
+
         });
     });
 
