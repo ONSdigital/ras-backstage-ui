@@ -38,9 +38,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                 return collectionExercise || false;
             })
             .first();
-
-        this.collectionExercisesActions.retrieveCollectionExercise(link);
-
+        
         return storeCheckObservable
             .flatMap((existingCollectionExercise: any) => {
                 return existingCollectionExercise
