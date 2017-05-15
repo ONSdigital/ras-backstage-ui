@@ -17,14 +17,14 @@ export class CollectionExercisesActions {
         private ngRedux: NgRedux<any>,
         private collectionExercisesService: CollectionExercisesService) { }
 
-    public retrieveCollectionExercise(id: number) {
+    public retrieveCollectionExercise(link: number) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
-            id: id
+            link: link
         });
 
-        const observable = this.collectionExercisesService.getCollectionExercise(id);
+        const observable = this.collectionExercisesService.getCollectionExercise(link);
 
         observable.subscribe(
             // Normalise data first to keep entities in data store dry before saving

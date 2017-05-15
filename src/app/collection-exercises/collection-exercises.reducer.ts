@@ -32,7 +32,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 || !collectionExercise.id
                 || !collectionExercise.period
                 || !collectionExercise.period.abbr
-                || !collectionExercise.survey_ref) {
+                || !collectionExercise.surveyId) {
 
                 return state;
             }
@@ -49,7 +49,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 const obj: CollectionExercise = Object.assign({}, item);
 
                 // If an item with same identifier is found, save a reference to its new object for merging data
-                if (item.id === action.item.id) {
+                if (item.id === action.collectionExercise.id) {
                     existingItem = obj;
                 }
 
