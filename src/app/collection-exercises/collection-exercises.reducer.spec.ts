@@ -8,11 +8,12 @@ const DEFAULT_STATE: any = {
 
 function createCollectionExercise () {
     return {
-        id: 456,
+        id: '456',
+        link: 'abc-123',
         period: {
             abbr: '2000'
         },
-        survey_ref: '123'
+        surveyId: '123'
     };
 }
 

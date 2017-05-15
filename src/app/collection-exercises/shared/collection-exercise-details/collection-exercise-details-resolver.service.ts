@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { select } from '@angular-redux/store';
+import { select, NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 
-import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
+import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { AnonymousSubject } from 'rxjs/Subject';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
 
-    @select(['collectionExercises', 'items'])
-    private collectionExercisesItemsStore: AnonymousSubject<any>;
-    private collectionExercises: Array<CollectionExercise> = [];
-
     constructor(
+        private ngRedux: NgRedux<any>,
         private collectionExercisesActions: CollectionExercisesActions) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
@@ -31,30 +28,28 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
             abbr: 'BRES'
         };
 
-        const storeCheckObservable = this.collectionExercisesItemsStore
-            .asObservable()
+        const storeCheckObservable = this.ngRedux.select(['collectionExercises', 'items'])
             .map((collectionExercises: any) => {
 
                 const collectionExercise = collectionExercises.find((item: any) => {
                     return item.link === link;
                 });
+
                 return collectionExercise || false;
             })
             .first();
 
+        this.collectionExercisesActions.retrieveCollectionExercise(link);
+
         return storeCheckObservable
             .flatMap((existingCollectionExercise: any) => {
-                console.log('condition', !!existingCollectionExercise);
-
                 return existingCollectionExercise
                     ? Observable.of(existingCollectionExercise)
                     : this.collectionExercisesActions.retrieveCollectionExercise(link);
             })
             .map((collectionExercise: CollectionExercise) => {
-                console.log('view model');
                 return this.createViewModel(collectionExercise, survey, {});
             });
-
 
 
         /*const observable = this.collectionExercisesActions.retrieveCollectionExercise(id)
