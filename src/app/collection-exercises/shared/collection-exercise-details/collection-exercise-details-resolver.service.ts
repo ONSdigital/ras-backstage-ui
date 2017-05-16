@@ -11,10 +11,9 @@ import 'rxjs/add/operator/find';
 import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
-
-// TODO move this?
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
+import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
@@ -23,6 +22,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     private collectionExercisesStore: Observable<Array<CollectionExercise>>;
     private collectionExercisesSubscription: Subscription;
     private collectionExercises: Array<CollectionExercise> = [];
+
+    private BASE_URL = environment.endpoints.collectionInstrument;
 
     constructor(
         private collectionExercisesActions: CollectionExercisesActions,
@@ -64,64 +65,17 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         // );
         // return observable;
 
+
         const observable = this.collectionExercisesActions.retrieveCollectionExercise(id);
 
         return observable.flatMap((collectionExercise: CollectionExercise) => {
-            return this.collectionInstrumentsService.getStatus(collectionExercise.urn, collectionExercise.period.abbr)
-                .map((res: any) => {
-                    return this.createViewModel(collectionExercise, survey, res);
+
+            return this.collectionInstrumentsService.getStatus(collectionExercise.id)
+                .map((collectionInstrumentBatch: any) => {
+
+                    return this.createViewModel(collectionExercise, survey, collectionInstrumentBatch);
                 });
         });
-
-        /*let subject: Observable<CollectionExercise> = this.collectionExercisesStore
-            .find((value: Array<CollectionExercise>, index: number) => {
-                return true;
-            })
-            .defaultIfEmpty();*/
-
-
-
-        /*let subject: Observable = Observable
-            .combineLatest(
-                collectionExercisesStore,
-                this.collectionExercisesActions.retrieveCollectionExercise(id)
-            );*/
-
-
-        /*let existingCollectionExercise: CollectionExercise;
-
-        this.collectionExercisesStore
-            .subscribe((collectionExercises: any) => {
-                this.collectionExercises = collectionExercises.items;
-            });
-
-        existingCollectionExercise = this.collectionExercises
-            .find((collectionExercise: CollectionExercise) => collectionExercise.id === id);
-
-        console.log(existingCollectionExercise);
-
-        if (!existingCollectionExercise) {
-
-        }*/
-
-
-
-        /**
-         * TODO
-         * Check store/dispatch Redux action first
-         */
-
-        /**
-         * Dispatch redux action to update surveys & collection instruments
-         */
-        /*if(payload.data.collectionExercise['@survey']) {
-            this.receivedSurvey(payload.data.collectionExercise['@survey']);
-        }
-
-        if(payload.data.collectionExercise['@collectionInstrument']) {
-            this.receivedCollectionInstrument(payload.data.collectionExercise['@collectionInstrument']);
-        }*/
-
     }
 
     private buildReferencePeriod(collectionExercise: CollectionExercise) {
@@ -140,6 +94,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         CollectionExerciseDetailsViewModel {
 
         return {
+            id: collectionExercise.id,
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
             referencePeriod: this.buildReferencePeriod(collectionExercise),
@@ -148,7 +103,9 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                 count: collectionInstrumentBatch.count,
                 current: collectionInstrumentBatch.current,
                 status: collectionInstrumentBatch.status
-            }
+            },
+            isButtonDisabled: false,
+            csvEndpoint: this.BASE_URL + 'download_csv/' + collectionExercise.id
         };
     }
 }

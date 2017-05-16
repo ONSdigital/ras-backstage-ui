@@ -17,10 +17,26 @@ export class CollectionInstrumentsService {
     constructor(private http: Http) { }
 
     // Get the status of a collection instrument upload
-    getStatus(surveyRef: string, collectionExerciseRef: string): Observable<any> {
+    getStatus(collectionExerciseId: string): Observable<any> {
 
-        return this.http.get(this.BASE_URL + 'status/' + surveyRef + '/' + collectionExerciseRef)
+        return this.http.get(this.BASE_URL + 'status/' + collectionExerciseId)
 
+            // Handle the response
+            .map((res: Response) => res.json() || {})
+
+            // Handle any errors
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    loadCollectionInstrumentBatch(collectionExerciseId: string): Observable<any> {
+
+        // Set content type to JSON
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.put(this.BASE_URL + 'activate/' + collectionExerciseId, {}, options)
+
+            // Handle the response
             .map((res: Response) => res.json() || {})
 
             // Handle any errors

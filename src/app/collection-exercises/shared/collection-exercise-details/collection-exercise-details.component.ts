@@ -12,6 +12,6 @@ export class CollectionExerciseDetailsComponent {
 
     @Input() collectionExerciseDetails: CollectionExerciseDetailsViewModel;
 
-    @Output() load_cis_click_handler: EventEmitter<any> = new EventEmitter();
+    @Output() load_ci_batch_click_handler: EventEmitter<any> = new EventEmitter();
 
 }

@@ -2,6 +2,13 @@ $responsive: true;
 $s: '/src/assets';
 $static: '/src/assets';
 
+
+/**
+ * Font Awesome
+ */
+ $fa-font-path: "../node_modules/font-awesome/fonts";
+ @import '~font-awesome/scss/font-awesome.scss';
+
 /**
  * Src
  */

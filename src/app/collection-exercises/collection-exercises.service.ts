@@ -39,13 +39,4 @@ export class CollectionExercisesService {
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
-
-    loadCollectionInstrumentBatch(collectionExerciseRef: string): Promise<any> {
-
-
-
-
-        // TODO refactor to use on Observable instead
-        return Promise.resolve();
-    }
 }

@@ -65,16 +65,4 @@ export class CollectionExercisesActions {
             collectionExercises: collectionExerciseArr
         });
     }
-
-    public loadCollectionInstrumentBundle(id: string) {
-
-        console.log('Put collection instrument for collection exercise: ', id);
-
-        this.ngRedux.dispatch({
-            type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
-            id: id
-        });
-
-        return this.collectionExercisesService.loadCollectionInstrumentBatch(id);
-    }
 }
