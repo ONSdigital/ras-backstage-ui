@@ -8,7 +8,6 @@ import 'rxjs/add/operator/first';
 import { Survey } from '../../../surveys/shared/survey.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
-import { AnonymousSubject } from 'rxjs/Subject';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
@@ -38,7 +37,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
                 return collectionExercise || false;
             })
             .first();
-        
+
         return storeCheckObservable
             .flatMap((existingCollectionExercise: any) => {
                 return existingCollectionExercise
@@ -58,15 +57,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         return observable;*/
 
 
-
-
         /**
-         * TODO
-         * Check store/dispatch Redux action first
-         */
-
-        /**
-         * Dispatch redux action to update surveys & collection instruments
+         * Rework - create multiple resolver types for different api calls
          */
         /*if(payload.data.collectionExercise['@survey']) {
             this.receivedSurvey(payload.data.collectionExercise['@survey']);

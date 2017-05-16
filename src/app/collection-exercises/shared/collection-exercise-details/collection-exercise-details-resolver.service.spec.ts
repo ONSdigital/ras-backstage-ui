@@ -13,7 +13,30 @@ import { CollectionExercisesActions } from '../../collection-exercises.actions';
 let mockCollectionExercisesActions: any,
     resolverSvc: any,
     mockReduxStore: any,
-    data: any = {};
+    storeData: any,
+    apiData: any;
+
+function createMockCollectionExercise (id: string, link: string) {
+    return {
+        'id': id,
+        'link': link,
+        'period': {
+            'type': 'annual',
+            'abbr': '2016',
+            'from': {
+                'day': '01',
+                'month': '01',
+                'year': '2016'
+            },
+            'to': {
+                'day': '01',
+                'month': '01',
+                'year': '2016'
+            }
+        },
+        'surveyId': '123'
+    };
+}
 
 describe('CollectionExerciseDetailsResolver service', () => {
 
@@ -21,25 +44,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
         mockCollectionExercisesActions = {
             retrieveCollectionExercise: function(ref: string) {
-                return Observable.of({
-                    'id': 100,
-                    'link': 'bres-2016',
-                    'period': {
-                        'type': 'annual',
-                        'abbr': '2016',
-                        'from': {
-                            'day': '01',
-                            'month': '01',
-                            'year': '2016'
-                        },
-                        'to': {
-                            'day': '01',
-                            'month': '01',
-                            'year': '2016'
-                        }
-                    },
-                    'surveyId': '123'
-                });
+                return Observable.of(apiData);
             }
         };
 
@@ -47,7 +52,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
             dispatch(action: any) {},
             configureStore() {},
             select() {
-                return Observable.of(data);
+                return Observable.of(storeData);
             },
         };
 
@@ -62,7 +67,13 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 { provide: CollectionExercisesActions, useValue: mockCollectionExercisesActions },
                 { provide: NgRedux, useValue: mockReduxStore }
             ]
-        });
+        })
+        .compileComponents();
+    });
+
+    afterEach(() => {
+        storeData = undefined;
+        apiData = undefined;
     });
 
     describe('resolve [method]', () => {
@@ -74,7 +85,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
             resolverSvc.resolve({
                 params: {
-                    'collection-exercise-ref': 100
+                    'collection-exercise-ref': 'abc-123'
                 }
             });
 
@@ -89,12 +100,13 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
                         const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
                             params = {
-                                'collection-exercise-ref': 100
+                                'collection-exercise-ref': 'bres-2016'
                             };
 
                         activatedRouteSnapShot.params = params;
 
-                        data = [];
+                        storeData = [];
+                        apiData = createMockCollectionExercise('100', 'bres-2016');
 
                         collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
 
@@ -102,6 +114,30 @@ describe('CollectionExerciseDetailsResolver service', () => {
                             .toHaveBeenCalled();
                         expect(mockCollectionExercisesActions.retrieveCollectionExercise)
                             .toHaveBeenCalledWith(params['collection-exercise-ref']);
+                    }));
+        });
+
+        describe('when a collection exercise does exist in the store', () => {
+
+            it('should not call the collection exercises service',
+                inject([CollectionExerciseDetailsResolver],
+                    (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+
+                        const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
+                            params = {
+                                'collection-exercise-ref': 'bres-2016'
+                            };
+
+                        activatedRouteSnapShot.params = params;
+
+                        storeData = [createMockCollectionExercise('100', 'bres-2016')];
+
+                        collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                            .not.toHaveBeenCalled();
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                            .not.toHaveBeenCalledWith(params['collection-exercise-ref']);
                     }));
         });
     });
