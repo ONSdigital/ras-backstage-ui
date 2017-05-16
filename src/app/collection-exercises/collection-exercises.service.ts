@@ -19,8 +19,6 @@ export class CollectionExercisesService {
     // Get a single collection exercise
     getCollectionExercise(id: number): Observable<CollectionExercise> {
 
-        console.log('service');
-
         return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
 
             // Call .json() on the response to return data

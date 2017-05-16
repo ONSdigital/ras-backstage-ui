@@ -4,6 +4,8 @@ import { HttpModule } from '@angular/http';
 import { TestBed, async, inject } from '@angular/core/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
+// import { createMockReduxStore } from '../../../../testing/mockReduxStore';
+import { createMockCollectionExercise } from '../../../../testing/mockCollectionExercise';
 import { MockActivatedRoute } from '../../../../testing/ActivatedRouteSnapshot_stub';
 
 import { CollectionExerciseModule } from '../../collection-exercises.module';
@@ -12,31 +14,9 @@ import { CollectionExercisesActions } from '../../collection-exercises.actions';
 
 let mockCollectionExercisesActions: any,
     resolverSvc: any,
-    mockReduxStore: any,
+    mockStore: any,
     storeData: any,
     apiData: any;
-
-function createMockCollectionExercise (id: string, link: string) {
-    return {
-        'id': id,
-        'link': link,
-        'period': {
-            'type': 'annual',
-            'abbr': '2016',
-            'from': {
-                'day': '01',
-                'month': '01',
-                'year': '2016'
-            },
-            'to': {
-                'day': '01',
-                'month': '01',
-                'year': '2016'
-            }
-        },
-        'surveyId': '123'
-    };
-}
 
 describe('CollectionExerciseDetailsResolver service', () => {
 
@@ -48,7 +28,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
             }
         };
 
-        mockReduxStore = { // explicitly saying any here is important
+        mockStore = {
             dispatch(action: any) {},
             configureStore() {},
             select() {
@@ -65,23 +45,23 @@ describe('CollectionExerciseDetailsResolver service', () => {
             ],
             providers: [
                 { provide: CollectionExercisesActions, useValue: mockCollectionExercisesActions },
-                { provide: NgRedux, useValue: mockReduxStore }
+                { provide: NgRedux, useValue: mockStore }
             ]
         })
         .compileComponents();
     });
 
     afterEach(() => {
-        storeData = undefined;
+        storeData = [];
         apiData = undefined;
     });
 
     describe('resolve [method]', () => {
 
         it('should check the collection exercise data store', () => {
-            resolverSvc = new CollectionExerciseDetailsResolver(mockReduxStore, mockCollectionExercisesActions);
+            resolverSvc = new CollectionExerciseDetailsResolver(mockStore, mockCollectionExercisesActions);
 
-            spyOn(mockReduxStore, 'select').and.callThrough();
+            spyOn(mockStore, 'select').and.callThrough();
 
             resolverSvc.resolve({
                 params: {
@@ -89,7 +69,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 }
             });
 
-            expect(mockReduxStore.select).toHaveBeenCalledWith(['collectionExercises', 'items']);
+            expect(mockStore.select).toHaveBeenCalledWith(['collectionExercises', 'items']);
         });
 
         describe('when a collection exercise does not exist in the store', () => {
