@@ -26,7 +26,6 @@ export interface CollectionExerciseDetailsViewModel {
     referencePeriod: string;
     surveyAbbr: string;
     collectionInstrumentBatch: {
-        count: number;
         current: number;
         status: string;
     };

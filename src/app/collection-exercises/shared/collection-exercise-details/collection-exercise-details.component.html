@@ -34,7 +34,7 @@
 
     <div data-test="LOADED_BATCH_DETAILS" *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === 'active'">
         <i data-test="LOADED_BATCH_CHECK_ICON" class="fa fa-check-circle loaded-batch-icon" aria-hidden="true"></i>
-        <span data-test="LOADED_BATCH_FILE_COUNT">{{ collectionExerciseDetails?.collectionInstrumentBatch.count }} Excel files loaded</span> -
+        <span data-test="LOADED_BATCH_FILE_COUNT">{{ collectionExerciseDetails?.collectionInstrumentBatch.current }} Excel files loaded</span> -
         <a data-test="DOWNLOAD_CSV_LINK" [href]="collectionExerciseDetails.csvEndpoint">Download list (CSV)</a>
     </div>
 </div>

@@ -29,7 +29,7 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
                     this.viewModel = data.viewModel;
 
                     // TODO remove this
-                    console.log(this.viewModel);
+                    // console.log(this.viewModel);
                 }
             });
     }

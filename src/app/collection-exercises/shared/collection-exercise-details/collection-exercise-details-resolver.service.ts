@@ -104,7 +104,6 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
             referencePeriod: this.buildReferencePeriod(collectionExercise),
             surveyAbbr: survey.abbr + ' - ' + collectionExercise.period.abbr,
             collectionInstrumentBatch: {
-                count: collectionInstrumentBatch.count,
                 current: collectionInstrumentBatch.current,
                 status: collectionInstrumentBatch.status
             },

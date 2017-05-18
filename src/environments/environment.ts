@@ -11,8 +11,8 @@ export const environment = {
         // PORT=xxxx ./scripts/run.py
 
         // Local config
-        collectionExercise: 'http://localhost:8080/collection-exercise-api/1.0.0/',
-        collectionInstrument: 'http://localhost:8081/collection-instrument-api/1.0.2/',
+        collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
+        collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         survey: 'http://localhost:8000/api/'
 
         // CloudFoundry config
