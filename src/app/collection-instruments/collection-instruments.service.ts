@@ -22,7 +22,9 @@ export class CollectionInstrumentsService {
         return this.http.get(this.BASE_URL + 'status/' + collectionExerciseId)
 
             // Handle the response
-            .map((res: Response) => res.json() || {})
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -37,7 +39,9 @@ export class CollectionInstrumentsService {
         return this.http.put(this.BASE_URL + 'activate/' + collectionExerciseId, {}, options)
 
             // Handle the response
-            .map((res: Response) => res.json() || {})
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

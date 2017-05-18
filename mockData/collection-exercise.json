@@ -1,24 +1,20 @@
 {
-    "data": {
-        "collectionExercise": {
-            "id": "123",
-            "link": "bres-2016",
-            "period": {
-                "type": "annual",
-                "abbr": "2016",
-                "from": {
-                    "day": "1",
-                    "month": "Jan",
-                    "year": "2016"
-                },
-                "to": {
-                    "day": "31",
-                    "month": "Dec",
-                    "year": "2016"
-                }
-            },
-            "surveyId": "500",
-            "collectionInstrumentBundleIds": ["700"]
+    "id": "123",
+    "link": "bres-2016",
+    "period": {
+        "type": "annual",
+        "abbr": "2016",
+        "from": {
+            "day": "01",
+            "month": "01",
+            "year": "2016"
+        },
+        "to": {
+            "day": "31",
+            "month": "12",
+            "year": "2016"
         }
-    }
+    },
+    "surveyId": "500",
+    "collectionInstrumentBundleIds": ["700"]
 }

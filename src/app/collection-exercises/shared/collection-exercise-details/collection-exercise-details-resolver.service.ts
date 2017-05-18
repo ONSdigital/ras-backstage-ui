@@ -14,6 +14,7 @@ import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
 import { environment } from '../../../../environments/environment';
+import * as moment from 'moment';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
@@ -79,12 +80,15 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     }
 
     private buildReferencePeriod(collectionExercise: CollectionExercise) {
-        const from = collectionExercise.period.from.day + ' ' + collectionExercise.period.from.month + ' '
-            + collectionExercise.period.from.year;
-        const to = collectionExercise.period.to.day + ' ' + collectionExercise.period.to.month + ' '
-            + collectionExercise.period.to.year;
+        const serviceDateFormat = 'DD/MM/YYYY';
+        const outputDateFormat = 'D MMM YYYY';
+        const from = moment(collectionExercise.period.from.day + '/' + collectionExercise.period.from.month + '/'
+            + collectionExercise.period.from.year, serviceDateFormat);
 
-        return from + ' - ' + to;
+        const to = moment(collectionExercise.period.to.day + '/' + collectionExercise.period.to.month + '/'
+            + collectionExercise.period.to.year, serviceDateFormat);
+
+        return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
     }
 
     /**

@@ -15,27 +15,25 @@ import { CollectionExerciseListViewModel, CollectionExercise } from './shared/co
 describe('CollectionExercisesService', () => {
 
     const mockResponse = {
-        'data': {
-            'collectionExercise': {
-                'id': 100,
-                'link': 'bres-2016',
-                'period': {
-                    'type': 'annual',
-                    'abbr': '2016',
-                    'from': {
-                        'day': '01',
-                        'month': '01',
-                        'year': '2016'
-                    },
-                    'to': {
-                        'day': '01',
-                        'month': '01',
-                        'year': '2016'
-                    }
+        'collectionExercise': {
+            'id': '100',
+            'link': 'bres-2016',
+            'period': {
+                'type': 'annual',
+                'abbr': '2016',
+                'from': {
+                    'day': '01',
+                    'month': '01',
+                    'year': '2016'
                 },
-                'surveyId': 500,
-                'collectionInstrumentBundleIds': [700]
-            }
+                'to': {
+                    'day': '31',
+                    'month': '12',
+                    'year': '2016'
+                }
+            },
+            'surveyId': '500',
+            'collectionInstrumentBundleIds': ['700']
         }
     };
 
@@ -62,19 +60,24 @@ describe('CollectionExercisesService', () => {
                     })));
                 });
 
-                collectionExercisesService.getCollectionExercise(100).subscribe((collectionExercise: CollectionExercise) => {
+                collectionExercisesService.getCollectionExercise('100')
+                    .subscribe((collectionExercise: CollectionExercise) => {
 
-                    // TODO remove this
-                    console.log(collectionExercise);
+                        // TODO remove this
+                        console.log('XXXXXXX:');
+                        console.log(collectionExercise);
+                        console.log(collectionExercise.id);
+                        console.log(mockResponse.collectionExercise.id);
 
-                    expect(collectionExercise.id).toBe(mockResponse.data.collectionExercise.id);
 
-                    // TODO test other properties
-                    // expect(collectionExercise.link).toBe('bres-2016');
-                    // expect(videos[1].name).toEqual('Video 1');
-                    // expect(videos[2].name).toEqual('Video 2');
-                    // expect(videos[3].name).toEqual('Video 3');
-                });
+                        expect(collectionExercise.id).toBe(mockResponse.collectionExercise.id);
+
+                        // TODO test other properties
+                        // expect(collectionExercise.link).toBe('bres-2016');
+                        // expect(videos[1].name).toEqual('Video 1');
+                        // expect(videos[2].name).toEqual('Video 2');
+                        // expect(videos[3].name).toEqual('Video 3');
+                    });
 
             }));
 

@@ -15,7 +15,7 @@
 
     <h2 data-test="COLLECTION_INSTRUMENTS_HEADING" class="neptune collection-instruments-heading">Collection instruments</h2>
 
-    <ul *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined || collectionExerciseDetails?.collectionInstrumentBatch.current > 0">
+    <ul *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined || collectionExerciseDetails?.collectionInstrumentBatch.status !== 'active'">
 
         <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined || collectionExerciseDetails?.collectionInstrumentBatch.current === 0">
             <span data-test="NO_COLLECTION_INSTRUMENTS_AVAILABLE_MESSAGE">No collection instruments available</span>
