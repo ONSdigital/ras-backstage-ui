@@ -31,7 +31,8 @@ export const collectionExercisesRoutes: Routes = [
                 path: ':collection-exercise-ref',
                 component: CollectionExerciseDetailsContainerComponent,
                 resolve: {
-                    viewModel: CollectionExerciseDetailsResolver
+                    viewModel: CollectionExerciseDetailsResolver,
+                    list: CollectionExerciseListResolver
                 },
                 data: {
                     breadcrumb: resolveCollectionExerciseDetailsBreadcrumb

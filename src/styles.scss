@@ -40,6 +40,8 @@ $static: '/src/assets';
 @import "../common/components/panel/panel";
 @import "../common/components/skip/skip";
 
+@import "../common/components/02-form-elements/input/input";
+@import "../common/components/02-form-elements/input-type/input-type";
 @import "../common/components/03-grid/grid";
 @import "../common/components/footer/footer";
 @import "../common/components/list/list";
@@ -96,7 +98,6 @@ $static: '/src/assets';
         list-style-type : none;
     }
 }
-
 
 /**
  * Patches
