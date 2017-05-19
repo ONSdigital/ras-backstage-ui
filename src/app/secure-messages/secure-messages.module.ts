@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 
@@ -10,6 +11,8 @@ import { SecureMessagesComponent } from './secure-messages.component';
 import { SecureMessagesListComponent } from './secure-messages-list/secure-messages-list.component';
 import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
 import { SecureMessageCreateComponent } from './secure-message-create/secure-message-create.component';
+import { SecureMessageViewComponent } from './secure-message-view/secure-message-view.component';
+import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 import { SecureMessageFormComponent } from './shared/secure-message-form/secure-message-form.component';
 
@@ -19,6 +22,7 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         CommonModule,
         RouterModule,
         BreadcrumbModule,
+        FormsModule,
 
         SecureMessagesRoutingModule
     ],
@@ -28,6 +32,8 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         SecureMessagesListContainerComponent,
         SecureMessageCreateComponent,
         SecureMessageCreateContainerComponent,
+        SecureMessageViewComponent,
+        SecureMessageViewContainerComponent,
         SecureMessageFormComponent
     ],
     providers: [

@@ -6,6 +6,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
         <h1 class="saturn">Secure messages</h1>
         <ul>
             <li><a routerLink="create-message">Create new message</a></li>
+            <li><a routerLink="view-message">View a message</a></li>
         </ul>
         <ons-secure-messages-list
             [secureMessages]="secureMessagesList"></ons-secure-messages-list>
