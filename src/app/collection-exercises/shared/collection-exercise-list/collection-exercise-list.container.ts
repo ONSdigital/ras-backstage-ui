@@ -6,7 +6,7 @@ import { CollectionExerciseListViewModel } from '../collection-exercise.model';
 
 @Component({
     template: `
-        <h1 class="saturn">Collection exercises</h1>
+        <h1 data-test="COLLECTION_EXERCISE_LIST_HEADING" class="saturn">Collection exercises</h1>
         <ons-collection-exercise-list
             [collectionExercises]="viewModel.collectionExercises"></ons-collection-exercise-list>
     `
@@ -27,9 +27,6 @@ export class CollectionExerciseListContainerComponent implements OnInit, OnDestr
             .subscribe((data: { viewModel: CollectionExerciseListViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
-
-                    // TODO remove this
-                    // console.log(this.viewModel);
                 }
             });
     }

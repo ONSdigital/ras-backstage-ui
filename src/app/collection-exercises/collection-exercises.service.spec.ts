@@ -6,35 +6,35 @@ import {
     ResponseOptions,
     XHRBackend
 } from '@angular/http';
+
 import { MockBackend } from '@angular/http/testing';
 import { CollectionExercisesService } from './collection-exercises.service';
 import { CollectionExerciseListViewModel, CollectionExercise } from './shared/collection-exercise.model';
 
-// import { VIMEO_API_URL } from '../config';
-
 describe('CollectionExercisesService', () => {
 
-    const mockResponse = {
-        'collectionExercise': {
-            'id': '100',
-            'link': 'bres-2016',
-            'period': {
-                'type': 'annual',
-                'abbr': '2016',
-                'from': {
-                    'day': '01',
-                    'month': '01',
-                    'year': '2016'
-                },
-                'to': {
-                    'day': '31',
-                    'month': '12',
-                    'year': '2016'
-                }
-            },
-            'surveyId': '500',
-            'collectionInstrumentBundleIds': ['700']
-        }
+    const mockCollectionExercise: CollectionExercise = {
+        id: 'c6467711-21eb-4e78-804c-1db8392f93fb',
+        surveyID: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+        name: '201601',
+        actualExecution: '2017-05-15T14:20:24Z',
+        scheduledExecution: '2017-05-15T00:00:00Z',
+        scheduledStart: '2017-06-01T00:00:00Z',
+        actualPublish: null,
+        completionFor: null,
+        scheduledReturn: '2017-06-30T00:00:00Z',
+        scheduledEnd: '2017-12-31T00:00:00Z',
+        executedBy: 'Fred Bloggs',
+        state: 'EXECUTED',
+        caseTypes: [
+            {
+                sampleUnitType: 'B',
+                actionPlanID: '60df56d9-f491-4ac8-b256-a10154290a8b'
+            }, {
+                sampleUnitType: 'BI',
+                actionPlanID: 'b1f46e33-a3ef-4e50-939d-c18f8a9f11bb'
+            }
+        ]
     };
 
     beforeEach(() => {
@@ -53,36 +53,25 @@ describe('CollectionExercisesService', () => {
         inject([CollectionExercisesService, XHRBackend],
             (collectionExercisesService: CollectionExercisesService, mockBackend: MockBackend) => {
 
-                // TODO update any type
                 mockBackend.connections.subscribe((connection: any) => {
                     connection.mockRespond(new Response(new ResponseOptions({
-                        body: JSON.stringify(mockResponse)
+                        body: JSON.stringify(mockCollectionExercise)
                     })));
                 });
 
-                // collectionExercisesService.getCollectionExercise('100')
-                //     .subscribe((collectionExercise: CollectionExercise) => {
-                //
-                //         // TODO remove this
-                //         console.log('XXXXXXX:');
-                //         console.log(collectionExercise);
-                //         console.log(collectionExercise.id);
-                //         console.log(mockResponse.collectionExercise.id);
+                collectionExercisesService.getCollectionExercise('100')
+                    .subscribe((collectionExercise: CollectionExercise) => {
+                        expect(collectionExercise.id).toBe(mockCollectionExercise.id);
+                        expect(collectionExercise.surveyID).toBe(mockCollectionExercise.surveyID);
 
-
-                        // expect(collectionExercise.id).toBe(mockResponse.collectionExercise.id);
-
-                        // TODO test other properties
-                        // expect(collectionExercise.link).toBe('bres-2016');
-                        // expect(videos[1].name).toEqual('Video 1');
-                        // expect(videos[2].name).toEqual('Video 2');
-                        // expect(videos[3].name).toEqual('Video 3');
-                    // });
+                        // TODO test other properies
+                    });
 
             }));
 
     it('should correctly retrieve a list of collection exercises', () => {
 
+        // TODO
         // service.getCollectionExercises().then(value => {
         //
         //     const collectionExercises = value.data.collectionExercises;

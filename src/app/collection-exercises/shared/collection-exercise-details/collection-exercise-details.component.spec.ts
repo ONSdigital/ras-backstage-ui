@@ -161,7 +161,7 @@ describe('CollectionExerciseDetailsComponent component', () => {
         });
     }));
 
-    // TODO
+    // TODO - e2e test
     // it('should download CSV when the link is clicked', async(() => {
     //     fixture = TestBed.createComponent(CollectionExerciseDetailsComponent);
     //     instance = fixture.componentInstance;

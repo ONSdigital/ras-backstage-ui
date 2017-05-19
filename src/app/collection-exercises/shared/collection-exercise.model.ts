@@ -1,22 +1,25 @@
 export interface CollectionExercise {
     id: string;
-    link: string;
-    period: {
-        type: string,
-        abbr: string,
-        from: {
-            day: string,
-            month: string,
-            year: string
-        },
-        to: {
-            day: string,
-            month: string,
-            year: string
+    surveyID: string;
+    name: string;
+    actualExecution: string;
+    scheduledExecution: string;
+    scheduledStart: string;
+    actualPublish: string;
+    completionFor: string;
+    scheduledReturn: string;
+    scheduledEnd: string;
+    executedBy: string;
+    state: string;
+    caseTypes: [
+        {
+            sampleUnitType: string,
+            actionPlanID: string
+        }, {
+            sampleUnitType: string,
+            actionPlanID: string
         }
-    };
-    surveyId: string;
-    collectionInstrumentBundleIds: [string];
+    ];
 }
 
 export interface CollectionExerciseDetailsViewModel {

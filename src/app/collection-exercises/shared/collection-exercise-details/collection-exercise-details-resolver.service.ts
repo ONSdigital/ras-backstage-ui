@@ -26,6 +26,16 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
     private BASE_URL = environment.endpoints.collectionInstrument;
 
+    public static buildReferencePeriod(collectionExercise: CollectionExercise) {
+        const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
+        const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
+
+        const from = moment(collectionExercise.scheduledStart, serviceDateFormat);
+        const to = moment(collectionExercise.scheduledEnd, serviceDateFormat);
+
+        return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
+    }
+
     constructor(
         private collectionExercisesActions: CollectionExercisesActions,
         private collectionInstrumentsService: CollectionInstrumentsService) { }
@@ -35,8 +45,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         const id = route.params['collection-exercise-ref'];
 
         // TODO retrieve the survey from service tier rather than hard code
-        const survey = {
-            urn: '500',
+        const survey: Survey = {
+            id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
             inquiryCode: '221',
             name: 'Business Register and Employment Survey',
             abbr: 'BRES'
@@ -66,7 +76,6 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         // );
         // return observable;
 
-
         const observable = this.collectionExercisesActions.retrieveCollectionExercise(id);
 
         return observable.flatMap((collectionExercise: CollectionExercise) => {
@@ -79,18 +88,6 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         });
     }
 
-    private buildReferencePeriod(collectionExercise: CollectionExercise) {
-        const serviceDateFormat = 'DD/MM/YYYY';
-        const outputDateFormat = 'D MMM YYYY';
-        const from = moment(collectionExercise.period.from.day + '/' + collectionExercise.period.from.month + '/'
-            + collectionExercise.period.from.year, serviceDateFormat);
-
-        const to = moment(collectionExercise.period.to.day + '/' + collectionExercise.period.to.month + '/'
-            + collectionExercise.period.to.year, serviceDateFormat);
-
-        return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
-    }
-
     /**
      * Transform data and return view model
      */
@@ -101,8 +98,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
             id: collectionExercise.id,
             surveyTitle: survey.name,
             inquiryCode: survey.inquiryCode,
-            referencePeriod: this.buildReferencePeriod(collectionExercise),
-            surveyAbbr: survey.abbr + ' - ' + collectionExercise.period.abbr,
+            referencePeriod: CollectionExerciseDetailsResolver.buildReferencePeriod(collectionExercise),
+            surveyAbbr: collectionExercise.name,
             collectionInstrumentBatch: {
                 current: collectionInstrumentBatch.current,
                 status: collectionInstrumentBatch.status

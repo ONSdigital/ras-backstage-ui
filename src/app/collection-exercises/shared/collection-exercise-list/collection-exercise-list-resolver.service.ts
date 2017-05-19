@@ -13,44 +13,30 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
 
     resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseListViewModel> {
 
-        /**
-         * TODO
-         * Check store/dispatch Redux action first
-         */
-
-        /**
-         * Update store with new survey data from list received
-         */
-
-        /**
-         * Update store with new collection instrument data from list received
-         */
-
-         const survey = {
-             urn: '500',
-             inquiryCode: '221',
-             name: 'Business Register and Employment Survey',
-             abbr: 'BRES'
-         };
+        const survey: Survey = {
+            id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+            inquiryCode: '221',
+            name: 'Business Register and Employment Survey',
+            abbr: 'BRES'
+        };
 
         const observable = this.collectionExercisesActions.retrieveCollectionExercises()
-            .map((collectionExercises: Array<CollectionExercise>) => this.createViewModel(collectionExercises, survey));
+            .map((collectionExercises: Array<any>) => {
+
+                return this.createViewModel(collectionExercises, survey);
+            });
 
         return observable;
     }
 
-    /**
-     * TODO
-     * Refactor to import transformer to change collectionExerciseArr in appropriate viewModel
-     */
     private createViewModel(collectionExerciseArr: Array<CollectionExercise>, survey: Survey): CollectionExerciseListViewModel {
 
         return {
-            collectionExercises: collectionExerciseArr.map((collectionExercise: CollectionExercise) => {
+            collectionExercises: collectionExerciseArr.map((collectionExercise: any) => {
 
                 return {
-                    surveyTitle: survey.name + ' - ' + collectionExercise.period.abbr,
-                    link: collectionExercise.link
+                    id: collectionExercise.id,
+                    name: survey.name + ' - ' + collectionExercise.name
                 };
             })
         };
