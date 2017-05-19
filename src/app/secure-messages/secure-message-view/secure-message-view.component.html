@@ -1,45 +1,52 @@
 <div class="secure-message-view-component">
-    <h1 class="saturn">Subject: BRES 2016 clarification</h1>
-
     <div class="grid">
-        <dl>
-            <dt class="grid__col col-2@s">From:</dt>
-            <dd class="grid__col col-10@s">Jacky Turner for Bolts & Ratchets Ltd</dd>
-            <dt class="grid__col col-2@s">Sent:</dt>
-            <dd class="grid__col col-10@s">13:37 Fri 7 Apr 2017</dd>
-        </dl>
+        <div class="grid__col col-8@m">
+
+            <h1 class="saturn">Subject: BRES 2016 clarification</h1>
+
+            <div class="grid">
+                <dl>
+                    <dt class="grid__col col-2@s">From:</dt>
+                    <dd class="grid__col col-10@s">Jacky Turner for Bolts & Ratchets Ltd</dd>
+                    <dt class="grid__col col-2@s">Sent:</dt>
+                    <dd class="grid__col col-10@s">13:37 Fri 7 Apr 2017</dd>
+                </dl>
+            </div>
+
+            <br />
+
+            <p>
+                <ng-container *ngFor="let line of messageBody; let i = index">
+                    {{ line }}<br />
+                </ng-container>
+            </p>
+
+            <!--<p>
+                <ng-container *ngFor="let line of newMessageBodyTest; let i = index">
+                    {{ line }}<br />
+                </ng-container>
+            </p>-->
+
+            <br />
+
+            <fieldset>
+                <label class="venus" for="secure-message-body">Reply</label>
+                <textarea
+                    id="secure-message-body"
+                    class="input input--textarea input--textarea-message"
+                    rows="10"
+                    name="secure-message-body"
+                    [ngModel]="newMessageBody"
+                    (keyup)="onTypingReplyTest($event)"></textarea>
+            </fieldset>
+
+            <br />
+
+            <button class="btn" type="submit">Send reply</button>
+
+            <p><a href="">Cancel</a></p>
+
+        </div>
+        <!--<div class="grid__col col-4@m"></div>-->
     </div>
-
-    <br />
-
-    <p>
-        <ng-container *ngFor="let line of messageBody; let i = index">
-            {{ line }}<br />
-        </ng-container>
-    </p>
-
-    <!--<p>
-        <ng-container *ngFor="let line of newMessageBodyTest; let i = index">
-            {{ line }}<br />
-        </ng-container>
-    </p>-->
-
-    <br />
-
-    <fieldset>
-        <label class="venus" for="secure-message-body">Reply</label>
-        <textarea
-            id="secure-message-body"
-            class="input input--textarea input--textarea-message"
-            rows="10"
-            name="secure-message-body"
-            [ngModel]="newMessageBody"
-            (keyup)="onTypingReplyTest($event)"></textarea>
-    </fieldset>
-
-    <br />
-
-    <button class="btn" type="submit">Send reply</button>
-
-    <p><a href="">Cancel</a></p>
 </div>

@@ -5,8 +5,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
-
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
+
+import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-tabs.component';
 import { SecureMessagesComponent } from './secure-messages.component';
 import { SecureMessagesListComponent } from './secure-messages-list/secure-messages-list.component';
 import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
@@ -34,7 +35,8 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         SecureMessageCreateContainerComponent,
         SecureMessageViewComponent,
         SecureMessageViewContainerComponent,
-        SecureMessageFormComponent
+        SecureMessageFormComponent,
+        NavigationTabsComponent
     ],
     providers: [
         /*SecureMessagesService,
