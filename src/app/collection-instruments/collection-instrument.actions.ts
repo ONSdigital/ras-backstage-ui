@@ -5,16 +5,23 @@ import { CollectionInstrument } from './shared/collection-instrument.model';
 import { CollectionInstrumentsService } from './collection-instruments.service';
 
 @Injectable()
-export class SurveysActions {
+export class CollectionInstrumentActions {
 
-    static RETRIEVE_SINGLE = 'SURVEY_RETRIEVE';
-    static RECEIVED_SINGLE = 'SURVEY_RECEIVED';
-    // static RETRIEVE_ALL = 'SURVEYS_RETRIEVE_ALL';
-    // static RECEIVED_ALL = 'SURVEYS_RECEIVED_ALL';
+    static LOAD_COLLECTION_INSTRUMENT_BATCH = 'COLLECTION_INSTRUMENT_BATCH_LOAD';
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private surveysService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) { }
+
+    public loadCollectionInstrumentBundle(id: string) {
+
+        this.ngRedux.dispatch({
+            type: CollectionInstrumentActions.LOAD_COLLECTION_INSTRUMENT_BATCH,
+            id: id
+        });
+
+        return this.collectionInstrumentsService.loadCollectionInstrumentBatch(id);
+    }
 
     // public retrieveSurvey(id: string) {
     //

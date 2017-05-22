@@ -5,12 +5,13 @@ import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model
 @Component({
     moduleId: module.id,
     selector: 'ons-collection-exercise-details',
-    templateUrl: './collection-exercise-details.component.html'
+    templateUrl: './collection-exercise-details.component.html',
+    styleUrls: ['./collection-exercise-details.component.scss']
 })
 export class CollectionExerciseDetailsComponent {
 
     @Input() collectionExerciseDetails: CollectionExerciseDetailsViewModel;
 
-    @Output() load_cis_click_handler: EventEmitter<any> = new EventEmitter();
+    @Output() load_ci_batch_click_handler: EventEmitter<any> = new EventEmitter();
 
 }

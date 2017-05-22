@@ -11,7 +11,6 @@ export class CollectionExercisesActions {
     static RECEIVED_SINGLE = 'COLLECTION_EXERCISE_RECEIVED';
     static RETRIEVE_ALL = 'COLLECTION_EXERCISES_RETRIEVE_ALL';
     static RECEIVED_ALL = 'COLLECTION_EXERCISES_RECEIVED_ALL';
-    static LOAD_COLLECTION_INSTRUMENT_BUNDLE = 'COLLECTION_INSTRUMENT_BUNDLE_LOAD';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -21,7 +20,7 @@ export class CollectionExercisesActions {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
-            link: link
+            id: link
         });
 
         const observable = this.collectionExercisesService.getCollectionExercise(link);
@@ -64,17 +63,5 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.RECEIVED_ALL,
             collectionExercises: collectionExerciseArr
         });
-    }
-
-    public loadCollectionInstrumentBundle(id: string) {
-
-        console.log('Put collection instrument for collection exercise: ', id);
-
-        this.ngRedux.dispatch({
-            type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
-            id: id
-        });
-
-        return this.collectionExercisesService.putCollectionInstrumentBundle(id);
     }
 }

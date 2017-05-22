@@ -33,11 +33,3 @@ app.get('/api/collection-exercise/:id', (req, res) => {
 app.get('/api/collection-exercises', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercises.json');
 });
-
-app.get('/api/collection-instrument-bundles', (req, res) => {
-    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument-bundles.json');
-});
-
-app.get('/api/surveys', (req, res) => {
-    res.sendFile(__dirname + '/' + staticFolder + '/mockData/surveys.json');
-});

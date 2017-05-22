@@ -9,6 +9,7 @@ import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
 
 import { CollectionExercisesService } from './collection-exercises.service';
+import { CollectionInstrumentsService } from '../collection-instruments/collection-instruments.service';
 
 import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseListComponent } from './shared/collection-exercise-list/collection-exercise-list.component';
@@ -35,6 +36,7 @@ import { CollectionExercisesActions } from './collection-exercises.actions';
     ],
     providers: [
         CollectionExercisesService,
+        CollectionInstrumentsService,
         CollectionExercisesActions
     ]
 })
