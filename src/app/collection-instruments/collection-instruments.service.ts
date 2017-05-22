@@ -17,18 +17,33 @@ export class CollectionInstrumentsService {
     constructor(private http: Http) { }
 
     // Get the status of a collection instrument upload
+    getStatus(collectionExerciseId: string): Observable<any> {
 
-    // TODO: CollectionInstrumentStatus instead of any?
-    getStatus(surveyRef: string, collectionExerciseRef: string): Observable<any> {
+        return this.http.get(this.BASE_URL + 'status/' + collectionExerciseId)
 
-        return this.http.get(this.BASE_URL + 'status/' + surveyRef + '/' + collectionExerciseRef)
-
-            // Call .json() on the response to return data
-            // .map((res: Response) => res.json().data.Survey || {})
-            .map((res: Response) => console.log(res.json())
-        );
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
-            // .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    loadCollectionInstrumentBatch(collectionExerciseId: string): Observable<any> {
+
+        // Set content type to JSON
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const options = new RequestOptions({ headers: headers });
+
+        return this.http.put(this.BASE_URL + 'activate/' + collectionExerciseId, {}, options)
+
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
+
+            // Handle any errors
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 }

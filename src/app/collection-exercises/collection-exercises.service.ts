@@ -16,33 +16,31 @@ export class CollectionExercisesService {
 
     constructor(private http: Http) { }
 
-    // Get a single collection exercise
-    getCollectionExercise(id: number): Observable<CollectionExercise> {
-
-        return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
-
-            // Call .json() on the response to return data
-            .map((res: Response) => res.json().data.collectionExercise || {})
-
-            // Handle any errors
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
     // Fetch all existing collection exercises
     getCollectionExercises(): Observable<CollectionExercise[]> {
 
         return this.http.get(this.BASE_URL + 'collection-exercises')
 
-            // Call .json() on the response to return data
-            .map((res: Response) => res.json().data || {})
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
-    putCollectionInstrumentBundle(collectionExerciseRef: string): Promise<any> {
+    // Get a single collection exercise
+    getCollectionExercise(id: string): Observable<CollectionExercise> {
 
-        // TODO refactor to use on Observable instead
-        return Promise.resolve();
+        return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
+
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
+
+            // Handle any errors
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 }

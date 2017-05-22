@@ -1,62 +1,9 @@
-{
-    "data": [{
-        "id": "100",
-        "link": "bres-2015",
-        "period": {
-            "type": "annual",
-            "abbr": "2015",
-            "from": {
-                "day": "01",
-                "month": "01",
-                "year": "2015"
-            },
-            "to": {
-                "day": "01",
-                "month": "01",
-                "year": "2015"
-            }
-        },
-        "surveyId": "500",
-        "collectionInstrumentBundleIds": ["700"]
-    }, {
-
-        "id": "101",
-        "link": "bres-2016",
-        "period": {
-            "type": "annual",
-            "abbr": "2016",
-            "from": {
-                "day": "02",
-                "month": "02",
-                "year": "2016"
-            },
-            "to": {
-                "day": "02",
-                "month": "02",
-                "year": "2016"
-            }
-        },
-        "surveyId": "501",
-        "collectionInstrumentBundleIds": ["701"]
-    }, {
-
-        "id": "102",
-        "link": "bres-2017",
-        "period": {
-            "type": "annual",
-            "abbr": "2017",
-            "from": {
-                "day": "03",
-                "month": "03",
-                "year": "2017"
-            },
-            "to": {
-                "day": "03",
-                "month": "03",
-                "year": "2017"
-            }
-        },
-        "surveyId": "501",
-        "collectionInstrumentBundleIds": ["701", "702"]
-    }]
-}
+ [{
+     "id": "c6467711-21eb-4e78-804c-1db8392f93fb",
+     "name": "201601",
+     "scheduledExecution": "2017-05-15T00:00:00Z"
+ }, {
+     "id": "e33daf0e-6a27-40cd-98dc-c6231f50e84a",
+     "name": "201602",
+     "scheduledExecution": "2017-08-12T00:00:00Z"
+ }]

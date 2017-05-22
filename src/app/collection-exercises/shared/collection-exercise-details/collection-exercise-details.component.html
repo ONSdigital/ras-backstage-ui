@@ -1,7 +1,7 @@
 <div class="collection-exercise-details-component">
     <h1 data-test="SURVEY_TITLE" class="saturn">{{ collectionExerciseDetails?.surveyTitle }}</h1>
 
-    <div class="panel panel--simple panel--info">
+    <div class="panel panel--simple panel--info survey-info-panel">
 
         <div class="grid">
             <dl class="survey-info">
@@ -15,19 +15,26 @@
 
     <h2 data-test="COLLECTION_INSTRUMENTS_HEADING" class="neptune collection-instruments-heading">Collection instruments</h2>
 
-    <ul>
-        <li>
+    <ul *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined || collectionExerciseDetails?.collectionInstrumentBatch.status !== 'active'">
+
+        <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === undefined || collectionExerciseDetails?.collectionInstrumentBatch.current === 0">
             <span data-test="NO_COLLECTION_INSTRUMENTS_AVAILABLE_MESSAGE">No collection instruments available</span>
         </li>
-        <li>
-            <span data-test="READY_TO_LOAD_MESSAGE">674 Excel files ready to load</span>
+
+        <li *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === 'pending' && collectionExerciseDetails?.collectionInstrumentBatch.current > 0">
+            <span data-test="READY_TO_LOAD_MESSAGE">{{ collectionExerciseDetails?.collectionInstrumentBatch.current }} Excel files ready to load</span>
             <button data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"
-                class="js_load_cis_click_handler btn btn--small btn--secondary btn--border"
-                (click)="load_cis_click_handler.next();">Load files</button>
-        </li>
-        <li>
-            <span data-test="LOADED_FILES_COUNT">674 Excel files loaded</span> - <a href="bres-2016-seft-cis.csv" data-test="DOWNLOAD_CSV_LINK">Download list (CSV)</a>
+                *ngIf="!collectionExerciseDetails.isButtonDisabled"
+                class="load-ci-batch-button btn btn--small btn--secondary btn--border"
+                (click)="load_ci_batch_click_handler.emit();">Load files</button>
+
+            <span data-test="PROGRESS_INDICATOR" *ngIf="collectionExerciseDetails.isButtonDisabled"> - Please wait ...</span>
         </li>
     </ul>
 
+    <div data-test="LOADED_BATCH_DETAILS" *ngIf="collectionExerciseDetails?.collectionInstrumentBatch.status === 'active'">
+        <i data-test="LOADED_BATCH_CHECK_ICON" class="fa fa-check-circle loaded-batch-icon" aria-hidden="true"></i>
+        <span data-test="LOADED_BATCH_FILE_COUNT">{{ collectionExerciseDetails?.collectionInstrumentBatch.current }} Excel files loaded</span> -
+        <a data-test="DOWNLOAD_CSV_LINK" [href]="collectionExerciseDetails.csvEndpoint">Download list (CSV)</a>
+    </div>
 </div>

@@ -17,7 +17,7 @@ export class CollectionExercisesActions {
         private ngRedux: NgRedux<any>,
         private collectionExercisesService: CollectionExercisesService) { }
 
-    public retrieveCollectionExercise(id: number) {
+    public retrieveCollectionExercise(id: string) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
@@ -25,7 +25,6 @@ export class CollectionExercisesActions {
         });
 
         const observable = this.collectionExercisesService.getCollectionExercise(id);
-
         observable.subscribe(
             // Normalise data first to keep entities in data store dry before saving
             // Update data store
@@ -64,17 +63,5 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.RECEIVED_ALL,
             collectionExercises: collectionExerciseArr
         });
-    }
-
-    public loadCollectionInstrumentBundle(id: string) {
-
-        console.log('Put collection instrument for collection exercise: ', id);
-
-        this.ngRedux.dispatch({
-            type: CollectionExercisesActions.LOAD_COLLECTION_INSTRUMENT_BUNDLE,
-            id: id
-        });
-
-        return this.collectionExercisesService.putCollectionInstrumentBundle(id);
     }
 }

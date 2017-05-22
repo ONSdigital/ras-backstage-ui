@@ -5,16 +5,16 @@ import { CollectionInstrument } from './shared/collection-instrument.model';
 import { CollectionInstrumentsService } from './collection-instruments.service';
 
 @Injectable()
-export class SurveysActions {
+export class CollectionInstrumentActions {
 
-    static RETRIEVE_SINGLE = 'SURVEY_RETRIEVE';
-    static RECEIVED_SINGLE = 'SURVEY_RECEIVED';
+    // static GET_CI_STATUS = 'SURVEY_RETRIEVE';
+    // static RECEIVED_SINGLE = 'SURVEY_RECEIVED';
     // static RETRIEVE_ALL = 'SURVEYS_RETRIEVE_ALL';
     // static RECEIVED_ALL = 'SURVEYS_RECEIVED_ALL';
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private surveysService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) { }
 
     // public retrieveSurvey(id: string) {
     //

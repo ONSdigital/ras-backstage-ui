@@ -1,5 +1,5 @@
 export interface Survey {
-    urn: string;
+    id: string;
     inquiryCode: string;
     name: string;
     abbr: string;

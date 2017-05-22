@@ -4,14 +4,15 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/find';
 import { Subscription } from 'rxjs/Subscription';
 
-import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
+import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
+
 
 @Component({
     template: `
         <ons-collection-exercise-details
             [collectionExerciseDetails]="viewModel"
-            (load_cis_click_handler)="collectionInstrumentLoadClick_handler($event)"></ons-collection-exercise-details>
+            (load_ci_batch_click_handler)="collectionInstrumentBatchLoadClick_handler($event)"></ons-collection-exercise-details>
     `
 })
 export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDestroy {
@@ -22,7 +23,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private collectionExerciseActions: CollectionExercisesActions) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) { }
 
     ngOnInit() {
 
@@ -33,9 +34,6 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             .subscribe((data: { viewModel: CollectionExerciseDetailsViewModel }) => {
                 if (data.viewModel) {
                     this.viewModel = data.viewModel;
-
-                    // TODO remove this
-                    console.log(this.viewModel);
                 }
             });
     }
@@ -44,7 +42,23 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
         this.routeSubscription.unsubscribe();
     }
 
-    public collectionInstrumentLoadClick_handler() {
-        this.collectionExerciseActions.loadCollectionInstrumentBundle('123');
+    public collectionInstrumentBatchLoadClick_handler() {
+
+        this.viewModel.isButtonDisabled = true;
+
+        this.collectionInstrumentsService.loadCollectionInstrumentBatch(this.viewModel.id)
+            .subscribe(res => {
+
+                // TODO remove this delay
+                // setTimeout(() => {
+
+                    this.viewModel.collectionInstrumentBatch.status = res.status;
+
+                // }, 3000);
+            },
+            err => {
+                // Log any errors
+                console.log(err);
+            });
     }
 }
