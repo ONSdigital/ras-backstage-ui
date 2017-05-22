@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { select, NgRedux } from '@angular-redux/store';
-import { Subscription } from 'rxjs/Subscription';
+import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/first';
 
@@ -32,7 +31,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     constructor(
         private ngRedux: NgRedux<any>,
         private collectionExercisesActions: CollectionExercisesActions,
-        private collectionInstrumentsService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 

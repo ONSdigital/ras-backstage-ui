@@ -17,6 +17,7 @@ import { CollectionExercisesComponent } from './collection-exercises.component';
 import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsComponent } from './shared/collection-exercise-details/collection-exercise-details.component';
 import { CollectionExercisesActions } from './collection-exercises.actions';
+import { CollectionInstrumentsActions } from '../collection-instruments/collection-instruments.actions';
 
 @NgModule({
     imports: [
@@ -36,8 +37,9 @@ import { CollectionExercisesActions } from './collection-exercises.actions';
     ],
     providers: [
         CollectionExercisesService,
+        CollectionExercisesActions,
         CollectionInstrumentsService,
-        CollectionExercisesActions
+        CollectionInstrumentsActions
     ]
 })
 export class CollectionExerciseModule { }

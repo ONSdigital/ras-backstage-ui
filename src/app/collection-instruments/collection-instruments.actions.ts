@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
 
 import { CollectionInstrument } from './shared/collection-instrument.model';
 import { CollectionInstrumentsService } from './collection-instruments.service';
 
 @Injectable()
-export class CollectionInstrumentActions {
+export class CollectionInstrumentsActions {
 
     static LOAD_COLLECTION_INSTRUMENT_BATCH = 'COLLECTION_INSTRUMENT_BATCH_LOAD';
 
@@ -13,7 +14,7 @@ export class CollectionInstrumentActions {
         private ngRedux: NgRedux<any>,
         private collectionInstrumentsService: CollectionInstrumentsService) { }
 
-    public loadCollectionInstrumentBundle(id: string) {
+    public loadCollectionInstrumentBundle(id: string): Observable<any> {
 
         this.ngRedux.dispatch({
             type: CollectionInstrumentActions.LOAD_COLLECTION_INSTRUMENT_BATCH,
