@@ -17,7 +17,7 @@ export class CollectionExercisesService {
     constructor(private http: Http) { }
 
     // Get a single collection exercise
-    getCollectionExercise(id: number): Observable<CollectionExercise> {
+    getCollectionExercise(id: string): Observable<CollectionExercise> {
 
         return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
 
