@@ -59,6 +59,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
 
         return storeCheckObservable
             .flatMap((existingCollectionExercise: any) => {
+
                 return existingCollectionExercise
                     ? Observable.of(existingCollectionExercise)
                     : this.collectionExercisesActions.retrieveCollectionExercise(id);
