@@ -1,21 +1,12 @@
 import collectionExerciseReducer from './collection-exercises.reducer';
 import { CollectionExercisesActions } from './collection-exercises.actions';
 
+import { createMockCollectionExercise } from '../../testing/create_CollectionExercise';
+
 const DEFAULT_STATE: any = {
     isFetching: false,
     items: []
 };
-
-function createCollectionExercise () {
-    return {
-        id: '456',
-        link: 'abc-123',
-        period: {
-            abbr: '2000'
-        },
-        surveyId: '123'
-    };
-}
 
 describe('Collection exercise reducer', () => {
 
@@ -24,8 +15,8 @@ describe('Collection exercise reducer', () => {
         describe('and dispatching a valid action object', () => {
 
             it(`should return a new state of the collection exercises data store with the new collection 
-            exercise added`, () => {
-                const collectionExercise = createCollectionExercise(),
+                exercise added`, () => {
+                const collectionExercise = createMockCollectionExercise('100'),
                     action = {
                         type: CollectionExercisesActions.RECEIVED_SINGLE,
                         collectionExercise: collectionExercise

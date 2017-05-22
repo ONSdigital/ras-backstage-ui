@@ -14,10 +14,10 @@ export class CollectionInstrumentsActions {
         private ngRedux: NgRedux<any>,
         private collectionInstrumentsService: CollectionInstrumentsService) { }
 
-    public loadCollectionInstrumentBundle(id: string): Observable<any> {
+    public loadCollectionInstrumentBatch(id: string): Observable<any> {
 
         this.ngRedux.dispatch({
-            type: CollectionInstrumentActions.LOAD_COLLECTION_INSTRUMENT_BATCH,
+            type: CollectionInstrumentsActions.LOAD_COLLECTION_INSTRUMENT_BATCH,
             id: id
         });
 

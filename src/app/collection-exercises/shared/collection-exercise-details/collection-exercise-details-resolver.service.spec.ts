@@ -8,7 +8,8 @@ import { MockActivatedRoute } from '../../../../testing/ActivatedRouteSnapshot_s
 import { CollectionExerciseModule } from '../../collection-exercises.module';
 import { CollectionExerciseDetailsResolver } from './collection-exercise-details-resolver.service';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
-import { CollectionExercise } from '../collection-exercise.model';
+
+import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
 
 let mockCollectionExercise: any,
     mockCollectionExercisesActions: any,
@@ -18,53 +19,6 @@ let mockCollectionExercise: any,
     mockReduxStore: any,
     storeData: any,
     apiData: any;
-
-function createMockCollectionExercise (id: string) {
-
-    return<CollectionExercise> {
-        id: id,
-        surveyID: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-        name: '201601',
-        actualExecution: '2017-05-15T14:20:24Z',
-        scheduledExecution: '2017-05-15T00:00:00Z',
-        scheduledStart: '2017-06-01T00:00:00Z',
-        actualPublish: null,
-        completionFor: null,
-        scheduledReturn: '2017-06-30T00:00:00Z',
-        scheduledEnd: '2017-12-31T00:00:00Z',
-        executedBy: 'Fred Bloggs',
-        state: 'EXECUTED',
-        caseTypes: [
-            {
-                sampleUnitType: 'B',
-                actionPlanID: '60df56d9-f491-4ac8-b256-a10154290a8b'
-            }, {
-                sampleUnitType: 'BI',
-                actionPlanID: 'b1f46e33-a3ef-4e50-939d-c18f8a9f11bb'
-            }
-        ]
-    };
-
-    /*return {
-        'id': id,
-        'link': link,
-        'period': {
-            'type': 'annual',
-            'abbr': '2016',
-            'from': {
-                'day': '01',
-                'month': '01',
-                'year': '2016'
-            },
-            'to': {
-                'day': '01',
-                'month': '01',
-                'year': '2016'
-            }
-        },
-        'surveyId': '123'
-    };*/
-}
 
 function createMockCollectionInstrumentBatchPending(ceRef: string) {
     return {
