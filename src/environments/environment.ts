@@ -6,9 +6,22 @@
 export const environment = {
     production: false,
     endpoints: {
-        collectionExercise: 'http://localhost:8000/api/',
+
+        // Run services locally by executing the following at the command line for each service:
+        // PORT=xxxx ./scripts/run.py
+
+        // Local config
+        collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
+        collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         survey: 'http://localhost:8000/api/',
-        collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.1/',
         secureMessages: 'http://0.0.0.0:5050/'
+
+        // CloudFoundry config
+        // collectionExercise: 'http://ras-collection-exercise-demo.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
+        // collectionInstrument: 'http://ras-collection-instrument-demo.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
+        // survey: 'http://localhost:8000/api/'
+
+        // TODO remove this
+        // collectionExercise: 'http://localhost:8000/api/',
     }
 };

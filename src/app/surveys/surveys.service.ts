@@ -21,8 +21,10 @@ export class SurveysService {
 
         return this.http.get(this.BASE_URL + 'surveys/' + urn)
 
-            // Call .json() on the response to return data
-            .map((res: Response) => res.json().data.Survey || {})
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -33,8 +35,10 @@ export class SurveysService {
 
         return this.http.get(this.BASE_URL + 'surveys')
 
-            // Call .json() on the response to return data
-            .map((res: Response) => res.json().data || {})
+            // Handle the response
+            .map((res: Response) => {
+                return res.json() || {};
+            })
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));

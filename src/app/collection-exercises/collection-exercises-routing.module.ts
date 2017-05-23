@@ -31,8 +31,7 @@ export const collectionExercisesRoutes: Routes = [
                 path: ':collection-exercise-ref',
                 component: CollectionExerciseDetailsContainerComponent,
                 resolve: {
-                    viewModel: CollectionExerciseDetailsResolver,
-                    list: CollectionExerciseListResolver
+                    exported: CollectionExerciseDetailsResolver
                 },
                 data: {
                     breadcrumb: resolveCollectionExerciseDetailsBreadcrumb
@@ -42,11 +41,8 @@ export const collectionExercisesRoutes: Routes = [
     }
 ];
 
-export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved: any): string {
-
-    const viewModel: CollectionExerciseDetailsViewModel = dataResolved.viewModel;
-
-    return viewModel.surveyAbbr;
+export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved: {exported: any}): string {
+    return dataResolved.exported.collectionExercise.name;
 }
 
 @NgModule({

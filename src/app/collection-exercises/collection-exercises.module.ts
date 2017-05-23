@@ -9,6 +9,7 @@ import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
 
 import { CollectionExercisesService } from './collection-exercises.service';
+import { CollectionInstrumentsService } from '../collection-instruments/collection-instruments.service';
 
 import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseListComponent } from './shared/collection-exercise-list/collection-exercise-list.component';
@@ -16,6 +17,7 @@ import { CollectionExercisesComponent } from './collection-exercises.component';
 import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsComponent } from './shared/collection-exercise-details/collection-exercise-details.component';
 import { CollectionExercisesActions } from './collection-exercises.actions';
+import { CollectionInstrumentsActions } from '../collection-instruments/collection-instruments.actions';
 
 @NgModule({
     imports: [
@@ -35,7 +37,9 @@ import { CollectionExercisesActions } from './collection-exercises.actions';
     ],
     providers: [
         CollectionExercisesService,
-        CollectionExercisesActions
+        CollectionExercisesActions,
+        CollectionInstrumentsService,
+        CollectionInstrumentsActions
     ]
 })
 export class CollectionExerciseModule { }

@@ -15,7 +15,6 @@ export default function(state: any = INIT_STATE, action: any) {
 
     switch (action.type) {
         case CollectionExercisesActions.RECEIVED_SINGLE:
-            console.log('Reducer: ', state, action);
 
             let existingItem;
 
@@ -27,12 +26,9 @@ export default function(state: any = INIT_STATE, action: any) {
              * TODO
              * Below belongs to model validator
              */
-
             if (!collectionExercise
                 || !collectionExercise.id
-                || !collectionExercise.period
-                || !collectionExercise.period.abbr
-                || !collectionExercise.survey_ref) {
+                || !collectionExercise.surveyID) {
 
                 return state;
             }
@@ -49,7 +45,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 const obj: CollectionExercise = Object.assign({}, item);
 
                 // If an item with same identifier is found, save a reference to its new object for merging data
-                if (item.id === action.item.id) {
+                if (item.id === action.collectionExercise.id) {
                     existingItem = obj;
                 }
 
@@ -57,10 +53,6 @@ export default function(state: any = INIT_STATE, action: any) {
             }));
 
             /**
-             * TODO
-             * First normalise data to save survey and collection instrument data stores separately, replace entities on
-             * collection exercises with references to entities.
-             *
              * If there is an existing item, do merge or add to the collectionExercise data store
              */
             existingItem ? Object.assign(existingItem, action.collectionExercise) : items.push(action.collectionExercise);

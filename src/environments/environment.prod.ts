@@ -1,5 +1,9 @@
 export const environment = {
-    collectionExercise: 'http://localhost:8000/api/',
-    survey: 'http://localhost:8000/api/',
-    collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.1/'
+    production: false,
+    endpoints: {
+        // CloudFoundry config
+        collectionExercise: 'https://ras-collection-exercise-demo.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
+        collectionInstrument: 'https://ras-collection-instrument-demo.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
+        survey: 'https://localhost:8000/api/'
+    }
 };
