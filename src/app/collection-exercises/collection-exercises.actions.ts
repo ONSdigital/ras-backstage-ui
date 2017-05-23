@@ -16,7 +16,7 @@ export class CollectionExercisesActions {
         private ngRedux: NgRedux<any>,
         private collectionExercisesService: CollectionExercisesService) { }
 
-    public retrieveCollectionExercise(link: number) {
+    public retrieveCollectionExercise(link: string) {
 
         this.ngRedux.dispatch({
             type: CollectionExercisesActions.RETRIEVE_SINGLE,
