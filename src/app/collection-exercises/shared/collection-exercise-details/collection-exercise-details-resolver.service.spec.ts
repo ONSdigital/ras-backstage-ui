@@ -8,6 +8,7 @@ import { MockActivatedRoute } from '../../../../testing/ActivatedRouteSnapshot_s
 import { CollectionExerciseModule } from '../../collection-exercises.module';
 import { CollectionExerciseDetailsResolver } from './collection-exercise-details-resolver.service';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
+import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
 
@@ -34,17 +35,13 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
         mockCollectionExercisesActions = {
             retrieveCollectionExercise: function(ref: string) {
-                return Observable.of(
-                    mockCollectionExercise
-                );
+                return Observable.of(mockCollectionExercise);
             }
         };
 
         mockCollectionInstrumentsService = {
             getStatus: function(collectionExerciseId: string) {
-                return Observable.of(
-                    mockCollectionInstrumentBatchPending
-                );
+                return Observable.of(mockCollectionInstrumentBatchPending);
             }
         };
 
@@ -57,6 +54,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
         };
 
         spyOn(mockCollectionExercisesActions, 'retrieveCollectionExercise').and.callThrough();
+        spyOn(mockCollectionInstrumentsService, 'getStatus').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -64,8 +62,9 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 CollectionExerciseModule
             ],
             providers: [
+                { provide: NgRedux, useValue: mockReduxStore },
                 { provide: CollectionExercisesActions, useValue: mockCollectionExercisesActions },
-                { provide: NgRedux, useValue: mockReduxStore }
+                { provide: CollectionInstrumentsService, useValue: mockCollectionInstrumentsService }
             ]
         })
         .compileComponents();
@@ -152,27 +151,26 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 }));
     });
 
-    it('should call the collection instrument service to retrieve collection instrument details', () => {
-        mockCollectionExercise = createMockCollectionExercise('250');
-        mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('250');
+    it('should call the collection instrument service to retrieve collection instrument details',
+        inject([CollectionExerciseDetailsResolver],
+            (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                mockCollectionExercise = createMockCollectionExercise('250');
+                mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('250');
 
-        resolverSvc = new CollectionExerciseDetailsResolver(
-            mockReduxStore,
-            mockCollectionExercisesActions,
-            mockCollectionInstrumentsService);
+                const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
+                    params = {
+                        'collection-exercise-ref': '250'
+                    };
 
-        spyOn(mockCollectionInstrumentsService, 'getStatus').and.callThrough();
+                activatedRouteSnapShot.params = params;
 
-        resolverSvc.resolve({
-            params: {
-                'collectionExerciseId': mockCollectionExercise.id
-            }
-        });
+                storeData = [createMockCollectionExercise('225')];
 
-        // TODO fix this
-        // expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalled();
-        // expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalledWith(mockCollectionExercise.id);
-    });
+                collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+
+                expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalled();
+                expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalledWith(mockCollectionExercise.id);
+            }));
 
     describe('Helper methods', () => {
         it('should correctly format a collection exercise reference period', () => {
