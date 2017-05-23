@@ -1,15 +1,29 @@
-<div class="secure-message-form-component">
+<div class="secure-message-form secure-message-form-component">
     <form>
-        <p>To: Jacky Turner</p>
+        <p>To: Jacky Turner for Bolts and Ratchets Ltd - 36509908341B</p>
 
-        <p>
-            <label>Subject</label>
-            <input type="text" />
-        </p>
+        <fieldset>
+            <label for="secure-message-subject">Subject</label>
+            <input
+                id="secure-message-subject"
+                class="secure-message-form__subject input input--text"
+                type="text"
+                name="secure-message-subject"/>
+        </fieldset>
 
-        <p>
-            <label>Message</label>
-            <textarea></textarea>
-        </p>
+        <br />
+
+        <fieldset>
+            <label for="secure-message-body">Message</label>
+            <textarea
+                id="secure-message-body"
+                class="secure-message-form__body input"
+                rows="10"
+                name="secure-message-body"></textarea>
+        </fieldset>
+
+        <br />
+
+        <button class="btn" type="submit">Send message</button>
     </form>
 </div>

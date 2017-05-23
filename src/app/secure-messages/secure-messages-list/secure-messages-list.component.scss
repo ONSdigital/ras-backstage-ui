@@ -1,0 +1,42 @@
+.secure-messages-list-component {
+
+    .secure-messages-list {
+
+        .secure-messages-list__item {
+            transition : background-color 200ms ease-in;
+
+            &:hover {
+                background-color : #e4d8eb;
+            }
+
+            &.secure-messages-list__item--unread {
+                .secure-messages-list__field {
+                    font-weight : 700;
+                }
+            }
+        }
+
+        /**
+         * Modifiers
+         */
+        &.secure-messages-list--table {
+            width : 100%;
+
+            .secure-messages-list__header,
+            .secure-messages-list__field {
+                padding : .5rem .5rem .5rem 1rem;
+                font-size : 0.8125rem;
+            }
+
+            .secure-messages-list__field {
+                border-bottom : 1px solid #ccc;
+            }
+
+            .secure-messages-list__header {
+                padding-bottom : .25rem;
+                text-align : left;
+                border-bottom : 2px solid #666;
+            }
+        }
+    }
+}

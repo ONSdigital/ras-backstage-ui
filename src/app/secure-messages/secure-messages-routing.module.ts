@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { SecureMessagesComponent } from './secure-messages.component';
 import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
+import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
 
 const SecureMessagesRoutes: Routes = [
     {
@@ -25,6 +26,13 @@ const SecureMessagesRoutes: Routes = [
                 component: SecureMessageCreateContainerComponent,
                 data: {
                     breadcrumb: 'Create message'
+                }
+            },
+            {
+                path: 'message-messageId',
+                component: SecureMessageViewContainerComponent,
+                data: {
+                    breadcrumb: 'View message'
                 }
             }
         ]

@@ -3,7 +3,11 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     template: `
-        <ons-secure-message-create></ons-secure-message-create>
+        <ons-secure-message-view></ons-secure-message-view>
     `,
 })
-export class SecureMessageCreateContainerComponent { }
+export class SecureMessageViewContainerComponent {
+
+
+
+}
