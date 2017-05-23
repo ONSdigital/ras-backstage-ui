@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
 
 import { CollectionInstrument } from './shared/collection-instrument.model';
 import { CollectionInstrumentsService } from './collection-instruments.service';
 
 @Injectable()
-export class CollectionInstrumentActions {
+export class CollectionInstrumentsActions {
 
-    // static GET_CI_STATUS = 'SURVEY_RETRIEVE';
-    // static RECEIVED_SINGLE = 'SURVEY_RECEIVED';
-    // static RETRIEVE_ALL = 'SURVEYS_RETRIEVE_ALL';
-    // static RECEIVED_ALL = 'SURVEYS_RECEIVED_ALL';
+    static LOAD_COLLECTION_INSTRUMENT_BATCH = 'COLLECTION_INSTRUMENT_BATCH_LOAD';
 
     constructor(
         private ngRedux: NgRedux<any>,
         private collectionInstrumentsService: CollectionInstrumentsService) { }
+
+    public loadCollectionInstrumentBatch(id: string): Observable<any> {
+
+        this.ngRedux.dispatch({
+            type: CollectionInstrumentsActions.LOAD_COLLECTION_INSTRUMENT_BATCH,
+            id: id
+        });
+
+        return this.collectionInstrumentsService.loadCollectionInstrumentBatch(id);
+    }
 
     // public retrieveSurvey(id: string) {
     //

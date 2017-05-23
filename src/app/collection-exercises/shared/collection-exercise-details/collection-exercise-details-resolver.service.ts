@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
-import { select } from '@angular-redux/store';
+import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-// import 'rxjs/add/observable/combineLatest';
-import 'rxjs/add/operator/defaultIfEmpty';
-import 'rxjs/add/operator/find';
+import 'rxjs/add/operator/first';
 
-import { CollectionExercise, CollectionExerciseDetailsViewModel } from '../collection-exercise.model';
 import { Survey } from '../../../surveys/shared/survey.model';
+import { CollectionExercise } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
@@ -17,12 +14,7 @@ import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 
 @Injectable()
-export class CollectionExerciseDetailsResolver implements Resolve<CollectionExerciseDetailsViewModel> {
-
-    @select('collectionExercises')
-    private collectionExercisesStore: Observable<Array<CollectionExercise>>;
-    private collectionExercisesSubscription: Subscription;
-    private collectionExercises: Array<CollectionExercise> = [];
+export class CollectionExerciseDetailsResolver implements Resolve<Observable<any>> {
 
     private BASE_URL = environment.endpoints.collectionInstrument;
 
@@ -37,20 +29,56 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
     }
 
     constructor(
+        private ngRedux: NgRedux<any>,
         private collectionExercisesActions: CollectionExercisesActions,
-        private collectionInstrumentsService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<CollectionExerciseDetailsViewModel> {
+    resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
         const id = route.params['collection-exercise-ref'];
 
         // TODO retrieve the survey from service tier rather than hard code
         const survey: Survey = {
-            id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-            inquiryCode: '221',
-            name: 'Business Register and Employment Survey',
-            abbr: 'BRES'
-        };
+                id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+                inquiryCode: '221',
+                name: 'Business Register and Employment Survey',
+                abbr: 'BRES'
+            };
+
+        /**
+         * Used to export for breadcrumb.
+         */
+        let exported: any = {};
+
+        const storeCheckObservable = this.ngRedux.select(['collectionExercises', 'items'])
+            .map((collectionExercises: any) => {
+
+                const collectionExercise = collectionExercises.find((item: any) => {
+                    return item.id === id;
+                });
+
+                exported.collectionExercise = collectionExercise;
+
+                return collectionExercise || false;
+            })
+            .first();
+
+        return storeCheckObservable
+            .flatMap((existingCollectionExercise: any) => {
+                return existingCollectionExercise
+                    ? Observable.of(existingCollectionExercise)
+                    : this.collectionExercisesActions.retrieveCollectionExercise(id);
+            })
+            .flatMap((collectionExercise: CollectionExercise) => {
+                return this.collectionInstrumentsService.getStatus(collectionExercise.id);
+            })
+            .map(collectionInstrumentBatch => {
+
+                /**
+                 * Required for breadcrumb - could use a resolved data object.
+                 */
+                return exported;
+            });
 
         // TODO remove this
         // Parallel
@@ -76,36 +104,5 @@ export class CollectionExerciseDetailsResolver implements Resolve<CollectionExer
         // );
         // return observable;
 
-        const observable = this.collectionExercisesActions.retrieveCollectionExercise(id);
-
-        return observable.flatMap((collectionExercise: CollectionExercise) => {
-
-            return this.collectionInstrumentsService.getStatus(collectionExercise.id)
-                .map((collectionInstrumentBatch: any) => {
-
-                    return this.createViewModel(collectionExercise, survey, collectionInstrumentBatch);
-                });
-        });
-    }
-
-    /**
-     * Transform data and return view model
-     */
-    private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrumentBatch: any):
-        CollectionExerciseDetailsViewModel {
-
-        return {
-            id: collectionExercise.id,
-            surveyTitle: survey.name,
-            inquiryCode: survey.inquiryCode,
-            referencePeriod: CollectionExerciseDetailsResolver.buildReferencePeriod(collectionExercise),
-            surveyAbbr: collectionExercise.name,
-            collectionInstrumentBatch: {
-                current: collectionInstrumentBatch.current,
-                status: collectionInstrumentBatch.status
-            },
-            isButtonDisabled: false,
-            csvEndpoint: this.BASE_URL + 'download_csv/' + collectionExercise.id
-        };
     }
 }
