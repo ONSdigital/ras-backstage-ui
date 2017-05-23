@@ -5,7 +5,8 @@ import { SecureMessage } from '../shared/secure-message.model';
 @Component({
     moduleId: module.id,
     selector: 'ons-secure-messages-list',
-    templateUrl: './secure-messages-list.component.html'
+    styleUrls: ['secure-messages-list.component.scss'],
+    templateUrl: 'secure-messages-list.component.html'
 })
 export class SecureMessagesListComponent {
 
