@@ -68,6 +68,8 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
         instance = fixture.componentInstance;
 
+        spyOn(console, 'log').and.callThrough();
+
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
@@ -75,6 +77,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
 
         const comp = fixture.debugElement.componentInstance;
         expect(comp).toBeTruthy();
+        expect(console.log).toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
     }));
 
     /*it('should use data from data store', async(() => {
@@ -117,6 +120,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         // button = fixture.debugElement.query(By.css('.load-ci-batch-button'));
         // // button = fixture.nativeElement.querySelector('[data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"]');
         //
+        // storeData = [createMockCollectionExercise('100')];
         //
         // instance.collectionInstrumentsService = {
         //     loadCollectionInstrumentBundle: function () {}
