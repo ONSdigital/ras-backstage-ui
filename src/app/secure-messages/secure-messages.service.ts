@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { SecureMessage } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Injectable()
 export class SecureMessagesService {
@@ -13,7 +14,11 @@ export class SecureMessagesService {
     private options = new RequestOptions({ headers: this.headers });
 
     constructor(
-        private http: Http) {}
+        private http: Http,
+        private authenticationService: AuthenticationService) {
+
+        this.headers['Authentication'] = authenticationService.getToken();
+    }
 
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 

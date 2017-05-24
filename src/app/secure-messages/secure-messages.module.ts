@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
 
+import { AuthenticationService } from '../authentication/authentication.service';
+
 import { SecureMessagesService } from './secure-messages.service';
 import { SecureMessagesActions } from './secure-messages.actions';
 
@@ -42,6 +44,7 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         NavigationTabsComponent
     ],
     providers: [
+        AuthenticationService,
         SecureMessagesService,
         SecureMessagesActions
     ]
