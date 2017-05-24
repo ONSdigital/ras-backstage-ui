@@ -40,19 +40,19 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
-        private collectionInstrumentsActions: CollectionInstrumentsActions) { }
-
+        private collectionInstrumentsActions: CollectionInstrumentsActions) {}
 
     ngOnInit() {
 
-        let collectionExerciseRef: string;
+        let collectionExerciseRef: string,
+            collectionInstrumentStatus: any;
+
+        if(this.route.snapshot.data.exported) {
+            collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
+        }
 
         this.routeParamSubscription = this.route.params
             .flatMap((params: any) => {  
-
-                /** 
-                 * Reference held for error. 
-                 */ 
                 collectionExerciseRef = params['collection-exercise-ref'];  
 
                 return getDataStoreCollectionExerciseByRef(this.ngRedux, params['collection-exercise-ref']); 
@@ -71,7 +71,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
                 };
 
                 if (collectionExercise) {
-                    this.viewModel = this.createViewModel(collectionExercise, survey, {});
+                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
                 } else {
                     console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.');
                 }
