@@ -1,6 +1,6 @@
-<div class="secure-message-form secure-message-form-component">
+<div class="secure-message-form secure-message-form-component" #secureMessage>
     <form>
-        <p>To: Jacky Turner for Bolts and Ratchets Ltd - 36509908341B</p>
+        <p>{{to}}</p>
 
         <fieldset>
             <label for="secure-message-subject">Subject</label>
@@ -8,7 +8,10 @@
                 id="secure-message-subject"
                 class="secure-message-form__subject input input--text"
                 type="text"
-                name="secure-message-subject"/>
+                name="secure-message-subject"
+                required
+                [(ngModel)]="subject"
+                (keyup)="subjectChange.emit(subject)"/>
         </fieldset>
 
         <br />
@@ -19,14 +22,18 @@
                 id="secure-message-body"
                 class="secure-message-form__body input"
                 rows="10"
-                name="secure-message-body"></textarea>
+                name="secure-message-body"
+                required
+                [(ngModel)]="body"
+                (keyup)="bodyChange.emit(body)"></textarea>
         </fieldset>
 
         <br />
 
         <button class="btn" type="submit"
-            (click)="primary_button_click.emit($event);">Send message</button>
+            (click)="primary_button_click.emit($event);"
+            [disabled]="!isValid()">Send message</button>
 
-        <p><a href="">Cancel</a></p>
+        <p><a routerLink="/secure-messages">Cancel</a></p>
     </form>
 </div>

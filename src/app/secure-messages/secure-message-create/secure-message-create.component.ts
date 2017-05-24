@@ -7,6 +7,12 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
 })
 export class SecureMessageCreateComponent {
 
+    @Input() to: string;
+    @Input() subject: string;
+    @Input() body: string;
+
+    @Output() subjectChange: EventEmitter<any> = new EventEmitter();
+    @Output() bodyChange: EventEmitter<any> = new EventEmitter();
     @Output() send_button_click: EventEmitter<any> = new EventEmitter();
 
 }

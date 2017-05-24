@@ -8,6 +8,16 @@ import { Component, Output, Input, EventEmitter } from '@angular/core';
 })
 export class SecureMessageFormComponent {
 
+    @Input() to: string;
+    @Input() subject: string;
+    @Input() body: string;
+
+    @Output() subjectChange: EventEmitter<any> = new EventEmitter();
+    @Output() bodyChange: EventEmitter<any> = new EventEmitter();
     @Output() primary_button_click: EventEmitter<any> = new EventEmitter();
+
+    public isValid () {
+        return !!this.subject && !!this.body;
+    }
 
 }
