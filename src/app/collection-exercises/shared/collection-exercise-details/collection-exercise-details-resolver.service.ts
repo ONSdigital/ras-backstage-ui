@@ -70,7 +70,10 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
                     : this.collectionExercisesActions.retrieveCollectionExercise(id);
             })
             .flatMap((collectionExercise: CollectionExercise) => {
-                return this.collectionInstrumentsService.getStatus(collectionExercise.id);
+                return this.collectionInstrumentsService.getStatus(collectionExercise.id)
+                    .map((collectionInstrumentStatus: any) => {
+                        exported.collectionInstrumentStatus = collectionInstrumentStatus
+                    });
             })
             .map(collectionInstrumentBatch => {
 
