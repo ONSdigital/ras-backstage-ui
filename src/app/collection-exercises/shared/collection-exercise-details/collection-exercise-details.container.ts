@@ -47,7 +47,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
         let collectionExerciseRef: string,
             collectionInstrumentStatus: any;
 
-        if(this.route.snapshot.data.exported) {
+        if (this.route.snapshot.data && this.route.snapshot.data.exported) {
             collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
         }
 

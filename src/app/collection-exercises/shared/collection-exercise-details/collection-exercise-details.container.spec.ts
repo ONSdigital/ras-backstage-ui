@@ -52,7 +52,19 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                 {
                     provide: ActivatedRoute,
                     useValue: {
-                        params: Observable.of({ 'collection-exercise-ref': '100' })
+                        params: Observable.of({ 'collection-exercise-ref': '100' }),
+                        snapshot: {
+                            data: {
+                                exported: {
+                                    collectionInstrumentStatus: {
+                                        count: 1,
+                                        current: 1,
+                                        id: 'c6467711-21eb-4e78-804c-1db8392f93bb',
+                                        status: 'pending'
+                                    }
+                                }
+                            }
+                        }
                     } 
                 }
             ]
