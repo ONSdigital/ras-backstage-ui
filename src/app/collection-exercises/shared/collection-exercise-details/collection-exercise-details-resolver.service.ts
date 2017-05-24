@@ -45,10 +45,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
                 abbr: 'BRES'
             };
 
-        /**
-         * Used to export for breadcrumb.
-         */
-        let exported: any = {};
+         // Used to export for breadcrumb.
+        const exported: any = {};
 
         const storeCheckObservable = this.ngRedux.select(['collectionExercises', 'items'])
             .map((collectionExercises: any) => {
@@ -72,7 +70,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
             .flatMap((collectionExercise: CollectionExercise) => {
                 return this.collectionInstrumentsService.getStatus(collectionExercise.id)
                     .map((collectionInstrumentStatus: any) => {
-                        exported.collectionInstrumentStatus = collectionInstrumentStatus
+                        exported.collectionInstrumentStatus = collectionInstrumentStatus;
                     });
             })
             .map(collectionInstrumentBatch => {

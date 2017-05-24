@@ -40,7 +40,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
-        private collectionInstrumentsActions: CollectionInstrumentsActions) {}
+        private collectionInstrumentsActions: CollectionInstrumentsActions) { }
 
     ngOnInit() {
 
@@ -59,10 +59,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             }) 
             .subscribe((collectionExercise: any) => {  
 
-                /** 
-                 * TODO 
-                 * Remove survey - get from data store 
-                 */
+                // TODO Remove survey - get from data store
                 const survey: Survey = {
                     id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
                     inquiryCode: '221',
@@ -92,7 +89,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
                 // TODO remove this delay
                 // setTimeout(() => {
 
-                    this.viewModel.collectionInstrumentBatch.status = res.status;
+                this.viewModel.collectionInstrumentBatch.status = res.status;
 
                 // }, 3000);
             },

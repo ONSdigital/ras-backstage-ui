@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "href": "/party/id/12345678",
+  "links": [
+    {
+      "rel": "self",
+      "href": "/party/id/12345678",
+      "type": "application/vnd.ons.party+json"
+    }
+],
+"name": "Bolts and Ratchets Ltd"
+}
