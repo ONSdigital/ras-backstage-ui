@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, Input, EventEmitter } from '@angular/core';
 
 @Component({
     moduleId: module.id,
@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
     styleUrls: ['secure-message-form.component.scss'],
     templateUrl: 'secure-message-form.component.html'
 })
-export class SecureMessageFormComponent {}
+export class SecureMessageFormComponent {
+
+    @Output() primary_button_click: EventEmitter<any> = new EventEmitter();
+
+}

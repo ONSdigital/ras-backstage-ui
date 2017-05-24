@@ -2,7 +2,8 @@
     <div class="grid">
         <div class="grid__col col-8@m">
             <h1 class="saturn">Create message</h1>
-            <ons-secure-message-form></ons-secure-message-form>
+            <ons-secure-message-form
+                (primary_button_click)="send_button_click.emit($event)"></ons-secure-message-form>
         </div>
         <!--<div class="grid__col col-4@m"></div>-->
     </div>
