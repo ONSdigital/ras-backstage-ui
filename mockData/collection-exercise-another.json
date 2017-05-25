@@ -8,7 +8,7 @@
     "actualPublish": null,
     "periodStart": "2017-04-01T00:00:00Z",
     "periodEnd": "2017-04-30T00:00:00Z",
-    "scheduledReturn": "2017-07-31T00:00:00Z",
+    "scheduledReturn": "2017-05-31T00:00:00Z",
     "scheduledEnd": null,
     "executedBy": "Fred Bloggs",
     "state": "EXECUTED",
