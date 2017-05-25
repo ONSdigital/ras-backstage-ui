@@ -4,7 +4,7 @@ let app = express();
 let bodyParser = require('body-parser');
 let ejs = require('ejs');
 
-app.set('port', (process.env.PORT || 8000));
+app.set('port', (process.env.PORT || 8050));
 app.set('view engine', 'html');
 app.set('views', 'src');
 app.engine('html', ejs.renderFile);
