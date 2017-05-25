@@ -14,7 +14,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 })
 export class SecureMessageCreateContainerComponent {
 
-    public to: string = 'To: Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public to: string = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
     public subject: string = '';
     public body: string = '';
 
