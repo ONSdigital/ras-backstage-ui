@@ -14,7 +14,6 @@ export class SecureMessagesService {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     });
-    private token: string;
 
     constructor(
         private http: Http,
@@ -23,32 +22,61 @@ export class SecureMessagesService {
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         const request = (() => {
-                return this.http.post(
-                    SecureMessagesService.BASE_URL + 'message/send',
-                    secureMessage,
-                    new RequestOptions({
-                        method: RequestMethod.Post,
-                        headers: this.encryptedHeaders
-                    })
-                )
-                .map((res: Response) => {
-                    console.log(res);
+            return this.http.post(
+                SecureMessagesService.BASE_URL + 'message/send',
+                secureMessage,
+                new RequestOptions({
+                    method: RequestMethod.Post,
+                    headers: this.encryptedHeaders
                 })
-                .catch((error: any) => {
-                    console.log('Error response: ', error);
-                    return Observable.throw(error.json().error || 'Server error');
-                });
+            )
+            .do((res: Response) => {
+                console.log(res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error.json().error || 'Server error');
             });
+        });
 
-        return this.encryptedHeaders.get('Authorization') ? request() : this.authenticate(request);
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
+    public getAllMessages(): Observable<any> {
+
+        const request = (() => {
+            return this.http.get(
+                SecureMessagesService.BASE_URL + 'messages',
+                new RequestOptions({
+                    method: RequestMethod.Get,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .do((res: Response) => {
+                console.log(res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error.json().error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
     }
 
     public authenticate (request: any) {
         return this.authenticationService.getToken()
             .flatMap((token: string) => {
-                this.encryptedHeaders.append('Authorization', token);
+
+                if (!this.isAuthenticated()) {
+                    this.encryptedHeaders.append('Authorization', token);
+                }
 
                 return request();
             });
+    }
+
+    public isAuthenticated () {
+        return this.encryptedHeaders.get('Authorization');
     }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { SecureMessagesActions } from '../secure-messages.actions';
 
 @Component({
     template: `
@@ -13,10 +14,29 @@ export class SecureMessagesListContainerComponent {
 
     public secureMessagesList: Array<any> = [];
 
-    constructor() {
-        this.secureMessagesList = [
+    constructor(
+        private secureMessagesActions: SecureMessagesActions) {
+
+        this.secureMessagesActions.retrieveAllSecureMessages()
+            .subscribe((res: any) => {
+                const messages = res.json().messages;
+
+                /**
+                 * TODO
+                 * Temporary fix until response data returns an array
+                 */
+                for (const i in messages) {
+                    if (messages.hasOwnProperty(i)) {
+                        this.secureMessagesList.push(messages[i]);
+                    }
+                }
+
+                console.log(this.secureMessagesList);
+            });
+
+        /*this.secureMessagesList = [
             {
-                msgId: '123',
+                msg_id: '123',
                 threadId: '212faf46-931f-4170-9b96-949e20722126',
                 msgTo: {
                     id: 'urn:ons.gov.uk:id:respondent:001.234.56789',
@@ -36,7 +56,7 @@ Thanks for your message. Yes, the figure is right - we had a big expansion last 
 Thanks, Jacky`,
                 links: 'data source'
             }
-        ];
+        ];*/
     }
 
 }

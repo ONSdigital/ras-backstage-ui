@@ -10,6 +10,8 @@ export class SecureMessagesActions {
 
     static CREATE_SINGLE = 'SECURE_MESSAGE_CREATE';
     static CREATED_SINGLE = 'SECURE_MESSAGE_CREATED';
+    static RETRIEVE_ALL = 'SECURE_MESSAGES_ALL_RETRIEVE';
+    static RECEIVED_ALL = 'SECURE_MESSAGES_ALL_RECEIVED';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -36,6 +38,29 @@ export class SecureMessagesActions {
         this.ngRedux.dispatch({
             type: SecureMessagesActions.CREATED_SINGLE,
             payload: statusMessage
+        });
+    }
+
+    public retrieveAllSecureMessages(): Observable<any> {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.RETRIEVE_ALL
+        });
+
+        const observable = this.secureMessagesService.getAllMessages();
+
+        observable.subscribe((secureMessages: any) => {
+            this.receivedAllSecureMessages(secureMessages);
+        });
+
+        return observable;
+    }
+
+    public receivedAllSecureMessages(secureMessages: Array<SecureMessage>) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.RECEIVED_ALL,
+            payload: secureMessages
         });
     }
 

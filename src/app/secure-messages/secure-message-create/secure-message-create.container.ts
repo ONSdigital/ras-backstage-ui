@@ -29,7 +29,7 @@ export class SecureMessageCreateContainerComponent {
             body: this.body,
             collection_case: 'ACollectionCase',
             reporting_unit: 'AReportingUnit',
-            survey: 'bres'
+            survey: 'bres123'
         });
     }
 }
