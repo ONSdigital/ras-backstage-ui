@@ -31,7 +31,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
     constructor(
         private ngRedux: NgRedux<any>,
         private collectionExercisesActions: CollectionExercisesActions,
-        private collectionInstrumentsService: CollectionInstrumentsService) {}
+        private collectionInstrumentsService: CollectionInstrumentsService) { }
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
@@ -39,18 +39,38 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
 
         // TODO retrieve the survey from service tier rather than hard code
         const survey: Survey = {
-                id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-                inquiryCode: '221',
-                name: 'Business Register and Employment Survey',
-                abbr: 'BRES'
-            };
+            id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+            inquiryCode: '221',
+            name: 'Business Register and Employment Survey',
+            abbr: 'BRES'
+        };
 
+<<<<<<< Updated upstream
         /**
          * Used to export for breadcrumb.
          */
         let exported: any = {};
+=======
+        // Used to export for breadcrumb.
+        const exported: any = {};
+>>>>>>> Stashed changes
 
-        const storeCheckObservable = this.ngRedux.select(['collectionExercises', 'items'])
+        // Refactoring undone for clarity
+
+        // const storeCheckObservable = this.ngRedux.select(['collectionExercises', 'items'])
+        //     .map((collectionExercises: any) => {
+        //
+        //         const collectionExercise = collectionExercises.find((item: any) => {
+        //             return item.id === id;
+        //         });
+        //
+        //         exported.collectionExercise = collectionExercise;
+        //
+        //         return collectionExercise || false;
+        //     })
+        //     .first();
+
+        return this.ngRedux.select(['collectionExercises', 'items'])
             .map((collectionExercises: any) => {
 
                 const collectionExercise = collectionExercises.find((item: any) => {
@@ -61,9 +81,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
 
                 return collectionExercise || false;
             })
-            .first();
-
-        return storeCheckObservable
+            .first()
             .flatMap((existingCollectionExercise: any) => {
                 return existingCollectionExercise
                     ? Observable.of(existingCollectionExercise)
@@ -83,29 +101,19 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
                 return exported;
             });
 
-        // TODO remove this
-        // Parallel
-        // const observable = Observable.forkJoin([
-        //   this.collectionExercisesActions.retrieveCollectionExercise(id),
-        //   this.collectionInstrumentsService.getStatus(survey.abbr, '2016')]
-        // );
-        // return observable;
 
-        // Single call
-        // const observable = this.collectionExercisesActions.retrieveCollectionExercise(id)
-        //     .map((collectionExercise: CollectionExercise) =>
-        //         this.createViewModel(collectionExercise, survey, {}));
+        // OR
+
+        // const observable = this.collectionExercisesActions.retrieveCollectionExercise(id);
         //
-        // return observable;
-
-        // Single call
-        // const observable = this.collectionInstrumentsService.getStatus(survey.abbr, '2016');
-        // observable.subscribe(
-        //     (data: any) => {
-        //         console.log(data);
-        //     }
-        // );
-        // return observable;
+        // return observable.flatMap((collectionExercise: CollectionExercise) => {
+        //
+        //     return this.collectionInstrumentsService.getStatus(collectionExercise.id)
+        //         .map((collectionInstrumentBatch: any) => {
+        //
+        //             return this.createViewModel(collectionExercise, survey, collectionInstrumentBatch);
+        //         });
+        // });
 
     }
 }
