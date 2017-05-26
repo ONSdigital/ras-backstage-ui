@@ -47,8 +47,8 @@ describe('SecureMessageCreateContainerComponent', () => {
 
         const comp = fixture.debugElement.componentInstance;
         expect(comp).toBeTruthy();
-        expect(comp.subject).toEqual('');
-        expect(comp.body).toEqual('');
+        expect(comp.secureMessage.subject).toEqual('');
+        expect(comp.secureMessage.body).toEqual('');
     }));
 
     describe('when the sendSecureMessage_handler is invoked', () => {
@@ -65,8 +65,8 @@ describe('SecureMessageCreateContainerComponent', () => {
                 });
 
                 const comp = fixture.debugElement.componentInstance;
-                comp.subject = 'Test subject';
-                comp.body = 'Test body';
+                comp.secureMessage.subject = 'Test subject';
+                comp.secureMessage.body = 'Test body';
 
                 comp.sendSecureMessage_handler();
 
