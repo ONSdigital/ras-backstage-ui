@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { SecureMessagesActions } from '../secure-messages.actions';
 
@@ -22,6 +21,11 @@ export class SecureMessageCreateContainerComponent {
         private secureMessagesActions: SecureMessagesActions) {}
 
     public sendSecureMessage_handler() {
+
+        if (this.subject === '' || this.body === '') {
+            return;
+        }
+
         this.secureMessagesActions.createSecureMessage({
             urn_to: 'respondent.000000000',
             urn_from: 'test',
