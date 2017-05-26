@@ -57,23 +57,20 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
                 return getDataStoreCollectionExerciseByRef(this.ngRedux, params['collection-exercise-ref']); 
             }) 
-            .subscribe((collectionExercise: any) => {  
+            .subscribe((collectionExercise: any) => {
 
-                /** 
-                 * TODO 
-                 * Remove survey - get from data store 
-                 */
+                /**   * TODO   * Remove survey - get from data store   */ 
                 const survey: Survey = {
-                    id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-                    inquiryCode: '221',
+                    id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87', 
+                    inquiryCode: '221', 
                     name: 'Business Register and Employment Survey',
-                    abbr: 'BRES'
+                    abbr: 'BRES' 
                 };
 
-                if (collectionExercise) {
-                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
+                  if (collectionExercise) {
+                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus); 
                 } else {
-                    console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.');
+                    console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
                 }
             });
     }
@@ -88,13 +85,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
         this.collectionInstrumentsActions.loadCollectionInstrumentBatch(this.viewModel.id)
             .subscribe(res => {
-
-                // TODO remove this delay
-                // setTimeout(() => {
-
-                    this.viewModel.collectionInstrumentBatch.status = res.status;
-
-                // }, 3000);
+                this.viewModel.collectionInstrumentBatch.status = res.status;
             },
             err => {
                 // Log any errors
