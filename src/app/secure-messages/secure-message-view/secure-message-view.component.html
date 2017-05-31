@@ -2,21 +2,21 @@
     <div class="grid">
         <div class="grid__col col-8@m">
 
-            <h1 class="saturn">Subject: BRES 2016 clarification</h1>
+            <h1 class="saturn">Subject: {{ originalSecureMessage.subject }}</h1>
 
             <div class="grid">
                 <dl>
                     <dt class="grid__col col-2@s">From:</dt>
-                    <dd class="grid__col col-10@s">Jacky Turner for Bolts & Ratchets Ltd</dd>
+                    <dd class="grid__col col-10@s">{{ originalSecureMessage.urn_from }}</dd>
                     <dt class="grid__col col-2@s">Sent:</dt>
-                    <dd class="grid__col col-10@s">13:37 Fri 7 Apr 2017</dd>
+                    <dd class="grid__col col-10@s">{{ originalSecureMessage.sent_date | date:'hh:mm EEE d MMM y' }}</dd>
                 </dl>
             </div>
 
             <br />
 
             <p>
-                <ng-container *ngFor="let line of messageBody; let i = index">
+                <ng-container *ngFor="let line of originalMessageBody; let i = index">
                     {{ line }}<br />
                 </ng-container>
             </p>
@@ -44,7 +44,7 @@
 
             <button class="btn" type="submit">Send reply</button>
 
-            <p><a href="">Cancel</a></p>
+            <p><a [routerLink]="'/secure-messages'">Cancel</a></p>
 
         </div>
         <!--<div class="grid__col col-4@m"></div>-->

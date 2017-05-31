@@ -34,6 +34,6 @@
             (click)="primary_button_click.emit($event);"
             [disabled]="!isValid()">Send message</button>
 
-        <p><a routerLink="/secure-messages">Cancel</a></p>
+        <p><a [routerLink]="'/secure-messages'">Cancel</a></p>
     </form>
 </div>

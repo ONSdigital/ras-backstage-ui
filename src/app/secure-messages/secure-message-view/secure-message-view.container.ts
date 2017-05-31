@@ -11,14 +11,28 @@ import { getDataStoreSecureMessageById } from '../shared/utils';
 
 @Component({
     template: `
-        <ons-secure-message-view></ons-secure-message-view>
+        <ons-secure-message-view
+            [originalSecureMessage]="originalSecureMessage"></ons-secure-message-view>
     `,
 })
 export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     public routeParamSubscription: Subscription;
 
-    public originalSecureMessage: SecureMessage;
+    public originalSecureMessage: SecureMessage = {
+        threadId: '212faf46-931f-4170-9b96-949e20722126',
+        msgId: '123',
+        urn_to: 'test',
+        urn_from: 'respondent.000000000',
+        subject: 'BRES 2016 clarification',
+        body: `Hi Dave,
+Thanks for your message. Yes, the figure is right - we had a big expansion last year when we bought The Widgets Group.
+Thanks, Jacky`,
+        collection_case: 'ACollectionCase',
+        reporting_unit: 'AReportingUnit',
+        survey: 'bres',
+        sent_date: 'Wed, 31 May 2017 09:08:12 GMT'
+    };
 
     constructor(
         private ngRedux: NgRedux<any>,
