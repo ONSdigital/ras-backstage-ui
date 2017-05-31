@@ -71,7 +71,7 @@ export class SecureMessagesService {
         const request = (() => {
 
             return this.http.get(
-                SecureMessagesService.BASE_URL + 'message' + id,
+                SecureMessagesService.BASE_URL + 'message/' + id,
                 new RequestOptions({
                     method: RequestMethod.Get,
                     headers: this.encryptedHeaders

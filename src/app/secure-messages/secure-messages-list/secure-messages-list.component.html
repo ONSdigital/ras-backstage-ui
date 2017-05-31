@@ -28,7 +28,7 @@
                 <td class="secure-messages-list__field">{{ message.reporting_unit }}</td>
                 <td class="secure-messages-list__field">{{ message.reporting_unit }}</td>
                 <td class="secure-messages-list__field">
-                    <a routerLink="message/{{ message.msg_id }}">{{ message.subject }}</a>
+                    <a [routerLink]="['message/', message.msg_id]">{{ message.subject }}</a>
                 </td>
                 <td class="secure-messages-list__field">{{ message.urn_from }}</td>
                 <td class="secure-messages-list__field">{{ message.urn_to }}</td>

@@ -45,7 +45,7 @@ Thanks, Jacky`,
 
         this.routeParamSubscription = this.route.params
             .flatMap((params: any) => {
-                secureMessageId = params['id'];
+                secureMessageId = params['secure-message-id'];
 
                 return getDataStoreSecureMessageById(this.ngRedux, secureMessageId);
             })

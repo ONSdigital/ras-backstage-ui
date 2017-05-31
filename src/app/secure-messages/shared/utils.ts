@@ -1,4 +1,5 @@
 import { NgRedux } from '@angular-redux/store';
+import 'rxjs/add/operator/first';
 
 export function getDataStoreSecureMessageById(store: NgRedux<any>, secureMessageId: string) {
 

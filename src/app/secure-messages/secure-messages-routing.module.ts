@@ -5,6 +5,7 @@ import { SecureMessagesComponent } from './secure-messages.component';
 import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
+import { SecureMessageViewResolver } from './secure-message-view/secure-message-view.resolver.service';
 
 const SecureMessagesRoutes: Routes = [
     {
@@ -29,8 +30,11 @@ const SecureMessagesRoutes: Routes = [
                 }
             },
             {
-                path: 'message/:id',
+                path: 'message/:secure-message-id',
                 component: SecureMessageViewContainerComponent,
+                resolve: {
+                    exported: SecureMessageViewResolver
+                },
                 data: {
                     breadcrumb: 'View message'
                 }
@@ -45,6 +49,9 @@ const SecureMessagesRoutes: Routes = [
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        SecureMessageViewResolver
     ]
 })
 export class SecureMessagesRoutingModule { }

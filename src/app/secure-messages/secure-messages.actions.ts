@@ -50,10 +50,11 @@ export class SecureMessagesActions {
             id: id
         });
 
-        const observable = this.secureMessagesService.getMessage(id);
+        const observable = this.secureMessagesService.getMessage(id)
+            .map(res => res.json());
 
-        observable.subscribe((statusMessage: any) => {
-            this.createdSecureMessage(statusMessage);
+        observable.subscribe((secureMessage: SecureMessage) => {
+            this.receivedSecureMessage(secureMessage);
         });
 
         return observable;
@@ -73,9 +74,10 @@ export class SecureMessagesActions {
             type: SecureMessagesActions.RETRIEVE_ALL
         });
 
-        const observable = this.secureMessagesService.getAllMessages();
+        const observable = this.secureMessagesService.getAllMessages()
+            .map(res => res.json().messages);
 
-        observable.subscribe((secureMessages: any) => {
+        observable.subscribe((secureMessages: Array<SecureMessage>) => {
             this.receivedAllSecureMessages(secureMessages);
         });
 

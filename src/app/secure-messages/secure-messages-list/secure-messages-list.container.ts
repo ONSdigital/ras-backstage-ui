@@ -50,8 +50,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     ngOnInit() {
         this.secureMessagesActions.retrieveAllSecureMessages()
-            .subscribe((res: any) => {
-                const messages = res.json().messages;
+            .subscribe((secureMessages: any) => {
+                const messages = secureMessages;
 
                 /**
                  * TODO
