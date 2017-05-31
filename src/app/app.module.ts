@@ -48,13 +48,17 @@ export class AppModule {
 
     constructor(
         private ngRedux: NgRedux<IAppState>,
-        private devTools: DevToolsExtension,
-        private ngReduxRouter: NgReduxRouter) {
+        private ngReduxRouter: NgReduxRouter,
+        private devTools: DevToolsExtension) {
 
         this.ngRedux.configureStore(
             rootReducer,
             {
                 collectionExercises: {
+                    isFetching: false,
+                    items: []
+                },
+                secureMessages: {
                     isFetching: false,
                     items: []
                 }

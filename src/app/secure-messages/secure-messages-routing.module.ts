@@ -29,7 +29,7 @@ const SecureMessagesRoutes: Routes = [
                 }
             },
             {
-                path: 'message-messageId',
+                path: 'message/:id',
                 component: SecureMessageViewContainerComponent,
                 data: {
                     breadcrumb: 'View message'

@@ -44,6 +44,7 @@ export class SecureMessagesService {
     }
 
     public getAllMessages(): Observable<any> {
+
         const request = (() => {
 
             return this.http.get(
@@ -55,6 +56,29 @@ export class SecureMessagesService {
             )
             .do((res: Response) => {
                 console.log('Get all: ', res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error.json().error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
+    public getMessage(id: string): Observable<any> {
+
+        const request = (() => {
+
+            return this.http.get(
+                SecureMessagesService.BASE_URL + 'message' + id,
+                new RequestOptions({
+                    method: RequestMethod.Get,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .do((res: Response) => {
+                console.log('Get one: ', res);
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);

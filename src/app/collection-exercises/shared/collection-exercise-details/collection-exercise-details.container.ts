@@ -55,7 +55,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             .flatMap((params: any) => {  
                 collectionExerciseRef = params['collection-exercise-ref'];  
 
-                return getDataStoreCollectionExerciseByRef(this.ngRedux, params['collection-exercise-ref']); 
+                return getDataStoreCollectionExerciseByRef(this.ngRedux, collectionExerciseRef); 
             }) 
             .subscribe((collectionExercise: any) => {
 

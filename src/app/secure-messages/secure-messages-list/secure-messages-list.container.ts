@@ -53,8 +53,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
             .subscribe((res: any) => {
                 const messages = res.json().messages;
 
-                console.log('here');
-
                 /**
                  * TODO
                  * Temporary fix until response data returns an array
@@ -64,8 +62,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
                         this.secureMessagesList.push(messages[i]);
                     }
                 }
-
-                console.log(this.secureMessagesList);
             });
     }
 }
