@@ -30,8 +30,9 @@ export class SecureMessagesService {
                     headers: this.encryptedHeaders
                 })
             )
+            .share()
             .do((res: Response) => {
-                console.log(res);
+                console.log('Create one: ', res);
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
@@ -43,8 +44,8 @@ export class SecureMessagesService {
     }
 
     public getAllMessages(): Observable<any> {
-
         const request = (() => {
+
             return this.http.get(
                 SecureMessagesService.BASE_URL + 'messages',
                 new RequestOptions({
@@ -53,7 +54,7 @@ export class SecureMessagesService {
                 })
             )
             .do((res: Response) => {
-                console.log(res);
+                console.log('Get all: ', res);
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
@@ -65,8 +66,9 @@ export class SecureMessagesService {
     }
 
     public authenticate (request: any) {
+
         return this.authenticationService.getToken()
-            .flatMap((token: string) => {
+            .concatMap((token: string) => {
 
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);

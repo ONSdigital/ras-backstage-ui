@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
@@ -27,6 +28,7 @@ export class SecureMessageCreateContainerComponent {
     };
 
     constructor(
+        private router: Router,
         private secureMessagesActions: SecureMessagesActions) {}
 
     public sendSecureMessage_handler() {
@@ -35,6 +37,9 @@ export class SecureMessageCreateContainerComponent {
             return;
         }
 
-        this.secureMessagesActions.createSecureMessage(this.secureMessage);
+        this.secureMessagesActions.createSecureMessage(this.secureMessage)
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
     }
 }
