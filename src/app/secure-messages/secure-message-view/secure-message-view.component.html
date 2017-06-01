@@ -21,14 +21,6 @@
                 </ng-container>
             </p>
 
-            <!--<p>
-                <ng-container *ngFor="let line of newMessageBodyTest; let i = index">
-                    {{ line }}<br />
-                </ng-container>
-            </p>-->
-
-            <br />
-
             <fieldset>
                 <label class="venus" for="secure-message-body">Reply</label>
                 <textarea
@@ -37,12 +29,13 @@
                     rows="10"
                     name="secure-message-body"
                     [ngModel]="newMessageBody"
-                    (keyup)="onTypingReplyTest($event)"></textarea>
+                    (keyup)="onTypingReply($event)"></textarea>
             </fieldset>
 
             <br />
 
-            <button class="btn" type="submit">Send reply</button>
+            <button class="btn" type="submit"
+                (click)="send_reply_click_handler.emit($event)">Send reply</button>
 
             <p><a [routerLink]="'/secure-messages'">Cancel</a></p>
 

@@ -19,22 +19,11 @@ export class SecureMessageViewComponent implements OnInit {
     @Output() send_reply_click_handler: EventEmitter<any> = new EventEmitter();
 
     ngOnInit() {
-
-        this.newSecureMessageModel = {
-            threadId: this.originalSecureMessage.threadId,
-            urn_to: this.originalSecureMessage.urn_from,
-            urn_from: 'test',
-            subject: this.originalSecureMessage.subject,
-            body: '',
-            collection_case: this.originalSecureMessage.collection_case,
-            reporting_unit: this.originalSecureMessage.reporting_unit,
-            survey: this.originalSecureMessage.survey
-        };
-
         this.originalMessageBody = this.originalSecureMessage.body.split(/\r\n|\r|\n/g);
     }
 
-    public onTypingReplyTest(event: KeyboardEvent) {
+    public onTypingReply(event: KeyboardEvent) {
+        this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
         this.newMessageBodyTest = (<HTMLInputElement>event.target).value.split(/\r\n|\r|\n/g);
     }
 }

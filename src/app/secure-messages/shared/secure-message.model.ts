@@ -1,6 +1,6 @@
 export interface SecureMessage {
-    threadId?: string;
-    msgId?: string;
+    thread_id?: string;
+    msg_id?: string;
     links?: string;
     labels?: Array<string>;
     read_date?: string;

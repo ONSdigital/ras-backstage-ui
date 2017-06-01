@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
 import { SecureMessage } from './shared/secure-message.model';
 import { SecureMessagesService } from './secure-messages.service';
@@ -14,6 +14,8 @@ export class SecureMessagesActions {
     static RECEIVED_SINGLE = 'SECURE_MESSAGES_SINGLE_RECEIVED';
     static RETRIEVE_ALL = 'SECURE_MESSAGES_ALL_RETRIEVE';
     static RECEIVED_ALL = 'SECURE_MESSAGES_ALL_RECEIVED';
+    static REPLY_SINGLE = 'SECURE_MESSAGE_REPLY_CREATE';
+    static REPLIED_SINGLE = 'SECURE_MESSAGE_REPLY_CREATED';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -39,6 +41,30 @@ export class SecureMessagesActions {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.CREATED_SINGLE,
+            payload: statusMessage
+        });
+    }
+
+    public replyToSecureMessage(secureMessage: SecureMessage) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.REPLY_SINGLE,
+            payload: secureMessage
+        });
+
+        const observable = this.secureMessagesService.createSecureMessage(secureMessage);
+
+        observable.subscribe((statusMessage: any) => {
+            this.repliedToSecureMessage(statusMessage);
+        });
+
+        return observable;
+    }
+
+    public repliedToSecureMessage(statusMessage: any) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.REPLIED_SINGLE,
             payload: statusMessage
         });
     }

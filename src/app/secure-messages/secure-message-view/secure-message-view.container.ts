@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { NgRedux } from '@angular-redux/store';
@@ -12,31 +12,22 @@ import { getDataStoreSecureMessageById } from '../shared/utils';
 @Component({
     template: `
         <ons-secure-message-view
-            [originalSecureMessage]="originalSecureMessage"></ons-secure-message-view>
+            [originalSecureMessage]="originalSecureMessage"
+            [(newSecureMessageModel)]="newSecureMessage"
+            (send_reply_click_handler)="sendReply_handler($event)"></ons-secure-message-view>
     `,
 })
 export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     public routeParamSubscription: Subscription;
 
-    public originalSecureMessage: SecureMessage = {
-        threadId: '212faf46-931f-4170-9b96-949e20722126',
-        msgId: '123',
-        urn_to: 'test',
-        urn_from: 'respondent.000000000',
-        subject: 'BRES 2016 clarification',
-        body: `Hi Dave,
-Thanks for your message. Yes, the figure is right - we had a big expansion last year when we bought The Widgets Group.
-Thanks, Jacky`,
-        collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit',
-        survey: 'bres',
-        sent_date: 'Wed, 31 May 2017 09:08:12 GMT'
-    };
+    public originalSecureMessage: SecureMessage;
+    public newSecureMessage: SecureMessage;
 
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
+        private router: Router,
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
@@ -52,8 +43,7 @@ Thanks, Jacky`,
             .subscribe((secureMessage: SecureMessage) => {
 
                 if (secureMessage) {
-                    console.log('sm container has: ', secureMessage);
-                    this.originalSecureMessage = secureMessage;
+                    this.setMessages(secureMessage);
                 } else {
                     console.log('Secure message with id "' + secureMessageId + '" not found in store.');
                 }
@@ -62,5 +52,33 @@ Thanks, Jacky`,
 
     ngOnDestroy() {
         this.routeParamSubscription.unsubscribe();
+    }
+
+    public setMessages(originalSecureMessage: SecureMessage) {
+
+        this.originalSecureMessage = originalSecureMessage;
+
+        this.newSecureMessage = {
+            thread_id: this.originalSecureMessage.thread_id,
+            urn_to: this.originalSecureMessage.urn_from,
+            urn_from: 'test',
+            subject: originalSecureMessage.subject,
+            body: '',
+            collection_case: this.originalSecureMessage.collection_case,
+            reporting_unit: this.originalSecureMessage.reporting_unit,
+            survey: this.originalSecureMessage.survey
+        };
+    }
+
+    public sendReply_handler() {
+
+        if (this.newSecureMessage.body === '') {
+            return;
+        }
+
+        this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
     }
 }
