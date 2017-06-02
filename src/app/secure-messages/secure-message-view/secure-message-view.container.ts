@@ -7,6 +7,8 @@ import { NgRedux } from '@angular-redux/store';
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
+import { User } from '../../user/user.model';
+
 import { getDataStoreSecureMessageById } from '../shared/utils';
 
 @Component({
@@ -64,13 +66,19 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,
             urn_to: originalSecureMessage.urn_to[0],
-            urn_from: this.route.snapshot.data.user.id,
+            urn_from: '',
             subject: originalSecureMessage.subject,
             body: '',
             collection_case: this.originalSecureMessage.collection_case,
             reporting_unit: this.originalSecureMessage.reporting_unit,
             survey: this.originalSecureMessage.survey
         };
+
+        this.ngRedux.select(['user', 'item'])
+            .first()
+            .subscribe((user: User) => {
+                this.newSecureMessage.urn_from = user.id;
+            });
     }
 
     public sendReply_handler() {

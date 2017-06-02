@@ -61,6 +61,10 @@ export class AppModule {
                 secureMessages: {
                     isFetching: false,
                     items: []
+                },
+                user: {
+                    isFetching: false,
+                    item: null
                 }
             },
             null,

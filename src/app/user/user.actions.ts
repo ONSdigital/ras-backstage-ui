@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 
+import { User } from './user.model';
 import { UserService } from './user.service';
 
 @Injectable()
@@ -22,17 +23,18 @@ export class UserActions {
 
         const observable = this.userService.getUser();
 
-        observable.subscribe(() => {
-            this.userReceived();
+        observable.subscribe((user: User) => {
+            this.userReceived(user);
         });
 
         return observable;
     }
 
-    public userReceived() {
+    public userReceived(user: User) {
 
         this.ngRedux.dispatch({
-            type: UserActions.RECEIVED_USER
+            type: UserActions.RECEIVED_USER,
+            user: user
         });
     }
 }

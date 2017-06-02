@@ -10,7 +10,6 @@ export default function(state: any = INIT_STATE, action: any) {
 
     switch (action.type) {
         case SecureMessagesActions.RECEIVED_SINGLE:
-            console.log('Secure message reducer', state, action);
 
             let existingItem;
 
