@@ -1,5 +1,5 @@
 import { UserActions } from './user.actions';
-import { User } from './user.model';
+import { User } from './shared/user.model';
 
 const INIT_STATE: { isFetching: Boolean, item: User } = {
     isFetching: false,

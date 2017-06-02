@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 
-import { User } from './user.model';
+import { User } from './shared/user.model';
 import { UserService } from './user.service';
 
 @Injectable()

@@ -7,7 +7,7 @@ import { NgRedux } from '@angular-redux/store';
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
-import { User } from '../../user/user.model';
+import { User } from '../../user/shared/user.model';
 
 import { getDataStoreSecureMessageById } from '../shared/utils';
 
