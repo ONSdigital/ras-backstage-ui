@@ -64,7 +64,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,
             urn_to: originalSecureMessage.urn_to[0],
-            urn_from: 'test',
+            urn_from: this.route.snapshot.data.user.id,
             subject: originalSecureMessage.subject,
             body: '',
             collection_case: this.originalSecureMessage.collection_case,

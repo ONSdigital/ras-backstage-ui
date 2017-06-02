@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
+
+import { UserActions } from '../../user/user.actions';
 
 @Component({
     template: `
@@ -13,23 +16,42 @@ import { SecureMessagesActions } from '../secure-messages.actions';
             [(body)]="secureMessage.body"></ons-secure-message-create>
     `,
 })
-export class SecureMessageCreateContainerComponent {
+export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
     public to: string = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
 
-    public secureMessage: SecureMessage = {
-        urn_to: 'respondent.000000000',
-        urn_from: 'test',
-        subject: '',
-        body: '',
-        collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit',
-        survey: 'bres123'
-    };
+    public secureMessage: SecureMessage;
+
+    public getUserSubscription: Subscription;
 
     constructor(
         private router: Router,
+        private userActions: UserActions,
         private secureMessagesActions: SecureMessagesActions) {}
+
+    ngOnInit() {
+        this.getUserSubscription = this.userActions.getUser()
+            .subscribe((user: any) => {
+
+                this.secureMessage = {
+                    urn_to: 'respondent.000000000',
+                    urn_from: user.id,
+                    subject: '',
+                    body: '',
+                    collection_case: 'ACollectionCase',
+                    reporting_unit: 'AReportingUnit',
+                    survey: 'bres123'
+                };
+
+                if (!user) {
+                    console.log('Logged in user not found');
+                }
+            });
+    }
+
+    ngOnDestroy() {
+        this.getUserSubscription.unsubscribe();
+    }
 
     public sendSecureMessage_handler() {
 

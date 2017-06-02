@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import { UserModule } from '../user/user.module';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
 
@@ -27,10 +28,11 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         HttpModule,
         CommonModule,
         RouterModule,
-        BreadcrumbModule,
         FormsModule,
+        BreadcrumbModule,
+        UserModule,
 
-        SecureMessagesRoutingModule
+        SecureMessagesRoutingModule,
     ],
     declarations: [
         SecureMessagesComponent,
@@ -46,7 +48,7 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
     providers: [
         AuthenticationService,
         SecureMessagesService,
-        SecureMessagesActions
+        SecureMessagesActions,
     ]
 })
 export class SecureMessagesModule {}

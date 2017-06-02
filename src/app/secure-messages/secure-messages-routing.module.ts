@@ -7,6 +7,8 @@ import { SecureMessageCreateContainerComponent } from './secure-message-create/s
 import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
 import { SecureMessageViewResolver } from './secure-message-view/secure-message-view.resolver.service';
 
+import { UserResolver } from '../user/user.resolver';
+
 const SecureMessagesRoutes: Routes = [
     {
         path: 'secure-messages',
@@ -33,6 +35,7 @@ const SecureMessagesRoutes: Routes = [
                 path: 'message/:secure-message-id',
                 component: SecureMessageViewContainerComponent,
                 resolve: {
+                    user: UserResolver,
                     exported: SecureMessageViewResolver
                 },
                 data: {
