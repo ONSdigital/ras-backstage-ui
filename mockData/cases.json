@@ -55,19 +55,23 @@
             "sampleUnitType": "B"
         },
         "caseEvents": [{
-                "description": "Initial creation of case",
-                "category": "CASE_CREATED",
-                "subCategory": null,
-                "createdBy": "SYSTEM",
-                "createdDateTime": "2017-02-22T14:16:50Z"
-            },
-            {
-                "description": "Create Household Visit",
-                "category": "CASE_COMPLETED",
-                "subCategory": "HouseholdCreateVisit",
-                "createdBy": "SYSTEM",
-                "createdDateTime": "2017-04-10T08:48:49Z"
-            }
-        ]
+            "description": "Initial creation of case",
+            "category": "CASE_CREATED",
+            "subCategory": null,
+            "createdBy": "SYSTEM",
+            "createdDateTime": "2017-02-22T14:16:50Z"
+        }, {
+            "description": "Uploaded case",
+            "category": "CASE_UPLOADED",
+            "subCategory": "HouseholdCreateVisit",
+            "createdBy": "SYSTEM",
+            "createdDateTime": "2017-03-10T08:48:49Z"
+        }, {
+            "description": "Create Household Visit",
+            "category": "CASE_COMPLETED",
+            "subCategory": "HouseholdCreateVisit",
+            "createdBy": "SYSTEM",
+            "createdDateTime": "2017-04-10T08:48:49Z"
+        }]
     }
 ]
