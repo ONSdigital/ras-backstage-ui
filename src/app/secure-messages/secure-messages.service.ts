@@ -77,6 +77,7 @@ export class SecureMessagesService {
                     headers: this.encryptedHeaders
                 })
             )
+            .share()
             .do((res: Response) => {
                 console.log('Get one: ', res);
             })

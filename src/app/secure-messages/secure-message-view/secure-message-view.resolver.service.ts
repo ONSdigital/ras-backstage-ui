@@ -19,10 +19,9 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
         const id = route.params['secure-message-id'];
-
         const exported: any = {};
 
-        return getDataStoreSecureMessageById(this.ngRedux, id)
+        const resolve = getDataStoreSecureMessageById(this.ngRedux, id)
 
             .flatMap((existingSecureMessage: any) => {
 
@@ -34,9 +33,19 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
             .map((secureMessage: SecureMessage) => {
                 exported.secureMessage = secureMessage;
 
-                console.log(1, exported);
-
                 return exported;
             });
+
+        /*resolve.subscribe((secureMessage: SecureMessage) => {
+
+            if (!secureMessage) {
+                /!**
+                 * TODO
+                 * Navigate to 404
+                 *!/
+            }
+        });*/
+
+        return resolve;
     }
 }
