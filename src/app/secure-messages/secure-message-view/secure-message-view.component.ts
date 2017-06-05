@@ -9,7 +9,7 @@ import { SecureMessage } from '../shared/secure-message.model';
 })
 export class SecureMessageViewComponent implements OnInit {
 
-    public originalMessageBody: Array<string>;
+    public originalMessageBody: Array<string> = [];
     public newMessageBody: string;
     public newMessageBodyTest: Array<string>;
 
@@ -19,7 +19,9 @@ export class SecureMessageViewComponent implements OnInit {
     @Output() send_reply_click_handler: EventEmitter<any> = new EventEmitter();
 
     ngOnInit() {
-        this.originalMessageBody = this.originalSecureMessage.body.split(/\r\n|\r|\n/g);
+        if (this.originalSecureMessage && this.originalSecureMessage.body) {
+            this.originalMessageBody = this.originalSecureMessage.body.split(/\r\n|\r|\n/g);
+        }
     }
 
     public onTypingReply(event: KeyboardEvent) {

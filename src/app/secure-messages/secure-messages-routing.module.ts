@@ -9,7 +9,7 @@ import { SecureMessageViewResolver } from './secure-message-view/secure-message-
 
 import { UserResolver } from '../user/user.resolver';
 
-const SecureMessagesRoutes: Routes = [
+export const secureMessagesRoutes: Routes = [
     {
         path: 'secure-messages',
         component: SecureMessagesComponent,
@@ -48,7 +48,7 @@ const SecureMessagesRoutes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(SecureMessagesRoutes)
+        RouterModule.forChild(secureMessagesRoutes)
     ],
     exports: [
         RouterModule

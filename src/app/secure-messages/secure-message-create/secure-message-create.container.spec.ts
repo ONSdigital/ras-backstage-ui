@@ -1,20 +1,46 @@
 import { Observable } from 'rxjs/Observable';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+import { NgReduxModule, NgRedux } from '@angular-redux/store';
+
+import { UserActions } from '../../user/user.actions';
 
 import { SecureMessagesModule } from '../secure-messages.module';
+// import { AppRoutingModule, appRoutes } from '../../app-routing.module';
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { SecureMessageCreateContainerComponent } from './secure-message-create.container';
 
 let fixture: ComponentFixture<any>,
     instance: any,
+    router: any,
+
+    mockStore: any,
+    // mockRouter: any,
+    mockUserActions: any,
 
     mockSecureMessage: any,
     mockSecureMessagesActions: any;
 
 describe('SecureMessageCreateContainerComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(() => {
+
+        mockStore = {
+            dispatch(action: any) {},
+            configureStore() {},
+            select() {
+                return Observable.of(null);
+            },
+        };
+
+        mockUserActions = {
+            getUser: function() {
+                return Observable.of({
+                    id: '123'
+                });
+            }
+        };
 
         mockSecureMessagesActions = {
             createSecureMessage: function() {
@@ -22,19 +48,39 @@ describe('SecureMessageCreateContainerComponent', () => {
             }
         };
 
-        spyOn(mockSecureMessagesActions, 'createSecureMessage');
+        spyOn(mockUserActions, 'getUser').and.callThrough();
+        spyOn(mockSecureMessagesActions, 'createSecureMessage').and.callFake(function () {
+            return {
+                subscribe: function () {}
+            };
+        });
 
         TestBed.configureTestingModule({
             imports: [
+                NgReduxModule,
                 RouterTestingModule,
+                // RouterTestingModule.withRoutes(appRoutes),
+                // AppRoutingModule,
                 SecureMessagesModule
             ],
+            /*declarations: [
+                AppComponent
+            ],*/
             providers: [
+                { provide: NgRedux, useValue: mockStore},
+                { provide: UserActions, useValue: mockUserActions },
                 { provide: SecureMessagesActions, useValue: mockSecureMessagesActions }
             ]
         })
         .compileComponents();
-    }));
+
+        // router = TestBed.get(Router);
+        // router.initialNavigation();
+    });
+
+    /**
+     * TODO - Test routing after sending a message
+     */
 
     it('should initialise correctly', async(() => {
         fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
@@ -49,6 +95,7 @@ describe('SecureMessageCreateContainerComponent', () => {
         expect(comp).toBeTruthy();
         expect(comp.secureMessage.subject).toEqual('');
         expect(comp.secureMessage.body).toEqual('');
+        expect(mockUserActions.getUser).toHaveBeenCalled();
     }));
 
     describe('when the sendSecureMessage_handler is invoked', () => {

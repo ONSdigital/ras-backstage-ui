@@ -19,7 +19,6 @@ export class UserService {
         private http: Http) {}
 
     public getUser(): Observable<any> {
-
         return this.user = Observable.of({
             id: 'test',
             emailAddress: 'onsuser@ons.com',
