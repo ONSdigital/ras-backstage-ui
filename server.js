@@ -27,7 +27,6 @@ let server = app.listen(app.get('port'), () => {
 
 // Mock data endpoints
 app.get('/api/collectionexercises/:id', (req, res) => {
-
     let id = req.url.split('/').pop();
 
     if (id === 'c6467711-21eb-4e78-804c-1db8392f93fb') {
@@ -37,12 +36,11 @@ app.get('/api/collectionexercises/:id', (req, res) => {
     }
 });
 
-app.get('/api/collection-exercises', (req, res) => {
-    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercises.json');
+app.get('/api/collection-instrument-bundles', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument-bundles.json');
 });
 
 app.get('/api/surveys/:id', (req, res) => {
-
     let id = req.url.split('/').pop();
 
     if (id === 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87') {

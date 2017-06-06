@@ -156,8 +156,7 @@ describe('CollectionExerciseDetailsComponent component', () => {
 
             // Check the Download CSV link is displayed properly with the correct endpoint URL
             expect(fixture.nativeElement.querySelector('[data-test="DOWNLOAD_CSV_LINK"]').innerHTML).toEqual('Download list (CSV)');
-            expect(fixture.nativeElement.querySelector('[data-test="DOWNLOAD_CSV_LINK"]').href)
-                .toEqual('http://localhost:9876/endpoint-here');
+            expect(fixture.nativeElement.querySelector('[data-test="DOWNLOAD_CSV_LINK"]').href).toContain('/endpoint-here');
         });
     }));
 
