@@ -27,7 +27,13 @@ let server = app.listen(app.get('port'), () => {
 
 // Mock data endpoints
 app.get('/api/collectionexercises/:id', (req, res) => {
-    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercise.json');
+    let id = req.url.split('/').pop();
+
+    if (id === 'c6467711-21eb-4e78-804c-1db8392f93fb') {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercise-bres.json');
+    } else {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercise-another.json');
+    }
 });
 
 app.get('/api/collection-instrument-bundles', (req, res) => {
@@ -35,7 +41,13 @@ app.get('/api/collection-instrument-bundles', (req, res) => {
 });
 
 app.get('/api/surveys/:id', (req, res) => {
-    res.sendFile(__dirname + '/' + staticFolder + '/mockData/survey.json');
+    let id = req.url.split('/').pop();
+
+    if (id === 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87') {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/survey-bres.json');
+    } else {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/survey-another.json');
+    }
 });
 
 app.get('/api/cases/partyid/:id', (req, res) => {
@@ -49,7 +61,3 @@ app.get('/api/party-api/respondents/id/:id', (req, res) => {
 app.get('/api/party-api/businesses/id/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-business.json');
 });
-
-
-// code below returns end of a url:
-// let id = req.url.split('/').pop();
