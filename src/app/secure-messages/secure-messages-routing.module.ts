@@ -5,8 +5,11 @@ import { SecureMessagesComponent } from './secure-messages.component';
 import { SecureMessagesListContainerComponent } from './secure-messages-list/secure-messages-list.container';
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
+import { SecureMessageViewResolver } from './secure-message-view/secure-message-view.resolver.service';
 
-const SecureMessagesRoutes: Routes = [
+import { UserResolver } from '../user/user.resolver';
+
+export const secureMessagesRoutes: Routes = [
     {
         path: 'secure-messages',
         component: SecureMessagesComponent,
@@ -29,8 +32,12 @@ const SecureMessagesRoutes: Routes = [
                 }
             },
             {
-                path: 'message-messageId',
+                path: 'message/:secure-message-id',
                 component: SecureMessageViewContainerComponent,
+                resolve: {
+                    user: UserResolver,
+                    exported: SecureMessageViewResolver
+                },
                 data: {
                     breadcrumb: 'View message'
                 }
@@ -41,10 +48,13 @@ const SecureMessagesRoutes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(SecureMessagesRoutes)
+        RouterModule.forChild(secureMessagesRoutes)
     ],
     exports: [
         RouterModule
+    ],
+    providers: [
+        SecureMessageViewResolver
     ]
 })
 export class SecureMessagesRoutingModule { }

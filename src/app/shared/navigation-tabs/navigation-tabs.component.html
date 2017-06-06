@@ -1,23 +1,17 @@
 <ul class="navigation-tabs navigation-tabs-component">
-    <li class="navigation-tabs__item navigation-tabs__item--primary navigation-tabs__item--active">
-        <a routerLink="view-message"
-            class="btn btn--secondary btn--border navigation-tabs__tab navigation-tabs__tab--active">Inbox</a>
-    </li>
-    <li class="navigation-tabs__item navigation-tabs__item--primary">
-        <a routerLink="view-message"
-            class="btn btn--secondary btn--border navigation-tabs__tab">Sent</a>
-    </li>
-    <li class="navigation-tabs__item navigation-tabs__item--primary">
-        <a routerLink="view-message"
-            class="btn btn--secondary btn--border navigation-tabs__tab">Drafts</a>
-    </li>
-    <li class="navigation-tabs__item navigation-tabs__item--primary">
-        <a routerLink="view-message"
-            class="btn btn--secondary btn--border navigation-tabs__tab">All</a>
-    </li>
+    <li *ngFor="let tab of tabs"
+        class="navigation-tabs__item navigation-tabs__item--primary"
+        [ngClass]="{
+            'navigation-tabs__item--primary': tab.type === undefined,
+            'navigation-tabs__item--secondary': tab.type === 'link',
+            'navigation-tabs__item--active': tab.selected
+        }">
 
-    <li class="navigation-tabs__item navigation-tabs__item--secondary">
-        <a routerLink="create-message"
-            class="btn btn--secondary btn--border navigation-tabs__tab navigation-tabs__tab--link">Create new message</a>
+        <a routerLink="{{ tab.link }}"
+            class="btn btn--secondary btn--border navigation-tabs__tab"
+            [ngClass]="{
+                'navigation-tabs__tab--link': tab.type === 'link',
+                'navigation-tabs__tab--active': tab.selected
+            }">{{ tab.label }}</a>
     </li>
 </ul>

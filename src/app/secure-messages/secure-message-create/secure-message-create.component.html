@@ -1,9 +1,15 @@
 <div class="secure-message-create-component">
-    <div class="grid">
-        <div class="grid__col col-8@m">
+    <div class="grid grid--reverse">
+        <div class="grid__col col-4@m"></div>
+        <div class="grid__col col-7@m pull-1@m">
             <h1 class="saturn">Create message</h1>
-            <ons-secure-message-form></ons-secure-message-form>
+            <ons-secure-message-form
+                (primary_button_click)="send_button_click.emit($event)"
+                [(to)]="to"
+                [subject]="subject"
+                (subjectChange)="subjectChange.emit($event)"
+                [body]="body"
+                (bodyChange)="bodyChange.emit($event)"></ons-secure-message-form>
         </div>
-        <!--<div class="grid__col col-4@m"></div>-->
     </div>
 </div>

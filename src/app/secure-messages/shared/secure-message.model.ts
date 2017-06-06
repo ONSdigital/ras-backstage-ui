@@ -1,19 +1,16 @@
 export interface SecureMessage {
-    msgId: string;
-    threadId: string;
-    msgTo: {
-        id: string,
-        emailAddress: string,
-        firstName: string,
-        lastName: string
-    };
-    msgFrom: {
-        id: string,
-        emailAdress: string,
-        firstName: string,
-        lastName: string
-    };
+    thread_id?: string;
+    msg_id?: string;
+    links?: string;
+    labels?: Array<string>;
+    read_date?: string;
+    sent_date?: string;
+
+    urn_to: string;
+    urn_from: string;
     subject: string;
     body: string;
-    links: string;
+    collection_case: string;
+    reporting_unit: string;
+    survey: string;
 }

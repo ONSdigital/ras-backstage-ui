@@ -4,8 +4,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
+import { UserModule } from '../user/user.module';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
+
+import { AuthenticationService } from '../authentication/authentication.service';
+
+import { SecureMessagesService } from './secure-messages.service';
+import { SecureMessagesActions } from './secure-messages.actions';
 
 import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-tabs.component';
 import { SecureMessagesComponent } from './secure-messages.component';
@@ -22,10 +28,11 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         HttpModule,
         CommonModule,
         RouterModule,
-        BreadcrumbModule,
         FormsModule,
+        BreadcrumbModule,
+        UserModule,
 
-        SecureMessagesRoutingModule
+        SecureMessagesRoutingModule,
     ],
     declarations: [
         SecureMessagesComponent,
@@ -39,8 +46,9 @@ import { SecureMessageFormComponent } from './shared/secure-message-form/secure-
         NavigationTabsComponent
     ],
     providers: [
-        /*SecureMessagesService,
-        SecureMessagesActions*/
+        AuthenticationService,
+        SecureMessagesService,
+        SecureMessagesActions,
     ]
 })
 export class SecureMessagesModule {}

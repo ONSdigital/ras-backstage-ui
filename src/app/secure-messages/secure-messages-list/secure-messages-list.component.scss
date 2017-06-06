@@ -29,11 +29,13 @@
             }
 
             .secure-messages-list__field {
+                vertical-align : top;
                 border-bottom : 1px solid #ccc;
             }
 
             .secure-messages-list__header {
                 padding-bottom : .25rem;
+                white-space : nowrap;
                 text-align : left;
                 border-bottom : 2px solid #666;
             }
