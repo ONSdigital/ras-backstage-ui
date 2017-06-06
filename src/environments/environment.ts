@@ -11,7 +11,11 @@ export const environment = {
         // PORT=xxxx ./scripts/run.py
 
         // Local config
+
+        // Run Collection Exercise Demo service using:
+        // ONS_ENV=test ./scripts/run.sh
         collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
+
         collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         survey: 'http://localhost:8000/api/',
         secureMessages: 'http://0.0.0.0:5050/'
