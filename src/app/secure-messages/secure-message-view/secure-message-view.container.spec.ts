@@ -14,7 +14,6 @@ let fixture: ComponentFixture<any>,
     comp: any,
 
     mockStore: any,
-    mockNewSecureMessage: any,
     mockOriginalSecureMessage: any,
     mockSecureMessagesActions: any,
 

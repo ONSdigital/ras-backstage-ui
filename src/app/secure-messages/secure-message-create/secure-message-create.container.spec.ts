@@ -13,14 +13,14 @@ import { SecureMessageCreateContainerComponent } from './secure-message-create.c
 
 let fixture: ComponentFixture<any>,
     instance: any,
-    router: any,
 
     mockStore: any,
     // mockRouter: any,
     mockUserActions: any,
 
-    mockSecureMessage: any,
     mockSecureMessagesActions: any;
+
+const mockSecureMessage: any = {};
 
 describe('SecureMessageCreateContainerComponent', () => {
 

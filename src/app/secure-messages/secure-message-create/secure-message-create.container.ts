@@ -18,7 +18,7 @@ import { UserActions } from '../../user/user.actions';
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
-    public to: string = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
 
     public secureMessage: SecureMessage;
 
