@@ -1,6 +1,10 @@
 {
   "id": "3b136c4b-7a14-4904-9e01-13364dd7b972",
+<<<<<<< HEAD
+  "emailAddress": "Jacky.Turner@abc-ltd.com",
+=======
   "emailAddress": "john.doe@abc-ltd.com",
+>>>>>>> 466890f30e79426c26f8e76ece07955428f8ce92
   "firstName": "Jacky",
   "lastName": "Turner",
   "telephone": "+44 1234 567890",
