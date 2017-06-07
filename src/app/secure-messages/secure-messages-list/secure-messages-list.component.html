@@ -12,26 +12,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="secure-messages-list__item">
-                <td class="secure-messages-list__field">36509908341B</td>
-                <td class="secure-messages-list__field">Bolts & Ratchets Ltd</td>
-                <td class="secure-messages-list__field">
-                    <a routerLink="view-message">Re: BRES 2016 response clarification</a>
-                </td>
-                <td class="secure-messages-list__field">Jacky Turner</td>
-                <td class="secure-messages-list__field">David Cleere</td>
-                <td class="secure-messages-list__field">Thu 13 Apr 08:57</td>
-            </tr>
             <tr *ngFor="let message of secureMessages; let i = index;"
                 class="secure-messages-list__item secure-messages-list__item--unread">
 
-                <td class="secure-messages-list__field">{{ message.reporting_unit }}</td>
-                <td class="secure-messages-list__field">{{ message.reporting_unit }}</td>
+                <td class="secure-messages-list__field"><!--36509908341B-->{{ message.reporting_unit }}</td>
+                <td class="secure-messages-list__field"><!--Bolts & Ratchets Ltd-->{{ message.reporting_unit }}</td>
                 <td class="secure-messages-list__field">
                     <a [routerLink]="['message/', message.msg_id]">{{ message.subject }}</a>
                 </td>
                 <td class="secure-messages-list__field">{{ message.urn_from }}</td>
-                <td class="secure-messages-list__field">{{ message.urn_to }}</td>
+                <td class="secure-messages-list__field"><!--Jacky Turner-->{{ message.urn_to }}</td>
                 <td class="secure-messages-list__field">{{ message.sent_date | date:'EEE d MMM hh:mm' }}</td>
             </tr>
         </tbody>

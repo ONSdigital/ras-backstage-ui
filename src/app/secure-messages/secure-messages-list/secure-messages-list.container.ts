@@ -17,7 +17,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
     public secureMessagesList: Array<any> = [];
 
     public navigationTabs: Array<NavigationTab> = [
-        {
+        /*{
             label: 'Inbox',
             link: 'inbox',
             selected: true
@@ -31,11 +31,12 @@ export class SecureMessagesListContainerComponent implements OnInit {
             label: 'Drafts',
             link: 'drafts',
             selected: false
-        },
+        },*/
         {
             label: 'All',
             link: 'all',
-            selected: false
+            //selected: false
+            selected: true
         },
         {
             label: 'Create new message',
