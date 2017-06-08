@@ -14,7 +14,7 @@ export const secureMessagesRoutes: Routes = [
         path: 'secure-messages',
         component: SecureMessagesComponent,
         data: {
-            breadcrumb: 'Secure Messages'
+            breadcrumb: 'Secure messages'
         },
         children: [
             {
@@ -22,6 +22,13 @@ export const secureMessagesRoutes: Routes = [
                 component: SecureMessagesListContainerComponent,
                 data: {
                     breadcrumb: null
+                }
+            },
+            {
+                path: 'message-sent',
+                component: SecureMessagesListContainerComponent,
+                data: {
+                    messageSent: true
                 }
             },
             {

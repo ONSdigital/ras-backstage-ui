@@ -9,7 +9,7 @@
                     <dt class="grid__col col-2@s">From:</dt>
                     <dd class="grid__col col-10@s">{{ originalSecureMessage?.urn_from }}</dd>
                     <dt class="grid__col col-2@s">Sent:</dt>
-                    <dd class="grid__col col-10@s">{{ originalSecureMessage?.sent_date | date:'hh:mm EEE d MMM y' }}</dd>
+                    <dd class="grid__col col-10@s">{{ originalSecureMessage?.sent_date | date:'HH:mm EEE d MMM y' }}</dd>
                 </dl>
             </div>
 
@@ -35,6 +35,7 @@
             <br />
 
             <button class="btn" type="submit"
+                [disabled]="!isValid()"
                 (click)="send_reply_click_handler.emit($event)">Send reply</button>
 
             <p><a [routerLink]="'/secure-messages'">Cancel</a></p>

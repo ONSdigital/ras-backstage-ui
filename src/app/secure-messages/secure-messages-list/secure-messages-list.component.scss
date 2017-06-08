@@ -33,6 +33,16 @@
                 border-bottom : 1px solid #ccc;
             }
 
+            .secure-messages-list__field--link {
+                max-width : 12rem;
+                overflow : hidden;
+                text-overflow: ellipsis;
+
+                .secure-messages-list__link {
+                    white-space : nowrap;
+                }
+            }
+
             .secure-messages-list__header {
                 padding-bottom : .25rem;
                 white-space : nowrap;

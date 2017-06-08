@@ -24,8 +24,11 @@ export class SecureMessageViewComponent implements OnInit {
         }
     }
 
+    public isValid () {
+        return !!this.newSecureMessageModel.subject && !!this.newSecureMessageModel.body;
+    }
+
     public onTypingReply(event: KeyboardEvent) {
         this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
-        this.newMessageBodyTest = (<HTMLInputElement>event.target).value.split(/\r\n|\r|\n/g);
     }
 }

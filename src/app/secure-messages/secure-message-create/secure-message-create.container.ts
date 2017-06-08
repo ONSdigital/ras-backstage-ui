@@ -61,7 +61,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
         this.secureMessagesActions.createSecureMessage(this.secureMessage)
             .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
+                this.router.navigate(['/secure-messages/message-sent']);
             });
     }
 }

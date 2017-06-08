@@ -1,13 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
+import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
 
 @Component({
     template: `
         <h1 class="saturn">Secure messages</h1>
+        
+        <ons-system-feedback *ngIf="messageSent"
+            [notificationListItems]="messageNotifications"></ons-system-feedback>
+        
         <ons-navigation-tabs
             [tabs]="navigationTabs"></ons-navigation-tabs>
+            
         <ons-secure-messages-list
             [secureMessages]="secureMessagesList"></ons-secure-messages-list>
     `,
@@ -15,6 +21,10 @@ import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model
 export class SecureMessagesListContainerComponent implements OnInit {
 
     public secureMessagesList: Array<any> = [];
+
+    public messageSent: Boolean = false;
+    public messageNotifications: Array<any> = [];
+
 
     public navigationTabs: Array<NavigationTab> = [
         /*{
@@ -35,21 +45,31 @@ export class SecureMessagesListContainerComponent implements OnInit {
         {
             label: 'All',
             link: 'all',
-            //selected: false
             selected: true
         },
         {
             label: 'Create new message',
-            link: 'create-message',
+            link: '/secure-messages/create-message',
             type: 'link',
             selected: false
         }
     ];
 
     constructor(
+        private route: ActivatedRoute,
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
+
+        if (this.route.snapshot.data.messageSent) {
+            this.messageSent = true;
+
+            this.messageNotifications.push(NotificationListItem.create({
+                label: 'Message sent',
+                status: NotificationStatus.success
+            }));
+        }
+
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {
                 const messages = secureMessages;
