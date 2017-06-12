@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
+
 import { SecureMessage } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';
@@ -90,7 +91,7 @@ export class SecureMessagesService {
         return this.isAuthenticated() ? request() : this.authenticate(request);
     }
 
-    public authenticate (request: any) {
+    public authenticate(request: any) {
 
         return this.authenticationService.getToken()
             .concatMap((token: string) => {
@@ -103,7 +104,7 @@ export class SecureMessagesService {
             });
     }
 
-    public isAuthenticated () {
+    public isAuthenticated() {
         return this.encryptedHeaders.get('Authorization');
     }
 }

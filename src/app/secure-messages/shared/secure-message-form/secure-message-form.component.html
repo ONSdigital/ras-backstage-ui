@@ -2,7 +2,7 @@
     <form>
         <p>To: {{to}}</p>
 
-        <fieldset>
+        <fieldset class="u-mb-m">
             <label for="secure-message-subject">Subject</label>
             <input
                 id="secure-message-subject"
@@ -14,9 +14,7 @@
                 (keyup)="subjectChange.emit(subject)"/>
         </fieldset>
 
-        <br />
-
-        <fieldset>
+        <fieldset class="u-mb-m">
             <label for="secure-message-body">Message</label>
             <textarea
                 id="secure-message-body"
@@ -28,12 +26,16 @@
                 (keyup)="bodyChange.emit(body)"></textarea>
         </fieldset>
 
-        <br />
+        <button class="btn btn--secondary" type="submit"
+                (click)="secondary_button_click.emit($event);"
+                [disabled]="!isValid()">Save draft</button>
 
-        <button class="btn" type="submit"
+        <button class="btn btn--primary" type="submit"
             (click)="primary_button_click.emit($event);"
             [disabled]="!isValid()">Send message</button>
 
-        <p><a [routerLink]="'/secure-messages'">Cancel</a></p>
+        <div class="u-mb-m">
+            <a [routerLink]="'/secure-messages'">Cancel</a>
+        </div>
     </form>
 </div>

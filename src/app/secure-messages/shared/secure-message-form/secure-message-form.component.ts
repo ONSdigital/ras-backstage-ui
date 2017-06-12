@@ -15,6 +15,7 @@ export class SecureMessageFormComponent {
     @Output() subjectChange: EventEmitter<any> = new EventEmitter();
     @Output() bodyChange: EventEmitter<any> = new EventEmitter();
     @Output() primary_button_click: EventEmitter<any> = new EventEmitter();
+    @Output() secondary_button_click: EventEmitter<any> = new EventEmitter();
 
     public isValid () {
         return !!this.subject && !!this.body;

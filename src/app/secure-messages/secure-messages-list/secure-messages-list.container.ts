@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
+import { PartyService } from '../../party/party.service';
+import { SecureMessage } from '../shared/secure-message.model';
 
 @Component({
     template: `
@@ -20,11 +22,11 @@ import { NotificationListItem, NotificationStatus } from '../../shared/system-fe
 })
 export class SecureMessagesListContainerComponent implements OnInit {
 
-    public secureMessagesList: Array<any> = [];
+    public secureMessagesList: Array<SecureMessage> = [];
+    private secureMessagesListMapByBusiness: Map<string, Array<SecureMessage>> = new Map<string, [SecureMessage]>();
 
     public messageSent: Boolean = false;
     public messageNotifications: Array<any> = [];
-
 
     public navigationTabs: Array<NavigationTab> = [
         /*{
@@ -44,7 +46,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
         },*/
         {
             label: 'All',
-            link: 'all',
+            link: '/secure-messages/all',
             selected: true
         },
         {
@@ -57,6 +59,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private partyService: PartyService,
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
@@ -80,9 +83,55 @@ export class SecureMessagesListContainerComponent implements OnInit {
                  */
                 for (const i in messages) {
                     if (messages.hasOwnProperty(i)) {
-                        this.secureMessagesList.push(messages[i]);
+                        const message: SecureMessage = messages[i];
+                        this.secureMessagesList.push(message);
+                        // this.mapMessageByBusinessId(message);
                     }
                 }
+
+                // this.fetchBusinesses();
             });
     }
+
+    /*public mapMessageByBusinessId(secureMessage: SecureMessage) {
+
+        let mappingArr: Array<SecureMessage> = [];
+
+        const existingBusinessMapping: Array<SecureMessage> = this.secureMessagesListMapByBusiness
+            .get(secureMessage.reporting_unit);
+
+        if (existingBusinessMapping) {
+            mappingArr = existingBusinessMapping;
+        }
+
+        mappingArr.push(secureMessage);
+        this.secureMessagesListMapByBusiness.set(secureMessage.reporting_unit, mappingArr);
+    }
+
+    public fetchBusinesses() {
+
+        this.secureMessagesListMapByBusiness.forEach((secureMessages: Array<SecureMessage>, businessId: string) => {
+
+            this.partyService.getBusiness(businessId)
+                .subscribe((business: any) => {
+                    console.log('business: ', business);
+
+                    this.updateMessagesWithBusiness(business);
+                });
+        });
+    }
+
+    public updateMessagesWithBusiness(business: any) {
+        const secureMessages: Array<SecureMessage> = this.secureMessagesListMapByBusiness.get(business.id);
+
+        /!**
+         * Rely on message objects being passed by reference.
+         *!/
+        secureMessages.forEach((secureMessage: SecureMessage) => {
+            secureMessage['@reporting_unit'] = business;
+        });
+
+        console.log('list: ', this.secureMessagesList);
+        console.log(this.secureMessagesListMapByBusiness.get(business.id));
+    }*/
 }

@@ -11,6 +11,7 @@ import { UserActions } from '../../user/user.actions';
     template: `
         <ons-secure-message-create
             (send_button_click)="sendSecureMessage_handler($event)"
+            (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
             [(subject)]="secureMessage.subject"
             [(body)]="secureMessage.body"></ons-secure-message-create>
@@ -39,7 +40,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',
-                    reporting_unit: 'AReportingUnit',
+                    reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b972',
                     survey: 'bres123'
                 };
 
@@ -63,5 +64,14 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             .subscribe(() => {
                 this.router.navigate(['/secure-messages/message-sent']);
             });
+    }
+
+    public saveDraft_handler() {
+
+        if (this.secureMessage.subject === '' || this.secureMessage.body === '') {
+            return;
+        }
+
+        console.log('save draft');
     }
 }

@@ -18,12 +18,14 @@ export const environment = {
 
         collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         survey: 'http://localhost:8000/api/',
-        secureMessages: 'http://0.0.0.0:5050/'
+        secureMessages: 'http://0.0.0.0:5050/',
+        /*party: '?'*/
 
         // CloudFoundry config
         // collectionExercise: 'http://ras-collection-exercise-demo.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
         // collectionInstrument: 'http://ras-collection-instrument-demo.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
         // survey: 'http://localhost:8000/api/'
+        party: 'http://ras-party-v2-dev.apps.mvp.onsclofo.uk/party-api/1.0.4/'
 
         // TODO remove this
         // collectionExercise: 'http://localhost:8000/api/',

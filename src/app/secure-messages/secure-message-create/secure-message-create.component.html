@@ -5,6 +5,7 @@
             <h1 class="saturn">Create message</h1>
             <ons-secure-message-form
                 (primary_button_click)="send_button_click.emit($event)"
+                (secondary_button_click)="save_button_click.emit($emit)"
                 [(to)]="to"
                 [subject]="subject"
                 (subjectChange)="subjectChange.emit($event)"

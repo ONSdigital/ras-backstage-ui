@@ -8,6 +8,7 @@ import { UserModule } from '../user/user.module';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { SecureMessagesRoutingModule } from './secure-messages-routing.module';
 
+import { PartyService } from '../party/party.service';
 import { AuthenticationService } from '../authentication/authentication.service';
 
 import { SecureMessagesService } from './secure-messages.service';
@@ -50,6 +51,7 @@ import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedba
     ],
     providers: [
         AuthenticationService,
+        PartyService,
         SecureMessagesService,
         SecureMessagesActions,
     ]
