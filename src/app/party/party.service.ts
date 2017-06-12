@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class PartyService {
 
-    static BASE_URL = environment.endpoints.party;
+    /*static BASE_URL = ''; // environment.endpoints.party;
 
     constructor(
         private http: Http) {}
@@ -25,5 +25,5 @@ export class PartyService {
             })
 
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
+    }*/
 }
