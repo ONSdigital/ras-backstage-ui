@@ -14,3 +14,8 @@ export interface SecureMessage {
     reporting_unit: string;
     survey: string;
 }
+
+
+export interface DraftMessage extends SecureMessage {
+    modified_date?: string;
+}

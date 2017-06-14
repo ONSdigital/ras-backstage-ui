@@ -56,22 +56,29 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     public sendSecureMessage_handler() {
 
-        if (this.secureMessage.subject === '' || this.secureMessage.body === '') {
+        if (!this.isMessageValid()) {
             return;
         }
 
         this.secureMessagesActions.createSecureMessage(this.secureMessage)
             .subscribe(() => {
-                this.router.navigate(['/secure-messages/message-sent']);
+                this.router.navigate(['/secure-messages']);
             });
     }
 
     public saveDraft_handler() {
 
-        if (this.secureMessage.subject === '' || this.secureMessage.body === '') {
+        if (!this.isMessageValid()) {
             return;
         }
 
-        console.log('save draft');
+        this.secureMessagesActions.saveDraft(this.secureMessage)
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
+    }
+
+    private isMessageValid() {
+        return !(this.secureMessage.subject === '' || this.secureMessage.body === '');
     }
 }

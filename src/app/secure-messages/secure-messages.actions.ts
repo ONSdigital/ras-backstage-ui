@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
 
-import { SecureMessage } from './shared/secure-message.model';
+import { SecureMessage, DraftMessage } from './shared/secure-message.model';
 import { SecureMessagesService } from './secure-messages.service';
 
 @Injectable()
@@ -16,6 +16,8 @@ export class SecureMessagesActions {
     static RECEIVED_ALL = 'SECURE_MESSAGES_ALL_RECEIVED';
     static REPLY_SINGLE = 'SECURE_MESSAGE_REPLY_CREATE';
     static REPLIED_SINGLE = 'SECURE_MESSAGE_REPLY_CREATED';
+    static DRAFT_SAVE = 'DRAFT_SAVE';
+    static DRAFT_SAVED = 'DRAFT_SAVED';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -30,18 +32,18 @@ export class SecureMessagesActions {
 
         const observable = this.secureMessagesService.createSecureMessage(secureMessage);
 
-        observable.subscribe((statusMessage: any) => {
-            this.createdSecureMessage(statusMessage);
+        observable.subscribe((status: any) => {
+            this.createdSecureMessage(status);
         });
 
         return observable;
     }
 
-    public createdSecureMessage(statusMessage: any) {
+    public createdSecureMessage(status: any) {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.CREATED_SINGLE,
-            payload: statusMessage
+            payload: status
         });
     }
 
@@ -115,6 +117,30 @@ export class SecureMessagesActions {
         this.ngRedux.dispatch({
             type: SecureMessagesActions.RECEIVED_ALL,
             payload: secureMessages
+        });
+    }
+
+    public saveDraft(draftMessage: DraftMessage): Observable<any> {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.DRAFT_SAVE,
+            draftMessage: draftMessage
+        });
+
+        const observable = this.secureMessagesService.saveDraft(draftMessage);
+
+        observable.subscribe((status: Array<SecureMessage>) => {
+            this.savedDraft(status);
+        });
+
+        return observable;
+    }
+
+    public savedDraft(status: any) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.DRAFT_SAVED,
+            payload: status
         });
     }
 
