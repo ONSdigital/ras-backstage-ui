@@ -71,13 +71,13 @@ describe('SecureMessageViewContainerComponent', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
+
+            comp = fixture.debugElement.componentInstance;
+
+            expect(comp).toBeTruthy();
+            expect(comp.originalSecureMessage).toEqual(undefined);
+            expect(comp.newSecureMessage).toEqual(undefined);
         });
-
-        comp = fixture.debugElement.componentInstance;
-
-        expect(comp).toBeTruthy();
-        expect(comp.originalSecureMessage).toEqual(undefined);
-        expect(comp.newSecureMessage).toEqual(undefined);
     }));
 
     describe('when the message being replied to is found', () => {
