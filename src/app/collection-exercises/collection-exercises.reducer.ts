@@ -26,9 +26,9 @@ export default function(state: any = INIT_STATE, action: any) {
              * TODO
              * Below belongs to model validator
              */
-            if (!collectionExercise
-                || !collectionExercise.id
-                || !collectionExercise.surveyID) {
+            if (!collectionExercise ||
+                !collectionExercise.id ||
+                !collectionExercise.surveyID) {
 
                 return state;
             }

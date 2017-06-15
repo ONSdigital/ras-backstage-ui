@@ -79,8 +79,6 @@ describe('SecureMessageViewResolver service', () => {
 
                     secureMessageViewResolver.resolve(activatedRouteSnapShot);
 
-                    console.log('test store: ', mockReduxStore);
-
                     expect(mockReduxStore.select).toHaveBeenCalledWith(['secureMessages', 'items']);
                 }));
 
