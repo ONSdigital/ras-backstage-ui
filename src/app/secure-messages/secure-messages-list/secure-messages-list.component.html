@@ -19,10 +19,12 @@
                 <td class="secure-messages-list__field"><!--Bolts & Ratchets Ltd-->{{ message.reporting_unit }}</td>
                 <td class="secure-messages-list__field secure-messages-list__field--link">
                     <a class="secure-messages-list__link" [routerLink]="['/secure-messages/message/', message.msg_id]">{{ message.subject }}</a>
+                    <span class="secure-messages-list__label secure-messages-list__label--draft" *ngIf="message.$isDraft">DRAFT</span>
                 </td>
                 <td class="secure-messages-list__field">{{ message.urn_from }}</td>
                 <td class="secure-messages-list__field"><!--Jacky Turner-->{{ message.urn_to }}</td>
-                <td class="secure-messages-list__field">{{ message.sent_date | date:'EEE d MMM HH:mm' }}</td>
+                <td class="secure-messages-list__field">{{ (message?.sent_date === 'N/A') ? 'N/A' : (message.sent_date | date:'EEE d MMM HH:mm') }}</td>
+                <!--<td class="secure-messages-list__field">{{ (message.sent_date !== 'N/A' ? message.sent_date : message.modified_date) | date:'EEE d MMM HH:mm' }}</td>-->
             </tr>
         </tbody>
     </table>

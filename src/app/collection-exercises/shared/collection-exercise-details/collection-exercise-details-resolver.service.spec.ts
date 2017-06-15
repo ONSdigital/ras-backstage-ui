@@ -45,7 +45,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
             }
         };
 
-        mockReduxStore = { // explicitly saying any here is important
+        mockReduxStore = {
             dispatch(action: any) {},
             configureStore() {},
             select() {
@@ -77,7 +77,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
     describe('resolve [method]', () => {
 
-        it('should call the collection exercises service to retrieve a collection exercise', () => {
+        it('should call the collection exercises data store to look for a collection exercise first', () => {
             mockCollectionExercise = createMockCollectionExercise('100');
             mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('100');
 

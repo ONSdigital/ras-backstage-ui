@@ -32,9 +32,12 @@ export class SecureMessagesActions {
 
         const observable = this.secureMessagesService.createSecureMessage(secureMessage);
 
-        observable.subscribe((status: any) => {
-            this.createdSecureMessage(status);
-        });
+        observable.subscribe(
+            (status: any) => {
+                this.createdSecureMessage(status);
+            },
+            (err: any) => console.log('Could not dispatch createdSecureMessage action, service error: ', err)
+        );
 
         return observable;
     }
@@ -56,9 +59,12 @@ export class SecureMessagesActions {
 
         const observable = this.secureMessagesService.createSecureMessage(secureMessage);
 
-        observable.subscribe((statusMessage: any) => {
-            this.repliedToSecureMessage(statusMessage);
-        });
+        observable.subscribe(
+            (statusMessage: any) => {
+                this.repliedToSecureMessage(statusMessage);
+            },
+            (err: any) => console.log('Could not dispatch repliedToSecureMessage action, service error: ', err)
+        );
 
         return observable;
     }
@@ -81,9 +87,12 @@ export class SecureMessagesActions {
         const observable = this.secureMessagesService.getMessage(id)
             .map(res => res.json());
 
-        observable.subscribe((secureMessage: SecureMessage) => {
-            this.receivedSecureMessage(secureMessage);
-        });
+        observable.subscribe(
+            (secureMessage: SecureMessage) => {
+                this.receivedSecureMessage(secureMessage);
+            },
+            (err: any) => console.log('Could not dispatch receivedSecureMessage action, service error: ', err)
+        );
 
         return observable;
     }
@@ -105,9 +114,12 @@ export class SecureMessagesActions {
         const observable = this.secureMessagesService.getAllMessages()
             .map(res => res.json().messages);
 
-        observable.subscribe((secureMessages: Array<SecureMessage>) => {
-            this.receivedAllSecureMessages(secureMessages);
-        });
+        observable.subscribe(
+            (secureMessages: Array<SecureMessage>) => {
+                this.receivedAllSecureMessages(secureMessages);
+            },
+            (err: any) => console.log('Could not dispatch receivedAllSecureMessages action, service error: ', err)
+        );
 
         return observable;
     }
@@ -129,9 +141,12 @@ export class SecureMessagesActions {
 
         const observable = this.secureMessagesService.saveDraft(draftMessage);
 
-        observable.subscribe((status: Array<SecureMessage>) => {
-            this.savedDraft(status);
-        });
+        observable.subscribe(
+            (status: Array<SecureMessage>) => {
+                this.savedDraft(status);
+            },
+            (err: any) => console.log('Could not dispatch savedDraft action, service error: ', err)
+        );
 
         return observable;
     }

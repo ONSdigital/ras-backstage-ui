@@ -45,7 +45,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
             selected: false
         },*/
         {
-            label: 'All',
+            label: 'All messages',
             link: '/secure-messages/all',
             selected: true
         },
@@ -84,6 +84,12 @@ export class SecureMessagesListContainerComponent implements OnInit {
                 for (const i in messages) {
                     if (messages.hasOwnProperty(i)) {
                         const message: SecureMessage = messages[i];
+
+                        /**
+                         * Attach view-only label
+                         */
+                        message['$isDraft'] = !!message.labels.find(label => label === 'DRAFT');
+
                         this.secureMessagesList.push(message);
                         // this.mapMessageByBusinessId(message);
                     }
