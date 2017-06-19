@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
-import { SecureMessage } from './shared/secure-message.model';
+
+import { SecureMessage, DraftMessage } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';
 
@@ -22,6 +23,7 @@ export class SecureMessagesService {
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         const request = (() => {
+
             return this.http.post(
                 SecureMessagesService.BASE_URL + 'message/send',
                 secureMessage,
@@ -43,6 +45,7 @@ export class SecureMessagesService {
         return this.isAuthenticated() ? request() : this.authenticate(request);
     }
 
+    // @AuthorisationRequired()
     public getAllMessages(): Observable<any> {
 
         const request = (() => {
@@ -54,6 +57,7 @@ export class SecureMessagesService {
                     headers: this.encryptedHeaders
                 })
             )
+            .share()
             .do((res: Response) => {
                 console.log('Get all: ', res);
             })
@@ -90,20 +94,75 @@ export class SecureMessagesService {
         return this.isAuthenticated() ? request() : this.authenticate(request);
     }
 
-    public authenticate (request: any) {
+    public saveDraft(draftMessage: DraftMessage): Observable<any> {
+
+        const request = (() => {
+            return this.http.post(
+                SecureMessagesService.BASE_URL + 'draft/save',
+                draftMessage,
+                new RequestOptions({
+                    method: RequestMethod.Post,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .share()
+            .do((res: Response) => {
+                console.log('Create draft: ', res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error.json().error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
+    public authenticate(request: any) {
 
         return this.authenticationService.getToken()
-            .concatMap((token: string) => {
+            .mergeMap((token: string) => {
 
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);
                 }
 
                 return request();
-            });
+            })
+            .share();
     }
 
-    public isAuthenticated () {
+    public isAuthenticated() {
         return this.encryptedHeaders.get('Authorization');
     }
 }
+
+/*
+function AuthorisationRequired() {
+
+    console.log('service: ', servicePointer);
+
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
+        console.log('decorator: ', target, propertyKey, descriptor);
+
+        if (!servicePointer) {
+            console.log('pointer not set');
+            return;
+        }
+
+        /!**
+         * Cache existing method
+         *!/
+        const method = descriptor.value;
+
+        /!**
+         * Proxy method
+         *!/
+        descriptor.value = function () {
+            return servicePointer.isAuthenticated()
+                ? method.apply(this, arguments)
+                : servicePointer.authenticate(method.apply(this, arguments));
+        };
+    };
+}
+*/

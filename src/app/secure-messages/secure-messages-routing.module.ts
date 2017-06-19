@@ -46,9 +46,12 @@ export const secureMessagesRoutes: Routes = [
                     exported: SecureMessageViewResolver
                 },
                 data: {
-                    breadcrumb: 'View message'
+                    breadcrumb: 'Edit draft message'
                 }
-            }
+            }/*,
+            {
+                path: 'drafts/:draft-message-id'
+            }*/
         ]
     }
 ];

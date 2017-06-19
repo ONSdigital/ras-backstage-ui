@@ -71,13 +71,13 @@ describe('SecureMessageViewContainerComponent', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
+
+            comp = fixture.debugElement.componentInstance;
+
+            expect(comp).toBeTruthy();
+            expect(comp.originalSecureMessage).toEqual(undefined);
+            expect(comp.newSecureMessage).toEqual(undefined);
         });
-
-        comp = fixture.debugElement.componentInstance;
-
-        expect(comp).toBeTruthy();
-        expect(comp.originalSecureMessage).toEqual(undefined);
-        expect(comp.newSecureMessage).toEqual(undefined);
     }));
 
     describe('when the message being replied to is found', () => {
@@ -179,16 +179,21 @@ describe('SecureMessageViewContainerComponent', () => {
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
-            });
 
-            expect(console.log).toHaveBeenCalledWith('Secure message with id "100" not found in store.');
+                expect(console.log).toHaveBeenCalledWith('Secure message with id "100" not found in store.');
+            });
         }));
 
         it('should not call setMessages', async(() => {
 
-            spyOn(comp, 'setMessages').and.callThrough();
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
 
-            expect(comp.setMessages).not.toHaveBeenCalled();
+                spyOn(comp, 'setMessages').and.callThrough();
+
+                expect(comp.setMessages).not.toHaveBeenCalled();
+            });
         }));
     });
 

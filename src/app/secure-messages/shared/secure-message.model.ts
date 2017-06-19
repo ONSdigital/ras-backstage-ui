@@ -10,7 +10,12 @@ export interface SecureMessage {
     urn_from: string;
     subject: string;
     body: string;
-    collection_case: string;
+    collection_case?: string;
     reporting_unit: string;
-    survey: string;
+    survey?: string;
+}
+
+
+export interface DraftMessage extends SecureMessage {
+    modified_date?: string;
 }

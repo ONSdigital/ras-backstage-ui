@@ -15,10 +15,15 @@ export default function(state: any = INIT_STATE, action: any) {
 
             const secureMessage = action.secureMessage;
 
-            /**
-             * TODO
-             * Validate secureMessage
-             */
+            if (!secureMessage ||
+                !secureMessage.urn_to ||
+                !secureMessage.urn_from ||
+                !secureMessage.subject ||
+                !secureMessage.body ||
+                !secureMessage.reporting_unit) {
+
+                return state;
+            }
 
             const items = Object.assign([], state.items.map((item: SecureMessage) => {
 

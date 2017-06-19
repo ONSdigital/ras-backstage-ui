@@ -44,12 +44,20 @@ describe('SecureMessageCreateContainerComponent', () => {
 
         mockSecureMessagesActions = {
             createSecureMessage: function() {
-                return Observable.of(mockSecureMessage);
+                return Observable.of({/*Server status object*/});
+            },
+            saveDraft: function() {
+                return Observable.of({/*Server status object*/});
             }
         };
 
         spyOn(mockUserActions, 'getUser').and.callThrough();
         spyOn(mockSecureMessagesActions, 'createSecureMessage').and.callFake(function () {
+            return {
+                subscribe: function () {}
+            };
+        });
+        spyOn(mockSecureMessagesActions, 'saveDraft').and.callFake(function () {
             return {
                 subscribe: function () {}
             };
@@ -80,6 +88,7 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     /**
      * TODO - Test routing after sending a message
+     * TODO - Test routing after saveing a message
      */
 
     it('should initialise correctly', async(() => {
@@ -89,13 +98,13 @@ describe('SecureMessageCreateContainerComponent', () => {
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
-        });
 
-        const comp = fixture.debugElement.componentInstance;
-        expect(comp).toBeTruthy();
-        expect(comp.secureMessage.subject).toEqual('');
-        expect(comp.secureMessage.body).toEqual('');
-        expect(mockUserActions.getUser).toHaveBeenCalled();
+            const comp = fixture.debugElement.componentInstance;
+            expect(comp).toBeTruthy();
+            expect(comp.secureMessage.subject).toEqual('');
+            expect(comp.secureMessage.body).toEqual('');
+            expect(mockUserActions.getUser).toHaveBeenCalled();
+        });
     }));
 
     describe('when the sendSecureMessage_handler is invoked', () => {
@@ -109,15 +118,15 @@ describe('SecureMessageCreateContainerComponent', () => {
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    comp.secureMessage.subject = 'Test subject';
+                    comp.secureMessage.body = 'Test body';
+
+                    comp.sendSecureMessage_handler();
+
+                    expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
                 });
-
-                const comp = fixture.debugElement.componentInstance;
-                comp.secureMessage.subject = 'Test subject';
-                comp.secureMessage.body = 'Test body';
-
-                comp.sendSecureMessage_handler();
-
-                expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
             }));
         });
 
@@ -130,12 +139,54 @@ describe('SecureMessageCreateContainerComponent', () => {
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    comp.sendSecureMessage_handler();
+
+                    expect(mockSecureMessagesActions.createSecureMessage).not.toHaveBeenCalled();
                 });
+            }));
+        });
+    });
 
-                const comp = fixture.debugElement.componentInstance;
-                comp.sendSecureMessage_handler();
+    describe('when the saveDraft_handler is invoked', () => {
 
-                expect(mockSecureMessagesActions.createSecureMessage).not.toHaveBeenCalled();
+        describe('and message properties are valid', () => {
+
+            it('should call saveDraft action method from the SecureMessageActions service.', async(() => {
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    comp.secureMessage.subject = 'Test subject';
+                    comp.secureMessage.body = 'Test body';
+
+                    comp.saveDraft_handler();
+
+                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('and message properties are invalid', () => {
+
+            it('should not call saveDraft action method from the SecureMessageActions service.', async(() => {
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    comp.saveDraft_handler();
+
+                    expect(mockSecureMessagesActions.saveDraft).not.toHaveBeenCalled();
+                });
             }));
         });
     });

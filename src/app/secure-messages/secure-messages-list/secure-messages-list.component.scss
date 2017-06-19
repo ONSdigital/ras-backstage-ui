@@ -16,6 +16,13 @@
             }
         }
 
+        .secure-messages-list__label {
+
+            &.secure-messages-list__label--draft {
+                color : #fe781f;
+            }
+        }
+
         /**
          * Modifiers
          */
@@ -31,16 +38,17 @@
             .secure-messages-list__field {
                 vertical-align : top;
                 border-bottom : 1px solid #ccc;
-            }
 
-            .secure-messages-list__field--link {
-                max-width : 12rem;
-                overflow : hidden;
-                text-overflow: ellipsis;
-
-                .secure-messages-list__link {
+                &.secure-messages-list__field--link {
+                    max-width : 12rem;
+                    overflow : hidden;
+                    text-overflow: ellipsis;
                     white-space : nowrap;
                 }
+            }
+
+            .secure-messages-list__link {
+                white-space : nowrap;
             }
 
             .secure-messages-list__header {

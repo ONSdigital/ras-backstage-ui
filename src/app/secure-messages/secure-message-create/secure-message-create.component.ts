@@ -14,5 +14,6 @@ export class SecureMessageCreateComponent {
     @Output() subjectChange: EventEmitter<any> = new EventEmitter();
     @Output() bodyChange: EventEmitter<any> = new EventEmitter();
     @Output() send_button_click: EventEmitter<any> = new EventEmitter();
+    @Output() save_button_click: EventEmitter<any> = new EventEmitter();
 
 }

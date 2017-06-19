@@ -11,6 +11,7 @@ import { UserActions } from '../../user/user.actions';
     template: `
         <ons-secure-message-create
             (send_button_click)="sendSecureMessage_handler($event)"
+            (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
             [(subject)]="secureMessage.subject"
             [(body)]="secureMessage.body"></ons-secure-message-create>
@@ -34,13 +35,13 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             .subscribe((user: any) => {
 
                 this.secureMessage = {
-                    urn_to: 'respondent.000000000',
+                    urn_to: 'respondent.123',
                     urn_from: user.id,
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',
-                    reporting_unit: 'AReportingUnit',
-                    survey: 'bres123'
+                    reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b972',
+                    survey: 'BRES'
                 };
 
                 if (!user) {
@@ -55,13 +56,29 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     public sendSecureMessage_handler() {
 
-        if (this.secureMessage.subject === '' || this.secureMessage.body === '') {
+        if (!this.isMessageValid()) {
             return;
         }
 
         this.secureMessagesActions.createSecureMessage(this.secureMessage)
             .subscribe(() => {
-                this.router.navigate(['/secure-messages/message-sent']);
+                this.router.navigate(['/secure-messages']);
             });
+    }
+
+    public saveDraft_handler() {
+
+        if (!this.isMessageValid()) {
+            return;
+        }
+
+        this.secureMessagesActions.saveDraft(this.secureMessage)
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
+    }
+
+    private isMessageValid() {
+        return !(this.secureMessage.subject === '' || this.secureMessage.body === '');
     }
 }

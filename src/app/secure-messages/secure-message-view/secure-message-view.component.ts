@@ -25,7 +25,7 @@ export class SecureMessageViewComponent implements OnInit {
     }
 
     public isValid () {
-        return !!this.newSecureMessageModel.subject && !!this.newSecureMessageModel.body;
+        return !!this.newSecureMessageModel && !!this.newSecureMessageModel.subject && !!this.newSecureMessageModel.body;
     }
 
     public onTypingReply(event: KeyboardEvent) {
