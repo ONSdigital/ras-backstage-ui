@@ -35,8 +35,8 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             .subscribe((user: any) => {
 
                 this.secureMessage = {
-                    urn_to: 'respondent.123',
-                    urn_from: user.id,
+                    msg_to: '0a7ad740-10d5-4ecb-b7ca-3c0384afb882',
+                    msg_from: user.id,
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',

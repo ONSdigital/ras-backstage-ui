@@ -22,8 +22,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
      * TODO - Get message from route resolved data
      */
     public draftMessage: DraftMessage = {
-        urn_to: 'respondent.123',
-        urn_from: 'internal.test',
+        msg_to: 'respondent.123',
+        msg_from: 'internal.test',
         subject: '',
         body: '',
         collection_case: 'ACollectionCase',

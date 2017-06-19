@@ -20,7 +20,7 @@ export class UserService {
 
     public getUser(): Observable<any> {
         return this.user = Observable.of({
-            id: 'internal.123',
+            id: 'BRES',
             emailAddress: 'onsuser@ons.com',
             firstName: 'John',
             lastName: 'Doe',

@@ -16,8 +16,8 @@ export default function(state: any = INIT_STATE, action: any) {
             const secureMessage = action.secureMessage;
 
             if (!secureMessage ||
-                !secureMessage.urn_to ||
-                !secureMessage.urn_from ||
+                !secureMessage.msg_to ||
+                !secureMessage.msg_from ||
                 !secureMessage.subject ||
                 !secureMessage.body ||
                 !secureMessage.reporting_unit) {

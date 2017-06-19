@@ -127,8 +127,8 @@ describe('SecureMessageViewContainerComponent', () => {
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalled();
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalledWith({
                         thread_id: comp.originalSecureMessage.thread_id,
-                        urn_to: comp.originalSecureMessage.urn_to[0],
-                        urn_from: undefined,
+                        msg_to: comp.originalSecureMessage.urn_to[0],
+                        msg_from: undefined,
                         subject: comp.originalSecureMessage.subject,
                         body: 'Some reply content',
                         collection_case: comp.originalSecureMessage.collection_case,
