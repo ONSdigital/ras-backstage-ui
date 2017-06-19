@@ -1,5 +1,5 @@
 export class NotificationListItem {
-    public type: string = 'list-item';
+    public type = 'list-item';
     public label: string;
     public status: NotificationStatus;
 
