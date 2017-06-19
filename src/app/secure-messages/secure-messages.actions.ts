@@ -18,6 +18,8 @@ export class SecureMessagesActions {
     static REPLIED_SINGLE = 'SECURE_MESSAGE_REPLY_CREATED';
     static DRAFT_SAVE = 'DRAFT_SAVE';
     static DRAFT_SAVED = 'DRAFT_SAVED';
+    static DRAFT_UPDATE = 'DRAFT_UPDATE';
+    static DRAFT_UPDATED = 'DRAFT_UPDATED';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -159,4 +161,30 @@ export class SecureMessagesActions {
         });
     }
 
+    public updateDraft(draftMessage: DraftMessage): Observable<DraftMessage> {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.DRAFT_UPDATE,
+            draftMessage: draftMessage
+        });
+
+        const observable = this.secureMessagesService.updateDraft(draftMessage.msg_id, draftMessage);
+
+        observable.subscribe(
+            (status: Array<SecureMessage>) => {
+                this.updatedDraft(status);
+            },
+            (err: any) => console.log('Could not dispatch updatedDraft action, service error: ', err)
+        );
+
+        return observable;
+    }
+
+    public updatedDraft(status: any) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.DRAFT_UPDATED,
+            payload: status
+        });
+    }
 }

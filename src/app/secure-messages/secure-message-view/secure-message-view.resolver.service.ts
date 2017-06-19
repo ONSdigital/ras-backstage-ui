@@ -18,7 +18,6 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
         private secureMessagesActions: SecureMessagesActions) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        
         const id = route.params['secure-message-id'];
         const exported: any = {};
 

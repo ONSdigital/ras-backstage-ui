@@ -6,8 +6,10 @@ import { SecureMessagesListContainerComponent } from './secure-messages-list/sec
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
 import { SecureMessageViewResolver } from './secure-message-view/secure-message-view.resolver.service';
+import { DraftMessageEditContainerComponent } from './draft-message-edit/draft-message-edit.container';
 
 import { UserResolver } from '../user/user.resolver';
+import { DraftMessageEditResolver } from './draft-message-edit/draft-message-edit.resolver.service';
 
 export const secureMessagesRoutes: Routes = [
     {
@@ -46,12 +48,19 @@ export const secureMessagesRoutes: Routes = [
                     exported: SecureMessageViewResolver
                 },
                 data: {
+                    breadcrumb: 'View message'
+                }
+            },
+            {
+                path: 'drafts/:draft-message-id',
+                component: DraftMessageEditContainerComponent,
+                resolve: {
+                    exported: DraftMessageEditResolver
+                },
+                data: {
                     breadcrumb: 'Edit draft message'
                 }
-            }/*,
-            {
-                path: 'drafts/:draft-message-id'
-            }*/
+            }
         ]
     }
 ];
@@ -64,7 +73,8 @@ export const secureMessagesRoutes: Routes = [
         RouterModule
     ],
     providers: [
-        SecureMessageViewResolver
+        SecureMessageViewResolver,
+        DraftMessageEditResolver
     ]
 })
 export class SecureMessagesRoutingModule { }

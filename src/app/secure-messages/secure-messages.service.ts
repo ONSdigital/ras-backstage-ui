@@ -118,6 +118,30 @@ export class SecureMessagesService {
         return this.isAuthenticated() ? request() : this.authenticate(request);
     }
 
+    public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
+
+        const request = (() => {
+            return this.http.put(
+                SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
+                draftMessage,
+                new RequestOptions({
+                    method: RequestMethod.Put,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .share()
+            .do((res: Response) => {
+                console.log('Update draft: ', res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error.json().error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
     public authenticate(request: any) {
 
         return this.authenticationService.getToken()

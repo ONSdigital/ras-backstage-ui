@@ -22,6 +22,8 @@ import { SecureMessageViewComponent } from './secure-message-view/secure-message
 import { SecureMessageViewContainerComponent } from './secure-message-view/secure-message-view.container';
 import { SecureMessageCreateContainerComponent } from './secure-message-create/secure-message-create.container';
 import { SecureMessageFormComponent } from './shared/secure-message-form/secure-message-form.component';
+import { DraftMessageEditComponent } from './draft-message-edit/draft-message-edit.component';
+import { DraftMessageEditContainerComponent } from './draft-message-edit/draft-message-edit.container';
 
 import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-tabs.component';
 import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedback.component';
@@ -46,6 +48,8 @@ import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedba
         SecureMessageViewComponent,
         SecureMessageViewContainerComponent,
         SecureMessageFormComponent,
+        DraftMessageEditComponent,
+        DraftMessageEditContainerComponent,
         NavigationTabsComponent,
         SystemFeedbackComponent
     ],
