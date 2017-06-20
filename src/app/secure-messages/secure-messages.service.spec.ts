@@ -1,26 +1,41 @@
+import { Observable } from 'rxjs/Rx';
 import { TestBed, async, inject } from '@angular/core/testing';
 import {
     HttpModule,
     Http,
     Response,
     ResponseOptions,
-    ConnectionBackend
+    XHRBackend
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
+import { AuthenticationService } from '../authentication/authentication.service';
 import { SecureMessagesService } from './secure-messages.service';
-import { createSecureMessage_server } from '../../testing/create_SecureMessage';
+import { createSecureMessage_server, createSecureMessage_client } from '../../testing/create_SecureMessage';
 
-// let mockSecureMessage: any;
+let mockAuthenticationService: any,
+    mockServerSecureMessage: any,
+    mockClientSecureMessage: any;
 
 describe('SecureMessagesService', () => {
 
     beforeEach(() => {
+
+        mockAuthenticationService = {
+            getToken() {
+                console.log('here');
+                return Observable.of('123').first();
+            }
+        };
+
+        spyOn(mockAuthenticationService, 'getToken').and.callThrough();
+
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
                 SecureMessagesService,
-                { provide: ConnectionBackend, useClass: MockBackend },
+                { provide: XHRBackend, useClass: MockBackend },
+                { provide: AuthenticationService, useValue: mockAuthenticationService }
             ]
         });
     });
@@ -29,40 +44,69 @@ describe('SecureMessagesService', () => {
         expect(service).toBeTruthy();
     }));
 
-    /*describe('createSecureMessage [method]', () => {
+    describe('createSecureMessage [method]', () => {
 
         it('should check authentication is set in headers',
-            inject([SecureMessagesService, ConnectionBackend],
-                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+            inject([SecureMessagesService],
+                (secureMessagesService: SecureMessagesService) => {
 
-                    mockSecureMessage = createSecureMessage_server('100');
+                    mockClientSecureMessage = createSecureMessage_client();
+                    secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe();
 
-                    mockBackend.connections.subscribe((connection: any) => {
-                        connection.mockRespond(
-                            new Response(
-                                new ResponseOptions({
-                                    body: JSON.stringify(mockSecureMessage)
-                                })));
-                    });
+                    expect(mockAuthenticationService.getToken).toHaveBeenCalled();
+                    expect(secureMessagesService.encryptedHeaders.get('Authorization')).toEqual('123');
                 }));
 
         describe('when user is authenticated', () => {
 
-            it('should successfully POST a secure message', () => {
+            it('should successfully POST a secure message',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        mockClientSecureMessage = createSecureMessage_client();
+                        mockServerSecureMessage = createSecureMessage_server('100');
 
-            });
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify(mockServerSecureMessage)
+                                    })));
+                                });
 
-            it('should catch server error response', () => {
+                        secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe((serverResponse: any) => {
+                            console.log('server res: ', serverResponse);
+                            expect(serverResponse.json()).toEqual(mockServerSecureMessage);
+                        });
+                    }));
 
-            });
+            it('should catch server error response',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        mockClientSecureMessage = createSecureMessage_client();
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        status: 404,
+                                        body: {}
+                                    })));
+                        });
+
+                        secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe(
+                            (res: any) => {
+                                expect(res.status).toEqual(404);
+                            }
+                        );
+                    }));
         });
 
-        /!**
+        /**
          * TODO - When user is not authenticated
-         *!/
-        /!*describe('when user is not authenticated', () => {
-        });*!/
-    });*/
+         */
+        /*describe('when user is not authenticated', () => {
+        });*/
+    });
 
     /*describe('getAllMessages [method]', () => {
 

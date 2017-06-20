@@ -18,6 +18,19 @@ export function createSecureMessage_server(threadId: string, id: string = '') {
         subject: 'Message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
+        reporting_unit: 'AReportingUnit'
+    };
+}
+
+export function createSecureMessage_client() {
+
+    return {
+        msg_from: 'internal.user',
+        msg_to: 'external.user',
+        body: 'Message body',
+        subject: 'Message subject',
+        survey: 'bres123',
+        collection_case: 'ACollectionCase',
         reporting_unit: 'AReportingUnit',
     };
 }

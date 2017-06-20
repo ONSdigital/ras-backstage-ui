@@ -11,7 +11,7 @@ export class SecureMessagesService {
 
     static BASE_URL = environment.endpoints.secureMessages;
 
-    private encryptedHeaders = new Headers({
+    public encryptedHeaders = new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     });
@@ -144,12 +144,18 @@ export class SecureMessagesService {
 
     public authenticate(request: any) {
 
+        console.log('authentica     te: ', request);
+
         return this.authenticationService.getToken()
-            .mergeMap((token: string) => {
+            .flatMap((token: string) => {
+
+                console.log('merge: ', token);
 
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);
                 }
+
+                console.log(this.encryptedHeaders);
 
                 return request();
             })
