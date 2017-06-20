@@ -8,8 +8,8 @@ export function createSecureMessage_server(threadId: string, id: string = '') {
     return {
         thread_id: threadId,
         msg_id: id,
-        urn_from: 'bres123',
-        urn_to: [
+        msg_from: 'bres123',
+        msg_to: [
             'bres123'
         ],
         body: 'Message body',

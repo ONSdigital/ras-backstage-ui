@@ -10,8 +10,8 @@ import { SecureMessage } from '../shared/secure-message.model';
     template: `
         <h1 class="saturn">Secure messages</h1>
         
-        <ons-system-feedback *ngIf="messageSent"
-            [notificationListItems]="messageNotifications"></ons-system-feedback>
+        <ons-system-feedback *ngIf="hasSystemFeedback"
+            [notificationListItems]="systemNotifications"></ons-system-feedback>
         
         <ons-navigation-tabs
             [tabs]="navigationTabs"></ons-navigation-tabs>
@@ -23,10 +23,10 @@ import { SecureMessage } from '../shared/secure-message.model';
 export class SecureMessagesListContainerComponent implements OnInit {
 
     public secureMessagesList: Array<SecureMessage> = [];
-    private secureMessagesListMapByBusiness: Map<string, Array<SecureMessage>> = new Map<string, [SecureMessage]>();
+    // private secureMessagesListMapByBusiness: Map<string, Array<SecureMessage>> = new Map<string, [SecureMessage]>();
 
-    public messageSent: Boolean = false;
-    public messageNotifications: Array<any> = [];
+    public hasSystemFeedback: Boolean = false;
+    public systemNotifications: Array<any> = [];
 
     public navigationTabs: Array<NavigationTab> = [
         /*{
@@ -65,9 +65,9 @@ export class SecureMessagesListContainerComponent implements OnInit {
     ngOnInit() {
 
         if (this.route.snapshot.data.messageSent) {
-            this.messageSent = true;
+            this.hasSystemFeedback = true;
 
-            this.messageNotifications.push(NotificationListItem.create({
+            this.systemNotifications.push(NotificationListItem.create({
                 label: 'Message sent',
                 status: NotificationStatus.success
             }));
