@@ -61,3 +61,7 @@ app.get('/api/party-api/respondents/id/:id', (req, res) => {
 app.get('/api/party-api/businesses/id/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-business.json');
 });
+
+app.get('/api/my-surveys/todo/:id', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/my-surveys.json');
+});
