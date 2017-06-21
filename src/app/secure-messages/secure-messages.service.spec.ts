@@ -17,13 +17,46 @@ let mockAuthenticationService: any,
     mockServerSecureMessage: any,
     mockClientSecureMessage: any;
 
+
+function checkCatchServerError (
+    observable: Observable<any>,
+    mockBackend: MockBackend) {
+
+    mockBackend.connections.subscribe((connection: any) => {
+        const res = new Response(
+            new ResponseOptions({
+                body: {}
+            }));
+
+        res.ok = false;
+        res.status = 500;
+        res.statusText = '';
+        res.type = 3;
+        res.url = null;
+
+        connection.mockError(res);
+    });
+
+    observable.subscribe(
+        () => {},
+        (err: any) => {
+            console.log('erroring: ', err);
+            expect(err.ok).toEqual(false);
+            expect(err.status).toEqual(500);
+            expect(err.statusText).toEqual('');
+            expect(err.type).toEqual(3);
+            expect(err.url).toEqual(null);
+        }
+    );
+}
+
+
 describe('SecureMessagesService', () => {
 
     beforeEach(() => {
 
         mockAuthenticationService = {
             getToken() {
-                console.log('here');
                 return Observable.of('123').first();
             }
         };
@@ -84,20 +117,7 @@ describe('SecureMessagesService', () => {
                     (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
                         mockClientSecureMessage = createSecureMessage_client();
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        status: 404,
-                                        body: {}
-                                    })));
-                        });
-
-                        secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe(
-                            (res: any) => {
-                                expect(res.status).toEqual(404);
-                            }
-                        );
+                        checkCatchServerError(secureMessagesService.createSecureMessage(mockClientSecureMessage), mockBackend);
                     }));
         });
 
@@ -108,101 +128,109 @@ describe('SecureMessagesService', () => {
         });*/
     });
 
-    /*describe('getAllMessages [method]', () => {
+    describe('getAllMessages [method]', () => {
 
-        it('should check authentication is set in headers', () => {
+        /*it('should check authentication is set in headers', () => {
 
-        });
-
-        describe('when user is authenticated', () => {
-
-            it('should successfully GET a list of messages', () => {
-
-            });
-
-            it('should catch server error response', () => {
-
-            });
-        });
-
-        /!**
-         * TODO - When user is not authenticated
-         *!/
-        /!*describe('when user is not authenticated', () => {
-         });*!/
-    });*/
-
-    /*describe('getMessage [method]', () => {
-
-        it('should check authentication is set in headers', () => {
-
-        });
+        });*/
 
         describe('when user is authenticated', () => {
 
-            it('should successfully GET a single messages', () => {
+            /*it('should successfully GET a list of messages', () => {
 
-            });
+            });*/
 
-            it('should catch server error response', () => {
-
-            });
+            it('should catch server error response',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        checkCatchServerError(secureMessagesService.getAllMessages(), mockBackend);
+                    }));
         });
 
-        /!**
+        /**
          * TODO - When user is not authenticated
-         *!/
-        /!*describe('when user is not authenticated', () => {
-         });*!/
-    });*/
+         */
+        /*describe('when user is not authenticated', () => {
+        });*/
+    });
 
-    /*describe('saveDraft [method]', () => {
+    describe('getMessage [method]', () => {
 
-        it('should check authentication is set in headers', () => {
+        /*it('should check authentication is set in headers', () => {
 
-        });
+        });*/
 
         describe('when user is authenticated', () => {
 
-            it('should successfully POST a draft message', () => {
+            /*it('should successfully GET a single messages', () => {
 
-            });
+            });*/
 
-            it('should catch server error response', () => {
-
-            });
+            it('should catch server error response',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        checkCatchServerError(secureMessagesService.getMessage('123'), mockBackend);
+                    }));
         });
 
-        /!**
+        /**
          * TODO - When user is not authenticated
-         *!/
-        /!*describe('when user is not authenticated', () => {
-         });*!/
-    });*/
+         */
+        /*describe('when user is not authenticated', () => {
+        });*/
+    });
 
-    /*describe('updateDraft [method]', () => {
+    describe('saveDraft [method]', () => {
 
-        it('should check authentication is set in headers', () => {
+        /*it('should check authentication is set in headers', () => {
 
-        });
+        });*/
 
         describe('when user is authenticated', () => {
 
-            it('should successfully update and PUT a draft message', () => {
+            /*it('should successfully POST a draft message', () => {
 
-            });
+            });*/
 
-            it('should catch server error response', () => {
-
-            });
+            it('should catch server error response',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        checkCatchServerError(secureMessagesService.saveDraft(null), mockBackend);
+                    }));
         });
 
-        /!**
+        /**
          * TODO - When user is not authenticated
-         *!/
-        /!*describe('when user is not authenticated', () => {
-         });*!/
-    });*/
+         */
+        /*describe('when user is not authenticated', () => {
+         });*/
+    });
+
+    describe('updateDraft [method]', () => {
+
+        /*it('should check authentication is set in headers', () => {
+
+        });*/
+
+        describe('when user is authenticated', () => {
+
+            /*it('should successfully update and PUT a draft message', () => {
+
+            });*/
+
+            it('should catch server error response',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                        checkCatchServerError(secureMessagesService.updateDraft('456', null), mockBackend);
+                    }));
+        });
+
+        /**
+         * TODO - When user is not authenticated
+         */
+        /*describe('when user is not authenticated', () => {
+         });*/
+    });
 
     /**
      * TODO - Refactor/test after security architecture has been decided

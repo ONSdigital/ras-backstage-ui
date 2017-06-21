@@ -38,7 +38,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -63,7 +63,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -87,7 +87,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -111,7 +111,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -135,7 +135,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -144,7 +144,7 @@ export class SecureMessagesService {
 
     public authenticate(request: any) {
 
-        console.log('authentica     te: ', request);
+        console.log('authenticate: ', request);
 
         return this.authenticationService.getToken()
             .flatMap((token: string) => {
@@ -154,8 +154,6 @@ export class SecureMessagesService {
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);
                 }
-
-                console.log(this.encryptedHeaders);
 
                 return request();
             })
