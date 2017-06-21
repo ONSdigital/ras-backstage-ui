@@ -17,7 +17,7 @@ export const environment = {
         // collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
         // collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         survey: 'http://localhost:8000/api/',
-        secureMessages: 'http://0.0.0.0050/',
+        secureMessages: 'http://0.0.0.0:5050/',
 
         // CloudFoundry config
         collectionExercise: 'http://ras-collection-exercise-demo.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',

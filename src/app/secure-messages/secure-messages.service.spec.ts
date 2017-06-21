@@ -11,7 +11,12 @@ import { MockBackend } from '@angular/http/testing';
 
 import { AuthenticationService } from '../authentication/authentication.service';
 import { SecureMessagesService } from './secure-messages.service';
-import { createSecureMessage_server, createSecureMessage_client } from '../../testing/create_SecureMessage';
+import {
+    createSecureMessage_server,
+    createSecureMessage_client,
+    createDraftMessage_client,
+    createDraftMessage_server
+} from '../../testing/create_SecureMessage';
 
 let mockAuthenticationService: any,
     mockServerSecureMessage: any,
@@ -46,7 +51,6 @@ function checkCatchServerError (
     observable.subscribe(
         () => {},
         (err: any) => {
-            console.log('erroring: ', err);
             expect(err.ok).toEqual(false);
             expect(err.status).toEqual(500);
             expect(err.statusText).toEqual('');
@@ -79,6 +83,12 @@ describe('SecureMessagesService', () => {
         });
     });
 
+    afterEach(() => {
+        mockAuthenticationService = undefined;
+        mockServerSecureMessage = undefined;
+        mockClientSecureMessage = undefined;
+    });
+
     it('should inject the service', inject([SecureMessagesService], (service: SecureMessagesService) => {
         expect(service).toBeTruthy();
     }));
@@ -90,7 +100,8 @@ describe('SecureMessagesService', () => {
                 (secureMessagesService: SecureMessagesService) => {
                     mockClientSecureMessage = createSecureMessage_client();
 
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.createSecureMessage(mockClientSecureMessage));
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.
+                        createSecureMessage(mockClientSecureMessage));
                 }));
 
         describe('when user is authenticated', () => {
@@ -109,10 +120,10 @@ describe('SecureMessagesService', () => {
                                     })));
                                 });
 
-                        secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe((serverResponse: any) => {
-                            console.log('server res: ', serverResponse);
-                            expect(serverResponse.json()).toEqual(mockServerSecureMessage);
-                        });
+                        secureMessagesService.createSecureMessage(mockClientSecureMessage)
+                            .subscribe((serverResponse: any) => {
+                                expect(serverResponse.json()).toEqual(mockServerSecureMessage);
+                            });
                     }));
 
             it('should catch server error response',
@@ -120,7 +131,9 @@ describe('SecureMessagesService', () => {
                     (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
                         mockClientSecureMessage = createSecureMessage_client();
 
-                        checkCatchServerError(secureMessagesService.createSecureMessage(mockClientSecureMessage), mockBackend);
+                        checkCatchServerError(
+                            secureMessagesService.createSecureMessage(mockClientSecureMessage),
+                            mockBackend);
                     }));
         });
 
@@ -141,9 +154,31 @@ describe('SecureMessagesService', () => {
 
         describe('when user is authenticated', () => {
 
-            /*it('should successfully GET a list of messages', () => {
+            it('should successfully GET a list of messages',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            });*/
+                        const message1: any = createSecureMessage_server('200'),
+                            message2: any = createSecureMessage_server('300');
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify([
+                                            message1,
+                                            message2
+                                        ])
+                                    })));
+                        });
+
+                        secureMessagesService.getAllMessages()
+                            .subscribe((serverResponse: any) => {
+                                const resJSON = serverResponse.json();
+                                expect(resJSON[0]).toEqual(message1);
+                                expect(resJSON[1]).toEqual(message2);
+                            });
+                    }));
 
             it('should catch server error response',
                 inject([SecureMessagesService, XHRBackend],
@@ -169,9 +204,26 @@ describe('SecureMessagesService', () => {
 
         describe('when user is authenticated', () => {
 
-            /*it('should successfully GET a single messages', () => {
+            it('should successfully GET a single messages',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            });*/
+                        mockServerSecureMessage = createSecureMessage_server('400');
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify(mockServerSecureMessage)
+                                    })));
+                        });
+
+                        secureMessagesService.getMessage('400')
+                            .subscribe((serverResponse: any) => {
+                                const resJSON = serverResponse.json();
+                                expect(resJSON).toEqual(mockServerSecureMessage);
+                            });
+                    }));
 
             it('should catch server error response',
                 inject([SecureMessagesService, XHRBackend],
@@ -197,9 +249,31 @@ describe('SecureMessagesService', () => {
 
         describe('when user is authenticated', () => {
 
-            /*it('should successfully POST a draft message', () => {
+            it('should successfully POST a draft message',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            });*/
+                        const mockClientDraft = createDraftMessage_client(),
+                            mockServerDraftSuccess = {
+                                msg_id: '500',
+                                status: 'OK',
+                                thread_id: 'thread123'
+                            };
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify(mockServerDraftSuccess)
+                                    })));
+                        });
+
+                        secureMessagesService.saveDraft(mockClientDraft)
+                            .subscribe((serverResponse: any) => {
+                                const resJSON = serverResponse.json();
+                                expect(resJSON).toEqual(mockServerDraftSuccess);
+                            });
+                    }));
 
             it('should catch server error response',
                 inject([SecureMessagesService, XHRBackend],
@@ -225,9 +299,28 @@ describe('SecureMessagesService', () => {
 
         describe('when user is authenticated', () => {
 
-            /*it('should successfully update and PUT a draft message', () => {
+            it('should successfully update and PUT a draft message',
+                inject([SecureMessagesService, XHRBackend],
+                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            });*/
+                        const mockServerDraft = createDraftMessage_server('600');
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify('Updated')
+                                    })));
+                        });
+
+                        secureMessagesService.updateDraft('600', mockServerDraft)
+                            .subscribe((serverResponse: any) => {
+
+                                console.log('updated: ', serverResponse);
+                                const resJSON = serverResponse.json();
+                                expect(resJSON).toEqual('Updated');
+                            });
+                    }));
 
             it('should catch server error response',
                 inject([SecureMessagesService, XHRBackend],
