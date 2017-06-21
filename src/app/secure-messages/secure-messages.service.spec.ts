@@ -18,6 +18,12 @@ let mockAuthenticationService: any,
     mockClientSecureMessage: any;
 
 
+function checkFirstAuthentication (service: SecureMessagesService, observableMethod: any) {
+    observableMethod.subscribe();
+    expect(mockAuthenticationService.getToken).toHaveBeenCalled();
+    expect(service.encryptedHeaders.get('Authorization')).toEqual('123');
+}
+
 function checkCatchServerError (
     observable: Observable<any>,
     mockBackend: MockBackend) {
@@ -82,12 +88,9 @@ describe('SecureMessagesService', () => {
         it('should check authentication is set in headers',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
-
                     mockClientSecureMessage = createSecureMessage_client();
-                    secureMessagesService.createSecureMessage(mockClientSecureMessage).subscribe();
 
-                    expect(mockAuthenticationService.getToken).toHaveBeenCalled();
-                    expect(secureMessagesService.encryptedHeaders.get('Authorization')).toEqual('123');
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.createSecureMessage(mockClientSecureMessage));
                 }));
 
         describe('when user is authenticated', () => {
@@ -130,9 +133,11 @@ describe('SecureMessagesService', () => {
 
     describe('getAllMessages [method]', () => {
 
-        /*it('should check authentication is set in headers', () => {
-
-        });*/
+        it('should check authentication is set in headers',
+            inject([SecureMessagesService],
+                (secureMessagesService: SecureMessagesService) => {
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.getAllMessages());
+                }));
 
         describe('when user is authenticated', () => {
 
@@ -156,9 +161,11 @@ describe('SecureMessagesService', () => {
 
     describe('getMessage [method]', () => {
 
-        /*it('should check authentication is set in headers', () => {
-
-        });*/
+        it('should check authentication is set in headers',
+            inject([SecureMessagesService],
+                (secureMessagesService: SecureMessagesService) => {
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.getMessage('789'));
+                }));
 
         describe('when user is authenticated', () => {
 
@@ -182,9 +189,11 @@ describe('SecureMessagesService', () => {
 
     describe('saveDraft [method]', () => {
 
-        /*it('should check authentication is set in headers', () => {
-
-        });*/
+        it('should check authentication is set in headers',
+            inject([SecureMessagesService],
+                (secureMessagesService: SecureMessagesService) => {
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.saveDraft(null));
+                }));
 
         describe('when user is authenticated', () => {
 
@@ -208,9 +217,11 @@ describe('SecureMessagesService', () => {
 
     describe('updateDraft [method]', () => {
 
-        /*it('should check authentication is set in headers', () => {
-
-        });*/
+        it('should check authentication is set in headers',
+            inject([SecureMessagesService],
+                (secureMessagesService: SecureMessagesService) => {
+                    checkFirstAuthentication(secureMessagesService, secureMessagesService.updateDraft('987', null));
+                }));
 
         describe('when user is authenticated', () => {
 
