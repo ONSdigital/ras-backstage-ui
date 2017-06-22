@@ -6,6 +6,17 @@ const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage> } = {
     items: []
 };
 
+function newItemsState (items: Array<SecureMessage>, iterableCallback: Function = null) {
+    return Object.assign([], items.map((item: SecureMessage) => {
+        const obj = Object.assign({}, item);
+
+        if (iterableCallback) {
+            iterableCallback(obj);
+        }
+        return obj;
+    }));
+}
+
 export default function(state: any = INIT_STATE, action: any) {
 
     switch (action.type) {
@@ -25,23 +36,45 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            const items = Object.assign([], state.items.map((item: SecureMessage) => {
-
-                const obj: SecureMessage = Object.assign({}, item);
+            const items = newItemsState(state.items, (item: SecureMessage) => {
 
                 // If an item with same identifier is found, save a reference to its new object for merging data
                 if (item.msg_id === secureMessage.msg_id) {
-                    existingItem = obj;
+                    existingItem = item;
                 }
-
-                return obj;
-            }));
+            });
 
             existingItem ? Object.assign(existingItem, secureMessage) : items.push(secureMessage);
 
             return Object.assign({}, state, {
                 isFetching: false,
+                stateMessage: null,
                 items: items
+            });
+        case SecureMessagesActions.CREATED_SINGLE:
+
+            const msgId: string = action.payload.json().msg_id;
+
+            if (!msgId) {
+                return state;
+            }
+
+            return Object.assign({}, state, {
+                isFetching: false,
+                stateMessage: {
+                    notification: 'Message sent.',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/message/' + msgId
+                    }
+                },
+                items: newItemsState(state.items)
+            });
+        case SecureMessagesActions.RECEIVED_ALL:
+            return Object.assign({}, state, {
+                isFetching: false,
+                stateMessage: null,
+                items: newItemsState(state.items)
             });
         default:
             return state;

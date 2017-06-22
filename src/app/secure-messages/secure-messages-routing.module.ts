@@ -27,13 +27,6 @@ export const secureMessagesRoutes: Routes = [
                 }
             },
             {
-                path: 'message-sent',
-                component: SecureMessagesListContainerComponent,
-                data: {
-                    messageSent: true
-                }
-            },
-            {
                 path: 'create-message',
                 component: SecureMessageCreateContainerComponent,
                 data: {

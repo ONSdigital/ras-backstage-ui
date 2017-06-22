@@ -5,6 +5,7 @@ import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
 import { PartyService } from '../../party/party.service';
 import { SecureMessage } from '../shared/secure-message.model';
+import { NgRedux } from '@angular-redux/store';
 
 @Component({
     template: `
@@ -60,18 +61,36 @@ export class SecureMessagesListContainerComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private partyService: PartyService,
+        private ngRedux: NgRedux<any>,
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
 
-        if (this.route.snapshot.data.messageSent) {
+        /*if (this.route.snapshot.data.messageSent) {
             this.hasSystemFeedback = true;
 
             this.systemNotifications.push(NotificationListItem.create({
                 label: 'Message sent',
                 status: NotificationStatus.success
             }));
-        }
+        }*/
+
+        this.ngRedux.select(['secureMessages', 'stateMessage'])
+            .first()
+            .subscribe((stateMessage: any) => {
+                if (!stateMessage) {
+                    return;
+                }
+
+                this.hasSystemFeedback = true;
+
+                this.systemNotifications.push(NotificationListItem.create({
+                    label: stateMessage.notification,
+                    action: stateMessage.action,
+                    status: NotificationStatus.success
+                }));
+                console.log('stateMessage: ', stateMessage);
+            });
 
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {

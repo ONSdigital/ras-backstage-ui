@@ -3,6 +3,8 @@
         <li *ngFor="let notificationListItem of notificationListItems" class="system-feedback__list-item system-feedback__list-item--success">
             <i class="fa fa-check-circle system-feedback__icon" aria-hidden="true"></i>
             {{ notificationListItem.label }}
+            <a *ngIf="notificationListItem?.action" [routerLink]="notificationListItem?.action.link">
+                {{ notificationListItem.action.label }}</a>
         </li>
     </ul>
 </div>
