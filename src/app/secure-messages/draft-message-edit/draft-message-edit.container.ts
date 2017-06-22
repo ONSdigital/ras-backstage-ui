@@ -11,25 +11,16 @@ import { SecureMessagesActions } from '../secure-messages.actions';
             (send_button_click)="sendMessage_handler($event)"
             (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
-            [(subject)]="draftMessage.subject"
-            [(body)]="draftMessage.body"></ons-draft-message-edit>`
+            [(subject)]="subject"
+            [(body)]="body"></ons-draft-message-edit>`
 })
 export class DraftMessageEditContainerComponent implements OnInit {
 
-    public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public draftMessage: DraftMessage;
 
-    /**
-     * TODO - Get message from route resolved data
-     */
-    public draftMessage: DraftMessage = {
-        msg_to: 'respondent.123',
-        msg_from: 'internal.test',
-        subject: '',
-        body: '',
-        collection_case: 'ACollectionCase',
-        reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b972',
-        survey: 'BRES'
-    };
+    public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public subject = '';
+    public body = '';
 
     constructor(
         private route: ActivatedRoute,
@@ -44,6 +35,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.draftMessage = this.route.snapshot.data.exported.draftMessage;
+        this.subject = this.draftMessage.subject;
+        this.body = this.draftMessage.body;
 
         console.log('Edit draft snapshot data: ', this.route.snapshot.data.exported);
     }
