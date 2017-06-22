@@ -144,12 +144,8 @@ export class SecureMessagesService {
 
     public authenticate(request: any) {
 
-        console.log('authenticate: ', request);
-
         return this.authenticationService.getToken()
             .flatMap((token: string) => {
-
-                console.log('merge: ', token);
 
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);

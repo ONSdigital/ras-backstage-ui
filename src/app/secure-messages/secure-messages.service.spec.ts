@@ -315,8 +315,6 @@ describe('SecureMessagesService', () => {
 
                         secureMessagesService.updateDraft('600', mockServerDraft)
                             .subscribe((serverResponse: any) => {
-
-                                console.log('updated: ', serverResponse);
                                 const resJSON = serverResponse.json();
                                 expect(resJSON).toEqual('Updated');
                             });
