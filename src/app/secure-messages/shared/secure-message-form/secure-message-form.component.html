@@ -11,7 +11,8 @@
                 name="secure-message-subject"
                 required
                 [(ngModel)]="subject"
-                (change)="subjectChange.emit(subject)"/>
+                (change)="subjectChange.emit(subject)"
+                aria-labelledby="secure-message-subject"/>
         </fieldset>
 
         <fieldset class="u-mb-m">
@@ -23,16 +24,19 @@
                 name="secure-message-body"
                 required
                 [(ngModel)]="body"
-                (change)="bodyChange.emit(body)"></textarea>
+                (change)="bodyChange.emit(body)"
+                aria-labelledby="secure-message-body"></textarea>
         </fieldset>
 
         <button class="btn btn--secondary" type="submit"
-                (click)="secondary_button_click.emit($event);"
-                [disabled]="!isValid()">Save draft</button>
+            (click)="secondary_button_click.emit($event);"
+            [disabled]="!isValid()"
+            role="button">Save draft</button>
 
         <button class="btn btn--primary" type="submit"
             (click)="primary_button_click.emit($event);"
-            [disabled]="!isValid()">Send message</button>
+            [disabled]="!isValid()"
+            role="button">Send message</button>
 
         <div class="u-mb-m">
             <a [routerLink]="'/secure-messages'">Cancel</a>

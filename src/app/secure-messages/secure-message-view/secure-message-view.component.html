@@ -29,12 +29,14 @@
                     name="secure-message-body"
                     [ngModel]="newMessageBody"
                     (change)="onTypingReply($event)"
-                    (keyup)="onTypingReply($event)"></textarea>
+                    (keyup)="onTypingReply($event)"
+                    aria-labelledby="secure-message-body"></textarea>
             </fieldset>
 
             <button class="btn" type="submit"
                 [disabled]="!isValid()"
-                (click)="send_reply_click_handler.emit($event)">Send reply</button>
+                (click)="send_reply_click_handler.emit($event)"
+                role="button">Send reply</button>
 
             <div class="u-mb-m">
                 <a [routerLink]="'/secure-messages'">Cancel</a>
