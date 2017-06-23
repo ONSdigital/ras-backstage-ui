@@ -89,7 +89,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
             .subscribe(() => {
-                this.router.navigate(['/secure-messages/message-sent']);
+                this.router.navigate(['/secure-messages']);
             });
     }
 }

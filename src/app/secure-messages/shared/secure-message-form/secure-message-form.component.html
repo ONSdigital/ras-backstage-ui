@@ -11,7 +11,7 @@
                 name="secure-message-subject"
                 required
                 [(ngModel)]="subject"
-                (keyup)="subjectChange.emit(subject)"/>
+                (change)="subjectChange.emit(subject)"/>
         </fieldset>
 
         <fieldset class="u-mb-m">
@@ -23,7 +23,7 @@
                 name="secure-message-body"
                 required
                 [(ngModel)]="body"
-                (keyup)="bodyChange.emit(body)"></textarea>
+                (change)="bodyChange.emit(body)"></textarea>
         </fieldset>
 
         <button class="btn btn--secondary" type="submit"

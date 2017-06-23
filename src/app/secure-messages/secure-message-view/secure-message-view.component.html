@@ -28,6 +28,7 @@
                     rows="10"
                     name="secure-message-body"
                     [ngModel]="newMessageBody"
+                    (change)="onTypingReply($event)"
                     (keyup)="onTypingReply($event)"></textarea>
             </fieldset>
 
