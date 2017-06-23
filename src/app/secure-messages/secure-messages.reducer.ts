@@ -6,18 +6,9 @@ const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage> } = {
     items: []
 };
 
-function newItemsState (items: Array<SecureMessage>, iterableCallback: Function = null) {
-    return Object.assign([], items.map((item: SecureMessage) => {
-        const obj = Object.assign({}, item);
-
-        if (iterableCallback) {
-            iterableCallback(obj);
-        }
-        return obj;
-    }));
-}
-
 export default function(state: any = INIT_STATE, action: any) {
+
+    let msgId: string;
 
     switch (action.type) {
         case SecureMessagesActions.RECEIVED_SINGLE:
@@ -53,7 +44,7 @@ export default function(state: any = INIT_STATE, action: any) {
             });
         case SecureMessagesActions.CREATED_SINGLE:
 
-            const msgId: string = action.payload.json().msg_id;
+            msgId = action.payload.json().msg_id;
 
             if (!msgId) {
                 return state;
@@ -62,7 +53,7 @@ export default function(state: any = INIT_STATE, action: any) {
             return Object.assign({}, state, {
                 isFetching: false,
                 stateMessage: {
-                    notification: 'Message sent.',
+                    notification: 'Message sent',
                     action: {
                         label: 'View message',
                         link: '/secure-messages/message/' + msgId
@@ -76,7 +67,56 @@ export default function(state: any = INIT_STATE, action: any) {
                 stateMessage: null,
                 items: newItemsState(state.items)
             });
+        case SecureMessagesActions.DRAFT_SAVED:
+
+            msgId = action.payload.json().msg_id;
+
+            if (!msgId) {
+                return state;
+            }
+
+            return Object.assign({}, state, {
+                isFetching: false,
+                stateMessage: {
+                    notification: 'Draft saved',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/drafts/' + msgId
+                    }
+                },
+                items: newItemsState(state.items)
+            });
+        case SecureMessagesActions.REPLIED_SINGLE:
+
+            msgId = action.payload.json().msg_id;
+
+            if (!msgId) {
+                return state;
+            }
+
+            return Object.assign({}, state, {
+                isFetching: false,
+                stateMessage: {
+                    notification: 'Message sent',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/message/' + msgId
+                    }
+                },
+                items: newItemsState(state.items)
+            });
         default:
             return state;
     }
+}
+
+function newItemsState (items: Array<SecureMessage>, iterableCallback: Function = null) {
+    return Object.assign([], items.map((item: SecureMessage) => {
+        const obj = Object.assign({}, item);
+
+        if (iterableCallback) {
+            iterableCallback(obj);
+        }
+        return obj;
+    }));
 }
