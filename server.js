@@ -74,7 +74,7 @@ app.get('/api/collection-instruments/download/:id', (req, res) => {
 
 // Used by ras-frontstage to get the file size of a collection instrument spreadsheet
 app.get('/api/collection-instruments/id/:id', (req, res) => {
-    console.log('collection-instrument.json');
+    // console.log('collection-instrument.json');
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument.json');
 });
 
@@ -83,6 +83,28 @@ app.post('/api/collection-instruments/survey_responses/:id', function(req, res) 
 
     // Send response code or error message
     res.status(200).json({
-        status_code: 'ok'
+        code: '1001',
+        text: 'Survey response successfully uploaded'
     });
+
+    // Error
+    // res.status(400).json({
+    //     code: '1002',
+    //     text: 'Error uploading survey response - the file is too large'
+    // });
+
+    // res.status(400).json({
+    //     code: '1003',
+    //     text: 'Error uploading survey response - the file is not an Excel spreadsheet'
+    // });
+
+    // res.status(400).json({
+    //     code: '1004',
+    //     text: 'Error uploading survey response - the filename is too long'
+    // });
+    //
+    // res.status(400).json({
+    //     code: '1005',
+    //     text: 'Error uploading survey response - malicious content detected'
+    // });
 });
