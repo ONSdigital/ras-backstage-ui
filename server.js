@@ -62,6 +62,27 @@ app.get('/api/party-api/businesses/id/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-business.json');
 });
 
+// Used by ras-frontstage to obtain a list of cases (surveys)
 app.get('/api/my-surveys/todo/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/my-surveys.json');
+});
+
+// Used by ras-frontstage to download a collection instrument spreadsheet
+app.get('/api/collection-instruments/download/:id', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument.xlsx');
+});
+
+// Used by ras-frontstage to get the file size of a collection instrument spreadsheet
+app.get('/api/collection-instruments/id/:id', (req, res) => {
+    console.log('collection-instrument.json');
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument.json');
+});
+
+// Used by ras-frontstage to upload a survey response
+app.post('/api/collection-instruments/survey_responses/:id', function(req, res) {
+
+    // Send response code or error message
+    res.status(200).json({
+        status_code: 'ok'
+    });
 });
