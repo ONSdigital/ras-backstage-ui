@@ -40,8 +40,8 @@ export function createDraftMessage_client() {
     return {
         msg_from: 'internal.user',
         msg_to: 'respondent123',
-        subject: 'Test draft subject',
-        body: 'Test draft body',
+        subject: 'Draft message subject',
+        body: 'Draft message body',
         survey: 'BRES',
         collection_case: 'ACollectionCase',
         reporting_unit: 'AReportingUnit'
@@ -58,10 +58,10 @@ export function createDraftMessage_server(id: string) {
         msg_to: [
             'bres123'
         ],
-        body: 'Message draft body',
+        body: 'Draft message body',
         labels: labels,
         sent_date: 'Fri, 02 Jun 2017 09:13:21 GMT',
-        subject: 'Message subject',
+        subject: 'Draft message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
         reporting_unit: 'AReportingUnit'

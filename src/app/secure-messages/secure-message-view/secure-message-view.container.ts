@@ -61,7 +61,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         this.originalSecureMessage = originalSecureMessage;
 
         /**
-         * TOOO - msg_to will be singular
+         * TOOO - msg_to
          */
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,

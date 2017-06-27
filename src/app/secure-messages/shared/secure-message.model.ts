@@ -6,7 +6,7 @@ export interface SecureMessage {
     read_date?: string;
     sent_date?: string;
 
-    msg_to: string | Array<Object>;
+    msg_to: string | Array<any>;
     msg_from: string | Object;
     subject: string;
     body: string;

@@ -7,20 +7,18 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 
 @Component({
     template: `
-        <ons-draft-message-edit
+        <ons-draft-message-edit *ngIf="draftMessage"
             (send_button_click)="sendMessage_handler($event)"
             (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
-            [(subject)]="subject"
-            [(body)]="body"></ons-draft-message-edit>`
+            [(subject)]="draftMessage.subject"
+            [(body)]="draftMessage.body"></ons-draft-message-edit>`
 })
 export class DraftMessageEditContainerComponent implements OnInit {
 
-    public draftMessage: DraftMessage;
-
     public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
-    public subject = '';
-    public body = '';
+
+    public draftMessage: DraftMessage;
 
     constructor(
         private route: ActivatedRoute,
@@ -30,13 +28,11 @@ export class DraftMessageEditContainerComponent implements OnInit {
     ngOnInit() {
 
         if (!this.route.snapshot.data.exported || !this.route.snapshot.data.exported.draftMessage) {
-            console.log('Draft message not found in route snapshot data.');
+            console.log('Draft message not found in route snapshot data: ', this.route.snapshot.data);
             return;
         }
 
         this.draftMessage = this.route.snapshot.data.exported.draftMessage;
-        this.subject = this.draftMessage.subject;
-        this.body = this.draftMessage.body;
 
         console.log('Edit draft snapshot data: ', this.route.snapshot.data.exported);
     }
