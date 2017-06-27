@@ -1,9 +1,10 @@
 import { SecureMessage } from './shared/secure-message.model';
 import { SecureMessagesActions } from './secure-messages.actions';
 
-const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage> } = {
+const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage>, stateMessage: object } = {
     isFetching: false,
-    items: []
+    items: [],
+    stateMessage: null
 };
 
 export default function(state: any = INIT_STATE, action: any) {
