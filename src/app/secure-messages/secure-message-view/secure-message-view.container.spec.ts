@@ -17,9 +17,9 @@ let fixture: ComponentFixture<any>,
     mockOriginalSecureMessage: any,
     mockSecureMessagesActions: any,
 
-    mockParamSecureMessageId: string = '100',
-
     storeData: any = [];
+
+const mockParamSecureMessageId = '100';
 
 describe('SecureMessageViewContainerComponent', () => {
 
