@@ -1,10 +1,17 @@
 {
-  "ciType": "OFFLINE",
-  "classifiers": {
-    "classifier": "1731",
-    "classifierType": "RU_REF"
-  },
+  "businesses": [
+    "0123456789"
+  ],
+  "classifiers": [
+    {
+      "SIZE": "4914"
+    }
+  ],
+  "exercises": [
+    "1c46f5aa-01d0-4300-aa1d-32aab8618760"
+  ],
   "id": "40c7c047-4fb3-4abe-926e-bf19fa2c0a1e",
-  "surveyId": "cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87",
-  "size": "12345"
+  "len": 4914,
+  "stamp": "2017-06-20T13:20:13.554728Z",
+  "survey": "3decb89c-c5f5-41b8-9e74-5033395d247e"
 }

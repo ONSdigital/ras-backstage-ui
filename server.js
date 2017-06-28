@@ -73,7 +73,7 @@ app.get('/api/collection-instruments/download/:id', (req, res) => {
 });
 
 // Used by ras-frontstage to get the file size of a collection instrument spreadsheet
-app.get('/api/collection-instruments/id/:id', (req, res) => {
+app.get('/api/collection-instruments/collectioninstrument/id/:id', (req, res) => {
     // console.log('collection-instrument.json');
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument.json');
 });
@@ -82,16 +82,16 @@ app.get('/api/collection-instruments/id/:id', (req, res) => {
 app.post('/api/collection-instruments/survey_responses/:id', function(req, res) {
 
     // Send response code or error message
-    res.status(200).json({
-        code: '1001',
-        text: 'Survey response successfully uploaded'
-    });
+    // res.status(200).json({
+    //     code: '1001',
+    //     text: 'Survey response successfully uploaded'
+    // });
 
     // Error
-    // res.status(400).json({
-    //     code: '1002',
-    //     text: 'Error uploading survey response - the file is too large'
-    // });
+    res.status(400).json({
+        code: '1002',
+        text: 'Error uploading survey response - the file is too large'
+    });
 
     // res.status(400).json({
     //     code: '1003',
@@ -107,4 +107,19 @@ app.post('/api/collection-instruments/survey_responses/:id', function(req, res) 
     //     code: '1005',
     //     text: 'Error uploading survey response - malicious content detected'
     // });
+});
+
+// Used by ras-frontstage to validate an enrolment code
+app.get('/api/iac/:iac', (req, res) => {
+    let iac = req.url.split('/').pop();
+
+    if (iac === 'abcdef000001') {
+        // active
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/iac.json');
+    } else if (iac === 'abcdef000000') {
+        // inactive
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/iac-inactive.json');
+    } else {
+        res.status(404).send('Not found');
+    }
 });
