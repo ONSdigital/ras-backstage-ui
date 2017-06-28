@@ -27,14 +27,20 @@ export class DraftMessageEditContainerComponent implements OnInit {
 
     ngOnInit() {
 
-        if (!this.route.snapshot.data.exported || !this.route.snapshot.data.exported.draftMessage) {
+        const exportedData = this.route.snapshot.data.exported;
+        let msgTo: any;
+
+        if (!exportedData || !exportedData.draftMessage) {
             console.log('Draft message not found in route snapshot data: ', this.route.snapshot.data);
             return;
         }
 
-        this.draftMessage = this.route.snapshot.data.exported.draftMessage;
+        this.draftMessage = exportedData.draftMessage;
+        msgTo = this.draftMessage.msg_to[0];
 
-        console.log('Edit draft snapshot data: ', this.route.snapshot.data.exported);
+        this.to = msgTo.firstname + ' ' + msgTo.surname
+            + ' for ' + this.draftMessage['@ru_ref'].business_name
+            + ' - ' + this.draftMessage['@ru_ref'].ru_ref;
     }
 
     public sendMessage_handler() {

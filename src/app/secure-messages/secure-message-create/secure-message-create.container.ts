@@ -19,7 +19,7 @@ import { UserActions } from '../../user/user.actions';
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
-    public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public to = 'Vana Oorschot for AOL - 36509908341B';
 
     public secureMessage: SecureMessage;
 
@@ -40,7 +40,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',
-                    reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b972',
+                    ru_ref: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
                     survey: 'BRES'
                 };
 

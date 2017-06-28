@@ -123,7 +123,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
         let mappingArr: Array<SecureMessage> = [];
 
         const existingBusinessMapping: Array<SecureMessage> = this.secureMessagesListMapByBusiness
-            .get(secureMessage.reporting_unit);
+            .get(secureMessage.ru_ref);
 
         if (existingBusinessMapping) {
             mappingArr = existingBusinessMapping;

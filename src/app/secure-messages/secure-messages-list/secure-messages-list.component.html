@@ -15,8 +15,8 @@
             <tr *ngFor="let message of secureMessages; let i = index;"
                 class="secure-messages-list__item secure-messages-list__item--unread">
 
-                <td class="secure-messages-list__field"><!--36509908341B-->{{ (message.reporting_unit) }}</td>
-                <td class="secure-messages-list__field"><!--Bolts & Ratchets Ltd-->{{ message.reporting_unit }}</td>
+                <td class="secure-messages-list__field"><!--36509908341B-->{{ message['@ru_ref'].ru_ref }}</td>
+                <td class="secure-messages-list__field"><!--Bolts & Ratchets Ltd-->{{ message['@ru_ref'].business_name }}</td>
                 <td class="secure-messages-list__field secure-messages-list__field--link">
                     <a class="secure-messages-list__link" [routerLink]="[(message.$isDraft ? '/secure-messages/drafts/' : '/secure-messages/message/'), message.msg_id]">{{ message.subject }}</a>
                     <span class="secure-messages-list__label secure-messages-list__label--draft" *ngIf="message.$isDraft">DRAFT</span>

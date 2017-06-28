@@ -134,7 +134,7 @@ describe('SecureMessageViewContainerComponent', () => {
                         subject: comp.originalSecureMessage.subject,
                         body: 'Some reply content',
                         collection_case: comp.originalSecureMessage.collection_case,
-                        reporting_unit: comp.originalSecureMessage.reporting_unit,
+                        ru_ref: comp.originalSecureMessage.reporting_unit,
                         survey: comp.originalSecureMessage.survey
                     });
                 }));

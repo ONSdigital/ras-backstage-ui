@@ -23,7 +23,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 !secureMessage.msg_from ||
                 !secureMessage.subject ||
                 !secureMessage.body ||
-                !secureMessage.reporting_unit) {
+                !secureMessage.ru_ref) {
 
                 return state;
             }
