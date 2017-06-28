@@ -110,7 +110,7 @@ app.post('/api/collection-instruments/survey_responses/:id', function(req, res) 
 });
 
 // Used by ras-frontstage to validate an enrolment code
-app.get('/api/iac/:iac', (req, res) => {
+app.get('/api/iacs/:iac', (req, res) => {
     let iac = req.url.split('/').pop();
 
     if (iac === 'abcdef000001') {
