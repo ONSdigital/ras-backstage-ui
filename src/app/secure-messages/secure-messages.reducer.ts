@@ -106,6 +106,25 @@ export default function(state: any = INIT_STATE, action: any) {
                 },
                 items: newItemsState(state.items)
             });
+        case SecureMessagesActions.DRAFT_UPDATED:
+
+            msgId = action.payload.json().msg_id;
+
+            if (!msgId) {
+                return state;
+            }
+
+            return Object.assign({}, state, {
+                isFetching: false,
+                stateMessage: {
+                    notification: 'Draft saved',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/drafts/' + msgId
+                    }
+                },
+                items: newItemsState(state.items)
+            });
         default:
             return state;
     }
