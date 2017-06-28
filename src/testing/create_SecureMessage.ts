@@ -18,7 +18,7 @@ export function createSecureMessage_server(threadId: string, id: string = '') {
         subject: 'Message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit'
+        ru_ref: 'AReportingUnit'
     };
 }
 
@@ -31,7 +31,7 @@ export function createSecureMessage_client() {
         subject: 'Message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit',
+        ru_ref: 'AReportingUnit',
     };
 }
 
@@ -44,7 +44,7 @@ export function createDraftMessage_client() {
         body: 'Draft message body',
         survey: 'BRES',
         collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit'
+        ru_ref: 'AReportingUnit'
     };
 }
 
@@ -64,6 +64,10 @@ export function createDraftMessage_server(id: string) {
         subject: 'Draft message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit'
+        ru_ref: 'AReportingUnit',
+
+        '@ru_ref': {},
+        '@survey': {},
+        '@collection_case': {}
     };
 }

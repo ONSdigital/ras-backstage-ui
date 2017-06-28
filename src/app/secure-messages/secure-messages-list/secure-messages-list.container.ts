@@ -89,7 +89,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
                     action: stateMessage.action,
                     status: NotificationStatus.success
                 }));
-                console.log('stateMessage: ', stateMessage);
             });
 
         this.secureMessagesActions.retrieveAllSecureMessages()
