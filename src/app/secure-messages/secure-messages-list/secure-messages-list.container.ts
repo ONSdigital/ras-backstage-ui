@@ -66,15 +66,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     ngOnInit() {
 
-        /*if (this.route.snapshot.data.messageSent) {
-            this.hasSystemFeedback = true;
-
-            this.systemNotifications.push(NotificationListItem.create({
-                label: 'Message sent',
-                status: NotificationStatus.success
-            }));
-        }*/
-
         this.ngRedux.select(['secureMessages', 'stateMessage'])
             .first()
             .subscribe((stateMessage: any) => {
@@ -94,6 +85,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {
                 const messages = secureMessages;
+                console.log('messages: ', messages);
 
                 /**
                  * TODO
@@ -103,59 +95,20 @@ export class SecureMessagesListContainerComponent implements OnInit {
                     if (messages.hasOwnProperty(i)) {
                         const message: SecureMessage = messages[i];
 
+                        console.log('message: ', message);
+
+                        if (!message.labels) {
+                            console.log('labels property missing on msg: ', message);
+                        }
+
                         /**
                          * Attach view-only label
                          */
                         message['$isDraft'] = !!message.labels.find(label => label === 'DRAFT');
 
                         this.secureMessagesList.push(message);
-                        // this.mapMessageByBusinessId(message);
                     }
                 }
-
-                // this.fetchBusinesses();
             });
     }
-
-    /*public mapMessageByBusinessId(secureMessage: SecureMessage) {
-
-        let mappingArr: Array<SecureMessage> = [];
-
-        const existingBusinessMapping: Array<SecureMessage> = this.secureMessagesListMapByBusiness
-            .get(secureMessage.ru_ref);
-
-        if (existingBusinessMapping) {
-            mappingArr = existingBusinessMapping;
-        }
-
-        mappingArr.push(secureMessage);
-        this.secureMessagesListMapByBusiness.set(secureMessage.reporting_unit, mappingArr);
-    }
-
-    public fetchBusinesses() {
-
-        this.secureMessagesListMapByBusiness.forEach((secureMessages: Array<SecureMessage>, businessId: string) => {
-
-            this.partyService.getBusiness(businessId)
-                .subscribe((business: any) => {
-                    console.log('business: ', business);
-
-                    this.updateMessagesWithBusiness(business);
-                });
-        });
-    }
-
-    public updateMessagesWithBusiness(business: any) {
-        const secureMessages: Array<SecureMessage> = this.secureMessagesListMapByBusiness.get(business.id);
-
-        /!**
-         * Rely on message objects being passed by reference.
-         *!/
-        secureMessages.forEach((secureMessage: SecureMessage) => {
-            secureMessage['@reporting_unit'] = business;
-        });
-
-        console.log('list: ', this.secureMessagesList);
-        console.log(this.secureMessagesListMapByBusiness.get(business.id));
-    }*/
 }
