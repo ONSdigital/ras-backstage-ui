@@ -23,6 +23,7 @@ export const environment = {
         collectionExercise: 'https://ras-collection-exercise-dev.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
         collectionInstrument: 'https://ras-collection-instrument-dev.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
         // survey: 'http://localhost:8000/api/'
+        // secureMessages: 'http://sm.apps.mvp.onsclofo.uk/',
 
         // TODO remove this
         // collectionExercise: 'http://localhost:8000/api/',

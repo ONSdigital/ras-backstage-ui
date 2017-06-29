@@ -1,0 +1,16 @@
+<div class="draft-message-edit-component">
+    <div class="grid grid--reverse">
+        <div class="grid__col col-4@m"></div>
+        <div class="grid__col col-7@m pull-1@m">
+            <h1 class="saturn">Edit draft message</h1>
+            <ons-secure-message-form
+                (primary_button_click)="send_button_click.emit($event)"
+                (secondary_button_click)="save_button_click.emit($emit)"
+                [(to)]="to"
+                [subject]="subject"
+                (subjectChange)="subjectChange.emit($event)"
+                [body]="body"
+                (bodyChange)="bodyChange.emit($event)"></ons-secure-message-form>
+        </div>
+    </div>
+</div>

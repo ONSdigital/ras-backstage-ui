@@ -11,7 +11,7 @@ export class SecureMessagesService {
 
     static BASE_URL = environment.endpoints.secureMessages;
 
-    private encryptedHeaders = new Headers({
+    public encryptedHeaders = new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     });
@@ -38,7 +38,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -63,7 +63,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -87,7 +87,7 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -111,7 +111,31 @@ export class SecureMessagesService {
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
-                return Observable.throw(error.json().error || 'Server error');
+                return Observable.throw(error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
+    public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
+
+        const request = (() => {
+            return this.http.put(
+                SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
+                draftMessage,
+                new RequestOptions({
+                    method: RequestMethod.Put,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .share()
+            .do((res: Response) => {
+                console.log('Update draft: ', res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error || 'Server error');
             });
         });
 
@@ -121,7 +145,7 @@ export class SecureMessagesService {
     public authenticate(request: any) {
 
         return this.authenticationService.getToken()
-            .mergeMap((token: string) => {
+            .flatMap((token: string) => {
 
                 if (!this.isAuthenticated()) {
                     this.encryptedHeaders.append('Authorization', token);

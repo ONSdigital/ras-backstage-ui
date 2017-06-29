@@ -61,23 +61,23 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         this.originalSecureMessage = originalSecureMessage;
 
         /**
-         * TOOO - urn_to will be singular
+         * TOOO - msg_to
          */
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,
-            urn_to: originalSecureMessage.urn_to[0],
-            urn_from: '',
+            msg_to: originalSecureMessage.msg_to[0],
+            msg_from: '',
             subject: originalSecureMessage.subject,
             body: '',
             collection_case: this.originalSecureMessage.collection_case,
-            reporting_unit: this.originalSecureMessage.reporting_unit,
+            ru_ref: this.originalSecureMessage.ru_ref,
             survey: this.originalSecureMessage.survey
         };
 
         this.ngRedux.select(['user', 'item'])
             .first()
             .subscribe((user: User) => {
-                this.newSecureMessage.urn_from = user.id;
+                this.newSecureMessage.msg_from = user.id;
             });
     }
 
@@ -89,7 +89,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
             .subscribe(() => {
-                this.router.navigate(['/secure-messages/message-sent']);
+                this.router.navigate(['/secure-messages']);
             });
     }
 }

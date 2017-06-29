@@ -8,8 +8,8 @@ export function createSecureMessage_server(threadId: string, id: string = '') {
     return {
         thread_id: threadId,
         msg_id: id,
-        urn_from: 'bres123',
-        urn_to: [
+        msg_from: 'bres123',
+        msg_to: [
             'bres123'
         ],
         body: 'Message body',
@@ -18,6 +18,56 @@ export function createSecureMessage_server(threadId: string, id: string = '') {
         subject: 'Message subject',
         survey: 'bres123',
         collection_case: 'ACollectionCase',
-        reporting_unit: 'AReportingUnit',
+        ru_ref: 'AReportingUnit'
+    };
+}
+
+export function createSecureMessage_client() {
+
+    return {
+        msg_from: 'internal.user',
+        msg_to: 'external.user',
+        body: 'Message body',
+        subject: 'Message subject',
+        survey: 'bres123',
+        collection_case: 'ACollectionCase',
+        ru_ref: 'AReportingUnit',
+    };
+}
+
+export function createDraftMessage_client() {
+
+    return {
+        msg_from: 'internal.user',
+        msg_to: 'respondent123',
+        subject: 'Draft message subject',
+        body: 'Draft message body',
+        survey: 'BRES',
+        collection_case: 'ACollectionCase',
+        ru_ref: 'AReportingUnit'
+    };
+}
+
+export function createDraftMessage_server(id: string) {
+
+    const labels: Array<any> = [];
+
+    return {
+        msg_id: id,
+        msg_from: 'bres123',
+        msg_to: [
+            'bres123'
+        ],
+        body: 'Draft message body',
+        labels: labels,
+        sent_date: 'Fri, 02 Jun 2017 09:13:21 GMT',
+        subject: 'Draft message subject',
+        survey: 'bres123',
+        collection_case: 'ACollectionCase',
+        ru_ref: 'AReportingUnit',
+
+        '@ru_ref': {},
+        '@survey': {},
+        '@collection_case': {}
     };
 }

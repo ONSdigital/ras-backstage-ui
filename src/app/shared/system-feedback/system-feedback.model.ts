@@ -1,13 +1,15 @@
 export class NotificationListItem {
     public type = 'list-item';
     public label: string;
+    public action?: { label: string, link: string };
     public status: NotificationStatus;
 
-    static create(opts: { label: string, status: NotificationStatus }) {
+    static create(opts: { label: string, action: any, status: NotificationStatus }) {
 
         opts = opts || {
             label: undefined,
-            status: undefined
+            status: undefined,
+            action: null
         };
 
         if (!opts.label) {
@@ -21,6 +23,7 @@ export class NotificationListItem {
         const instance = new NotificationListItem();
         instance.label = opts.label;
         instance.status = opts.status;
+        instance.action = opts.action;
 
         return instance;
     }

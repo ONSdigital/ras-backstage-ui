@@ -111,7 +111,7 @@ describe('SecureMessageViewResolver service', () => {
             it('should call the secure message service to retrieve data',
                 inject([SecureMessageViewResolver],
                     (secureMessageViewResolver: SecureMessageViewResolver) => {
-                        mockSecureMessage = createSecureMessage_server('100');
+                        mockSecureMessage = createSecureMessage_server('300');
 
                         const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
                             params = {
