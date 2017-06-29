@@ -85,7 +85,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {
                 const messages = secureMessages;
-                console.log('messages: ', messages);
 
                 /**
                  * TODO
@@ -94,8 +93,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
                 for (const i in messages) {
                     if (messages.hasOwnProperty(i)) {
                         const message: SecureMessage = messages[i];
-
-                        console.log('message: ', message);
 
                         if (!message.labels) {
                             console.log('labels property missing on msg: ', message);
