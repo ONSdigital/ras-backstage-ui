@@ -1,9 +1,9 @@
 export const environment = {
     production: false,
     endpoints: {
-        collectionExercise: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
-        collectionInstrument: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
-        survey: 'https://localhost:8000/api/',
-        secureMessages: 'http://0.0.0.0:5050/'
+        collectionExercise: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/',
+        collectionInstrument: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/',
+        survey: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/',
+        secureMessages: 'https://ras-api-gateway-test.apps.mvp.onsclofo.uk/'
     }
 };
