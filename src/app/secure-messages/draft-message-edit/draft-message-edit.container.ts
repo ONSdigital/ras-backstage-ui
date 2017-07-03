@@ -36,11 +36,11 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.draftMessage = exportedData.draftMessage;
-        msgTo = this.draftMessage.msg_to[0];
+        msgTo = this.draftMessage['@msg_to'][0];
 
         this.to = msgTo.firstname + ' ' + msgTo.surname
-            + ' for ' + this.draftMessage['@ru_ref'].business_name
-            + ' - ' + this.draftMessage['@ru_ref'].ru_ref;
+            + ' for ' + this.draftMessage['@ru_id'].business_name
+            + ' - ' + this.draftMessage['@ru_id'].ru_id;
     }
 
     public sendMessage_handler() {

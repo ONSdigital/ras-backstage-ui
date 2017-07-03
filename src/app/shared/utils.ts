@@ -35,8 +35,13 @@ export function validateProperties (entity: Object, constraints: Array<Constrain
 export function validationOutput (err: ValidationError) {
     console.log(err.notification);
 
-    if (err.subject) {
-        console.log(err.subjectLabel ? err.subjectLabel + ' :' + err.subject : err.subject);
+    if (err.subject && err.subjectLabel) {
+
+        if (err.subjectLabel) {
+            console.log(err.subjectLabel, err.subject);
+        } else {
+            console.log('Error subject: ', err.subject);
+        }
     }
 }
 

@@ -11,11 +11,13 @@ export interface SecureMessage {
     subject: string;
     body: string;
     collection_case?: string;
-    ru_ref: string;
+    ru_id: string;
     survey?: string;
 
+    '@msg_to'?: any;
+    '@msg_from'?: any;
     '@collection_case'?: any;
-    '@ru_ref'?: any;
+    '@ru_id'?: any;
     '@survey'?: any;
 }
 

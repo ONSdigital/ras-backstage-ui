@@ -7,7 +7,7 @@ export function validateSecureMessage (data: SecureMessage): Boolean | Object {
         { propertyName: 'msg_from' },
         { propertyName: 'subject' },
         { propertyName: 'body' },
-        { propertyName: 'ru_ref' }
+        { propertyName: 'ru_id' }
     ]);
 }
 
@@ -17,6 +17,6 @@ export function validateSecureMessage (data: SecureMessage): Boolean | Object {
         { propertyName: 'msg_from' },
         { propertyName: 'subject' },
         { propertyName: 'body' },
-        { propertyName: 'ru_ref' }
+        { propertyName: 'ru_id' }
     ]);
 }*/

@@ -3,7 +3,26 @@ import { CollectionExercise } from './collection-exercise.model';
 
 export function validateCollectionExercise (data: CollectionExercise) {
 
-    const collectionExerciseValidation = validateProperties(data, [
+    let collectionExerciseValidation: any,
+        caseTypesValidation: any,
+        response: any = [];
+    
+    if (!data.caseTypes) {
+        validationOutput({
+            notification: 'caseTypes array does not exist on CollectionExercise data',
+            subjectLabel: 'CollectionExercise data: ',
+            subject: data
+        });
+    } else {
+        caseTypesValidation = data.caseTypes.filter((caseType: any) => {
+            return validateProperties(caseType, [
+                { propertyName: 'sampleUnitType' },
+                { propertyName: 'actionPlanID' },
+            ]);
+        });
+    }
+
+    collectionExerciseValidation = validateProperties(data, [
         { propertyName: 'id' },
         { propertyName: 'surveyID' },
         { propertyName: 'name' },
@@ -19,21 +38,13 @@ export function validateCollectionExercise (data: CollectionExercise) {
         { propertyName: 'caseTypes' }
     ]);
 
-    let caseTypesValidation: any;
-
-    if (!data.caseTypes) {
-        validationOutput({
-            notification: 'caseTypes array does not exist on CollectionExercise data',
-            subjectLabel: 'CollectionExercise data: ',
-            subject: data
-        });
-        return;
+    if (collectionExerciseValidation) {
+        response = collectionExerciseValidation;
     }
 
-    caseTypesValidation = validateProperties(data.caseTypes, [
-        { propertyName: 'sampleUnitType' },
-        { propertyName: 'actionPlanID' },
-    ]);
+    if (caseTypesValidation) {
+        response = response.concat(caseTypesValidation);
+    }
 
-    return [].concat(caseTypesValidation, collectionExerciseValidation);
+    return response.length ? response : false;
 }

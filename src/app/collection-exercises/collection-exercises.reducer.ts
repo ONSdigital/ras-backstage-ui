@@ -28,6 +28,8 @@ export default function(state: any = INIT_STATE, action: any) {
 
             const notValid = validateCollectionExercise(collectionExercise);
 
+            console.log('notValid: ', notValid);
+
             if (notValid) {
                 return state;
             }

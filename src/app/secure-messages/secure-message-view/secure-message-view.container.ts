@@ -70,7 +70,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             subject: originalSecureMessage.subject,
             body: '',
             collection_case: this.originalSecureMessage.collection_case,
-            ru_ref: this.originalSecureMessage.ru_ref,
+            ru_id: this.originalSecureMessage.ru_id,
             survey: this.originalSecureMessage.survey
         };
 

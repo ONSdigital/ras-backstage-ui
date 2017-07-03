@@ -7,7 +7,7 @@
             <div class="grid u-mb-s">
                 <dl>
                     <dt class="grid__col col-2@s">From:</dt>
-                    <dd class="grid__col col-10@s">{{ originalSecureMessage?.msg_from.firstname }} {{ originalSecureMessage?.msg_from.surname }}</dd>
+                    <dd class="grid__col col-10@s">{{ originalSecureMessage['@msg_from'].firstname }} {{ originalSecureMessage['@msg_from'].surname }}</dd>
                     <dt class="grid__col col-2@s">Sent:</dt>
                     <dd class="grid__col col-10@s">{{ (originalSecureMessage?.sent_date === 'N/A') ? 'N/A' : (originalSecureMessage?.sent_date | date:'HH:mm EEE d MMM y') }}</dd>
                     <!--<dd class="grid__col col-10@s">{{ (originalSecureMessage?.sent_date !== 'N/A' ? originalSecureMessage.sent_date : originalSecureMessage.modified_date) | date:'EEE d MMM HH:mm' }}</dd>-->

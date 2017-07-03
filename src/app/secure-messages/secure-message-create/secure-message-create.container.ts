@@ -40,7 +40,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',
-                    ru_ref: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
+                    ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
                     survey: 'BRES'
                 };
 
