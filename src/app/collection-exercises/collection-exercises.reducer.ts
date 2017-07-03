@@ -1,3 +1,5 @@
+import { validateCollectionExercise } from './shared/collection-exercise.model-validation';
+
 import { CollectionExercisesActions } from './collection-exercises.actions';
 import { CollectionExercise } from './shared/collection-exercise.model';
 
@@ -20,16 +22,13 @@ export default function(state: any = INIT_STATE, action: any) {
 
             const collectionExercise = action.collectionExercise;
 
-            /**
-             * Guard
-             *
-             * TODO
-             * Below belongs to model validator
-             */
-            if (!collectionExercise ||
-                !collectionExercise.id ||
-                !collectionExercise.surveyID) {
+            if (!collectionExercise) {
+                console.log('CollectionExercise not found on action: ' + CollectionExercisesActions.RECEIVED_SINGLE);
+            }
 
+            const notValid = validateCollectionExercise(collectionExercise);
+
+            if (notValid) {
                 return state;
             }
 

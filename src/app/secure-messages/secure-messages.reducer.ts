@@ -1,4 +1,5 @@
 import { SecureMessage } from './shared/secure-message.model';
+import { validateSecureMessage } from './shared/secure-message.model-validation';
 import { SecureMessagesActions } from './secure-messages.actions';
 
 const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage>, stateMessage: object } = {
@@ -18,13 +19,13 @@ export default function(state: any = INIT_STATE, action: any) {
 
             const secureMessage = action.secureMessage;
 
-            if (!secureMessage ||
-                !secureMessage.msg_to ||
-                !secureMessage.msg_from ||
-                !secureMessage.subject ||
-                !secureMessage.body ||
-                !secureMessage.ru_ref) {
+            if (!secureMessage) {
+                console.log('SecureMessage not found on action: ' + SecureMessagesActions.RECEIVED_SINGLE);
+            }
 
+            const notValid = validateSecureMessage(secureMessage);
+
+            if (notValid) {
                 return state;
             }
 

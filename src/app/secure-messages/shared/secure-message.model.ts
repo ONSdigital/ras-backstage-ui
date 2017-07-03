@@ -20,16 +20,6 @@ export interface SecureMessage {
 }
 
 
-/*"msg_from": {
-    "email": "",
-    "firstname": "BRES",
-    "id": "BRES",
-    "status": "",
-    "surname": "",
-    "telephone": ""
-},*/
-
-
 export interface DraftMessage extends SecureMessage {
     modified_date?: string;
 }

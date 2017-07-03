@@ -21,3 +21,32 @@
 export function isFunction(obj: any) {
     return !!(obj && obj.constructor && obj.call && obj.apply);
 }
+
+export function validateProperties (entity: Object, constraints: Array<Constraint>) {
+    const failedValidation = constraints.filter((constraint: any) => entity[constraint.propertyName] === undefined);
+
+    failedValidation.forEach((constraint: any) => validationOutput({
+        notification: 'Property ' + constraint.propertyName + ' missing'
+    }));
+
+    return failedValidation.length ? failedValidation : false;
+}
+
+export function validationOutput (err: ValidationError) {
+    console.log(err.notification);
+
+    if (err.subject) {
+        console.log(err.subjectLabel ? err.subjectLabel + ' :' + err.subject : err.subject);
+    }
+}
+
+interface Constraint {
+    propertyName: string;
+    errorMessage?: string;
+}
+
+interface ValidationError {
+    notification: string;
+    subjectLabel?: string;
+    subject?: any;
+}
