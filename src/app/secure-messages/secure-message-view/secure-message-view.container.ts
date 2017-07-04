@@ -10,6 +10,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 import { User } from '../../user/shared/user.model';
 
 import { getDataStoreSecureMessageById } from '../shared/utils';
+import { validateProperties } from '../../shared/utils';
 
 @Component({
     template: `
@@ -45,6 +46,11 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             .subscribe((secureMessage: SecureMessage) => {
 
                 if (secureMessage) {
+
+                    if (!secureMessageHasAgreggateData(secureMessage)) {
+                        return;
+                    }
+
                     this.setMessages(secureMessage);
                 } else {
                     console.log('Secure message with id "' + secureMessageId + '" not found in store.');
@@ -92,4 +98,17 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/secure-messages']);
             });
     }
+}
+
+function secureMessageHasAgreggateData (draftMessage: any): Boolean {
+
+    const failedValidation = validateProperties(draftMessage, [
+        { propertyName: '@msg_to' },
+        { propertyName: '@msg_from' },
+        { propertyName: '@ru_id' }
+    ]);
+
+    const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+
+    return !(failedValidation || !checkMsgToExistsInArray);
 }

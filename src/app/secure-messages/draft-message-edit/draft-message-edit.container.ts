@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
+import { validateProperties } from '../../shared/utils';
+
 @Component({
     template: `
         <ons-draft-message-edit *ngIf="draftMessage"
@@ -16,7 +18,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 })
 export class DraftMessageEditContainerComponent implements OnInit {
 
-    public to = 'Jacky Turner for Bolts and Ratchets Ltd - 36509908341B';
+    public to: string;
 
     public draftMessage: DraftMessage;
 
@@ -78,18 +80,12 @@ export class DraftMessageEditContainerComponent implements OnInit {
 
 function draftMessageHasAgreggateData (draftMessage: any): Boolean {
 
-    const checkPropsErrors = [
-            { propertyName: '@msg_to' },
-            { propertyName: '@msg_from' },
-            { propertyName: '@ru_id' }
-        ]
-        .filter((constraint: any) => {
-            if (!draftMessage[constraint.propertyName]) {
-                console.log('Property ' + constraint.propertyName + 'missing on draft message');
-                return true;
-            }
-        }),
-        checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+    const failedValidation = validateProperties(draftMessage, [
+        { propertyName: '@msg_to' },
+        { propertyName: '@ru_id' }
+    ]);
 
-    return !(checkPropsErrors.length || !checkMsgToExistsInArray);
+    const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+
+    return !(failedValidation || !checkMsgToExistsInArray);
 }

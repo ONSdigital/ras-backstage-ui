@@ -7,6 +7,8 @@ import { PartyService } from '../../party/party.service';
 import { SecureMessage } from '../shared/secure-message.model';
 import { NgRedux } from '@angular-redux/store';
 
+import { validateProperties } from '../../shared/utils';
+
 @Component({
     template: `
         <h1 class="saturn">Secure messages</h1>
@@ -84,28 +86,41 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {
-                const messages = secureMessages;
 
-                /**
-                 * TODO
-                 * Temporary fix until response data returns an array
-                 */
-                for (const i in messages) {
-                    if (messages.hasOwnProperty(i)) {
-                        const message: SecureMessage = messages[i];
-
-                        if (!message.labels) {
-                            console.log('labels property missing on msg: ', message);
-                        }
-
-                        /**
-                         * Attach view-only label
-                         */
-                        message['$isDraft'] = !!message.labels.find(label => label === 'DRAFT');
-
-                        this.secureMessagesList.push(message);
-                    }
+                if (!secureMessages) {
+                    return;
                 }
+
+                this.secureMessagesList = secureMessages.map((secureMessage: SecureMessage) => {
+
+                    if (!secureMessage.labels) {
+                        console.log('labels property missing on msg: ', secureMessage);
+                    }
+
+                    /**
+                     * Attach view-only label
+                     */
+                    secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
+
+                    if (!messageHasAgreggateData(secureMessage)) {
+                        return false;
+                    }
+
+                    return secureMessage;
+                });
             });
     }
+}
+
+function messageHasAgreggateData (message: any): Boolean {
+
+    const failedValidation = validateProperties(message, [
+        { propertyName: '@msg_to' },
+        { propertyName: '@msg_from' },
+        { propertyName: '@ru_id' }
+    ]);
+
+    const checkMsgToExistsInArray: Boolean = message['@msg_to'] && message['@msg_to'][0];
+
+    return !(failedValidation || !checkMsgToExistsInArray);
 }

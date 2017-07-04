@@ -7,6 +7,8 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { UserActions } from '../../user/user.actions';
 
+import { validateProperties } from '../../shared/utils';
+
 @Component({
     template: `
         <ons-secure-message-create
@@ -34,15 +36,27 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         this.getUserSubscription = this.userActions.getUser()
             .subscribe((user: any) => {
 
-                this.secureMessage = {
+                /**
+                 * TODO
+                 * Object needs to be passed in
+                 */
+                const secureMessage = {
                     msg_to: '0a7ad740-10d5-4ecb-b7ca-3c0384afb882',
                     msg_from: user.id,
                     subject: '',
                     body: '',
                     collection_case: 'ACollectionCase',
                     ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
-                    survey: 'BRES'
+                    survey: 'BRES',
+                    '@msg_to': [{}],
+                    '@ru_id': {}
                 };
+
+                if (!secureMessageHasAgreggateData(secureMessage)) {
+                    return;
+                }
+
+                this.secureMessage = secureMessage;
 
                 if (!user) {
                     console.log('Logged in user not found');
@@ -81,4 +95,16 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
     private isMessageValid() {
         return !(this.secureMessage.subject === '' || this.secureMessage.body === '');
     }
+}
+
+function secureMessageHasAgreggateData (draftMessage: any): Boolean {
+
+    const failedValidation = validateProperties(draftMessage, [
+        { propertyName: '@msg_to' },
+        { propertyName: '@ru_id' }
+    ]);
+
+    const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+
+    return !(failedValidation || !checkMsgToExistsInArray);
 }
