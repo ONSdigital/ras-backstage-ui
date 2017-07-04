@@ -35,6 +35,10 @@ export class DraftMessageEditContainerComponent implements OnInit {
             return;
         }
 
+        if (!draftMessageHasAgreggateData(exportedData.draftMessage)) {
+            return;
+        }
+
         this.draftMessage = exportedData.draftMessage;
         msgTo = this.draftMessage['@msg_to'][0];
 
@@ -70,4 +74,22 @@ export class DraftMessageEditContainerComponent implements OnInit {
     private isMessageValid() {
         return !(this.draftMessage.subject === '' || this.draftMessage.body === '');
     }
+}
+
+function draftMessageHasAgreggateData (draftMessage: any): Boolean {
+
+    const checkPropsErrors = [
+            { propertyName: '@msg_to' },
+            { propertyName: '@msg_from' },
+            { propertyName: '@ru_id' }
+        ]
+        .filter((constraint: any) => {
+            if (!draftMessage[constraint.propertyName]) {
+                console.log('Property ' + constraint.propertyName + 'missing on draft message');
+                return true;
+            }
+        }),
+        checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+
+    return !(checkPropsErrors.length || !checkMsgToExistsInArray);
 }

@@ -31,4 +31,9 @@ export class SecureMessageViewComponent implements OnInit {
     public onTypingReply(event: KeyboardEvent) {
         this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
     }
+
+    public getOriginalSecureMessageMsgFrom(property: string) {
+        return this.originalSecureMessage && this.originalSecureMessage['@msg_from']
+            ? this.originalSecureMessage['@msg_from'] : {};
+    }
 }
