@@ -50,6 +50,10 @@ app.get('/api/surveys/:id', (req, res) => {
     }
 });
 
+app.get('/api/cases/:id', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/case.json');
+});
+
 app.get('/api/cases/partyid/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/cases.json');
 });
@@ -122,4 +126,19 @@ app.get('/api/iacs/:iac', (req, res) => {
     } else {
         res.status(404).send('Not found');
     }
+});
+
+// Used by ras-frontstage to create a case event
+app.post('/api/cases/:id/events', function(req, res) {
+
+    res.status(201).json({
+        "caseId": "7bc5d41b-0549-40b3-ba76-42f6d4cf3fdb",
+        "description": "Initial creation of case",
+        "category": "",
+        "subCategory": null,
+        "partyId": "3b136c4b-7a14-4904-9e01-13364dd7b972",
+        "createdBy": "Fred Bloggs",
+        "createdDateTime": "2017-04-10T08:48:49Z"
+    });
+
 });
