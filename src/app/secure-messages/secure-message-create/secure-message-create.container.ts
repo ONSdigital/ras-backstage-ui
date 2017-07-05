@@ -97,14 +97,14 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
     }
 }
 
-function secureMessageHasAgreggateData (draftMessage: any): Boolean {
+function secureMessageHasAgreggateData (secureMessage: any): Boolean {
 
-    const failedValidation = validateProperties(draftMessage, [
+    const failedValidation = validateProperties(secureMessage, [
         { propertyName: '@msg_to' },
         { propertyName: '@ru_id' }
     ]);
 
-    const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+    const checkMsgToExistsInArray: Boolean = secureMessage['@msg_to'] && secureMessage['@msg_to'][0];
 
     return !(failedValidation || !checkMsgToExistsInArray);
 }
