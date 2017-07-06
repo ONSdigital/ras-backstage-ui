@@ -22,7 +22,7 @@ export interface Respondent {
     firstName: string;
     lastName: string;
     telephone: string;
-    status: RespondentStatus
+    status: RespondentStatus;
 }
 
 enum BusinessLegalStatus {
