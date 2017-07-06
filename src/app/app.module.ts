@@ -4,6 +4,7 @@ import { applyMiddleware, Store, compose, createStore } from 'redux';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { NgReduxRouterModule, NgReduxRouter } from '@angular-redux/router';
 import { BrowserModule } from '@angular/platform-browser';
+import * as Immutable from 'immutable';
 
 import { AppRoutingModule } from './app-routing.module';
 import rootReducer from './app.reducer';
@@ -58,10 +59,11 @@ export class AppModule {
                     isFetching: false,
                     items: []
                 },
-                secureMessages: {
+                secureMessages: Immutable.Map({
                     isFetching: false,
-                    items: []
-                },
+                    stateMessage: null,
+                    items: Immutable.List([])
+                }),
                 user: {
                     isFetching: false,
                     item: null
