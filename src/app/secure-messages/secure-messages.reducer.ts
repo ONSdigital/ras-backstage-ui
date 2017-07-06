@@ -16,8 +16,6 @@ export default function(state: any = INIT_STATE, action: any) {
     switch (action.type) {
         case SecureMessagesActions.RECEIVED_SINGLE:
 
-            let existingItem: any;
-
             const secureMessage = action.secureMessage;
 
             if (!secureMessage) {
@@ -32,17 +30,17 @@ export default function(state: any = INIT_STATE, action: any) {
 
             const items = state.get('items');
 
-            existingItem = items.findEntry((item: SecureMessage) => item.msg_id === secureMessage.msg_id);
-
-            const newItems = items.withMutations((list: any) => {
-                existingItem ? list.set(existingItem[0], Object.assign(existingItem[1], secureMessage)) :
-                    list.push(secureMessage);
-            });
-
             return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: null,
-                items: newItems
+                items: items.withMutations((list: any) => {
+
+                    const existingItem = items.findEntry((item: SecureMessage) => item.msg_id === secureMessage.msg_id);
+
+                    existingItem ?
+                        list.set(existingItem[0], Object.assign(existingItem[1], secureMessage)) :
+                        list.push(secureMessage);
+                })
             });
         case SecureMessagesActions.CREATED_SINGLE:
 

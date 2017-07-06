@@ -5,5 +5,6 @@ export function getDataStoreSecureMessageById(store: NgRedux<any>, secureMessage
 
     return store.select(['secureMessages', 'items'])
         .map((secureMessages: any) => secureMessages.find((item: any) => item.msg_id === secureMessageId))
+        .share()
         .first();
 }

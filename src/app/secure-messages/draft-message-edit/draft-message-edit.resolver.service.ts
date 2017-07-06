@@ -18,6 +18,7 @@ export class DraftMessageEditResolver implements Resolve<Observable<any>> {
 
         const resolve = this.secureMessagesService.getMessage(id)
             .map(res => res.json())
+            .share()
             .map((draftMessage: DraftMessage) => {
                 exported.draftMessage = draftMessage;
 
