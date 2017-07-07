@@ -44,9 +44,7 @@ export default function(state: any = INIT_STATE, action: any) {
             });
         case SecureMessagesActions.CREATED_SINGLE:
 
-            msgId = action.payload.json().msg_id;
-
-            if (!msgId) {
+            if (!isSuccessfulResponse(action)) {
                 return state;
             }
 
@@ -56,7 +54,7 @@ export default function(state: any = INIT_STATE, action: any) {
                     notification: 'Message sent',
                     action: {
                         label: 'View message',
-                        link: '/secure-messages/message/' + msgId
+                        link: '/secure-messages/message/' + action.payload.json().msg_id
                     }
                 },
                 items: state.get('items')
@@ -69,9 +67,7 @@ export default function(state: any = INIT_STATE, action: any) {
             });
         case SecureMessagesActions.DRAFT_SAVED:
 
-            msgId = action.payload.json().msg_id;
-
-            if (!msgId) {
+            if (!isSuccessfulResponse(action)) {
                 return state;
             }
 
@@ -81,16 +77,14 @@ export default function(state: any = INIT_STATE, action: any) {
                     notification: 'Draft saved',
                     action: {
                         label: 'View message',
-                        link: '/secure-messages/drafts/' + msgId
+                        link: '/secure-messages/drafts/' + action.payload.json().msg_id
                     }
                 },
                 items: state.get('items')
             });
         case SecureMessagesActions.REPLIED_SINGLE:
 
-            msgId = action.payload.json().msg_id;
-
-            if (!msgId) {
+            if (!isSuccessfulResponse(action)) {
                 return state;
             }
 
@@ -100,16 +94,14 @@ export default function(state: any = INIT_STATE, action: any) {
                     notification: 'Message sent',
                     action: {
                         label: 'View message',
-                        link: '/secure-messages/message/' + msgId
+                        link: '/secure-messages/message/' + action.payload.json().msg_id
                     }
                 },
                 items: state.get('items')
             });
         case SecureMessagesActions.DRAFT_UPDATED:
 
-            msgId = action.payload.json().msg_id;
-
-            if (!msgId) {
+            if (!isSuccessfulResponse(action)) {
                 return state;
             }
 
@@ -119,7 +111,7 @@ export default function(state: any = INIT_STATE, action: any) {
                     notification: 'Draft saved',
                     action: {
                         label: 'View message',
-                        link: '/secure-messages/drafts/' + msgId
+                        link: '/secure-messages/drafts/' + action.payload.json().msg_id
                     }
                 },
                 items: state.get('items')
@@ -127,4 +119,32 @@ export default function(state: any = INIT_STATE, action: any) {
         default:
             return state;
     }
+}
+
+function isSuccessfulResponse (action: any) {
+
+    const payload = action.payload;
+
+    if (!payload ||
+        !payload.json) {
+
+        console.log('Payload or json property does not exist on action: ', action);
+        return false;
+    }
+
+    const payloadJson = payload.json();
+
+    if (!payloadJson) {
+
+        console.log('JSON data undefined in payload: ', action);
+        return false;
+    }
+
+    if (!payloadJson.msg_id) {
+
+        console.log('msg_id does not exist in JSON data: ', action);
+        return false;
+    }
+
+    return true;
 }
