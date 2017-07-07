@@ -32,7 +32,8 @@ export class SecureMessagesActions {
             secureMessage: secureMessage
         });
 
-        const observable = this.secureMessagesService.createSecureMessage(secureMessage);
+        const observable = this.secureMessagesService.createSecureMessage(secureMessage)
+            .share();
 
         observable.subscribe(
             (status: any) => {
@@ -59,7 +60,8 @@ export class SecureMessagesActions {
             payload: secureMessage
         });
 
-        const observable = this.secureMessagesService.createSecureMessage(secureMessage);
+        const observable = this.secureMessagesService.createSecureMessage(secureMessage)
+            .share();
 
         observable.subscribe(
             (statusMessage: any) => {
@@ -87,7 +89,8 @@ export class SecureMessagesActions {
         });
 
         const observable = this.secureMessagesService.getMessage(id)
-            .map(res => res.json());
+            .map(res => res.json())
+            .share();
 
         observable.subscribe(
             (secureMessage: SecureMessage) => {
@@ -114,7 +117,8 @@ export class SecureMessagesActions {
         });
 
         const observable = this.secureMessagesService.getAllMessages()
-            .map(res => res.json().messages);
+            .map(res => res.json().messages)
+            .share();
 
         observable.subscribe(
             (secureMessages: Array<SecureMessage>) => {
@@ -141,7 +145,8 @@ export class SecureMessagesActions {
             draftMessage: draftMessage
         });
 
-        const observable = this.secureMessagesService.saveDraft(draftMessage);
+        const observable = this.secureMessagesService.saveDraft(draftMessage)
+            .share();
 
         observable.subscribe(
             (status: Array<SecureMessage>) => {
@@ -168,7 +173,8 @@ export class SecureMessagesActions {
             draftMessage: draftMessage
         });
 
-        const observable = this.secureMessagesService.updateDraft(draftMessage.msg_id, draftMessage);
+        const observable = this.secureMessagesService.updateDraft(draftMessage.msg_id, draftMessage)
+            .share();
 
         observable.subscribe(
             (status: Array<SecureMessage>) => {

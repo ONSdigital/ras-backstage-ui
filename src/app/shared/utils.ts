@@ -26,7 +26,8 @@ export function validateProperties (entity: Object, constraints: Array<Constrain
     const failedValidation = constraints.filter((constraint: any) => entity[constraint.propertyName] === undefined);
 
     failedValidation.forEach((constraint: any) => validationOutput({
-        notification: 'Property ' + constraint.propertyName + ' missing'
+        notification: 'Property ' + constraint.propertyName + ' missing',
+        subject: entity
     }));
 
     return failedValidation.length ? failedValidation : false;
@@ -35,7 +36,7 @@ export function validateProperties (entity: Object, constraints: Array<Constrain
 export function validationOutput (err: ValidationError) {
     console.log(err.notification);
 
-    if (err.subject && err.subjectLabel) {
+    if (err.subject) {
 
         if (err.subjectLabel) {
             console.log(err.subjectLabel, err.subject);
@@ -44,6 +45,7 @@ export function validationOutput (err: ValidationError) {
         }
     }
 }
+
 
 interface Constraint {
     propertyName: string;

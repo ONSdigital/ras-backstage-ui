@@ -6,7 +6,7 @@ export function validateCollectionExercise (data: CollectionExercise) {
     let collectionExerciseValidation: any,
         caseTypesValidation: any,
         response: any = [];
-    
+
     if (!data.caseTypes) {
         validationOutput({
             notification: 'caseTypes array does not exist on CollectionExercise data',

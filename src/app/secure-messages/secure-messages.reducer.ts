@@ -1,12 +1,13 @@
 import { SecureMessage } from './shared/secure-message.model';
 import { validateSecureMessage } from './shared/secure-message.model-validation';
 import { SecureMessagesActions } from './secure-messages.actions';
+import * as Immutable from 'immutable';
 
-const INIT_STATE: { isFetching: Boolean, items: Array<SecureMessage>, stateMessage: object } = {
+const INIT_STATE: Immutable.Map<string, any> = Immutable.Map({
     isFetching: false,
-    items: [],
-    stateMessage: null
-};
+    stateMessage: null,
+    items: Immutable.List([])
+});
 
 export default function(state: any = INIT_STATE, action: any) {
 
@@ -14,8 +15,6 @@ export default function(state: any = INIT_STATE, action: any) {
 
     switch (action.type) {
         case SecureMessagesActions.RECEIVED_SINGLE:
-
-            let existingItem;
 
             const secureMessage = action.secureMessage;
 
@@ -29,20 +28,19 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            const items = newItemsState(state.items, (item: SecureMessage) => {
+            const items = state.get('items');
 
-                // If an item with same identifier is found, save a reference to its new object for merging data
-                if (item.msg_id === secureMessage.msg_id) {
-                    existingItem = item;
-                }
-            });
-
-            existingItem ? Object.assign(existingItem, secureMessage) : items.push(secureMessage);
-
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: null,
-                items: items
+                items: items.withMutations((list: any) => {
+
+                    const existingItem = items.findEntry((item: SecureMessage) => item.msg_id === secureMessage.msg_id);
+
+                    existingItem ?
+                        list.set(existingItem[0], Object.assign(existingItem[1], secureMessage)) :
+                        list.push(secureMessage);
+                })
             });
         case SecureMessagesActions.CREATED_SINGLE:
 
@@ -52,7 +50,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: {
                     notification: 'Message sent',
@@ -61,13 +59,13 @@ export default function(state: any = INIT_STATE, action: any) {
                         link: '/secure-messages/message/' + msgId
                     }
                 },
-                items: newItemsState(state.items)
+                items: state.get('items')
             });
         case SecureMessagesActions.RECEIVED_ALL:
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: null,
-                items: newItemsState(state.items)
+                items: state.get('items')
             });
         case SecureMessagesActions.DRAFT_SAVED:
 
@@ -77,7 +75,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: {
                     notification: 'Draft saved',
@@ -86,7 +84,7 @@ export default function(state: any = INIT_STATE, action: any) {
                         link: '/secure-messages/drafts/' + msgId
                     }
                 },
-                items: newItemsState(state.items)
+                items: state.get('items')
             });
         case SecureMessagesActions.REPLIED_SINGLE:
 
@@ -96,7 +94,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: {
                     notification: 'Message sent',
@@ -105,7 +103,7 @@ export default function(state: any = INIT_STATE, action: any) {
                         link: '/secure-messages/message/' + msgId
                     }
                 },
-                items: newItemsState(state.items)
+                items: state.get('items')
             });
         case SecureMessagesActions.DRAFT_UPDATED:
 
@@ -115,7 +113,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return Object.assign({}, state, {
+            return Immutable.Map<string, any>({
                 isFetching: false,
                 stateMessage: {
                     notification: 'Draft saved',
@@ -124,20 +122,9 @@ export default function(state: any = INIT_STATE, action: any) {
                         link: '/secure-messages/drafts/' + msgId
                     }
                 },
-                items: newItemsState(state.items)
+                items: state.get('items')
             });
         default:
             return state;
     }
-}
-
-function newItemsState (items: Array<SecureMessage>, iterableCallback: Function = null) {
-    return Object.assign([], items.map((item: SecureMessage) => {
-        const obj = Object.assign({}, item);
-
-        if (iterableCallback) {
-            iterableCallback(obj);
-        }
-        return obj;
-    }));
 }

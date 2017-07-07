@@ -4,14 +4,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { SecureMessagesModule } from '../secure-messages.module';
-import { SecureMessagesActions } from '../secure-messages.actions';
+import { SecureMessagesService } from '../secure-messages.service';
 import { DraftMessageEditResolver } from './draft-message-edit.resolver.service';
 
 import { MockActivatedRoute } from '../../../testing/ActivatedRouteSnapshot_stub';
 import { createDraftMessage_server } from '../../../testing/create_SecureMessage';
 
 let mockDraftMessage: any,
-    mockSecureMessageActions: any,
+    mockSecureMessageService: any,
 
     apiData: any;
 
@@ -19,13 +19,17 @@ describe('DraftMessageEditResolver service', () => {
 
     beforeEach(() => {
 
-        mockSecureMessageActions = {
-            retrieveSecureMessage: function (id: string) {
-                return Observable.of(mockDraftMessage);
+        mockSecureMessageService = {
+            getMessage: function () {
+                return Observable.of({
+                    json: function () {
+                        return mockDraftMessage;
+                    }
+                });
             }
         };
 
-        spyOn(mockSecureMessageActions, 'retrieveSecureMessage').and.callThrough();
+        spyOn(mockSecureMessageService, 'getMessage').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -33,7 +37,7 @@ describe('DraftMessageEditResolver service', () => {
                 SecureMessagesModule
             ],
             providers: [
-                { provide: SecureMessagesActions, useValue: mockSecureMessageActions }
+                { provide: SecureMessagesService, useValue: mockSecureMessageService }
             ]
         })
         .compileComponents();
@@ -45,7 +49,7 @@ describe('DraftMessageEditResolver service', () => {
 
     describe('resolve [method]', () => {
 
-        it('should call the secure message service method retrieveSecureMessage to retrieve a draft message',
+        it('should call the secure message service method getMessage to retrieve a draft message',
             inject([DraftMessageEditResolver],
                 (draftMessageEditResolver: DraftMessageEditResolver) => {
                     mockDraftMessage = createDraftMessage_server('100');
@@ -61,7 +65,7 @@ describe('DraftMessageEditResolver service', () => {
                             expect(exportedData).toEqual({ draftMessage: mockDraftMessage });
                         });
 
-                    expect(mockSecureMessageActions.retrieveSecureMessage).toHaveBeenCalledWith('100');
+                    expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith('100');
                 }));
     });
 });
