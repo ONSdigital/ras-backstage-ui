@@ -42,30 +42,69 @@ describe('Secure messages reducer', () => {
 
         describe('and receiving a valid action object', () => {
 
-            it('should return a new state of the secure messages data store with a new statusMessage ' +
-                'property added', () => {
-                const action = {
-                        type: SecureMessagesActions.CREATED_SINGLE,
-                        payload: {
-                            json: function () {
-                                return {
-                                    msg_id: '200'
-                                };
-                            }
-                        }
-                    },
-                    resultStateMessage = {
-                        notification: 'Message sent',
-                        action: {
-                            label: 'View message',
-                            link: '/secure-messages/message/' + '200'
-                        }
-                    },
-                    state = secureMessagesReducer(DEFAULT_STATE, action);
+            assertStateMessageChange('200', SecureMessagesActions.CREATED_SINGLE, {
+                notification: 'Message sent',
+                action: {
+                    label: 'View message',
+                    link: '/secure-messages/message/200'
+                }
+            });
+        });
 
-                expect(state.get('isFetching')).toEqual(false);
-                expect(state.get('stateMessage')).toEqual(resultStateMessage);
-                expect(state.get('items')).toEqual(Immutable.List([]));
+        assertStateMaintainedWithinvalidAction({
+            type: SecureMessagesActions.CREATED_SINGLE,
+            payload: null
+        });
+    });
+
+    describe('when receiving a ' + SecureMessagesActions.DRAFT_SAVED  + ' action type', () => {
+
+        describe('and receiving a valid action object', () => {
+
+            assertStateMessageChange('300', SecureMessagesActions.DRAFT_SAVED, {
+                notification: 'Draft saved',
+                action: {
+                    label: 'View message',
+                    link: '/secure-messages/drafts/300'
+                }
+            });
+        });
+
+        assertStateMaintainedWithinvalidAction({
+            type: SecureMessagesActions.CREATED_SINGLE,
+            payload: null
+        });
+    });
+
+    describe('when receiving a ' + SecureMessagesActions.REPLIED_SINGLE  + ' action type', () => {
+
+        describe('and receiving a valid action object', () => {
+
+            assertStateMessageChange('400', SecureMessagesActions.REPLIED_SINGLE, {
+                notification: 'Message sent',
+                action: {
+                    label: 'View message',
+                    link: '/secure-messages/message/400'
+                }
+            });
+        });
+
+        assertStateMaintainedWithinvalidAction({
+            type: SecureMessagesActions.CREATED_SINGLE,
+            payload: null
+        });
+    });
+
+    describe('when receiving a ' + SecureMessagesActions.DRAFT_UPDATED  + ' action type', () => {
+
+        describe('and receiving a valid action object', () => {
+
+            assertStateMessageChange('500', SecureMessagesActions.DRAFT_UPDATED, {
+                notification: 'Draft saved',
+                action: {
+                    label: 'View message',
+                    link: '/secure-messages/drafts/500'
+                }
             });
         });
 
@@ -83,5 +122,27 @@ function assertStateMaintainedWithinvalidAction (action: any) {
         it('should return the existing state of the secure message data store', () => {
             expect(secureMessagesReducer(DEFAULT_STATE, action)).toEqual(DEFAULT_STATE);
         });
+    });
+}
+
+function assertStateMessageChange (msgId: string, actionConst: string, resultStateMessage: any) {
+
+    it('should return a new state of the secure messages data store with a new statusMessage' +
+        'property added', () => {
+        const action = {
+                type: actionConst,
+                payload: {
+                    json: function () {
+                        return {
+                            msg_id: msgId
+                        };
+                    }
+                }
+            },
+            state = secureMessagesReducer(DEFAULT_STATE, action);
+
+        expect(state.get('isFetching')).toEqual(false);
+        expect(state.get('stateMessage')).toEqual(resultStateMessage);
+        expect(state.get('items')).toEqual(Immutable.List([]));
     });
 }
