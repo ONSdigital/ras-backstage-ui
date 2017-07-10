@@ -117,10 +117,10 @@ app.post('/api/collection-instruments/survey_responses/:id', function(req, res) 
 app.get('/api/iacs/:iac', (req, res) => {
     let iac = req.url.split('/').pop();
 
-    if (iac === 'abcdef000001') {
+    if (iac === 'ABCDEF123456') {
         // active
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/iac.json');
-    } else if (iac === 'abcdef000000') {
+    } else if (iac === 'XXXXXX123456') {
         // inactive
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/iac-inactive.json');
     } else {
