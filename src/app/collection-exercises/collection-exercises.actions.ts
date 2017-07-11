@@ -49,7 +49,9 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.RETRIEVE_ALL
         });
 
-        const observable = this.collectionExercisesService.getCollectionExercises();
+        const observable = this.collectionExercisesService.getCollectionExercises()
+            .share();
+
         observable.subscribe(
             (collectionExercises: CollectionExercise[]) => this.receivedCollectionExercises(collectionExercises)
         );

@@ -5,6 +5,7 @@ export function getDataStoreCollectionExerciseByRef(store: NgRedux<any>, collect
 
     return store.select(['collectionExercises', 'items'])
         .map((collectionExercises: any) => (collectionExercises.find((item: any) => item.id === collectionExerciseRef)) || false)
+        .share()
         .first();
 
 }

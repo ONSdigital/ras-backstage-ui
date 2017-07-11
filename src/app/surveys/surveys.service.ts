@@ -17,13 +17,19 @@ export class SurveysService {
     constructor(private http: Http) { }
 
     // Get a single survey
-    getSurvey(urn: string): Observable<Survey> {
+    getSurvey(id: string): Observable<Survey> {
 
-        return this.http.get(this.BASE_URL + 'surveys/' + urn)
+        return this.http.get(
+            this.BASE_URL + 'surveys/' + id)
+            .share()
 
             // Handle the response
             .map((res: Response) => {
                 return res.json() || {};
+            })
+            .share()
+            .do((res: Response) => {
+                console.log('Get survey: ', res);
             })
 
             // Handle any errors

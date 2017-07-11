@@ -1,23 +1,24 @@
 export interface CollectionExercise {
     id: string;
-    surveyID: string;
+    surveyId: string;
     name: string;
-    actualExecution: string;
-    scheduledExecution: string;
-    scheduledStart: string;
-    actualPublish: string;
-    completionFor: string;
-    scheduledReturn: string;
-    scheduledEnd: string;
+    actualExecutionDateTime: string;
+    scheduledExecutionDateTime: string;
+    scheduledStartDateTime: string;
+    actualPublishDateTime: string;
+    periodStartDateTime: string;
+    periodEndDateTime: string;
+    scheduledReturnDateTime: string;
+    scheduledEndDateTime: string;
     executedBy: string;
     state: string;
     caseTypes: [
         {
-            sampleUnitType: string,
-            actionPlanID: string
+            sampleUnitTypeFK: string,
+            actionPlanId: string
         }, {
-            sampleUnitType: string,
-            actionPlanID: string
+            sampleUnitTypeFK: string,
+            actionPlanId: string
         }
     ];
 }

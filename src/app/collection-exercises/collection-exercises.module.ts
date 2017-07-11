@@ -8,7 +8,10 @@ import 'rxjs/add/operator/toPromise';
 import { BreadcrumbModule } from '../shared/breadcrumb/breadcrumb.module';
 import { CollectionExerciseRoutingModule } from './collection-exercises-routing.module';
 
-import { CollectionExercisesService } from './collection-exercises.service';
+import { SurveysActions } from '../surveys/surveys.actions';
+import { SurveysService } from '../surveys/surveys.service';
+
+import { CollectionInstrumentsActions } from '../collection-instruments/collection-instruments.actions';
 import { CollectionInstrumentsService } from '../collection-instruments/collection-instruments.service';
 
 import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
@@ -17,7 +20,7 @@ import { CollectionExercisesComponent } from './collection-exercises.component';
 import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
 import { CollectionExerciseDetailsComponent } from './shared/collection-exercise-details/collection-exercise-details.component';
 import { CollectionExercisesActions } from './collection-exercises.actions';
-import { CollectionInstrumentsActions } from '../collection-instruments/collection-instruments.actions';
+import { CollectionExercisesService } from './collection-exercises.service';
 
 @NgModule({
     imports: [
@@ -39,7 +42,9 @@ import { CollectionInstrumentsActions } from '../collection-instruments/collecti
         CollectionExercisesService,
         CollectionExercisesActions,
         CollectionInstrumentsService,
-        CollectionInstrumentsActions
+        CollectionInstrumentsActions,
+        SurveysActions,
+        SurveysService
     ]
 })
 export class CollectionExerciseModule { }

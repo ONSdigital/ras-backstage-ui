@@ -26,12 +26,11 @@ export class SurveysActions {
         const observable = this.surveysService.getSurvey(id);
 
         observable.subscribe(
-            // Normalise data first to keep entities in data store dry before saving
-            // Update data store
             (survey: Survey) => {
                 this.receivedSurvey(survey);
             }
         );
+
         return observable;
     }
 

@@ -19,12 +19,14 @@ export class CollectionExercisesService {
     // Get a single collection exercise
     getCollectionExercise(id: string): Observable<CollectionExercise> {
 
-        return this.http.get(this.BASE_URL + 'collection-exercise/' + id)
+        return this.http.get(this.BASE_URL + 'collectionexercises/' + id)
+            .share()
 
             // Handle the response
             .map((res: Response) => {
                 return res.json() || {};
             })
+            .share()
 
             // Handle any errors
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
@@ -33,7 +35,7 @@ export class CollectionExercisesService {
     // Fetch all existing collection exercises
     getCollectionExercises(): Observable<CollectionExercise[]> {
 
-        return this.http.get(this.BASE_URL + 'collection-exercises')
+        return this.http.get(this.BASE_URL + 'collectionexercises')
 
             // Handle the response
             .map((res: Response) => {

@@ -29,11 +29,15 @@ let server = app.listen(app.get('port'), () => {
 app.get('/api/collectionexercises/:id', (req, res) => {
     let id = req.url.split('/').pop();
 
-    if (id === 'c6467711-21eb-4e78-804c-1db8392f93fb') {
+    if (id === '14fb3e68-4dca-46db-bf49-04b84e07e77c') {
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercise-bres.json');
     } else {
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercise-another.json');
     }
+});
+
+app.get('/api/collectionexercises', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-exercises.json');
 });
 
 app.get('/api/collection-instrument-bundles', (req, res) => {

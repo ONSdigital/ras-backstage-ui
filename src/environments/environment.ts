@@ -16,16 +16,17 @@ export const environment = {
         // ONS_ENV=test ./scripts/run.sh
         // collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
         // collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
-        survey: 'http://localhost:8000/api/',
+        // survey: 'http://localhost:8050/api/',
         secureMessages: 'http://0.0.0.0:5050/',
 
         // CloudFoundry config
-        collectionExercise: 'https://ras-collection-exercise-dev.apps.mvp.onsclofo.uk/collection-exercise-api/1.0.0/',
-        collectionInstrument: 'https://ras-collection-instrument-dev.apps.mvp.onsclofo.uk/collection-instrument-api/1.0.2/',
-        // survey: 'http://localhost:8000/api/'
+        // collectionExercise: '//ras-api-gateway-int.apps.devtest.onsclofo.uk:80/',
+        collectionInstrument: '//ras-api-gateway-int.apps.devtest.onsclofo.uk:80/collection-instrument-api/1.0.2/',
+        survey: '//ras-api-gateway-int.apps.devtest.onsclofo.uk:80/',
         // secureMessages: 'http://sm.apps.mvp.onsclofo.uk/',
 
         // TODO remove this
-        // collectionExercise: 'http://localhost:8000/api/',
+        // collectionInstrument: 'http://localhost:8050/api/',
+        collectionExercise: 'http://localhost:8050/api/',
     }
 };

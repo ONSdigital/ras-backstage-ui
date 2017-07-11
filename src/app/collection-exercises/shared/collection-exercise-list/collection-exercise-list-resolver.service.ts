@@ -15,16 +15,17 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
 
         const survey: Survey = {
             id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-            inquiryCode: '221',
-            name: 'Business Register and Employment Survey',
-            abbr: 'BRES'
+            surveyRef: '221',
+            longName: 'Business Register and Employment Survey',
+            shortName: 'BRES'
         };
 
         const observable = this.collectionExercisesActions.retrieveCollectionExercises()
             .map((collectionExercises: Array<any>) => {
 
                 return this.createViewModel(collectionExercises, survey);
-            });
+            })
+            .share();
 
         return observable;
     }
@@ -36,7 +37,7 @@ export class CollectionExerciseListResolver implements Resolve<CollectionExercis
 
                 return {
                     id: collectionExercise.id,
-                    name: survey.name + ' - ' + collectionExercise.name
+                    name: survey.longName + ' - ' + collectionExercise.name
                 };
             })
         };

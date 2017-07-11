@@ -16,23 +16,24 @@ export function validateCollectionExercise (data: CollectionExercise) {
     } else {
         caseTypesValidation = data.caseTypes.filter((caseType: any) => {
             return validateProperties(caseType, [
-                { propertyName: 'sampleUnitType' },
-                { propertyName: 'actionPlanID' },
+                { propertyName: 'sampleUnitTypeFK' },
+                { propertyName: 'actionPlanId' },
             ]);
         });
     }
 
     collectionExerciseValidation = validateProperties(data, [
         { propertyName: 'id' },
-        { propertyName: 'surveyID' },
+        { propertyName: 'surveyId' },
         { propertyName: 'name' },
-        { propertyName: 'actualExecution' },
-        { propertyName: 'scheduledExecution' },
-        { propertyName: 'scheduledStart' },
-        { propertyName: 'actualPublish' },
-        { propertyName: 'completionFor' },
-        { propertyName: 'scheduledReturn' },
-        { propertyName: 'scheduledEnd' },
+        { propertyName: 'actualExecutionDateTime' },
+        { propertyName: 'scheduledExecutionDateTime' },
+        { propertyName: 'scheduledStartDateTime' },
+        { propertyName: 'actualPublishDateTime' },
+        { propertyName: 'periodStartDateTime' },
+        { propertyName: 'periodEndDateTime' },
+        { propertyName: 'scheduledReturnDateTime' },
+        { propertyName: 'scheduledEndDateTime' },
         { propertyName: 'executedBy' },
         { propertyName: 'state' },
         { propertyName: 'caseTypes' }
