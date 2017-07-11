@@ -23,7 +23,8 @@ export class SurveysActions {
             id: id
         });
 
-        const observable = this.surveysService.getSurvey(id);
+        const observable = this.surveysService.getSurvey(id)
+            .share();
 
         observable.subscribe(
             (survey: Survey) => {

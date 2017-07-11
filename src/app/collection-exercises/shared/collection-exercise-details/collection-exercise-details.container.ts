@@ -60,6 +60,10 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
                  if (collectionExercise) {
 
+                    /**
+                     * TODO
+                     * Call survey service from resolver
+                     */
                     this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
                         .subscribe((survey: Survey) => {
                             this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
