@@ -1,4 +1,5 @@
 {
     "token": "TOKEN_ABC",
-    "active": false
+    "active": false,
+    "userId": "USER_12345"
 }

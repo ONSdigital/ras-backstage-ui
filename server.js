@@ -71,8 +71,11 @@ app.post('/api/party-api/emailverification/:token', (req, res) => {
 
     if (token === 'TOKEN_ABC') {
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-email-verification.json');
-    } else {
+    } else if (token === 'TOKEN_XXX') {
         res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-email-verification-expired.json');
+    } else {
+        // Error
+        res.status(404).send('Not found');
     }
 });
 
