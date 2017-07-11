@@ -66,6 +66,16 @@ app.get('/api/party-api/businesses/id/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-business.json');
 });
 
+app.post('/api/party-api/emailverification/:token', (req, res) => {
+    let token = req.url.split('/').pop();
+
+    if (token === 'TOKEN_ABC') {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-email-verification.json');
+    } else {
+        res.sendFile(__dirname + '/' + staticFolder + '/mockData/party-email-verification-expired.json');
+    }
+});
+
 // Used by ras-frontstage to obtain a list of cases (surveys)
 app.get('/api/my-surveys/todo/:id', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/my-surveys.json');
