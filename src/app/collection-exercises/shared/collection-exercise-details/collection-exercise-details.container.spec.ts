@@ -10,6 +10,7 @@ import { CollectionExerciseDetailsContainerComponent } from './collection-exerci
 
 import { environment } from '../../../../environments/environment';
 
+import { CollectionInstrumentsActions } from '../../../collection-instruments/collection-instruments.actions';
 import { SurveysActions } from '../../../surveys/surveys.actions';
 
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
@@ -20,15 +21,12 @@ let fixture: ComponentFixture<any>,
     mockStore: any,
     storeData: any = [],
 
+    mockCollectionInstrumentsActions: any,
     mockCollectionExercise: any,
     mockSurvey: any,
     mockCollectionInstrumentStatus: any;
 
-function createActivatedRouteData() {
-    return {
-        viewModel: createViewModel()
-    };
-}
+const mockRouteSnapshot: any = {};
 
 function createViewModel() {
     return {
@@ -65,9 +63,14 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             }
         };
 
-        mockCollectionInstrumentStatus = createCollectionInstrumentStatus();
+        mockCollectionInstrumentsActions = {
+            loadCollectionInstrumentBatch() {
+                return Observable.of('test status');
+            }
+        };
 
         spyOn(mockSurveysActions, 'retrieveSurvey').and.callThrough();
+        spyOn(mockCollectionInstrumentsActions, 'loadCollectionInstrumentBatch').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -78,17 +81,12 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             providers: [
                 { provide: NgRedux, useValue: mockStore },
                 { provide: SurveysActions, useValue: mockSurveysActions },
+                { provide: CollectionInstrumentsActions, useValue: mockCollectionInstrumentsActions },
                 {
                     provide: ActivatedRoute,
                     useValue: {
                         params: Observable.of({ 'collection-exercise-ref': '100' }),
-                        snapshot: {
-                            data: {
-                                exported: {
-                                    collectionInstrumentStatus: mockCollectionInstrumentStatus
-                                }
-                            }
-                        }
+                        snapshot: mockRouteSnapshot
                     } 
                 }
             ]
@@ -97,10 +95,21 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
     });
 
     afterEach(() => {
+        mockCollectionExercise = undefined;
+        mockCollectionInstrumentStatus = undefined;
+        mockSurvey = undefined;
+        mockRouteSnapshot.data = {};
         storeData = [];
     });
 
     it('should create the component', async(() => {
+        mockCollectionInstrumentStatus = createCollectionInstrumentStatus();
+        mockRouteSnapshot.data = {
+            exported: {
+                collectionInstrumentStatus: mockCollectionInstrumentStatus
+            }
+        };
+
         fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
         instance = fixture.componentInstance;
 
@@ -116,72 +125,114 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         });
     }));
 
-    it('should use data from data store and route to build view', async(() => {
-        fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
-        instance = fixture.componentInstance;
+    describe('when a collection exercise exists in the store', () => {
 
-        mockSurvey = {
-            id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-            longName: 'Some test title',
-            shortName: 'STT',
-            surveyRef: '123'
-        };
-        mockCollectionExercise = createMockCollectionExercise('100');
+        beforeEach(() => {
+            mockCollectionExercise = createMockCollectionExercise('100');
 
-        storeData = [mockCollectionExercise];
+            storeData = [mockCollectionExercise];
+        });
 
-        spyOn(instance, 'createViewModel').and.callThrough();
+        describe('and collectionInstrumentStatus is exported on route', () => {
 
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-            fixture.detectChanges();
+            beforeEach(() => {
+                mockCollectionInstrumentStatus = createCollectionInstrumentStatus();
+                mockRouteSnapshot.data = {
+                    exported: {
+                        collectionInstrumentStatus: mockCollectionInstrumentStatus
+                    }
+                };
+            });
 
-            expect(mockSurveysActions.retrieveSurvey).toHaveBeenCalled();
-            expect(instance.createViewModel).toHaveBeenCalled();
+            describe('and survey exists in the service', () => {
 
-            expect(instance.viewModel).toEqual({
-                id: mockCollectionExercise.id,
-                surveyTitle: mockSurvey.longName,
-                inquiryCode: mockSurvey.surveyRef,
-                referencePeriod: CollectionExerciseDetailsContainerComponent.buildReferencePeriod(mockCollectionExercise),
-                surveyAbbr: mockCollectionExercise.name,
-                collectionInstrumentBatch: {
-                    current: mockCollectionInstrumentStatus.current,
-                    status: mockCollectionInstrumentStatus.status
-                },
-                isButtonDisabled: false,
-                csvEndpoint: environment.endpoints.collectionInstrument + 'download_csv/' + mockCollectionExercise.id
+                beforeEach(() => {
+                    mockSurvey = {
+                        id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+                        longName: 'Some test title',
+                        shortName: 'STT',
+                        surveyRef: '123'
+                    };
+                });
+
+                it('should use data from data store and route to build view', async(() => {
+                    fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    spyOn(instance, 'createViewModel').and.callThrough();
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        expect(mockSurveysActions.retrieveSurvey).toHaveBeenCalled();
+                        expect(instance.createViewModel).toHaveBeenCalled();
+
+                        expect(instance.viewModel).toEqual({
+                            id: mockCollectionExercise.id,
+                            surveyTitle: mockSurvey.longName,
+                            inquiryCode: mockSurvey.surveyRef,
+                            referencePeriod: CollectionExerciseDetailsContainerComponent.buildReferencePeriod(mockCollectionExercise),
+                            surveyAbbr: mockCollectionExercise.name,
+                            collectionInstrumentBatch: {
+                                current: mockCollectionInstrumentStatus.current,
+                                status: mockCollectionInstrumentStatus.status
+                            },
+                            isButtonDisabled: false,
+                            csvEndpoint: environment.endpoints.collectionInstrument + 'download_csv/' + mockCollectionExercise.id
+                        });
+                    });
+                }));
+            });
+
+            describe('and survey is not successfully retrieved from the service', () => {
+
+                checkViewModelNotCreated();
             });
         });
-    }));
 
-    it('should load collection instrument bundle when button clicked', async(() => {
-        // TODO fix this
-        // let button;
-        //
-        // fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
-        // instance = fixture.componentInstance;
-        //
-        // button = fixture.debugElement.query(By.css('.load-ci-batch-button'));
-        // // button = fixture.nativeElement.querySelector('[data-test="LOAD_COLLECTION_INSTRUMENTS_BUTTON"]');
-        //
-        // storeData = [createMockCollectionExercise('100')];
-        //
-        // instance.collectionInstrumentsService = {
-        //     loadCollectionInstrumentBundle: function () {}
-        // };
-        //
-        // spyOn(instance.collectionInstrumentsService, 'loadCollectionInstrumentBundle');
-        //
-        // fixture.detectChanges();
-        // fixture.whenStable().then(() => {
-        //     fixture.detectChanges();
-        // });
-        //
-        // button.triggerEventHandler('click', null);
-        //
-        // expect(instance.collectionInstrumentsService.loadCollectionInstrumentBundle).toHaveBeenCalled();
-    }));
+        describe('and collectionInstrumentStatus is not exported on route', () => {
+
+            checkViewModelNotCreated();
+        });
+    });
+
+    describe('when a collection exercise does not exist in the store', () => {
+
+        checkViewModelNotCreated();
+    });
+
+    describe(('when the collectionInstrumentBatchLoadClick_handler method is invoked'), () => {
+
+        it('should call loadCollectionInstrumentBatch action on CollectionInstrumentsActions', async(() => {
+            mockRouteSnapshot.data = {
+                exported: {
+                    collectionInstrumentStatus: createCollectionInstrumentStatus()
+                }
+            };
+
+            mockSurvey = {
+                id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+                longName: 'Some test title',
+                shortName: 'STT',
+                surveyRef: '123'
+            };
+            mockCollectionExercise = createMockCollectionExercise('100');
+
+            storeData = [mockCollectionExercise];
+
+            fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+            instance = fixture.componentInstance;
+
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+                instance.collectionInstrumentBatchLoadClick_handler();
+
+                expect(mockCollectionInstrumentsActions.loadCollectionInstrumentBatch).toHaveBeenCalled();
+            });
+        }));
+    });
 
     describe('Helper methods', () => {
         it('should correctly format a collection exercise reference period', () => {
@@ -191,3 +242,20 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
     });
 
 });
+
+function checkViewModelNotCreated () {
+
+    it('should not create a viewModel', async(() => {
+        fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+        instance = fixture.componentInstance;
+
+        spyOn(instance, 'createViewModel').and.callThrough();
+
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+
+            expect(instance.createViewModel).not.toHaveBeenCalled();
+        });
+    }));
+}

@@ -10,6 +10,7 @@ import { getDataStoreCollectionExerciseByRef } from '../utils';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 
+import { validateSurvey } from '../../../surveys/shared/survey.model-validation';
 import { SurveysActions } from '../../../surveys/surveys.actions';
 
 @Component({
@@ -48,6 +49,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
         if (this.route.snapshot.data && this.route.snapshot.data.exported) {
             collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
+        } else {
+            console.log('collectionInstrumentStatus not found on route data: ', this.route.snapshot.data);
+            return;
         }
 
         this.routeParamSubscription = this.route.params
@@ -66,6 +70,11 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
                      */
                     this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
                         .subscribe((survey: Survey) => {
+
+                            if (!survey || validateSurvey(survey)) {
+                                return;
+                            }
+
                             this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
                         });
 
@@ -76,7 +85,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     }
 
     ngOnDestroy() {
-        this.routeParamSubscription.unsubscribe();
+        if (this.routeParamSubscription) {
+            this.routeParamSubscription.unsubscribe();
+        }
     }
 
     public collectionInstrumentBatchLoadClick_handler() {
