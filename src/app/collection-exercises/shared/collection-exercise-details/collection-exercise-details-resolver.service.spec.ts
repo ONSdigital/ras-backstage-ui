@@ -171,11 +171,4 @@ describe('CollectionExerciseDetailsResolver service', () => {
                 expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalled();
                 expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalledWith(mockCollectionExercise.id);
             }));
-
-    describe('Helper methods', () => {
-        it('should correctly format a collection exercise reference period', () => {
-            expect(CollectionExerciseDetailsResolver.buildReferencePeriod(mockCollectionExercise))
-                .toEqual('1 Jun 2017 - 31 Dec 2017');
-        });
-    });
 });

@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class SurveysService {
 
-    private BASE_URL = environment.endpoints.survey;
+    public BASE_URL = environment.endpoints.survey;
 
     constructor(private http: Http) { }
 
