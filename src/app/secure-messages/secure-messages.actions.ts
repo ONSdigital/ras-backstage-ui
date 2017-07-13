@@ -8,19 +8,21 @@ import { SecureMessagesService } from './secure-messages.service';
 @Injectable()
 export class SecureMessagesActions {
 
-    static CREATE_SINGLE = 'SECURE_MESSAGE_CREATE';
-    static CREATED_SINGLE = 'SECURE_MESSAGE_CREATED';
-    static RETRIEVE_SINGLE = 'SECURE_MESSAGES_SINGLE_RETRIEVE';
-    static RECEIVED_SINGLE = 'SECURE_MESSAGES_SINGLE_RECEIVED';
-    static RETRIEVE_ALL = 'SECURE_MESSAGES_ALL_RETRIEVE';
-    static RECEIVED_ALL = 'SECURE_MESSAGES_ALL_RECEIVED';
-    static REPLY_SINGLE = 'SECURE_MESSAGE_REPLY_CREATE';
-    static REPLIED_SINGLE = 'SECURE_MESSAGE_REPLY_CREATED';
-    static DRAFT_SAVE = 'DRAFT_SAVE';
-    static DRAFT_SAVED = 'DRAFT_SAVED';
-    static DRAFT_UPDATE = 'DRAFT_UPDATE';
-    static DRAFT_UPDATED = 'DRAFT_UPDATED';
-    static VIEW_ALL = 'SECURE_MESSAGES_VIEW_ALL';
+    static CREATE_SINGLE =          'SECURE_MESSAGE_CREATE';
+    static CREATED_SINGLE =         'SECURE_MESSAGE_CREATED';
+    static RETRIEVE_SINGLE =        'SECURE_MESSAGES_SINGLE_RETRIEVE';
+    static RECEIVED_SINGLE =        'SECURE_MESSAGES_SINGLE_RECEIVED';
+    static UPDATE_SINGLE_LABELS =   'SECURE_MESSAGES_SINGLE_UPDATE';
+    static UPDATED_SINGLE_LABELS =  'SECURE_MESSAGES_SINGLE_UPDATED';
+    static RETRIEVE_ALL =           'SECURE_MESSAGES_ALL_RETRIEVE';
+    static RECEIVED_ALL =           'SECURE_MESSAGES_ALL_RECEIVED';
+    static VIEW_ALL =               'SECURE_MESSAGES_ALL_VIEW';
+    static REPLY_SINGLE =           'SECURE_MESSAGE_REPLY_CREATE';
+    static REPLIED_SINGLE =         'SECURE_MESSAGE_REPLY_CREATED';
+    static DRAFT_SAVE =             'DRAFT_SAVE';
+    static DRAFT_SAVED =            'DRAFT_SAVED';
+    static DRAFT_UPDATE =           'DRAFT_UPDATE';
+    static DRAFT_UPDATED =          'DRAFT_UPDATED';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -167,7 +169,7 @@ export class SecureMessagesActions {
         });
     }
 
-    public updateDraft(draftMessage: DraftMessage): Observable<DraftMessage> {
+    public updateDraft(draftMessage: DraftMessage): Observable<any> {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.DRAFT_UPDATE,
@@ -199,6 +201,38 @@ export class SecureMessagesActions {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.VIEW_ALL
+        });
+    }
+
+    public updateSingleMessageLabels(id: string): Observable<any> {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.UPDATE_SINGLE_LABELS,
+            secureMessageId: id
+        });
+
+        const observable = this.secureMessagesService.updateMessageLabels(id, {
+                addLabels: [
+                    'READ'
+                ]
+            })
+            .share();
+
+        observable.subscribe(
+            (status: Array<SecureMessage>) => {
+                this.updatedSingleMessageLabels(id);
+            },
+            (err: any) => console.log('Could not dispatch updatedSingleMessageLabels action, service error: ', err)
+        );
+
+        return observable;
+    }
+
+    public updatedSingleMessageLabels(id: string) {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.UPDATED_SINGLE_LABELS,
+            secureMessageId: id
         });
     }
 }

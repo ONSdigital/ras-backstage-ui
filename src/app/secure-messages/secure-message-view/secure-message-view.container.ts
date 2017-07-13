@@ -52,6 +52,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
                     }
 
                     this.setMessages(secureMessage);
+                    this.secureMessagesActions.updateSingleMessageLabels(secureMessage.msg_id);
                 } else {
                     console.log('Secure message with id "' + secureMessageId + '" not found in store.');
                 }
