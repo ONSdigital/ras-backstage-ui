@@ -26,7 +26,6 @@ import { validateProperties } from '../../shared/utils';
 export class SecureMessagesListContainerComponent implements OnInit {
 
     public secureMessagesList: Array<SecureMessage> = [];
-    // private secureMessagesListMapByBusiness: Map<string, Array<SecureMessage>> = new Map<string, [SecureMessage]>();
 
     public hasSystemFeedback: Boolean = false;
     public systemNotifications: Array<any> = [];
@@ -62,7 +61,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private partyService: PartyService,
         private ngRedux: NgRedux<any>,
         private secureMessagesActions: SecureMessagesActions) {}
 
@@ -83,6 +81,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
                     status: NotificationStatus.success
                 }));
             });
+
+        this.secureMessagesActions.viewAllMessages();
 
         this.secureMessagesActions.retrieveAllSecureMessages()
             .subscribe((secureMessages: any) => {

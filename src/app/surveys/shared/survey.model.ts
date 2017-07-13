@@ -1,6 +1,6 @@
 export interface Survey {
     id: string;
-    inquiryCode: string;
-    name: string;
-    abbr: string;
+    surveyRef: string;
+    shortName: string;
+    longName: string;
 }

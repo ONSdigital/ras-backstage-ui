@@ -20,6 +20,7 @@ export class SecureMessagesActions {
     static DRAFT_SAVED = 'DRAFT_SAVED';
     static DRAFT_UPDATE = 'DRAFT_UPDATE';
     static DRAFT_UPDATED = 'DRAFT_UPDATED';
+    static VIEW_ALL = 'SECURE_MESSAGES_VIEW_ALL';
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -191,6 +192,13 @@ export class SecureMessagesActions {
         this.ngRedux.dispatch({
             type: SecureMessagesActions.DRAFT_UPDATED,
             payload: status
+        });
+    }
+
+    public viewAllMessages() {
+
+        this.ngRedux.dispatch({
+            type: SecureMessagesActions.VIEW_ALL
         });
     }
 }

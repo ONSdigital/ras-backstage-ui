@@ -10,6 +10,9 @@ import { getDataStoreCollectionExerciseByRef } from '../utils';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 
+import { validateSurvey } from '../../../surveys/shared/survey.model-validation';
+import { SurveysActions } from '../../../surveys/surveys.actions';
+
 @Component({
     template: `
         <ons-collection-exercise-details
@@ -27,8 +30,8 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     public static buildReferencePeriod(collectionExercise: CollectionExercise) {
         const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
         const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
-        const from = moment(collectionExercise.scheduledStart, serviceDateFormat);
-        const to = moment(collectionExercise.scheduledEnd, serviceDateFormat);
+        const from = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
+        const to = moment(collectionExercise.scheduledEndDateTime, serviceDateFormat);
 
         return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
     }
@@ -36,6 +39,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
+        private surveysActions: SurveysActions,
         private collectionInstrumentsActions: CollectionInstrumentsActions) { }
 
     ngOnInit() {
@@ -45,6 +49,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
         if (this.route.snapshot.data && this.route.snapshot.data.exported) {
             collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
+        } else {
+            console.log('collectionInstrumentStatus not found on route data: ', this.route.snapshot.data);
+            return;
         }
 
         this.routeParamSubscription = this.route.params
@@ -53,17 +60,23 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
                 return getDataStoreCollectionExerciseByRef(this.ngRedux, collectionExerciseRef); 
             }) 
-            .subscribe((collectionExercise: any) => {  		// TODO Remove survey - get from data store
-                const survey: Survey = {
-                    id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87', 
-                    inquiryCode: '221', 
-                    name: 'Business Register and Employment Survey',
-                    abbr: 'BRES' 
-                };
+            .subscribe((collectionExercise: any) => {
 
                  if (collectionExercise) {
 
-                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus); 
+                    /**
+                     * TODO
+                     * Call survey service from resolver
+                     */
+                    this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
+                        .subscribe((survey: Survey) => {
+
+                            if (!survey || validateSurvey(survey)) {
+                                return;
+                            }
+
+                            this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
+                        });
 
                 } else {
                     console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
@@ -72,7 +85,9 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     }
 
     ngOnDestroy() {
-        this.routeParamSubscription.unsubscribe();
+        if (this.routeParamSubscription) {
+            this.routeParamSubscription.unsubscribe();
+        }
     }
 
     public collectionInstrumentBatchLoadClick_handler() {
@@ -96,8 +111,8 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
         return {
             id: collectionExercise.id,
-            surveyTitle: survey.name,
-            inquiryCode: survey.inquiryCode,
+            surveyTitle: survey.longName,
+            inquiryCode: survey.surveyRef,
             referencePeriod: CollectionExerciseDetailsContainerComponent.buildReferencePeriod(collectionExercise),
             surveyAbbr: collectionExercise.name,
             collectionInstrumentBatch: {

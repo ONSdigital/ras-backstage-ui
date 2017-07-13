@@ -23,11 +23,10 @@ export class CollectionExercisesActions {
             id: link
         });
 
-        const observable = this.collectionExercisesService.getCollectionExercise(link);
+        const observable = this.collectionExercisesService.getCollectionExercise(link)
+            .share();
 
         observable.subscribe(
-            // Normalise data first to keep entities in data store dry before saving
-            // Update data store
             (collectionExercise: CollectionExercise) => {
                 this.receivedCollectionExercise(collectionExercise);
             }
@@ -49,7 +48,9 @@ export class CollectionExercisesActions {
             type: CollectionExercisesActions.RETRIEVE_ALL
         });
 
-        const observable = this.collectionExercisesService.getCollectionExercises();
+        const observable = this.collectionExercisesService.getCollectionExercises()
+            .share();
+
         observable.subscribe(
             (collectionExercises: CollectionExercise[]) => this.receivedCollectionExercises(collectionExercises)
         );

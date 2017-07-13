@@ -21,7 +21,7 @@ import { validateProperties } from '../../shared/utils';
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
-    public to = 'Vana Oorschot for AOL - 36509908341B';
+    public to = '(Respondent full name) for (Business name) - (RU reference)';
 
     public secureMessage: SecureMessage;
 

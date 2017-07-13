@@ -51,8 +51,8 @@ export default function(state: any = INIT_STATE, action: any) {
                 }
             });
 
-        case SecureMessagesActions.RECEIVED_ALL:
-            return state;
+        case SecureMessagesActions.VIEW_ALL:
+            return state.set('stateMessage', null);
 
         case SecureMessagesActions.DRAFT_SAVED:
 

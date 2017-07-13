@@ -19,8 +19,8 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
         const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
         const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
 
-        const from = moment(collectionExercise.scheduledStart, serviceDateFormat);
-        const to = moment(collectionExercise.scheduledEnd, serviceDateFormat);
+        const from = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
+        const to = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
 
         return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
     }

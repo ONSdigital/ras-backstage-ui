@@ -23,15 +23,15 @@ export class SurveysActions {
             id: id
         });
 
-        const observable = this.surveysService.getSurvey(id);
+        const observable = this.surveysService.getSurvey(id)
+            .share();
 
         observable.subscribe(
-            // Normalise data first to keep entities in data store dry before saving
-            // Update data store
             (survey: Survey) => {
                 this.receivedSurvey(survey);
             }
         );
+
         return observable;
     }
 
