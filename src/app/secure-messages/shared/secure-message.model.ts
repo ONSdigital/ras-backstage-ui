@@ -28,6 +28,6 @@ export interface DraftMessage extends SecureMessage {
 
 
 export interface MessageLabels {
-    addLabels?: Array<string>;
-    removeLabels?: Array<string>;
+    label: string;
+    action: string;
 }

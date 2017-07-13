@@ -13,7 +13,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let message of secureMessages; let i = index;"
-                class="secure-messages-list__item secure-messages-list__item--unread">
+                class="secure-messages-list__item {{ message.$isUnread ? 'secure-messages-list__item--unread' : '' }}">
 
                 <td class="secure-messages-list__field">{{ message['@ru_id']?.ru_id }}</td>
                 <td class="secure-messages-list__field">{{ message['@ru_id']?.business_name }}</td>

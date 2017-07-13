@@ -212,14 +212,13 @@ export class SecureMessagesActions {
         });
 
         const observable = this.secureMessagesService.updateMessageLabels(id, {
-                addLabels: [
-                    'READ'
-                ]
+                label: 'UNREAD',
+                action: 'remove'
             })
             .share();
 
         observable.subscribe(
-            (status: Array<SecureMessage>) => {
+            () => {
                 this.updatedSingleMessageLabels(id);
             },
             (err: any) => console.log('Could not dispatch updatedSingleMessageLabels action, service error: ', err)
