@@ -34,11 +34,13 @@ describe('SecureMessagesListContainerComponent', () => {
         mockSecureMessagesActions = {
             retrieveAllSecureMessages: function() {
                 return Observable.of(apiData);
-            }
+            },
+            viewAllMessages() {}
         };
 
         spyOn(mockStore, 'select').and.callThrough();
         spyOn(mockSecureMessagesActions, 'retrieveAllSecureMessages').and.callThrough();
+        spyOn(mockSecureMessagesActions, 'viewAllMessages').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [

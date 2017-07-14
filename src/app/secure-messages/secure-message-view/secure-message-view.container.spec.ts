@@ -38,10 +38,14 @@ describe('SecureMessageViewContainerComponent', () => {
                 return {
                     subscribe: function () {}
                 };
+            },
+            updateSingleMessageLabels: function() {
+                return Observable.of({});
             }
         };
 
         spyOn(mockSecureMessagesActions, 'replyToSecureMessage').and.callThrough();
+        spyOn(mockSecureMessagesActions, 'updateSingleMessageLabels').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -92,6 +96,7 @@ describe('SecureMessageViewContainerComponent', () => {
             storeData = [mockOriginalSecureMessage];
 
             spyOn(comp, 'setMessages').and.callThrough();
+            spyOn(comp, 'checkSetMessageIsRead').and.callThrough();
         }));
 
         it('should assign it as the originalSecureMessage property and create the newSecureMessage property from it',
@@ -106,7 +111,41 @@ describe('SecureMessageViewContainerComponent', () => {
                 });
             }));
 
-        /*describe('and the reply has content', () => {
+        describe(('and secure message is unread'), () => {
+
+            beforeEach(async(() => {
+                mockOriginalSecureMessage.labels.push('UNREAD');
+            }));
+
+            afterEach(async(() => {
+                mockOriginalSecureMessage.labels = [];
+            }));
+
+            it('should dispatch an action to update the original secure message labels to mark as read ', async(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(comp.checkSetMessageIsRead).toHaveBeenCalled();
+                    expect(mockSecureMessagesActions.updateSingleMessageLabels)
+                    .toHaveBeenCalledWith(mockOriginalSecureMessage.msg_id);
+                });
+            }));
+        });
+
+        describe(('and secure message has already been read'), () => {
+
+            it('should not dispatch an action to update the original secure message labels', async(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(mockSecureMessagesActions.updateSingleMessageLabels).not.toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('and the reply has content', () => {
 
             beforeEach(async(() => {
 
@@ -129,12 +168,12 @@ describe('SecureMessageViewContainerComponent', () => {
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalled();
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalledWith({
                         thread_id: comp.originalSecureMessage.thread_id,
-                        msg_to: comp.originalSecureMessage.urn_to[0],
+                        msg_to: comp.originalSecureMessage.msg_to[0],
                         msg_from: undefined,
                         subject: comp.originalSecureMessage.subject,
                         body: 'Some reply content',
                         collection_case: comp.originalSecureMessage.collection_case,
-                        ru_id: comp.originalSecureMessage.reporting_unit,
+                        ru_id: comp.originalSecureMessage.ru_id,
                         survey: comp.originalSecureMessage.survey
                     });
                 }));
@@ -163,10 +202,10 @@ describe('SecureMessageViewContainerComponent', () => {
                     expect(mockSecureMessagesActions.replyToSecureMessage).not.toHaveBeenCalled();
                 });
             });
-        });*/
+        });
     });
 
-    /*describe('when the message being replied to is not found', () => {
+    describe('when the message being replied to is not found', () => {
 
         beforeEach(async(() => {
             fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
@@ -197,7 +236,7 @@ describe('SecureMessageViewContainerComponent', () => {
                 expect(comp.setMessages).not.toHaveBeenCalled();
             });
         }));
-    });*/
+    });
 
     /**
      * TODO - test routing after sending reply
