@@ -101,6 +101,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
                      * Attach view-only label
                      */
                     secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
+                    secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
 
                     if (!messageHasAgreggateData(secureMessage)) {
                         return false;

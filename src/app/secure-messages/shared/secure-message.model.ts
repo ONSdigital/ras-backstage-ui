@@ -25,3 +25,9 @@ export interface SecureMessage {
 export interface DraftMessage extends SecureMessage {
     modified_date?: string;
 }
+
+
+export interface MessageLabels {
+    label: string;
+    action: string;
+}

@@ -127,8 +127,7 @@ function assertStateMaintainedWithinvalidAction (action: any) {
 
 function assertStateMessageChange (msgId: string, actionConst: string, resultStateMessage: any) {
 
-    it('should return a new state of the secure messages data store with a new statusMessage' +
-        'property added', () => {
+    it('should return a new state of the secure messages data store with a new statusMessage property added', () => {
         const action = {
                 type: actionConst,
                 payload: {

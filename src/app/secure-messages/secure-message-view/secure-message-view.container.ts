@@ -52,6 +52,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
                     }
 
                     this.setMessages(secureMessage);
+                    this.checkSetMessageIsRead();
                 } else {
                     console.log('Secure message with id "' + secureMessageId + '" not found in store.');
                 }
@@ -60,6 +61,13 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.routeParamSubscription.unsubscribe();
+    }
+
+    public checkSetMessageIsRead () {
+
+        if (this.originalSecureMessage.labels.find((label: string) => label === 'UNREAD')) {
+            this.secureMessagesActions.updateSingleMessageLabels(this.originalSecureMessage.msg_id);
+        }
     }
 
     public setMessages(originalSecureMessage: SecureMessage) {

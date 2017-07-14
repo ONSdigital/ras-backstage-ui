@@ -19,6 +19,9 @@ export class UserService {
         private http: Http) {}
 
     public getUser(): Observable<any> {
+        /**
+         * Internal user
+         */
         return this.user = Observable.of({
             id: 'BRES',
             emailAddress: 'onsuser@ons.com',
@@ -27,5 +30,17 @@ export class UserService {
             telephone: '+44 1234 567890',
             status: 'ACTIVE'
         });
+
+        /**
+         * Respondent
+         */
+        /*return this.user = Observable.of({
+            id: '0a7ad740-10d5-4ecb-b7ca-3c0384afb882',
+            emailAddress: 'onsuser@ons.com',
+            firstName: 'John',
+            lastName: 'Doe',
+            telephone: '+44 1234 567890',
+            status: 'ACTIVE'
+        });*/
     }
 }

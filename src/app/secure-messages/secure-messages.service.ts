@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
-import { SecureMessage, DraftMessage } from './shared/secure-message.model';
+import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';
 
@@ -84,6 +84,31 @@ export class SecureMessagesService {
             .share()
             .do((res: Response) => {
                 console.log('Get one: ', res);
+            })
+            .catch((error: any) => {
+                console.log('Error response: ', error);
+                return Observable.throw(error || 'Server error');
+            });
+        });
+
+        return this.isAuthenticated() ? request() : this.authenticate(request);
+    }
+
+    public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
+
+        const request = (() => {
+
+            return this.http.put(
+                SecureMessagesService.BASE_URL + 'message/' + id + '/modify',
+                labels,
+                new RequestOptions({
+                    method: RequestMethod.Put,
+                    headers: this.encryptedHeaders
+                })
+            )
+            .share()
+            .do((res: Response) => {
+                console.log('Update message labels: ', res);
             })
             .catch((error: any) => {
                 console.log('Error response: ', error);
