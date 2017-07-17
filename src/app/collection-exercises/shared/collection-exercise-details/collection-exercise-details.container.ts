@@ -30,8 +30,8 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     public static buildReferencePeriod(collectionExercise: CollectionExercise) {
         const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
         const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
-        const from = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
-        const to = moment(collectionExercise.scheduledEndDateTime, serviceDateFormat);
+        const from = moment(collectionExercise.periodStartDateTime, serviceDateFormat);
+        const to = moment(collectionExercise.periodEndDateTime, serviceDateFormat);
 
         return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
     }
