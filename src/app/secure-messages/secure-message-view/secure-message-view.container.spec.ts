@@ -128,7 +128,10 @@ describe('SecureMessageViewContainerComponent', () => {
 
                     expect(comp.checkSetMessageIsRead).toHaveBeenCalled();
                     expect(mockSecureMessagesActions.updateSingleMessageLabels)
-                    .toHaveBeenCalledWith(mockOriginalSecureMessage.msg_id);
+                        .toHaveBeenCalledWith(mockOriginalSecureMessage.msg_id, {
+                            label: 'UNREAD',
+                            action: 'remove'
+                        });
                 });
             }));
         });
