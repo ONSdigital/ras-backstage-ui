@@ -33,7 +33,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 const existingItem = items.findEntry((item: SecureMessage) => item.msg_id === secureMessage.msg_id);
 
                 existingItem ?
-                    list.set(existingItem[0], Object.assign(existingItem[1], secureMessage)) :
+                    list.set(existingItem[0], Object.assign({}, existingItem[1], secureMessage)) :
                     list.push(secureMessage);
             }));
 

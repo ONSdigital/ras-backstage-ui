@@ -23,6 +23,7 @@ import { validateProperties } from '../../shared/utils';
 export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     public routeParamSubscription: Subscription;
+    public secureMessageDataStoreSubscription: Subscription;
 
     public originalSecureMessage: SecureMessage;
     public newSecureMessage: SecureMessage;
@@ -35,14 +36,21 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        let secureMessageId: string;
-
         this.routeParamSubscription = this.route.params
-            .flatMap((params: any) => {
-                secureMessageId = params['secure-message-id'];
+            .subscribe((params: any) => {
+                this.subscribeToSecureMessageDataStore(params['secure-message-id']);
+            });
+    }
 
-                return getDataStoreSecureMessageById(this.ngRedux, secureMessageId);
-            })
+    ngOnDestroy() {
+        this.routeParamSubscription.unsubscribe();
+        this.secureMessageDataStoreSubscription.unsubscribe();
+    }
+
+    public subscribeToSecureMessageDataStore (secureMessageId: string) {
+
+        this.secureMessageDataStoreSubscription = this.ngRedux.select(['secureMessages', 'items'])
+            .map((secureMessages: any) => secureMessages.find((item: any) => item.msg_id === secureMessageId))
             .subscribe((secureMessage: SecureMessage) => {
 
                 if (secureMessage) {
@@ -59,14 +67,13 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnDestroy() {
-        this.routeParamSubscription.unsubscribe();
-    }
-
     public checkSetMessageIsRead () {
 
         if (this.originalSecureMessage.labels.find((label: string) => label === 'UNREAD')) {
-            this.secureMessagesActions.updateSingleMessageLabels(this.originalSecureMessage.msg_id);
+            this.secureMessagesActions.updateSingleMessageLabels(this.originalSecureMessage.msg_id, {
+                label: 'UNREAD',
+                action: 'remove'
+            });
         }
     }
 

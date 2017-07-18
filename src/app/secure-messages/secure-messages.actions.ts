@@ -12,8 +12,8 @@ export class SecureMessagesActions {
     static CREATED_SINGLE =         'SECURE_MESSAGE_CREATED';
     static RETRIEVE_SINGLE =        'SECURE_MESSAGES_SINGLE_RETRIEVE';
     static RECEIVED_SINGLE =        'SECURE_MESSAGES_SINGLE_RECEIVED';
-    static UPDATE_SINGLE_LABELS =   'SECURE_MESSAGES_SINGLE_UPDATE';
-    static UPDATED_SINGLE_LABELS =  'SECURE_MESSAGES_SINGLE_UPDATED';
+    static UPDATE_SINGLE_LABELS =   'SECURE_MESSAGES_SINGLE_UPDATE_LABELS';
+    static UPDATED_SINGLE_LABELS =  'SECURE_MESSAGES_SINGLE_UPDATED_LABELS';
     static RETRIEVE_ALL =           'SECURE_MESSAGES_ALL_RETRIEVE';
     static RECEIVED_ALL =           'SECURE_MESSAGES_ALL_RECEIVED';
     static VIEW_ALL =               'SECURE_MESSAGES_ALL_VIEW';
@@ -204,22 +204,19 @@ export class SecureMessagesActions {
         });
     }
 
-    public updateSingleMessageLabels(id: string): Observable<any> {
+    public updateSingleMessageLabels(id: string, labels: any): Observable<any> {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.UPDATE_SINGLE_LABELS,
             secureMessageId: id
         });
 
-        const observable = this.secureMessagesService.updateMessageLabels(id, {
-                label: 'UNREAD',
-                action: 'remove'
-            })
+        const observable = this.secureMessagesService.updateMessageLabels(id, labels)
             .share();
 
         observable.subscribe(
             () => {
-                this.updatedSingleMessageLabels(id);
+                this.updatedSingleMessageLabels(id, labels);
             },
             (err: any) => console.log('Could not dispatch updatedSingleMessageLabels action, service error: ', err)
         );
@@ -227,11 +224,14 @@ export class SecureMessagesActions {
         return observable;
     }
 
-    public updatedSingleMessageLabels(id: string) {
+    public updatedSingleMessageLabels(id: string, labels: any) {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.UPDATED_SINGLE_LABELS,
-            secureMessageId: id
+            secureMessageId: id,
+            labels: labels
         });
+
+        this.retrieveSecureMessage(id);
     }
 }
