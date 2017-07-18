@@ -237,7 +237,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
     describe('Helper methods', () => {
         it('should correctly format a collection exercise reference period', () => {
             expect(CollectionExerciseDetailsContainerComponent.buildReferencePeriod(createMockCollectionExercise('999')))
-                .toEqual('1 Jun 2017 - 31 Dec 2017');
+                .toEqual('1 Jan 2016 - 31 Dec 2016');
         });
     });
 
