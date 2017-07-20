@@ -1,5 +1,6 @@
 import { Component, Output, Input, EventEmitter, OnInit } from '@angular/core';
 
+import { User } from '../../user/shared/user.model';
 import { SecureMessage } from '../shared/secure-message.model';
 
 @Component({
@@ -15,6 +16,7 @@ export class SecureMessageViewComponent implements OnInit {
 
     @Input() originalSecureMessage: SecureMessage;
     @Input() newSecureMessageModel: SecureMessage;
+    @Input() user: User;
 
     @Output() send_reply_click_handler: EventEmitter<any> = new EventEmitter();
     @Output() mark_message_read_click_handler: EventEmitter<any> = new EventEmitter();

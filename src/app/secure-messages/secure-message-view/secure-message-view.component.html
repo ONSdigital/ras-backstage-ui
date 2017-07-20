@@ -32,7 +32,7 @@
                                 </dl>
                             </div>
                             <div class="grid__col col-3@s">
-                                <div class="secure-message-conversation__message-actions">
+                                <div class="secure-message-conversation__message-actions" *ngIf="user?.id !== originalSecureMessage?.msg_from">
                                     <a href="/secure-messages" (click)="mark_message_read_click_handler.emit($event)">Mark as unread</a>
                                 </div>
                             </div>

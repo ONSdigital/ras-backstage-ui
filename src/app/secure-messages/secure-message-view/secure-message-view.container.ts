@@ -15,6 +15,7 @@ import { validateProperties } from '../../shared/utils';
 @Component({
     template: `
         <ons-secure-message-view
+            [user]="user"
             [originalSecureMessage]="originalSecureMessage"
             [(newSecureMessageModel)]="newSecureMessage"
             (mark_message_read_click_handler)="markMessageRead_click_handler($event)"
@@ -28,6 +29,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     public originalSecureMessage: SecureMessage;
     public newSecureMessage: SecureMessage;
+    public user: User;
 
     constructor(
         private ngRedux: NgRedux<any>,
@@ -100,6 +102,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             .first()
             .subscribe((user: User) => {
                 this.newSecureMessage.msg_from = user.id;
+                this.user = user;
             });
     }
 
