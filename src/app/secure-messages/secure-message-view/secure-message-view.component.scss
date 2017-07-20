@@ -1,3 +1,29 @@
-.secure-message-view-component {
+.secure-message-conversation {
 
+    .secure-message-conversation__metadata {
+        padding : .333rem .5rem;
+        background-color : #eee;
+
+        .secure-message-conversation__field {
+            line-height : 1.2rem;
+            font-size : 0.77778rem;
+        }
+
+        .secure-message-conversation__message-actions {
+            font-size : .815rem;
+            text-align : right;
+        }
+    }
+
+    .secure-message-conversation__message {
+        margin-bottom : 2rem;
+        border : 1px solid #eee;
+        border-radius : 0.2rem;
+    }
+
+    .secure-message-conversation__message-body {
+        margin-bottom : 1rem;
+        padding : .5rem;
+        font-size : .875rem;
+    }
 }
