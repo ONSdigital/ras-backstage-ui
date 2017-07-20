@@ -17,6 +17,7 @@ import { validateProperties } from '../../shared/utils';
         <ons-secure-message-view
             [originalSecureMessage]="originalSecureMessage"
             [(newSecureMessageModel)]="newSecureMessage"
+            (mark_message_read_click_handler)="markMessageRead_click_handler($event)"
             (send_reply_click_handler)="sendReply_handler($event)"></ons-secure-message-view>
     `,
 })
@@ -112,6 +113,21 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.router.navigate(['/secure-messages']);
             });
+    }
+
+    public markMessageRead_click_handler(event: any) {
+        event.preventDefault();
+
+        this.secureMessagesActions
+            .updateSingleMessageLabels(this.originalSecureMessage.msg_id, {
+                label: 'UNREAD',
+                action: 'add'
+            })
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
+
+        return false;
     }
 }
 

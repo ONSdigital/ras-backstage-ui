@@ -5,18 +5,19 @@ import { SecureMessage } from '../shared/secure-message.model';
 @Component({
     moduleId: module.id,
     selector: 'ons-secure-message-view',
+    styleUrls: ['secure-message-view.component.scss'],
     templateUrl: 'secure-message-view.component.html'
 })
 export class SecureMessageViewComponent implements OnInit {
 
     public originalMessageBody: Array<string> = [];
     public newMessageBody: string;
-    public newMessageBodyTest: Array<string>;
 
     @Input() originalSecureMessage: SecureMessage;
     @Input() newSecureMessageModel: SecureMessage;
 
     @Output() send_reply_click_handler: EventEmitter<any> = new EventEmitter();
+    @Output() mark_message_read_click_handler: EventEmitter<any> = new EventEmitter();
 
     ngOnInit() {
         if (this.originalSecureMessage && this.originalSecureMessage.body) {
@@ -32,8 +33,13 @@ export class SecureMessageViewComponent implements OnInit {
         this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
     }
 
-    public getOriginalSecureMessageMsgFrom(property: string) {
+    public getOriginalSecureMessageMsgFrom() {
         return this.originalSecureMessage && this.originalSecureMessage['@msg_from']
             ? this.originalSecureMessage['@msg_from'] : {};
+    }
+
+    public getOriginalSecureMessageMsgTo() {
+        return this.originalSecureMessage && this.originalSecureMessage['@msg_to'] && this.originalSecureMessage['@msg_to'][0]
+            ? this.originalSecureMessage['@msg_to'][0] : {};
     }
 }
