@@ -40,7 +40,9 @@ describe('SecureMessageViewContainerComponent', () => {
                 };
             },
             updateSingleMessageLabels: function() {
-                return Observable.of({});
+                return {
+                    subscribe: function () {}
+                };
             }
         };
 
@@ -73,16 +75,18 @@ describe('SecureMessageViewContainerComponent', () => {
 
     it('should initialise correctly', async(() => {
         fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
+        comp = fixture.debugElement.componentInstance;
+
+        spyOn(comp, 'subscribeToSecureMessageDataStore').and.callThrough();
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
 
-            comp = fixture.debugElement.componentInstance;
-
             expect(comp).toBeTruthy();
             expect(comp.originalSecureMessage).toEqual(undefined);
             expect(comp.newSecureMessage).toEqual(undefined);
+            expect(comp.subscribeToSecureMessageDataStore).toHaveBeenCalled();
         });
     }));
 
@@ -146,6 +150,20 @@ describe('SecureMessageViewContainerComponent', () => {
                     expect(mockSecureMessagesActions.updateSingleMessageLabels).not.toHaveBeenCalled();
                 });
             }));
+        });
+
+        describe(('and markMessageRead_click_handler is invoked'), () => {
+
+            it('should call updateSingleMessageLabels action on the SecureMessagesActions service', () => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    comp.markMessageRead_click_handler(new MouseEvent('click', {bubbles: true}));
+
+                    expect(mockSecureMessagesActions.updateSingleMessageLabels).toHaveBeenCalled();
+                });
+            });
         });
 
         describe('and the reply has content', () => {
