@@ -39,6 +39,11 @@ describe('SecureMessageViewContainerComponent', () => {
                     subscribe: function () {}
                 };
             },
+            saveDraft: function() {
+                return {
+                    subscribe: function () {}
+                };
+            },
             updateSingleMessageLabels: function() {
                 return {
                     subscribe: function () {}
@@ -48,6 +53,7 @@ describe('SecureMessageViewContainerComponent', () => {
 
         spyOn(mockSecureMessagesActions, 'replyToSecureMessage').and.callThrough();
         spyOn(mockSecureMessagesActions, 'updateSingleMessageLabels').and.callThrough();
+        spyOn(mockSecureMessagesActions, 'saveDraft').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -189,7 +195,29 @@ describe('SecureMessageViewContainerComponent', () => {
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalled();
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalledWith({
                         thread_id: comp.originalSecureMessage.thread_id,
-                        msg_to: comp.originalSecureMessage.msg_to[0],
+                        msg_to: comp.originalSecureMessage.msg_to,
+                        msg_from: undefined,
+                        subject: comp.originalSecureMessage.subject,
+                        body: 'Some reply content',
+                        collection_case: comp.originalSecureMessage.collection_case,
+                        ru_id: comp.originalSecureMessage.ru_id,
+                        survey: comp.originalSecureMessage.survey
+                    });
+                }));
+            });
+
+            describe('and the saveDraft_handler is invoked', () => {
+
+                beforeEach(async(() => {
+                    comp.saveDraft_handler();
+                }));
+
+                it('should call saveDraft secure message action', async(() => {
+
+                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
+                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalledWith({
+                        thread_id: comp.originalSecureMessage.thread_id,
+                        msg_to: comp.originalSecureMessage.msg_to,
                         msg_from: undefined,
                         subject: comp.originalSecureMessage.subject,
                         body: 'Some reply content',

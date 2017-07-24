@@ -19,6 +19,7 @@ export class SecureMessageViewComponent implements OnInit {
     @Input() user: User;
 
     @Output() send_reply_click_handler: EventEmitter<any> = new EventEmitter();
+    @Output() save_draft_click_handler: EventEmitter<any> = new EventEmitter();
     @Output() mark_message_read_click_handler: EventEmitter<any> = new EventEmitter();
 
     ngOnInit() {
