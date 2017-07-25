@@ -84,6 +84,14 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
     public setMessages(originalSecureMessage: SecureMessage) {
 
+        let msgTo: string | Array<any>;
+
+        if (originalSecureMessage.labels.find((label: string) => label === 'SENT')) {
+            msgTo = originalSecureMessage.msg_to;
+        } else {
+            msgTo = [originalSecureMessage.msg_from];
+        }
+
         this.originalSecureMessage = originalSecureMessage;
 
         /**
@@ -91,7 +99,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
          */
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,
-            msg_to: originalSecureMessage.msg_to[0],
+            msg_to: msgTo,
             msg_from: '',
             subject: originalSecureMessage.subject,
             body: '',
