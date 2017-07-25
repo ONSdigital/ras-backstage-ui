@@ -16,7 +16,7 @@ export function validateCollectionExercise (data: CollectionExercise) {
     } else {
         caseTypesValidation = data.caseTypes.filter((caseType: any) => {
             return validateProperties(caseType, [
-                { propertyName: 'sampleUnitTypeFK' },
+                { propertyName: 'sampleUnitType' },
                 { propertyName: 'actionPlanId' },
             ]);
         });

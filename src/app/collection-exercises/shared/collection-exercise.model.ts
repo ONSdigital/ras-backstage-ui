@@ -14,10 +14,10 @@ export interface CollectionExercise {
     state: string;
     caseTypes: [
         {
-            sampleUnitTypeFK: string,
+            sampleUnitType: string,
             actionPlanId: string
         }, {
-            sampleUnitTypeFK: string,
+            sampleUnitType: string,
             actionPlanId: string
         }
     ];
