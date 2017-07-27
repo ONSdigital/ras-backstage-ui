@@ -41,7 +41,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                  * Object needs to be passed in
                  */
                 const secureMessage = {
-                    msg_to: ['0a7ad740-10d5-4ecb-b7ca-3c0384afb882'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
+                    msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
                     // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
                     msg_from: user.id,
                     subject: '',

@@ -20,13 +20,16 @@ export const environment = {
         secureMessages: 'http://0.0.0.0:5050/',
 
         // CloudFoundry config
-        // collectionExercise: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
-        collectionInstrument: '//ras-api-gateway-int.apps.devtest.onsclofo.uk:80/collection-instrument-api/1.0.2/',
+        collectionExercise: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
+        collectionInstrument: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/',
         survey: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
         // secureMessages: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
 
         // TODO remove this
         // collectionInstrument: 'http://localhost:8050/api/',
-        collectionExercise: 'http://localhost:8050/api/'
+        // collectionExercise: 'http://localhost:8050/api/'
+
+        /*collectionExercise: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
+        collectionInstrument: '//ras-api-gateway-test.apps.devtest.onsclofo.uk:80/collection-instrument-api/1.0.2/',*/
     }
 };

@@ -14,7 +14,7 @@ export const collectionExercisesRoutes: Routes = [
         path: 'collection-exercises',
         component: CollectionExercisesComponent,
         data: {
-            breadcrumb: 'Collection Exercises'
+            breadcrumb: null // 'Collection Exercises' - Reactivate when service is ready
         },
         children: [
             {
