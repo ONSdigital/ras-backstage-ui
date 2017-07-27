@@ -19,7 +19,8 @@ import { validateProperties } from '../../shared/utils';
             [originalSecureMessage]="originalSecureMessage"
             [(newSecureMessageModel)]="newSecureMessage"
             (mark_message_read_click_handler)="markMessageRead_click_handler($event)"
-            (send_reply_click_handler)="sendReply_handler($event)"></ons-secure-message-view>
+            (send_reply_click_handler)="sendReply_handler($event)"
+            (save_draft_click_handler)="saveDraft_handler($event)"></ons-secure-message-view>
     `,
 })
 export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
@@ -123,6 +124,18 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         }
 
         this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
+            .subscribe(() => {
+                this.router.navigate(['/secure-messages']);
+            });
+    }
+
+    public saveDraft_handler() {
+
+        if (this.newSecureMessage.body === '') {
+            return;
+        }
+
+        this.secureMessagesActions.saveDraft(this.newSecureMessage)
             .subscribe(() => {
                 this.router.navigate(['/secure-messages']);
             });

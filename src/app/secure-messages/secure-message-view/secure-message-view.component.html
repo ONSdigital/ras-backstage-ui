@@ -61,6 +61,11 @@
                     aria-labelledby="secure-message-body"></textarea>
             </fieldset>
 
+            <button class="btn btn--secondary" type="submit"
+                [disabled]="!isValid()"
+                (click)="save_draft_click_handler.emit($event)"
+                role="button">Save draft</button>
+
             <button class="btn" type="submit"
                 [disabled]="!isValid()"
                 (click)="send_reply_click_handler.emit($event)"
