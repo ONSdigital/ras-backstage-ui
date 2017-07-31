@@ -34,39 +34,42 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
-            .subscribe((user: any) => {
-
-                /**
-                 * TODO
-                 * Object needs to be passed in
-                 */
-                const secureMessage = {
-                    msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
-                    // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
-                    msg_from: user.id,
-                    subject: '',
-                    body: '',
-                    collection_case: 'ACollectionCase',
-                    ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
-                    survey: 'BRES',
-                    '@msg_to': [{}],
-                    '@ru_id': {}
-                };
-
-                if (!secureMessageHasAgreggateData(secureMessage)) {
-                    return;
-                }
-
-                this.secureMessage = secureMessage;
-
-                if (!user) {
-                    console.log('Logged in user not found');
-                }
-            });
+            .subscribe((user: any) => this.createMessageUpdate(user));
     }
 
     ngOnDestroy() {
         this.getUserSubscription.unsubscribe();
+    }
+
+    public createMessageUpdate (user: any) {
+
+        if (!user) {
+            console.log('Logged in user not found');
+            return;
+        }
+
+        /**
+         * TODO
+         * Object needs to be passed in
+         */
+        const secureMessage = {
+            msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
+            // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
+            msg_from: user.id,
+            subject: '',
+            body: '',
+            collection_case: 'ACollectionCase',
+            ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
+            survey: 'BRES',
+            '@msg_to': [{}],
+            '@ru_id': {}
+        };
+
+        if (!secureMessageHasAgreggateData(secureMessage)) {
+            return;
+        }
+
+        this.secureMessage = secureMessage;
     }
 
     public sendSecureMessage_handler() {
