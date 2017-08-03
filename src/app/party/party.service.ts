@@ -7,14 +7,12 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class PartyService {
 
-    /*static BASE_URL = ''; // environment.endpoints.party;
+    static BASE_URL = environment.endpoints.party;
 
     constructor(
         private http: Http) {}
 
     public getBusiness(id: string): Observable<any> {
-
-        console.log('getBusiness: ', id);
 
         return this.http.get(
                 PartyService.BASE_URL + 'businesses/id/' + id
@@ -25,5 +23,18 @@ export class PartyService {
             })
 
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }*/
+    }
+
+    public getRespondent(id: string): Observable<any> {
+
+        return this.http.get(
+            PartyService.BASE_URL + 'respondents/id/' + id
+        )
+
+        .map((res: Response) => {
+            return res.json() || {};
+        })
+
+        .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
 }

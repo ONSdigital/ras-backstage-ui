@@ -24,6 +24,7 @@ export const environment = {
         collectionInstrument: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/',
         survey: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
         secureMessages: '//ras-api-gateway-sit.apps.devtest.onsclofo.uk/',
+        party: '//ras-api-gateway-sit.apps.devtest.onsclofo.uk/party-api/v1/'
 
         // TODO remove this
         // collectionInstrument: 'http://localhost:8050/api/',

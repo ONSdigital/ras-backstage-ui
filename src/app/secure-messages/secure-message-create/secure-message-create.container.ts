@@ -1,6 +1,10 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+
+import { PartyService } from '../../party/party.service';
+import { Business, Respondent } from '../../party/party.model';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
@@ -8,6 +12,8 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 import { UserActions } from '../../user/user.actions';
 
 import { validateProperties } from '../../shared/utils';
+
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
     template: `
@@ -21,16 +27,20 @@ import { validateProperties } from '../../shared/utils';
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
-    public to = '(Respondent full name) for (Business name) - (RU reference)';
+    public to = '';
 
     public secureMessage: SecureMessage;
 
     public getUserSubscription: Subscription;
 
+    private business: Business;
+    private respondent: Respondent;
+
     constructor(
         private router: Router,
         private userActions: UserActions,
-        private secureMessagesActions: SecureMessagesActions) {}
+        private secureMessagesActions: SecureMessagesActions,
+        private partyService: PartyService) {}
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
@@ -63,10 +73,51 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                     console.log('Logged in user not found');
                 }
             });
+
+
+        Observable
+            .zip(
+                this.partyService.getBusiness('3b136c4b-7a14-4904-9e01-13364dd7b972'),
+                this.partyService.getRespondent('db036fd7-ce17-40c2-a8fc-932e7c228397'),
+                (business: Business, respondent: Respondent) => ({
+                    business,
+                    respondent
+                })
+            )
+            .subscribe((pair: any) => {
+                this.business = pair.business;
+                this.respondent = pair.respondent;
+
+                this.buildMsgTo();
+            });
     }
 
     ngOnDestroy() {
         this.getUserSubscription.unsubscribe();
+    }
+
+    public buildMsgTo() {
+
+        /**
+         * TODO - validate respondent and business response
+         */
+        if (!this.business || !this.respondent) {
+            return '';
+        }
+
+        const businessName = !this.business.name
+            ? '(Business name not found)'
+            : `${this.business.name}`;
+
+        const businessRef = !this.business.businessRef
+            ? '(Business reference not found)'
+            : `${this.business.businessRef}`;
+
+        const respondentName = !this.respondent.firstName || !this.respondent.lastName
+            ? '(Respondent name not found)'
+            : `${this.respondent.firstName} ${this.respondent.lastName}`;
+
+        this.to = `${respondentName} for ${businessName} - ${businessRef}`;
     }
 
     public sendSecureMessage_handler() {
