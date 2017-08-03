@@ -44,7 +44,12 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         this.routeParamSubscription = this.route.params
             .subscribe((params: any) => {
-                this.subscribeToSecureMessageDataStore(params['secure-message-id']);
+                const secureMessageId: string = params['secure-message-id'];
+
+                this.secureMessageDataStoreSubscription = this.subscribeToSecureMessageDataStore(
+                    params['secure-message-id'])
+                    .subscribe((secureMessage: SecureMessage) => this.originalSecureMessageUpdate(
+                        secureMessageId, secureMessage));
             });
     }
 
@@ -53,24 +58,25 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         this.secureMessageDataStoreSubscription.unsubscribe();
     }
 
+    public originalSecureMessageUpdate (secureMessageId: string, secureMessage: SecureMessage) {
+
+        if (secureMessage) {
+
+            if (!secureMessageHasAgreggateData(secureMessage)) {
+                return;
+            }
+
+            this.setMessages(secureMessage);
+            this.checkSetMessageIsRead();
+        } else {
+            console.log('Secure message with id "' + secureMessageId + '" not found in store.');
+        }
+    }
+
     public subscribeToSecureMessageDataStore (secureMessageId: string) {
 
-        this.secureMessageDataStoreSubscription = this.ngRedux.select(['secureMessages', 'items'])
-            .map((secureMessages: any) => secureMessages.find((item: any) => item.msg_id === secureMessageId))
-            .subscribe((secureMessage: SecureMessage) => {
-
-                if (secureMessage) {
-
-                    if (!secureMessageHasAgreggateData(secureMessage)) {
-                        return;
-                    }
-
-                    this.setMessages(secureMessage);
-                    this.checkSetMessageIsRead();
-                } else {
-                    console.log('Secure message with id "' + secureMessageId + '" not found in store.');
-                }
-            });
+        return this.ngRedux.select(['secureMessages', 'items'])
+            .map((secureMessages: any) => secureMessages.find((item: any) => item.msg_id === secureMessageId));
     }
 
     public checkSetMessageIsRead () {

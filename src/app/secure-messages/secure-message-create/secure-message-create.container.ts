@@ -13,8 +13,6 @@ import { UserActions } from '../../user/user.actions';
 
 import { validateProperties } from '../../shared/utils';
 
-import 'rxjs/add/operator/mergeMap';
-
 @Component({
     template: `
         <ons-secure-message-create
@@ -44,36 +42,42 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
-            .subscribe((user: any) => {
+            .subscribe((user: any) => this.createMessageUpdate(user));
+    }
 
-                /**
-                 * TODO
-                 * Object needs to be passed in
-                 */
-                const secureMessage = {
-                    msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
-                    // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
-                    msg_from: user.id,
-                    subject: '',
-                    body: '',
-                    collection_case: 'ACollectionCase',
-                    ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
-                    survey: 'BRES',
-                    '@msg_to': [{}],
-                    '@ru_id': {}
-                };
+    ngOnDestroy() {
+        this.getUserSubscription.unsubscribe();
+    }
 
-                if (!secureMessageHasAgreggateData(secureMessage)) {
-                    return;
-                }
+    public createMessageUpdate (user: any) {
 
-                this.secureMessage = secureMessage;
+        if (!user) {
+            console.log('Logged in user not found');
+            return;
+        }
 
-                if (!user) {
-                    console.log('Logged in user not found');
-                }
-            });
+        /**
+         * TODO
+         * Object needs to be passed in
+         */
+        const secureMessage = {
+            msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
+            // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
+            msg_from: user.id,
+            subject: '',
+            body: '',
+            collection_case: 'ACollectionCase',
+            ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
+            survey: 'BRES',
+            '@msg_to': [{}],
+            '@ru_id': {}
+        };
 
+        if (!secureMessageHasAgreggateData(secureMessage)) {
+            return;
+        }
+
+        this.secureMessage = secureMessage;
 
         Observable
             .zip(
@@ -90,10 +94,6 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
                 this.buildMsgTo();
             });
-    }
-
-    ngOnDestroy() {
-        this.getUserSubscription.unsubscribe();
     }
 
     public buildMsgTo() {

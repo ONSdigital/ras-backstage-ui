@@ -49,7 +49,7 @@
             </div>
 
             <fieldset class="u-mb-m">
-                <label class="venus" for="secure-message-body">Reply</label>
+                <label class="venus" for="secure-message-body">Add a message</label>
                 <textarea
                     id="secure-message-body"
                     class="input input--textarea input--textarea-message"
@@ -69,7 +69,7 @@
             <button class="btn" type="submit"
                 [disabled]="!isValid()"
                 (click)="send_reply_click_handler.emit($event)"
-                role="button">Send reply</button>
+                role="button">Send</button>
 
             <div class="u-mb-m">
                 <a [routerLink]="'/secure-messages'">Cancel</a>

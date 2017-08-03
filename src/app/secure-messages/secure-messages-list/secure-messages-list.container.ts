@@ -48,7 +48,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
         },*/
         {
             label: 'All messages',
-            link: '/secure-messages/all',
+            link: '/secure-messages',
             selected: true
         },
         {
@@ -68,48 +68,53 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.ngRedux.select(['secureMessages', 'stateMessage'])
             .first()
-            .subscribe((stateMessage: any) => {
-                if (!stateMessage) {
-                    return;
-                }
-
-                this.hasSystemFeedback = true;
-
-                this.systemNotifications.push(NotificationListItem.create({
-                    label: stateMessage.notification,
-                    action: stateMessage.action,
-                    status: NotificationStatus.success
-                }));
-            });
+            .subscribe((stateMessage: any) => this.stateMessageUpdate(stateMessage));
 
         this.secureMessagesActions.viewAllMessages();
 
         this.secureMessagesActions.retrieveAllSecureMessages()
-            .subscribe((secureMessages: any) => {
+            .subscribe((secureMessages: any) => this.secureMessageListUpdate(secureMessages));
+    }
 
-                if (!secureMessages) {
-                    return;
-                }
+    private secureMessageListUpdate (secureMessages: any) {
 
-                this.secureMessagesList = secureMessages.map((secureMessage: SecureMessage) => {
+        if (!secureMessages) {
+            return;
+        }
 
-                    if (!secureMessage.labels) {
-                        console.log('labels property missing on msg: ', secureMessage);
-                    }
+        this.secureMessagesList = secureMessages.map((secureMessage: SecureMessage) => {
 
-                    /**
-                     * Attach view-only label
-                     */
-                    secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
-                    secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
+            if (!secureMessage.labels) {
+                console.log('labels property missing on msg: ', secureMessage);
+            }
 
-                    if (!messageHasAgreggateData(secureMessage)) {
-                        return false;
-                    }
+            /**
+             * Attach view-only label
+             */
+            secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
+            secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
 
-                    return secureMessage;
-                });
-            });
+            if (!messageHasAgreggateData(secureMessage)) {
+                return false;
+            }
+
+            return secureMessage;
+        });
+    }
+
+    private stateMessageUpdate (stateMessage: any) {
+
+        if (!stateMessage) {
+            return;
+        }
+
+        this.hasSystemFeedback = true;
+
+        this.systemNotifications.push(NotificationListItem.create({
+            label: stateMessage.notification,
+            action: stateMessage.action,
+            status: NotificationStatus.success
+        }));
     }
 }
 
