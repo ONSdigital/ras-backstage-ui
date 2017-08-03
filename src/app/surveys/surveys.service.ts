@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CheckRequestAuthenticated } from '../authentication/authentication.service';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -17,6 +19,7 @@ export class SurveysService {
     constructor(private http: Http) { }
 
     // Get a single survey
+    @CheckRequestAuthenticated()
     getSurvey(id: string): Observable<Survey> {
 
         return this.http.get(
@@ -37,6 +40,7 @@ export class SurveysService {
     }
 
     // Fetch all existing surveys
+    @CheckRequestAuthenticated()
     getSurveys(): Observable<Survey[]> {
 
         return this.http.get(this.BASE_URL + 'surveys')

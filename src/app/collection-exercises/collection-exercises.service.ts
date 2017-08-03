@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CheckRequestAuthenticated } from '../authentication/authentication.service';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -17,6 +19,7 @@ export class CollectionExercisesService {
     constructor(private http: Http) { }
 
     // Get a single collection exercise
+    @CheckRequestAuthenticated()
     getCollectionExercise(id: string): Observable<CollectionExercise> {
 
         return this.http.get(this.BASE_URL + 'collectionexercises/' + id)
@@ -33,6 +36,7 @@ export class CollectionExercisesService {
     }
 
     // Fetch all existing collection exercises
+    @CheckRequestAuthenticated()
     getCollectionExercises(): Observable<CollectionExercise[]> {
 
         return this.http.get(this.BASE_URL + 'collectionexercises')

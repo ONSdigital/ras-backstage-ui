@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { Injectable } from '@angular/core';
+import { Injectable, ReflectiveInjector } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 @Injectable()
@@ -9,6 +9,11 @@ export class AuthenticationService {
 
     private headers = new Headers({ 'Content-Type': 'application/json' });
     private options = new RequestOptions({ headers: this.headers });
+
+    public encryptedHeaders = new Headers({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    });
 
     constructor(
         private http: Http) {}
@@ -25,5 +30,60 @@ export class AuthenticationService {
          * Respondent
          */
         /*tslint:disable */ // return Observable.of('eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.XMrQ2QMNcoWqv6Pm4KGPZRPAHMSNuCRrmdp-glDvf_9gDzYDoXkxbZEBqy6_pdMTIFINUWUABYa7PdLLuJh5uoU9L7lmvJKEYCq0e5rS076KLRc5pFKHJesgJLNijj7scLke3y4INkd0px82SHhnbek0bGLeu3i8FgRt4vD0Eu8TWODM7kEfAT_eRmvPBM1boyOqrpyhYgE9p0_NklwloFXdYZKjTvHxlHtbiuYmvXSTFkbbp_t8T1xZmDrfgS2EDWTFEagzyKBFFAH4Z5QRUUJPiuAxI3lSNS2atFFtDWiZRhuuhRyJzNA4vqTpmFPUE6h_iggkcbiUPofSBx3CUw.QK4lX7z2vN6jryJz.G9C1zoAvWHfAJywiuijq6E78xCMZ5NOAZD1g3e6PTWhveQKNecBJAPgXyRDVgljgIwSq_vBY2AVTIE5xWapwF3oLZyiC0T0H2LrjlpKFUa51-VU_-Yj8u4ax0iLvyWyRRepQneYJ0riF4zbmcGf1vCCEO3WOwcD5wXBFVXVH6wPqExmI2tjWWLdz2F7oK1Wnh1pbQX_EW5rYb2I4mPuc2J6ijXAr73qcJLAzJbjDo1uk.QrPCckVYuNlcWeCwQmws9A');
+    }
+
+    public authenticate(request: any) {
+
+        let isAuthenticated: Boolean = !!this.isAuthenticated();
+
+        return isAuthenticated
+            ? request()
+            : this.getToken()
+                .flatMap((token: string) => {
+
+                    console.log('isAuthenticated: ', isAuthenticated);
+
+                    if (!isAuthenticated) {
+                        this.encryptedHeaders.append('Authorization', token);
+                    }
+
+                    return request();
+                })
+                .share();
+    }
+
+    public isAuthenticated() {
+        return this.encryptedHeaders.get('Authorization');
+    }
+}
+
+export function CheckRequestAuthenticated() {
+
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
+
+        /**
+         * Check the request was authenticated
+         */
+        const method = descriptor.value;
+
+        descriptor.value = function () {
+
+            const call = method.apply(this, arguments)
+                .share();
+
+            call.subscribe((res: any) => {
+
+                /**
+                 * TODO - redirect user to basic auth page
+                 */
+                if (res.status === 401) {
+
+                    console.log('Unauthorized response: ', res);
+                    window.location.href = 'http://www.google.com';
+                }
+            });
+
+            return call;
+        };
     }
 }

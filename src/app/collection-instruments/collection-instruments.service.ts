@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { CheckRequestAuthenticated } from '../authentication/authentication.service';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -17,6 +19,7 @@ export class CollectionInstrumentsService {
     constructor(private http: Http) { }
 
     // Get the status of a collection instrument upload
+    @CheckRequestAuthenticated()
     getStatus(collectionExerciseId: string): Observable<any> {
 
         return this.http.get(this.BASE_URL + 'status/' + collectionExerciseId)
@@ -30,6 +33,7 @@ export class CollectionInstrumentsService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
+    @CheckRequestAuthenticated()
     loadCollectionInstrumentBatch(collectionExerciseId: string): Observable<any> {
 
         // Set content type to JSON

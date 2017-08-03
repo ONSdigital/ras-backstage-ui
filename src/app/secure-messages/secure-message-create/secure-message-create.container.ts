@@ -81,13 +81,18 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
         Observable
             .zip(
-                this.partyService.getBusiness('3b136c4b-7a14-4904-9e01-13364dd7b972'),
-                this.partyService.getRespondent('db036fd7-ce17-40c2-a8fc-932e7c228397'),
+                this.partyService.getBusiness('3b136c4b-7a14-4904-9e01-13364dd7b972')
+                    .share()
+                    .map((res: any) => res.json()),
+                this.partyService.getRespondent('db036fd7-ce17-40c2-a8fc-932e7c228397')
+                    .share()
+                    .map((res: any) => res.json()),
                 (business: Business, respondent: Respondent) => ({
                     business,
                     respondent
                 })
             )
+            .share()
             .subscribe((pair: any) => {
                 this.business = pair.business;
                 this.respondent = pair.respondent;
