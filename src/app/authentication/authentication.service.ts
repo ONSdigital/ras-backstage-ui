@@ -41,8 +41,6 @@ export class AuthenticationService {
             : this.getToken()
                 .flatMap((token: string) => {
 
-                    console.log('isAuthenticated: ', isAuthenticated);
-
                     if (!isAuthenticated) {
                         this.encryptedHeaders.append('Authorization', token);
                     }

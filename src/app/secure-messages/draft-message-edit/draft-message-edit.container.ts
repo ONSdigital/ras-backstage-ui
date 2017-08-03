@@ -48,9 +48,25 @@ export class DraftMessageEditContainerComponent implements OnInit {
         this.draftMessage = exportedData.draftMessage;
         msgTo = this.draftMessage['@msg_to'][0];
 
-        this.to = msgTo.firstname + ' ' + msgTo.surname
-            + ' for ' + this.draftMessage['@ru_id'].business_name
-            + ' - ' + this.draftMessage['@ru_id'].ru_id;
+        const ru: any = this.draftMessage['@ru_id'],
+            ruNameProp = ru.name || ru.business_name,
+            ruReferenceProp = ru.businessRef || ru.ru_id,
+            msgToLastNameProp = msgTo.lastName || msgTo.surname,
+            msgToFirstNameProp = msgTo.firstName || msgTo.firstname;
+
+        const businessName = !ruNameProp
+            ? '(Business name not found)'
+            : `${ruNameProp}`;
+
+        const businessRef = !ruReferenceProp
+            ? '(Business reference not found)'
+            : `${ruReferenceProp}`;
+
+        const fullName = !msgToFirstNameProp || !msgToLastNameProp
+            ? '(Name not found)'
+            : `${msgToFirstNameProp} ${msgToLastNameProp}`;
+
+        this.to = `${fullName} for ${businessName} - ${businessRef}`;
     }
 
     public sendMessage_handler() {
