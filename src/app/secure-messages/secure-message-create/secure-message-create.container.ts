@@ -11,6 +11,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { UserActions } from '../../user/user.actions';
 
+import { buildMsgTo } from '../shared/utils';
 import { validateProperties } from '../../shared/utils';
 
 @Component({
@@ -97,32 +98,8 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                 this.business = pair.business;
                 this.respondent = pair.respondent;
 
-                this.buildMsgTo();
+                this.to = buildMsgTo(pair.business, pair.respondent);
             });
-    }
-
-    public buildMsgTo() {
-
-        /**
-         * TODO - validate respondent and business response
-         */
-        if (!this.business || !this.respondent) {
-            return '';
-        }
-
-        const businessName = !this.business.name
-            ? '(Business name not found)'
-            : `${this.business.name}`;
-
-        const businessRef = !this.business.businessRef
-            ? '(Business reference not found)'
-            : `${this.business.businessRef}`;
-
-        const respondentName = !this.respondent.firstName || !this.respondent.lastName
-            ? '(Respondent name not found)'
-            : `${this.respondent.firstName} ${this.respondent.lastName}`;
-
-        this.to = `${respondentName} for ${businessName} - ${businessRef}`;
     }
 
     public sendSecureMessage_handler() {

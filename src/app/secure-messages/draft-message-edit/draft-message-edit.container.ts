@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 
 import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
+import { buildMsgTo } from '../shared/utils';
 import { validateProperties } from '../../shared/utils';
 
 @Component({
@@ -43,30 +43,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
             return;
         }
 
-        let msgTo: any;
-
         this.draftMessage = exportedData.draftMessage;
-        msgTo = this.draftMessage['@msg_to'][0];
-
-        const ru: any = this.draftMessage['@ru_id'],
-            ruNameProp = ru.name || ru.business_name,
-            ruReferenceProp = ru.businessRef || ru.ru_id,
-            msgToLastNameProp = msgTo.lastName || msgTo.surname,
-            msgToFirstNameProp = msgTo.firstName || msgTo.firstname;
-
-        const businessName = !ruNameProp
-            ? '(Business name not found)'
-            : `${ruNameProp}`;
-
-        const businessRef = !ruReferenceProp
-            ? '(Business reference not found)'
-            : `${ruReferenceProp}`;
-
-        const fullName = !msgToFirstNameProp || !msgToLastNameProp
-            ? '(Name not found)'
-            : `${msgToFirstNameProp} ${msgToLastNameProp}`;
-
-        this.to = `${fullName} for ${businessName} - ${businessRef}`;
+        this.to = buildMsgTo(this.draftMessage['@ru_id'], this.draftMessage['@msg_to'][0]);
     }
 
     public sendMessage_handler() {
