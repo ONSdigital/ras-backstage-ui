@@ -28,10 +28,9 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     public to = '';
 
-    public secureMessage: SecureMessage;
-
     public getUserSubscription: Subscription;
 
+    public secureMessage: SecureMessage;
     private business: Business;
     private respondent: Respondent;
 
