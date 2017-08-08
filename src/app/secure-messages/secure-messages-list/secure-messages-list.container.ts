@@ -54,6 +54,10 @@ export class SecureMessagesListContainerComponent implements OnInit {
         {
             label: 'Create new message',
             link: '/secure-messages/create-message',
+            queryParams: {
+                respondent: 'db036fd7-ce17-40c2-a8fc-932e7c228397',
+                reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b973'
+            },
             type: 'link',
             selected: false
         }

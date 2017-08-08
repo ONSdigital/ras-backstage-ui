@@ -14,7 +14,7 @@ export class PartyService {
     constructor(
         private http: Http) {}
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public getBusiness(id: string): Observable<any> {
 
         return this.http.get(
@@ -24,10 +24,13 @@ export class PartyService {
         .do((res: Response) => {
             console.log('Get business: ', res);
         })
-        .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        .catch((error: any) => {
+            console.log('Error response: ', error);
+            return Observable.throw(error.json().error || 'Server error');
+        });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public getRespondent(id: string): Observable<any> {
 
         return this.http.get(
@@ -37,6 +40,9 @@ export class PartyService {
         .do((res: Response) => {
             console.log('Get respondent: ', res);
         })
-        .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        .catch((error: any) => {
+            console.log('Error response: ', error);
+            return Observable.throw(error.json().error || 'Server error');
+        });
     }
 }

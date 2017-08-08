@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { PartyService } from '../../party/party.service';
@@ -31,14 +31,14 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
     public getUserSubscription: Subscription;
 
     public secureMessage: SecureMessage;
-    private business: Business;
+    private reportingUnit: Business;
     private respondent: Respondent;
 
     constructor(
+        private route: ActivatedRoute,
         private router: Router,
         private userActions: UserActions,
-        private secureMessagesActions: SecureMessagesActions,
-        private partyService: PartyService) {}
+        private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
@@ -56,61 +56,47 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             return;
         }
 
+        const exported = this.route.snapshot.data.exported;
+
+        if (!exported) {
+            console.log('exported data not found on route snpshot');
+            return;
+        }
+
+        if (!exported.reportingUnit || !exported.respondent) {
+            console.log('reportingUnit or respondent not found in exported data: ', exported);
+        }
+
         /**
-         * TODO
-         * Object needs to be passed in
+         * Validate response data first for properties
          */
+        this.reportingUnit = exported.reportingUnit;
+        this.respondent = exported.respondent;
+        this.to = buildMsgTo(this.reportingUnit, this.respondent);
+
         const secureMessage = {
-            msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
+            msg_to: [this.respondent.id], // Respondent // ce12b958-2a5f-44f4-a6da-861e59070a32
             // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
             msg_from: user.id,
             subject: '',
             body: '',
-            collection_case: 'ACollectionCase',
-            ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
+            ru_id: this.reportingUnit.id,
             survey: 'BRES',
             '@msg_to': [{}],
             '@ru_id': {}
         };
+
+        const respondentCaseId = exported.respondentCaseId;
+
+        if (respondentCaseId) {
+            secureMessage['collection_case'] = respondentCaseId;
+        }
 
         if (!secureMessageHasAgreggateData(secureMessage)) {
             return;
         }
 
         this.secureMessage = secureMessage;
-
-        /**
-         * Local
-         */
-        const businessId = '92aa7a8f-c168-47f5-9d5a-bdadc37b912a',
-            respondentId = 'db036fd7-ce17-40c2-a8fc-932e7c228397';
-
-        /**
-         * Cloudfoundry
-         */
-        /*const businessId: string = '3b136c4b-7a14-4904-9e01-13364dd7b972',
-            respondentId = 'db036fd7-ce17-40c2-a8fc-932e7c228397';*/
-
-        Observable
-            .zip(
-                this.partyService.getBusiness(businessId)
-                    .share()
-                    .map((res: any) => res.json()),
-                this.partyService.getRespondent(respondentId)
-                    .share()
-                    .map((res: any) => res.json()),
-                (business: Business, respondent: Respondent) => ({
-                    business,
-                    respondent
-                })
-            )
-            .share()
-            .subscribe((pair: any) => {
-                this.business = pair.business;
-                this.respondent = pair.respondent;
-
-                this.to = buildMsgTo(pair.business, pair.respondent);
-            });
     }
 
     public sendSecureMessage_handler() {
