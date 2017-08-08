@@ -79,12 +79,24 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
         this.secureMessage = secureMessage;
 
+        /**
+         * Local
+         */
+        const businessId = '92aa7a8f-c168-47f5-9d5a-bdadc37b912a',
+            respondentId = 'db036fd7-ce17-40c2-a8fc-932e7c228397';
+
+        /**
+         * Cloudfoundry
+         */
+        /*const businessId: string = '3b136c4b-7a14-4904-9e01-13364dd7b972',
+            respondentId = 'db036fd7-ce17-40c2-a8fc-932e7c228397';*/
+
         Observable
             .zip(
-                this.partyService.getBusiness('3b136c4b-7a14-4904-9e01-13364dd7b972')
+                this.partyService.getBusiness(businessId)
                     .share()
                     .map((res: any) => res.json()),
-                this.partyService.getRespondent('db036fd7-ce17-40c2-a8fc-932e7c228397')
+                this.partyService.getRespondent(respondentId)
                     .share()
                     .map((res: any) => res.json()),
                 (business: Business, respondent: Respondent) => ({
