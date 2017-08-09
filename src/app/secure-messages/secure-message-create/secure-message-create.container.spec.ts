@@ -20,8 +20,6 @@ let fixture: ComponentFixture<any>,
 
     mockSecureMessagesActions: any;
 
-const mockSecureMessage: any = {};
-
 describe('SecureMessageCreateContainerComponent', () => {
 
     beforeEach(() => {
@@ -88,7 +86,6 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     /**
      * TODO - Test routing after sending a message
-     * TODO - Test routing after saveing a message
      */
 
     it('should initialise correctly', async(() => {

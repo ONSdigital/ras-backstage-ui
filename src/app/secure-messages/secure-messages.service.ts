@@ -15,7 +15,7 @@ export class SecureMessagesService {
         private http: Http,
         private authenticationService: AuthenticationService) {}
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         return this.authenticationService.authenticate(() => {
@@ -39,7 +39,7 @@ export class SecureMessagesService {
         });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public getAllMessages() {
 
         return this.authenticationService.authenticate(() => {
@@ -62,7 +62,7 @@ export class SecureMessagesService {
         });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public getMessage(id: string): Observable<any> {
 
         return this.authenticationService.authenticate(() => {
@@ -85,7 +85,7 @@ export class SecureMessagesService {
         });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
         return this.authenticationService.authenticate(() => {
@@ -109,7 +109,7 @@ export class SecureMessagesService {
         });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
         return this.authenticationService.authenticate(() => {
@@ -133,7 +133,7 @@ export class SecureMessagesService {
         });
     }
 
-    @CheckRequestAuthenticated()
+    // @CheckRequestAuthenticated()
     public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
 
         return this.authenticationService.authenticate(() => {

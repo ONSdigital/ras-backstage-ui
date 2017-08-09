@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed, async, inject } from '@angular/core/testing';
 import {
+    Headers,
     HttpModule,
     Http,
     Response,
@@ -20,18 +21,16 @@ import {
 
 let mockAuthenticationService: any,
     mockServerSecureMessage: any,
-    mockClientSecureMessage: any;
+    mockClientSecureMessage: any,
+    mockServiceCall: any;
 
 
-function checkFirstAuthentication (service: SecureMessagesService, observableMethod: any) {
-    observableMethod.subscribe();
-    expect(mockAuthenticationService.getToken).toHaveBeenCalled();
-    expect(service.encryptedHeaders.get('Authorization')).toEqual('123');
+function checkFirstAuthentication () {
+    mockServiceCall.subscribe();
+    expect(mockAuthenticationService.authenticate).toHaveBeenCalled();
 }
 
-function checkCatchServerError (
-    observable: Observable<any>,
-    mockBackend: MockBackend) {
+function checkCatchServerError (observable: Observable<any>, mockBackend: MockBackend) {
 
     mockBackend.connections.subscribe((connection: any) => {
         const res = new Response(
@@ -66,12 +65,13 @@ describe('SecureMessagesService', () => {
     beforeEach(() => {
 
         mockAuthenticationService = {
-            getToken() {
-                return Observable.of('123').first();
+            authenticate(observableMethod: any) {
+                console.log('authenticate observableMethod: ', observableMethod);
+                return observableMethod();
             }
         };
 
-        spyOn(mockAuthenticationService, 'getToken').and.callThrough();
+        spyOn(mockAuthenticationService, 'authenticate').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [HttpModule],
@@ -87,6 +87,7 @@ describe('SecureMessagesService', () => {
         mockAuthenticationService = undefined;
         mockServerSecureMessage = undefined;
         mockClientSecureMessage = undefined;
+        mockServiceCall = undefined;
     });
 
     it('should inject the service', inject([SecureMessagesService], (service: SecureMessagesService) => {
@@ -95,13 +96,12 @@ describe('SecureMessagesService', () => {
 
     describe('createSecureMessage [method]', () => {
 
-        it('should check authentication is set in headers',
+        it('should call authenticate with AuthenticationService',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
                     mockClientSecureMessage = createSecureMessage_client();
-
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.
-                        createSecureMessage(mockClientSecureMessage));
+                    mockServiceCall = secureMessagesService.createSecureMessage(mockClientSecureMessage);
+                    checkFirstAuthentication();
                 }));
 
         describe('when user is authenticated', () => {
@@ -120,10 +120,12 @@ describe('SecureMessagesService', () => {
                                     })));
                                 });
 
-                        secureMessagesService.createSecureMessage(mockClientSecureMessage)
-                            .subscribe((serverResponse: any) => {
-                                expect(serverResponse.json()).toEqual(mockServerSecureMessage);
-                            });
+                        mockServiceCall = secureMessagesService.createSecureMessage(mockClientSecureMessage);
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
+                            console.log('serverResponse: ', serverResponse);
+                            expect(serverResponse.json()).toEqual(mockServerSecureMessage);
+                        });
                     }));
 
             it('should catch server error response',
@@ -146,10 +148,11 @@ describe('SecureMessagesService', () => {
 
     describe('getAllMessages [method]', () => {
 
-        it('should check authentication is set in headers',
+        it('should call authenticate with AuthenticationService',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.getAllMessages());
+                    mockServiceCall = secureMessagesService.getAllMessages();
+                    checkFirstAuthentication();
                 }));
 
         describe('when user is authenticated', () => {
@@ -172,12 +175,13 @@ describe('SecureMessagesService', () => {
                                     })));
                         });
 
-                        secureMessagesService.getAllMessages()
-                            .subscribe((serverResponse: any) => {
-                                const resJSON = serverResponse.json();
-                                expect(resJSON[0]).toEqual(message1);
-                                expect(resJSON[1]).toEqual(message2);
-                            });
+                        mockServiceCall = secureMessagesService.getAllMessages();
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
+                            const resJSON = serverResponse.json();
+                            expect(resJSON[0]).toEqual(message1);
+                            expect(resJSON[1]).toEqual(message2);
+                        });
                     }));
 
             it('should catch server error response',
@@ -196,10 +200,11 @@ describe('SecureMessagesService', () => {
 
     describe('getMessage [method]', () => {
 
-        it('should check authentication is set in headers',
+        it('should call authenticate with AuthenticationService',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.getMessage('789'));
+                    mockServiceCall = secureMessagesService.getMessage('789');
+                    checkFirstAuthentication();
                 }));
 
         describe('when user is authenticated', () => {
@@ -218,11 +223,12 @@ describe('SecureMessagesService', () => {
                                     })));
                         });
 
-                        secureMessagesService.getMessage('400')
-                            .subscribe((serverResponse: any) => {
-                                const resJSON = serverResponse.json();
-                                expect(resJSON).toEqual(mockServerSecureMessage);
-                            });
+                        mockServiceCall = secureMessagesService.getMessage('400');
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
+                            const resJSON = serverResponse.json();
+                            expect(resJSON).toEqual(mockServerSecureMessage);
+                        });
                     }));
 
             it('should catch server error response',
@@ -241,10 +247,11 @@ describe('SecureMessagesService', () => {
 
     describe('saveDraft [method]', () => {
 
-        it('should check authentication is set in headers',
+        it('should call authenticate with AuthenticationService',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.saveDraft(null));
+                    mockServiceCall = secureMessagesService.saveDraft(null);
+                    checkFirstAuthentication();
                 }));
 
         describe('when user is authenticated', () => {
@@ -268,8 +275,9 @@ describe('SecureMessagesService', () => {
                                     })));
                         });
 
-                        secureMessagesService.saveDraft(mockClientDraft)
-                            .subscribe((serverResponse: any) => {
+                        mockServiceCall = secureMessagesService.saveDraft(mockClientDraft);
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
                                 const resJSON = serverResponse.json();
                                 expect(resJSON).toEqual(mockServerDraftSuccess);
                             });
@@ -291,10 +299,11 @@ describe('SecureMessagesService', () => {
 
     describe('updateDraft [method]', () => {
 
-        it('should check authentication is set in headers',
+        it('should call authenticate with AuthenticationService',
             inject([SecureMessagesService],
                 (secureMessagesService: SecureMessagesService) => {
-                    checkFirstAuthentication(secureMessagesService, secureMessagesService.updateDraft('987', null));
+                    mockServiceCall = secureMessagesService.updateDraft('987', null);
+                    checkFirstAuthentication();
                 }));
 
         describe('when user is authenticated', () => {
@@ -313,8 +322,9 @@ describe('SecureMessagesService', () => {
                                     })));
                         });
 
-                        secureMessagesService.updateDraft('600', mockServerDraft)
-                            .subscribe((serverResponse: any) => {
+                        mockServiceCall = secureMessagesService.updateDraft('600', mockServerDraft);
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
                                 const resJSON = serverResponse.json();
                                 expect(resJSON).toEqual('Updated');
                             });

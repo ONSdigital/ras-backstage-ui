@@ -30,7 +30,17 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     public getUserSubscription: Subscription;
 
-    public secureMessage: SecureMessage;
+    public secureMessage: SecureMessage = {
+        msg_to: [],
+        msg_from: '',
+        subject: '',
+        body: '',
+        ru_id: '',
+        survey: 'BRES',
+        '@msg_to': [{}],
+        '@ru_id': {}
+    };
+
     private reportingUnit: Business;
     private respondent: Respondent;
 
