@@ -69,12 +69,13 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         const exported = this.route.snapshot.data.exported;
 
         if (!exported) {
-            console.log('exported data not found on route snpshot');
+            console.log('exported data not found on route snapshot');
             return;
         }
 
         if (!exported.reportingUnit || !exported.respondent) {
             console.log('reportingUnit or respondent not found in exported data: ', exported);
+            return;
         }
 
         /**
