@@ -16,7 +16,7 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
         const exported: any = {};
         const respondentId: string = route.queryParams.respondent; // 'db036fd7-ce17-40c2-a8fc-932e7c228397'
         const reportingUnitId: string = route.queryParams.reporting_unit; // '3b136c4b-7a14-4904-9e01-13364dd7b973'
-        const respondentCaseId: string = route.queryParams.reporting_unit;
+        const respondentCaseId: string = route.queryParams.respondent_case;
         const surveyId = route.queryParams.survey;
         const collectionExerciseId = route.queryParams.collection_exercise;
 
