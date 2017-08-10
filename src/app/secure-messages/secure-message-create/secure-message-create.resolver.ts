@@ -60,22 +60,6 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
             )
             .share();
 
-        reportingUnitObservable.subscribe(
-            data => {},
-            (err: any) => {
-                console.log('Reporting unit ' + reportingUnitId + ' not found in party service, error: ', err);
-                this.router.navigate(['/404']);
-            }
-        );
-
-        respondentObservable.subscribe(
-            data => {},
-            (err: any) => {
-                console.log('Respondent ' + respondentId + ' not found in party service, error: ', err);
-                this.router.navigate(['/404']);
-            }
-        );
-
         return resolve;
     }
 }

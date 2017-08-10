@@ -55,6 +55,9 @@ export class AuthenticationService {
     }
 }
 
+/**
+ * Decorator
+ */
 export function CheckRequestAuthenticated() {
 
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
@@ -69,19 +72,24 @@ export function CheckRequestAuthenticated() {
             const call = method.apply(this, arguments)
                 .share();
 
-            call.subscribe((res: any) => {
+            call.subscribe(
+                () => {},
+                (error: any) => {
 
-                /**
-                 * TODO - redirect user to basic auth page
-                 */
-                if (res.status === 401) {
+                    console.log();
 
-                    console.log('Unauthorized response: ', res);
-                    window.location.href = 'http://www.google.com';
+                    /**
+                     * TODO - redirect user to basic auth page
+                     */
+                    if (error.response.status === 401) {
+
+                        console.log('Unauthorized request: ', error);
+                        window.location.href = 'http://www.google.com';
+                    }
                 }
-            });
+            );
 
             return call;
         };
-    }
+    };
 }

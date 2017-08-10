@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { CheckRequestAuthenticated } from '../authentication/authentication.service';
@@ -12,37 +13,82 @@ export class PartyService {
     static BASE_URL = environment.endpoints.party;
 
     constructor(
-        private http: Http) {}
+        private http: Http,
+        private router: Router) {}
 
-    // @CheckRequestAuthenticated()
+    @CheckRequestAuthenticated()
     public getBusiness(id: string): Observable<any> {
 
-        return this.http.get(
+        const observable = this.http.get(
             PartyService.BASE_URL + 'businesses/id/' + id
         )
         .share()
         .do((res: Response) => {
             console.log('Get business: ', res);
         })
-        .catch((error: any) => {
-            console.log('Error response: ', error);
-            return Observable.throw(error.json().error || 'Server error');
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response.json(), response });
         });
+
+        observable.subscribe(
+            data => {},
+            (err: any) => {
+
+                if (err.response.status === 404) {
+                    console.log('Reporting unit ' + id + ' not found in party service, error: ', err);
+                    this.router.navigate(['/404']);
+                    return;
+                }
+
+                console.log('Bad request: ', err);
+                this.router.navigate(['/server-error'], {
+                    queryParams: {
+                        errorHeading: 'Error fetching reporting unit from party service',
+                        errorBody: 'Party service error: ' + err.response.json()
+                    }
+                });
+            }
+        );
+
+        return observable;
     }
 
-    // @CheckRequestAuthenticated()
+    @CheckRequestAuthenticated()
     public getRespondent(id: string): Observable<any> {
 
-        return this.http.get(
+        const observable = this.http.get(
             PartyService.BASE_URL + 'respondents/id/' + id
         )
         .share()
         .do((res: Response) => {
             console.log('Get respondent: ', res);
         })
-        .catch((error: any) => {
-            console.log('Error response: ', error);
-            return Observable.throw(error.json().error || 'Server error');
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response.json(), response });
         });
+
+        observable.subscribe(
+            data => {},
+            (err: any) => {
+
+                if (err.response.status === 404) {
+                    console.log('Respondent ' + id + ' not found in party service, error: ', err);
+                    this.router.navigate(['/404']);
+                    return;
+                }
+
+                console.log('Bad request: ', err);
+                this.router.navigate(['/server-error'], {
+                    queryParams: {
+                        errorHeading: 'Error fetching respondent from party service',
+                        errorBody: 'Party service error: ' + err.response.json()
+                    }
+                });
+            }
+        );
+
+        return observable;
     }
 }

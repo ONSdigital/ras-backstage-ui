@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
@@ -13,6 +14,7 @@ export class SecureMessagesService {
 
     constructor(
         private http: Http,
+        private router: Router,
         private authenticationService: AuthenticationService) {}
 
     @CheckRequestAuthenticated()
@@ -20,7 +22,7 @@ export class SecureMessagesService {
 
         return this.authenticationService.authenticate(() => {
 
-            return this.http.post(
+            const observable = this.http.post(
                 SecureMessagesService.BASE_URL + 'message/send',
                 secureMessage,
                 new RequestOptions({
@@ -32,10 +34,14 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Create one: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
+
+            this.attachBadRequestCheck(observable, 'Error creating secure message in secure message service');
+
+            return observable;
         });
     }
 
@@ -44,7 +50,7 @@ export class SecureMessagesService {
 
         return this.authenticationService.authenticate(() => {
 
-            return this.http.get(
+            const observable = this.http.get(
                 SecureMessagesService.BASE_URL + 'messages',
                 new RequestOptions({
                     method: RequestMethod.Get,
@@ -55,10 +61,14 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Get all: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
+
+            this.attachBadRequestCheck(observable, 'Error getting a list of secure messages from the secure message service');
+
+            return observable;
         });
     }
 
@@ -67,7 +77,7 @@ export class SecureMessagesService {
 
         return this.authenticationService.authenticate(() => {
 
-            return this.http.get(
+            const observable = this.http.get(
                 SecureMessagesService.BASE_URL + 'message/' + id,
                 new RequestOptions({
                     method: RequestMethod.Get,
@@ -78,10 +88,15 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Get one: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
+
+            this.attachBadRequestCheck(observable, 'Error getting secure message with id '
+                + id + ' secure message service');
+
+            return observable;
         });
     }
 
@@ -90,7 +105,7 @@ export class SecureMessagesService {
 
         return this.authenticationService.authenticate(() => {
 
-            return this.http.put(
+            const observable = this.http.put(
                 SecureMessagesService.BASE_URL + 'message/' + id + '/modify',
                 labels,
                 new RequestOptions({
@@ -102,17 +117,21 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Update message labels: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
+
+            this.attachBadRequestCheck(observable, 'Error updating secure message labels');
+
+            return observable;
         });
     }
 
     @CheckRequestAuthenticated()
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
-        return this.authenticationService.authenticate(() => {
+        const observable = this.authenticationService.authenticate(() => {
 
             return this.http.post(
                 SecureMessagesService.BASE_URL + 'draft/save',
@@ -126,11 +145,15 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Create draft: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
         });
+
+        this.attachBadRequestCheck(observable, 'Error saving draft message');
+
+        return observable;
     }
 
     @CheckRequestAuthenticated()
@@ -138,7 +161,7 @@ export class SecureMessagesService {
 
         return this.authenticationService.authenticate(() => {
 
-            return this.http.put(
+            const observable = this.http.put(
                 SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
                 draftMessage,
                 new RequestOptions({
@@ -150,10 +173,30 @@ export class SecureMessagesService {
             .do((res: Response) => {
                 console.log('Update draft: ', res);
             })
-            .catch((error: any) => {
-                console.log('Error response: ', error);
-                return Observable.throw(error || 'Server error');
+            .catch((response: any) => {
+                console.log('Error response: ', response);
+                return Observable.throw({ errorMessage: response._body, response });
             });
+
+            this.attachBadRequestCheck(observable, 'Error updating draft message');
+
+            return observable;
         });
+    }
+
+    private attachBadRequestCheck (observable: Observable<any>, errorHeading: string): void {
+
+        observable.subscribe(
+            () => {},
+            (err: any) => {
+                console.log('Bad request: ', err);
+                this.router.navigate(['/server-error'], {
+                    queryParams: {
+                        errorHeading: errorHeading,
+                        errorBody: 'Secure message service error: ' + err.errorMessage
+                    }
+                });
+            }
+        );
     }
 }
