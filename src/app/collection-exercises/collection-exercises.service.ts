@@ -25,18 +25,19 @@ export class CollectionExercisesService {
     @CheckRequestAuthenticated()
     getCollectionExercise(id: string): Observable<CollectionExercise> {
 
-        const observable = this.http.get(this.BASE_URL + 'collectionexercises/' + id)
-            .share()
+        const observable = this.http.get(
+            this.BASE_URL + 'collectionexercises/' + id
+        )
 
-            .map((res: Response) => {
-                return res.json() || {};
-            })
-            .share()
+        .map((res: Response) => {
+            return res.json() || {};
+        })
 
-            .catch((response: any) => {
-                console.log('Error response: ', response);
-                return Observable.throw({ errorMessage: response._body, response });
-            });
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response._body, response });
+        })
+        .share();
 
         this.attachBadRequestCheck(observable, 'Error getting collection exercise in collection exercise service');
 
@@ -47,18 +48,20 @@ export class CollectionExercisesService {
     @CheckRequestAuthenticated()
     getCollectionExercises(): Observable<CollectionExercise[]> {
 
-        const observable = this.http.get(this.BASE_URL + 'collectionexercises')
-            .share()
+        const observable = this.http.get(
+            this.BASE_URL + 'collectionexercises'
+        )
 
-            .map((res: Response) => {
-                return res.json() || {};
-            })
-            .share()
+        .map((res: Response) => {
+            return res.json() || {};
+        })
+        .share()
 
-            .catch((response: any) => {
-                console.log('Error response: ', response);
-                return Observable.throw({ errorMessage: response._body, response });
-            });
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response._body, response });
+        })
+        .share();
 
         this.attachBadRequestCheck(observable, 'Error getting a list of collection exercises from collection exercise ' +
             'service');
@@ -74,7 +77,7 @@ export class CollectionExercisesService {
                 console.log('Bad request: ', err);
                 this.router.navigate(['/server-error'], {
                     queryParams: {
-                        errorResponseCode: err.status,
+                        errorResponseCode: err.response.status,
                         errorHeading: errorHeading,
                         errorBody: 'Collection exercise service error: ' + err.errorMessage
                     }
