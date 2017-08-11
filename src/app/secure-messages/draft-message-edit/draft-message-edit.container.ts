@@ -54,9 +54,12 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.secureMessagesActions.createSecureMessage(this.draftMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public saveDraft_handler() {
@@ -66,9 +69,12 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.secureMessagesActions.updateDraft(this.draftMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private isMessageValid() {

@@ -21,10 +21,13 @@ export class ServerErrorContainerComponent implements OnInit {
     ngOnInit() {
 
         this.route.queryParams
-            .subscribe((params: any) => {
-                this.errorResponseCode = params.errorResponseCode || '';
-                this.errorHeading = params.errorHeading || '';
-                this.errorBody = params.errorBody || '';
-            });
+            .subscribe(
+                (params: any) => {
+                    this.errorResponseCode = params.errorResponseCode || '';
+                    this.errorHeading = params.errorHeading || '';
+                    this.errorBody = params.errorBody || '';
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 }

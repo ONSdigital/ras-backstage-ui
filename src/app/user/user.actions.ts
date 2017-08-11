@@ -23,9 +23,12 @@ export class UserActions {
 
         const observable = this.userService.getUser();
 
-        observable.subscribe((user: User) => {
-            this.userReceived(user);
-        });
+        observable.subscribe(
+            (user: User) => {
+                this.userReceived(user);
+            },
+            (err: any) => console.log('Error: ', err)
+        );
 
         return observable;
     }

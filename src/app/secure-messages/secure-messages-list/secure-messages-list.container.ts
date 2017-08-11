@@ -72,12 +72,18 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.ngRedux.select(['secureMessages', 'stateMessage'])
             .first()
-            .subscribe((stateMessage: any) => this.stateMessageUpdate(stateMessage));
+            .subscribe(
+                (stateMessage: any) => this.stateMessageUpdate(stateMessage),
+                (err: any) => console.log('Error: ', err)
+            );
 
         this.secureMessagesActions.viewAllMessages();
 
         this.secureMessagesActions.retrieveAllSecureMessages()
-            .subscribe((secureMessages: any) => this.secureMessageListUpdate(secureMessages));
+            .subscribe(
+                (secureMessages: any) => this.secureMessageListUpdate(secureMessages),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private secureMessageListUpdate (secureMessages: any) {

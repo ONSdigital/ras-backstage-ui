@@ -76,8 +76,6 @@ export function CheckRequestAuthenticated() {
                 () => {},
                 (error: any) => {
 
-                    console.log();
-
                     /**
                      * TODO - redirect user to basic auth page
                      */

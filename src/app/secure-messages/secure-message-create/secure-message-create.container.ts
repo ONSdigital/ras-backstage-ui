@@ -52,7 +52,10 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
-            .subscribe((user: any) => this.createMessageUpdate(user));
+            .subscribe(
+                (user: any) => this.createMessageUpdate(user),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     ngOnDestroy() {
@@ -117,9 +120,12 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         }
 
         this.secureMessagesActions.createSecureMessage(this.secureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public saveDraft_handler() {
@@ -129,9 +135,12 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         }
 
         this.secureMessagesActions.saveDraft(this.secureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private isMessageValid() {

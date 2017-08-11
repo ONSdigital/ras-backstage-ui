@@ -60,28 +60,34 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
                 return getDataStoreCollectionExerciseByRef(this.ngRedux, collectionExerciseRef); 
             }) 
-            .subscribe((collectionExercise: any) => {
+            .subscribe(
+                (collectionExercise: any) => {
 
-                 if (collectionExercise) {
+                     if (collectionExercise) {
 
-                    /**
-                     * TODO
-                     * Call survey service from resolver
-                     */
-                    this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
-                        .subscribe((survey: Survey) => {
+                        /**
+                         * TODO
+                         * Call survey service from resolver
+                         */
+                        this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
+                            .subscribe(
+                                (survey: Survey) => {
 
-                            if (!survey || validateSurvey(survey)) {
-                                return;
-                            }
+                                    if (!survey || validateSurvey(survey)) {
+                                        return;
+                                    }
 
-                            this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
-                        });
+                                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
+                                },
+                                (err: any) => console.log('Error: ', err)
+                            );
 
-                } else {
-                    console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
-                }
-            });
+                    } else {
+                        console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
+                    }
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     ngOnDestroy() {
@@ -95,14 +101,16 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
         this.viewModel.isButtonDisabled = true;
 
         this.collectionInstrumentsActions.loadCollectionInstrumentBatch(this.viewModel.id)
-            .subscribe(res => {
-                this.viewModel.collectionInstrumentBatch.status = res.status;
-            },
+            .subscribe(
+                res => {
+                    this.viewModel.collectionInstrumentBatch.status = res.status;
+                },
 
-            err => {
-                // Log any errors
-                console.log(err);
-            });
+                err => {
+                    // Log any errors
+                    console.log(err);
+                }
+            );
     }
 
     private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrumentBatch: any):
