@@ -34,16 +34,10 @@ export class PartyService {
         observable.subscribe(
             data => {},
             (err: any) => {
-
-                if (err.response.status === 404) {
-                    console.log('Reporting unit ' + id + ' not found in party service, error: ', err);
-                    this.router.navigate(['/404']);
-                    return;
-                }
-
                 console.log('Bad request: ', err);
                 this.router.navigate(['/server-error'], {
                     queryParams: {
+                        errorResponseCode: err.status,
                         errorHeading: 'Error fetching reporting unit from party service',
                         errorBody: 'Party service error: ' + err.response.json()
                     }
@@ -72,16 +66,10 @@ export class PartyService {
         observable.subscribe(
             data => {},
             (err: any) => {
-
-                if (err.response.status === 404) {
-                    console.log('Respondent ' + id + ' not found in party service, error: ', err);
-                    this.router.navigate(['/404']);
-                    return;
-                }
-
                 console.log('Bad request: ', err);
                 this.router.navigate(['/server-error'], {
                     queryParams: {
+                        errorResponseCode: err.status,
                         errorHeading: 'Error fetching respondent from party service',
                         errorBody: 'Party service error: ' + err.response.json()
                     }

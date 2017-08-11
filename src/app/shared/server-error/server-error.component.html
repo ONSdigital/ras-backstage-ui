@@ -7,6 +7,7 @@
             <h1 class="panel__title venus">Server error: {{ errorHeading }}</h1>
         </div>
         <div class="panel__body" data-qa="error-body">
+            <h2 class="neptune" *ngIf="errorResponseCode">{{ errorResponseCode }} response</h2>
             <p class="mars">Sorry, something went wrong with one of our services.</p>
             <p *ngIf="errorBody">{{ errorBody }}</p>
             <a href="/">Back to home</a>

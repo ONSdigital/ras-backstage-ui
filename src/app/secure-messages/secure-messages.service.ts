@@ -91,10 +91,11 @@ export class SecureMessagesService {
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
 
             this.attachBadRequestCheck(observable, 'Error getting secure message with id '
-                + id + ' secure message service');
+                + id + ' from secure message service');
 
             return observable;
         });
@@ -190,12 +191,12 @@ export class SecureMessagesService {
             () => {},
             (err: any) => {
                 console.log('Bad request: ', err);
-                this.router.navigate(['/server-error'], {
-                    queryParams: {
-                        errorHeading: errorHeading,
-                        errorBody: 'Secure message service error: ' + err.errorMessage
-                    }
-                });
+
+                this.router.navigate(['/server-error'], { queryParams: {
+                    errorResponseCode: err.response.status,
+                    errorHeading: errorHeading,
+                    errorBody: 'Secure message service error: ' + err.errorMessage
+                }});
             }
         );
     }

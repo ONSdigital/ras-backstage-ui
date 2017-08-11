@@ -36,11 +36,6 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
                 return exported;
             });
 
-        resolve.subscribe(
-            data => {},
-            (err: any) => this.router.navigate(['/404'])
-        );
-
         return resolve;
     }
 }

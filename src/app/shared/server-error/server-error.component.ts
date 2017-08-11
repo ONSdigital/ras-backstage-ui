@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ServerErrorComponent {
 
+    @Input() errorResponseCode: string;
     @Input() errorHeading: string;
     @Input() errorBody: string;
 }
