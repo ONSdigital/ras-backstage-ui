@@ -22,14 +22,14 @@ export class PartyService {
         const observable = this.http.get(
             PartyService.BASE_URL + 'businesses/id/' + id
         )
-        .share()
         .do((res: Response) => {
             console.log('Get business: ', res);
         })
         .catch((response: any) => {
             console.log('Error response: ', response);
             return Observable.throw({ errorMessage: response.json(), response });
-        });
+        })
+        .share();
 
         observable.subscribe(
             data => {},
@@ -37,7 +37,7 @@ export class PartyService {
                 console.log('Bad request: ', err);
                 this.router.navigate(['/server-error'], {
                     queryParams: {
-                        errorResponseCode: err.status,
+                        errorResponseCode: err.response.status,
                         errorHeading: 'Error fetching reporting unit from party service',
                         errorBody: 'Party service error: ' + err.response.json()
                     }
@@ -54,14 +54,14 @@ export class PartyService {
         const observable = this.http.get(
             PartyService.BASE_URL + 'respondents/id/' + id
         )
-        .share()
         .do((res: Response) => {
             console.log('Get respondent: ', res);
         })
         .catch((response: any) => {
             console.log('Error response: ', response);
             return Observable.throw({ errorMessage: response.json(), response });
-        });
+        })
+        .share();
 
         observable.subscribe(
             data => {},
@@ -69,7 +69,7 @@ export class PartyService {
                 console.log('Bad request: ', err);
                 this.router.navigate(['/server-error'], {
                     queryParams: {
-                        errorResponseCode: err.status,
+                        errorResponseCode: err.response.status,
                         errorHeading: 'Error fetching respondent from party service',
                         errorBody: 'Party service error: ' + err.response.json()
                     }

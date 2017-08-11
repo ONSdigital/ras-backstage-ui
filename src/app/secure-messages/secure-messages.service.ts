@@ -30,14 +30,14 @@ export class SecureMessagesService {
                     headers: this.authenticationService.encryptedHeaders
                 })
             )
-            .share()
             .do((res: Response) => {
                 console.log('Create one: ', res);
             })
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
 
             this.attachBadRequestCheck(observable, 'Error creating secure message in secure message service');
 
@@ -57,14 +57,14 @@ export class SecureMessagesService {
                     headers: this.authenticationService.encryptedHeaders
                 })
             )
-            .share()
             .do((res: Response) => {
                 console.log('Get all: ', res);
             })
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
 
             this.attachBadRequestCheck(observable, 'Error getting a list of secure messages from the secure message service');
 
@@ -114,14 +114,14 @@ export class SecureMessagesService {
                     headers: this.authenticationService.encryptedHeaders
                 })
             )
-            .share()
             .do((res: Response) => {
                 console.log('Update message labels: ', res);
             })
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
 
             this.attachBadRequestCheck(observable, 'Error updating secure message labels');
 
@@ -142,14 +142,14 @@ export class SecureMessagesService {
                     headers: this.authenticationService.encryptedHeaders
                 })
             )
-            .share()
             .do((res: Response) => {
                 console.log('Create draft: ', res);
             })
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
         });
 
         this.attachBadRequestCheck(observable, 'Error saving draft message');
@@ -170,14 +170,14 @@ export class SecureMessagesService {
                     headers: this.authenticationService.encryptedHeaders
                 })
             )
-            .share()
             .do((res: Response) => {
                 console.log('Update draft: ', res);
             })
             .catch((response: any) => {
                 console.log('Error response: ', response);
                 return Observable.throw({ errorMessage: response._body, response });
-            });
+            })
+            .share();
 
             this.attachBadRequestCheck(observable, 'Error updating draft message');
 
