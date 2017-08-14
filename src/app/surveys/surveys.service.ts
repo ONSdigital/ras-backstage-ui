@@ -14,7 +14,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class SurveysService {
 
-    public BASE_URL = environment.endpoints.survey;
+    static BASE_URL = environment.endpoints.survey;
 
     constructor(private http: Http) { }
 
@@ -23,34 +23,28 @@ export class SurveysService {
     getSurvey(id: string): Observable<Survey> {
 
         return this.http.get(
-            this.BASE_URL + 'surveys/' + id)
-            .share()
-
-            // Handle the response
-            .map((res: Response) => {
-                return res.json() || {};
-            })
-            .share()
-            .do((res: Response) => {
-                console.log('Get survey: ', res);
-            })
-
-            // Handle any errors
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            SurveysService.BASE_URL + 'surveys/' + id
+        )
+        .do((res: Response) => {
+            console.log('Get survey: ', res);
+        })
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response._body, response });
+        })
+        .share();
     }
 
     // Fetch all existing surveys
     @CheckRequestAuthenticated()
     getSurveys(): Observable<Survey[]> {
 
-        return this.http.get(this.BASE_URL + 'surveys')
-
-            // Handle the response
-            .map((res: Response) => {
-                return res.json() || {};
-            })
-
-            // Handle any errors
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.get(
+            SurveysService.BASE_URL + 'surveys'
+        )
+        .do((res: Response) => {
+            console.log('Get surveys: ', res);
+        })
+        .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 }

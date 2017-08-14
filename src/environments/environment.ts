@@ -21,14 +21,14 @@ export const environment = {
         party: 'http://localhost:4801/party-api/v1/',
 
         // CloudFoundry config
-        collectionExercise: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
-        collectionInstrument: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/',
-        survey: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
+        collectionExercise: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
+        collectionInstrument: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/',
+        survey: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
         // secureMessages: '//ras-api-gateway-int.apps.devtest.onsclofo.uk/',
         // party: '//ras-api-gateway-sit.apps.devtest.onsclofo.uk/party-api/v1/'
 
         // TODO remove this
-        // collectionInstrument: 'http://localhost:8050/api/',
+        // collectionInstrument: 'http://localhost:8050/collection-instruments/api/',
         // collectionExercise: 'http://localhost:8050/api/'
 
         /*collectionExercise: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',

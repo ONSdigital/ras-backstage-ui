@@ -15,7 +15,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class CollectionInstrumentsService {
 
-    private BASE_URL = environment.endpoints.collectionInstrument;
+    static BASE_URL = environment.endpoints.collectionInstrument;
 
     constructor(
         private http: Http,
@@ -25,13 +25,8 @@ export class CollectionInstrumentsService {
     getStatus(collectionExerciseId: string): Observable<any> {
 
         const observable = this.http.get(
-            this.BASE_URL + 'status/' + collectionExerciseId
+            CollectionInstrumentsService.BASE_URL + 'status/' + collectionExerciseId
         )
-
-        .map((res: Response) => {
-            return res.json() || {};
-        })
-
         .catch((response: any) => {
             console.log('Error response: ', response);
             return Observable.throw({ errorMessage: response._body, response });
@@ -51,13 +46,8 @@ export class CollectionInstrumentsService {
         const options = new RequestOptions({ headers: headers });
 
         const observable = this.http.put(
-            this.BASE_URL + 'activate/' + collectionExerciseId, {}, options
+            CollectionInstrumentsService.BASE_URL + 'activate/' + collectionExerciseId, {}, options
         )
-
-        .map((res: Response) => {
-            return res.json() || {};
-        })
-
         .catch((response: any) => {
             console.log('Error response: ', response);
             return Observable.throw({ errorMessage: response._body, response });

@@ -10,9 +10,6 @@ import { getDataStoreCollectionExerciseByRef } from '../utils';
 import { environment } from '../../../../environments/environment';
 import * as moment from 'moment';
 
-import { validateSurvey } from '../../../surveys/shared/survey.model-validation';
-import { SurveysActions } from '../../../surveys/surveys.actions';
-
 @Component({
     template: `
         <ons-collection-exercise-details
@@ -39,18 +36,30 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
-        private surveysActions: SurveysActions,
         private collectionInstrumentsActions: CollectionInstrumentsActions) { }
 
     ngOnInit() {
 
         let collectionExerciseRef: string,
-            collectionInstrumentStatus: any;
+            collectionInstrumentStatus: any,
+            survey: any;
 
         if (this.route.snapshot.data && this.route.snapshot.data.exported) {
             collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
+            survey = this.route.snapshot.data.exported.survey;
+
+            if (!collectionInstrumentStatus) {
+                console.log('collectionInstrumentStatus not found on route data: ', this.route.snapshot.data);
+                return;
+            }
+
+            if (!survey) {
+                console.log('survey not found on route data: ', this.route.snapshot.data);
+                return;
+            }
+
         } else {
-            console.log('collectionInstrumentStatus not found on route data: ', this.route.snapshot.data);
+            console.log('exported data not found on route: ', this.route.snapshot.data);
             return;
         }
 
@@ -65,22 +74,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
                      if (collectionExercise) {
 
-                        /**
-                         * TODO
-                         * Call survey service from resolver
-                         */
-                        this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
-                            .subscribe(
-                                (survey: Survey) => {
-
-                                    if (!survey || validateSurvey(survey)) {
-                                        return;
-                                    }
-
-                                    this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
-                                },
-                                (err: any) => console.log('Error: ', err)
-                            );
+                         this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
 
                     } else {
                         console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
