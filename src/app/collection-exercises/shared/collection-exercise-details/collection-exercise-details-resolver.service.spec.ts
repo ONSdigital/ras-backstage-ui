@@ -10,9 +10,12 @@ import { CollectionExerciseDetailsResolver } from './collection-exercise-details
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
+import { SurveysActions } from '../../../surveys/surveys.actions';
+
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
 
 let mockCollectionExercise: any,
+    mockSurveyActions: any,
     mockCollectionExercisesActions: any,
     mockCollectionInstrumentsService: any,
     mockCollectionInstrumentBatchPending: any,
@@ -33,6 +36,14 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
     beforeEach(() => {
 
+        mockSurveyActions = {
+            retrieveSurvey: function () {
+                return Observable.of({
+                    json: function () {}
+                });
+            }
+        };
+
         mockCollectionExercisesActions = {
             retrieveCollectionExercise: function(ref: string) {
                 return Observable.of(mockCollectionExercise);
@@ -41,7 +52,11 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
         mockCollectionInstrumentsService = {
             getStatus: function(collectionExerciseId: string) {
-                return Observable.of(mockCollectionInstrumentBatchPending);
+                return Observable.of({
+                    json: function () {
+                        return mockCollectionInstrumentBatchPending;
+                    }
+                });
             }
         };
 
@@ -63,6 +78,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
             ],
             providers: [
                 { provide: NgRedux, useValue: mockReduxStore },
+                { provide: SurveysActions, useValue: mockSurveyActions },
                 { provide: CollectionExercisesActions, useValue: mockCollectionExercisesActions },
                 { provide: CollectionInstrumentsService, useValue: mockCollectionInstrumentsService }
             ]
@@ -83,6 +99,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
             resolverSvc = new CollectionExerciseDetailsResolver(
                 mockReduxStore,
+                mockSurveyActions,
                 mockCollectionExercisesActions,
                 mockCollectionInstrumentsService);
 

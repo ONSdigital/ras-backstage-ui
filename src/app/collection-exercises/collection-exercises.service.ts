@@ -55,7 +55,6 @@ export class CollectionExercisesService {
         .map((res: Response) => {
             return res.json() || {};
         })
-        .share()
 
         .catch((response: any) => {
             console.log('Error response: ', response);

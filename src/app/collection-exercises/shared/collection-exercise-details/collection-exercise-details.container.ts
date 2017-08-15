@@ -73,8 +73,7 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
                 (collectionExercise: any) => {
 
                      if (collectionExercise) {
-
-                         this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
+                        this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
 
                     } else {
                         console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
@@ -96,14 +95,8 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
         this.collectionInstrumentsActions.loadCollectionInstrumentBatch(this.viewModel.id)
             .subscribe(
-                res => {
-                    this.viewModel.collectionInstrumentBatch.status = res.status;
-                },
-
-                err => {
-                    // Log any errors
-                    console.log(err);
-                }
+                (res: any) => this.viewModel.collectionInstrumentBatch.status = res.status,
+                (err: any) => console.log(err)
             );
     }
 

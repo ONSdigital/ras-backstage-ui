@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { TestBed, async, inject } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import {
     Headers,
     HttpModule,
@@ -19,7 +20,8 @@ import {
     createDraftMessage_server
 } from '../../testing/create_SecureMessage';
 
-let mockAuthenticationService: any,
+let mockRouter: any,
+    mockAuthenticationService: any,
     mockServerSecureMessage: any,
     mockClientSecureMessage: any,
     mockServiceCall: any;
@@ -71,12 +73,18 @@ describe('SecureMessagesService', () => {
             }
         };
 
+        mockRouter = {
+            navigate: function () {}
+        };
+
+        spyOn(mockRouter, 'navigate');
         spyOn(mockAuthenticationService, 'authenticate').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
                 SecureMessagesService,
+                { provide: Router, useValue: mockRouter },
                 { provide: XHRBackend, useClass: MockBackend },
                 { provide: AuthenticationService, useValue: mockAuthenticationService }
             ]
@@ -278,9 +286,9 @@ describe('SecureMessagesService', () => {
                         mockServiceCall = secureMessagesService.saveDraft(mockClientDraft);
 
                         mockServiceCall.subscribe((serverResponse: any) => {
-                                const resJSON = serverResponse.json();
-                                expect(resJSON).toEqual(mockServerDraftSuccess);
-                            });
+                            const resJSON = serverResponse.json();
+                            expect(resJSON).toEqual(mockServerDraftSuccess);
+                        });
                     }));
 
             it('should catch server error response',
