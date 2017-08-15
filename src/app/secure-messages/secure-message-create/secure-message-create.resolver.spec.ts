@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-import { NgReduxModule, NgRedux } from '@angular-redux/store';
 import { TestBed, async, inject } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { SecureMessagesModule } from '../secure-messages.module';
@@ -55,6 +54,10 @@ describe('SecureMessageCreateResolver', () => {
 
     beforeEach(() => {
 
+        mockRouter = {
+            navigate: function () {}
+        };
+
         mockPartyService = {
             getBusiness: function () {
                 return mockRespondentObservable;
@@ -85,6 +88,7 @@ describe('SecureMessageCreateResolver', () => {
                 SecureMessagesModule
             ],
             providers: [
+                { provide: Router, useValue: mockRouter },
                 { provide: PartyService, useValue: mockPartyService }
             ]
         })

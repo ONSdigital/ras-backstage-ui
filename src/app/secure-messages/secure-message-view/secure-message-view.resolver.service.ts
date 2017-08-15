@@ -24,8 +24,6 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
 
             .flatMap((existingSecureMessage: any) => {
 
-                console.log('existingSecureMessage: ', existingSecureMessage);
-
                 return existingSecureMessage
                     ? Observable.of(existingSecureMessage)
                     : this.secureMessagesActions.retrieveSecureMessage(id);
