@@ -9,10 +9,13 @@ import { CollectionExerciseListResolver } from './shared/collection-exercise-lis
 
 import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
+import { CanActivateAuthentication } from '../authentication/shared/authentication-route-guard.resolver';
+
 export const collectionExercisesRoutes: Routes = [
     {
         path: 'collection-exercises',
         component: CollectionExercisesComponent,
+        canActivate: [CanActivateAuthentication],
         data: {
             breadcrumb: null // 'Collection Exercises' - Reactivate when service is ready
         },

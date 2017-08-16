@@ -19,6 +19,7 @@ export const environment = {
         // survey: 'http://localhost:8050/api/',
         secureMessages: 'http://0.0.0.0:5050/',
         party: 'http://localhost:4801/party-api/v1/',
+        authentication: 'http://localhost:8050/api/authentication/',
 
         // CloudFoundry config
         collectionExercise: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',

@@ -5,25 +5,31 @@ import { ServerErrorContainerComponent } from './shared/server-error/server-erro
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { HomeComponent } from './shared/home/home.component';
 
+import { CanActivateAuthentication } from './authentication/shared/authentication-route-guard.resolver';
+
 export const appRoutes: Routes = [
     {
         path: '',
         component: HomeComponent,
+        canActivate: [CanActivateAuthentication],
         data: {
             breadcrumb: 'Home'
         }
     },
     {
         path: '404',
-        component: PageNotFoundComponent
+        component: PageNotFoundComponent,
+        canActivate: [CanActivateAuthentication]
     },
     {
         path: 'server-error',
-        component: ServerErrorContainerComponent
+        component: ServerErrorContainerComponent,
+        canActivate: [CanActivateAuthentication]
     },
     {
         path: '**',
-        component: PageNotFoundComponent
+        component: PageNotFoundComponent,
+        canActivate: [CanActivateAuthentication]
     }
 ];
 

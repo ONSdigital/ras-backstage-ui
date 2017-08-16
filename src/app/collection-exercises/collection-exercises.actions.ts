@@ -14,7 +14,7 @@ export class CollectionExercisesActions {
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private collectionExercisesService: CollectionExercisesService) { }
+        private collectionExercisesService: CollectionExercisesService) {}
 
     public retrieveCollectionExercise(link: string) {
 

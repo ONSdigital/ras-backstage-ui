@@ -1,0 +1,45 @@
+<div class="sign-in-component">
+    <div class="grid grid--reverse">
+        <div class="grid__col col-4@m">
+        </div>
+        <div class="grid__col col-7@m pull-1@m">
+            <div role="main" id="main" class="page__main">
+                <form method="post" class="form" action="/" role="form">
+
+                    <h1 class="saturn">Sign in</h1>
+                    <fieldset id="sign-in-details">
+                        <div class="u-mb-m field">
+                            <label class="label" for="username">Email Address</label>
+                            <input
+                                id="username"
+                                class="input input--text input-type__input"
+                                name="username"
+                                type="text"
+                                [(ngModel)]="email"
+                                (change)="emailChange.emit(email)"
+                                aria-labelledby="username" />
+                        </div>
+
+                        <div class="u-mb-m field js-password-obfuscation-group">
+                            <label class="label" for="password">Password</label>
+                            <input
+                                id="password"
+                                class="input input--text input-type__input js-password-obfuscation-field"
+                                name="password"
+                                type="password"
+                                [(ngModel)]="password"
+                                (change)="passwordChange.emit(password)"
+                                aria-labelledby="password" />
+                        </div>
+
+                        <button
+                            class="btn btn--primary venus"
+                            type="submit"
+                            (click)="primary_button_click.emit($event)"
+                            [disabled]="!primary_button_enabled">Sign in</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

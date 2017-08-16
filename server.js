@@ -165,3 +165,24 @@ app.post('/api/cases/:id/events', function(req, res) {
     });
 
 });
+
+app.post('/api/authentication/sign-in', (req, res) => {
+
+    if (req.body.username && req.body.password) {
+        if (req.body.username === 'gareththomas' && req.body.password === 'wales') {
+            res.sendFile(__dirname + '/' + staticFolder + '/mockData/authentication-response.json');
+            return;
+        }
+        else {
+            res.send({
+                error: 'Username or password not valid'
+            });
+        }
+    }
+    else {
+        res.send({
+            error: 'Request not valid. username or password missing'
+        });
+    }
+
+});
