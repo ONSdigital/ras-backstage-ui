@@ -13,13 +13,18 @@ export class CanActivateAuthentication implements CanActivate {
         private authenticationService: AuthenticationService) {}
 
     canActivate(
-        route: ActivatedRouteSnapshot,
+        routeSnapshot: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<any>|boolean {
 
         if (this.authenticationService.isAuthenticated()) {
             return true;
         } else {
-            this.router.navigate(['/sign-in']);
+            this.router.navigate(['/sign-in'], {
+                queryParams: {
+                    returnUrl: state.url
+                }
+            });
+
             return false;
         }
     }

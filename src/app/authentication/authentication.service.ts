@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response, ResponseOptions, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { environment } from '../../environments/environment';
@@ -21,7 +21,8 @@ export class AuthenticationService {
 
     constructor(
         private http: Http,
-        private router: Router) {}
+        private router: Router,
+        private activatedRoute: ActivatedRoute) {}
 
     // public getToken(): Observable<any> {
         /**
@@ -66,12 +67,22 @@ export class AuthenticationService {
             (res: any) => {
                 const token = res.json().token;
 
-                console.log('res: ', res);
-
                 if (token) {
+                    /**
+                     * Attach authentication token
+                     */
                     this.encryptedHeaders.append('Authorization', token);
-                } else {
 
+                    const returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl;
+
+                    console.log(returnUrl);
+
+                    /**
+                     * Navigate to returnUrl
+                     */
+                    this.router.navigateByUrl(returnUrl || '/');
+                } else {
+                    console.log('Problem retrieving token from successful response');
                 }
             },
             (err: any) => console.log('Bad request: ', err)
