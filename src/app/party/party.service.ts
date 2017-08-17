@@ -4,11 +4,14 @@ import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { CheckRequestAuthenticated } from '../authentication/authentication.service';
+import { attachBadRequestCheck } from '../shared/utils';
 
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class PartyService {
+
+    static label = 'Party service';
 
     static BASE_URL = environment.endpoints.party;
 
@@ -27,23 +30,16 @@ export class PartyService {
         })
         .catch((response: any) => {
             console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response.json(), response });
+            return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
 
-        observable.subscribe(
-            data => {},
-            (err: any) => {
-                console.log('Bad request: ', err);
-                this.router.navigate(['/server-error'], {
-                    queryParams: {
-                        errorResponseCode: err.response.status,
-                        errorHeading: 'Error fetching reporting unit from party service',
-                        errorBody: 'Party service error: ' + err.response.json()
-                    }
-                });
-            }
-        );
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error fetching reporting unit',
+            serviceInstance: this,
+            serviceClass: PartyService
+        });
 
         return observable;
     }
@@ -59,23 +55,16 @@ export class PartyService {
         })
         .catch((response: any) => {
             console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response.json(), response });
+            return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
 
-        observable.subscribe(
-            data => {},
-            (err: any) => {
-                console.log('Bad request: ', err);
-                this.router.navigate(['/server-error'], {
-                    queryParams: {
-                        errorResponseCode: err.response.status,
-                        errorHeading: 'Error fetching respondent from party service',
-                        errorBody: 'Party service error: ' + err.response.json()
-                    }
-                });
-            }
-        );
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error fetching respondent',
+            serviceInstance: this,
+            serviceClass: PartyService
+        });
 
         return observable;
     }

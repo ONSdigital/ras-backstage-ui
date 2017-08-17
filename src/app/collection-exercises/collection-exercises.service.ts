@@ -11,9 +11,12 @@ import 'rxjs/add/operator/catch';
 
 import { CollectionExercise } from './shared/collection-exercise.model';
 import { environment } from '../../environments/environment';
+import { attachBadRequestCheck } from '../shared/utils';
 
 @Injectable()
 export class CollectionExercisesService {
+
+    static label = 'Collection exercise service';
 
     private BASE_URL = environment.endpoints.collectionExercise;
 
@@ -39,7 +42,12 @@ export class CollectionExercisesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error getting collection exercise in collection exercise service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting collection exercise in collection exercise service',
+            serviceInstance: this,
+            serviceClass: CollectionExercisesService
+        });
 
         return observable;
     }
@@ -62,26 +70,13 @@ export class CollectionExercisesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error getting a list of collection exercises from collection exercise ' +
-            'service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting a list of collection exercises from collection exercise service',
+            serviceInstance: this,
+            serviceClass: CollectionExercisesService
+        });
 
         return observable;
-    }
-
-    private attachBadRequestCheck (observable: Observable<any>, errorHeading: string): void {
-
-        observable.subscribe(
-            () => {},
-            (err: any) => {
-                console.log('Bad request: ', err);
-                this.router.navigate(['/server-error'], {
-                    queryParams: {
-                        errorResponseCode: err.response.status,
-                        errorHeading: errorHeading,
-                        errorBody: 'Collection exercise service error: ' + err.errorMessage
-                    }
-                });
-            }
-        );
     }
 }

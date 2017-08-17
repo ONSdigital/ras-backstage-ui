@@ -4,6 +4,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { CheckRequestAuthenticated } from '../authentication/authentication.service';
+import { attachBadRequestCheck } from '../shared/utils';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -14,6 +15,8 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class CollectionInstrumentsService {
+
+    static label = 'Collection instrument service';
 
     static BASE_URL = environment.endpoints.collectionInstrument;
 
@@ -33,8 +36,12 @@ export class CollectionInstrumentsService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error getting collection instrument status from collection instrument ' +
-            'service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting collection instrument status from collection instrument service',
+            serviceInstance: this,
+            serviceClass: CollectionInstrumentsService
+        });
 
         return observable;
     }
@@ -54,26 +61,13 @@ export class CollectionInstrumentsService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error loading collection instrument batch in collection instrument ' +
-            'service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error loading collection instrument batch in collection instrument service',
+            serviceInstance: this,
+            serviceClass: CollectionInstrumentsService
+        });
 
         return observable;
-    }
-
-    private attachBadRequestCheck (observable: Observable<any>, errorHeading: string): void {
-
-        observable.subscribe(
-            () => {},
-            (err: any) => {
-                console.log('Bad request: ', err);
-                this.router.navigate(['/server-error'], {
-                    queryParams: {
-                        errorResponseCode: err.response.status,
-                        errorHeading: errorHeading,
-                        errorBody: 'Collection instrument service error: ' + err.errorMessage
-                    }
-                });
-            }
-        );
     }
 }

@@ -6,9 +6,12 @@ import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
+import { attachBadRequestCheck } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {
+
+    static label = 'Secure message service';
 
     static BASE_URL = environment.endpoints.secureMessages;
 
@@ -37,7 +40,12 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error creating secure message in secure message service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error creating secure message in secure message service',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
     }
@@ -61,7 +69,12 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error getting a list of secure messages from the secure message service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting a list of secure messages from the secure message service',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
     }
@@ -86,8 +99,12 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error getting secure message with id '
-            + id + ' from secure message service');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting secure message with id ' + id + ' from secure message service',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
     }
@@ -112,7 +129,12 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error updating secure message labels');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error updating secure message labels',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
     }
@@ -137,7 +159,12 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error saving draft message');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error saving draft message',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
     }
@@ -162,24 +189,13 @@ export class SecureMessagesService {
         })
         .share();
 
-        this.attachBadRequestCheck(observable, 'Error updating draft message');
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error updating draft message',
+            serviceInstance: this,
+            serviceClass: SecureMessagesService
+        });
 
         return observable;
-    }
-
-    private attachBadRequestCheck (observable: Observable<any>, errorHeading: string): void {
-
-        observable.subscribe(
-            () => {},
-            (err: any) => {
-                console.log('Bad request: ', err);
-
-                this.router.navigate(['/server-error'], { queryParams: {
-                    errorResponseCode: err.response.status,
-                    errorHeading: errorHeading,
-                    errorBody: 'Secure message service error: ' + err.errorMessage
-                }});
-            }
-        );
     }
 }

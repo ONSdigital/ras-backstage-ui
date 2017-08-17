@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs/Rx';
+import { Router } from '@angular/router';
+
 /*export function uiComponentDecoratorHelper(opts: any) {
 
     var styleUrls = opts.styleUrls || [];
@@ -44,6 +47,25 @@ export function validationOutput (err: ValidationError) {
             console.log('Error subject: ', err.subject);
         }
     }
+}
+
+export function attachBadRequestCheck (options: any): void {
+
+    const { observable, errorHeading, serviceInstance, serviceClass } = options;
+
+    observable.subscribe(
+        () => {},
+        (err: any) => {
+            console.log('Bad request: ', err);
+            serviceInstance.router.navigate(['/server-error'], {
+                queryParams: {
+                    errorResponseCode: err.response.status,
+                    errorHeading: errorHeading,
+                    errorBody: serviceClass.label + ' error: ' + err.errorMessage
+                }
+            });
+        }
+    );
 }
 
 
