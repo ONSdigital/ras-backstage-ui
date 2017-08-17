@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { Injectable, ReflectiveInjector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response, ResponseOptions, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
@@ -28,7 +28,18 @@ export class AuthenticationService {
         private router: Router,
         private activatedRoute: ActivatedRoute) {
 
+        this.init();
+    }
+
+    public init() {
+
         AuthenticationService.routerCache = this.router;
+
+        const token = window.sessionStorage.getItem('token');
+
+        if (token) {
+            this.encryptedHeaders.append('Authorization', token);
+        }
     }
 
     /**
@@ -63,6 +74,7 @@ export class AuthenticationService {
                     /**
                      * Attach authentication token
                      */
+                    window.sessionStorage.setItem('token', token);
                     this.encryptedHeaders.append('Authorization', token);
 
                     const returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl;
