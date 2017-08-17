@@ -1,7 +1,7 @@
 export function createReportingUnit_server () {
     return {
         'attributes': {},
-        'businessRef': '49900000001',
+        'sampleUnitRef': '49900000001',
         'contactName': 'Test User',
         'employeeCount': 50,
         'enterpriseName': 'ABC Limited',

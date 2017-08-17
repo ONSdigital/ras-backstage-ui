@@ -17,6 +17,7 @@ export const environment = {
         // collectionExercise: 'http://localhost:8081/collection-exercise-api/1.0.0/',
         // collectionInstrument: 'http://localhost:8080/collection-instrument-api/1.0.2/',
         // survey: 'http://localhost:8050/api/',
+
         secureMessages: 'http://0.0.0.0:5050/',
         party: 'http://localhost:4801/party-api/v1/',
         authentication: 'http://localhost:8050/api/authentication/',
@@ -34,5 +35,12 @@ export const environment = {
 
         /*collectionExercise: '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
         collectionInstrument: '//ras-api-gateway-test.apps.devtest.onsclofo.uk:80/collection-instrument-api/1.0.2/',*/
+
+
+        /**
+         * New API endpoints
+         */
+        // secureMessages: '//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/secure-message-service/',
+        // party:          '//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/party-service/party-api/v1/',
     }
 };

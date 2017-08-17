@@ -94,7 +94,7 @@ export class AuthenticationService {
     }
 
     public isAuthenticated() {
-        return this.encryptedHeaders.get('Authorization');
+        return !!this.encryptedHeaders.get('Authorization');
     }
 }
 

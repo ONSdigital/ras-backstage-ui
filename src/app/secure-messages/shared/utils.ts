@@ -22,9 +22,9 @@ export function buildMsgTo(business: any, respondent: any) {
     }
 
     const businessNameProp = business.name || business.business_name,
-        businessReferenceProp = business.businessRef || business.ru_id,
-        respondentFirstNameProp = respondent.firstName || respondent.firstname,
-        respondentLastNameProp = respondent.lastName || respondent.surname;
+        businessReferenceProp = business.sampleUnitRef || business.id,
+        respondentFirstNameProp = respondent.firstName,
+        respondentLastNameProp = respondent.lastName;
 
     const businessName = !businessNameProp
         ? '(Business name not found)'

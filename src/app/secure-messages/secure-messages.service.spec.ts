@@ -26,12 +26,6 @@ let mockRouter: any,
     mockClientSecureMessage: any,
     mockServiceCall: any;
 
-
-function checkFirstAuthentication () {
-    mockServiceCall.subscribe();
-    // expect(mockAuthenticationService.authenticate).toHaveBeenCalled();
-}
-
 function checkCatchServerError (observable: Observable<any>, mockBackend: MockBackend) {
 
     mockBackend.connections.subscribe((connection: any) => {
@@ -68,8 +62,7 @@ describe('SecureMessagesService', () => {
 
         mockAuthenticationService = {
             authenticate(observableMethod: any) {
-                console.log('authenticate observableMethod: ', observableMethod);
-                return observableMethod();
+                return true;
             }
         };
 
@@ -78,7 +71,6 @@ describe('SecureMessagesService', () => {
         };
 
         spyOn(mockRouter, 'navigate');
-        // spyOn(mockAuthenticationService, 'authenticate').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [HttpModule],
@@ -103,14 +95,6 @@ describe('SecureMessagesService', () => {
     }));
 
     describe('createSecureMessage [method]', () => {
-
-        it('should call authenticate with AuthenticationService',
-            inject([SecureMessagesService],
-                (secureMessagesService: SecureMessagesService) => {
-                    mockClientSecureMessage = createSecureMessage_client();
-                    mockServiceCall = secureMessagesService.createSecureMessage(mockClientSecureMessage);
-                    checkFirstAuthentication();
-                }));
 
         describe('when user is authenticated', () => {
 
@@ -155,13 +139,6 @@ describe('SecureMessagesService', () => {
     });
 
     describe('getAllMessages [method]', () => {
-
-        it('should call authenticate with AuthenticationService',
-            inject([SecureMessagesService],
-                (secureMessagesService: SecureMessagesService) => {
-                    mockServiceCall = secureMessagesService.getAllMessages();
-                    checkFirstAuthentication();
-                }));
 
         describe('when user is authenticated', () => {
 
@@ -208,13 +185,6 @@ describe('SecureMessagesService', () => {
 
     describe('getMessage [method]', () => {
 
-        it('should call authenticate with AuthenticationService',
-            inject([SecureMessagesService],
-                (secureMessagesService: SecureMessagesService) => {
-                    mockServiceCall = secureMessagesService.getMessage('789');
-                    checkFirstAuthentication();
-                }));
-
         describe('when user is authenticated', () => {
 
             it('should successfully GET a single messages',
@@ -254,13 +224,6 @@ describe('SecureMessagesService', () => {
     });
 
     describe('saveDraft [method]', () => {
-
-        it('should call authenticate with AuthenticationService',
-            inject([SecureMessagesService],
-                (secureMessagesService: SecureMessagesService) => {
-                    mockServiceCall = secureMessagesService.saveDraft(null);
-                    checkFirstAuthentication();
-                }));
 
         describe('when user is authenticated', () => {
 
@@ -306,13 +269,6 @@ describe('SecureMessagesService', () => {
     });
 
     describe('updateDraft [method]', () => {
-
-        it('should call authenticate with AuthenticationService',
-            inject([SecureMessagesService],
-                (secureMessagesService: SecureMessagesService) => {
-                    mockServiceCall = secureMessagesService.updateDraft('987', null);
-                    checkFirstAuthentication();
-                }));
 
         describe('when user is authenticated', () => {
 
