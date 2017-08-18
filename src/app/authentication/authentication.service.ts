@@ -20,7 +20,8 @@ export class AuthenticationService {
 
     public encryptedHeaders = new Headers({
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJwYXJ0eV9pZCI6IkJSRVMiLCJyb2xlIjoiaW50ZXJuYWwifQ.UkdnLUQCax-11778hMcpuaZmmLHt31s9Tw9v46gG6ro'
     });
 
     constructor(
