@@ -18,8 +18,10 @@ export class AppComponent {
         /**
          * Used to assist Angular Augury
          */
-        router.events.subscribe((val) => {
-            this.path = val.url;
-        });
+        router.events.subscribe(
+            (val) => {
+                this.path = val.url;
+            },
+            () => {});
     }
 }

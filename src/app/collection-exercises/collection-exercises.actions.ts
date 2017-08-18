@@ -14,7 +14,7 @@ export class CollectionExercisesActions {
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private collectionExercisesService: CollectionExercisesService) { }
+        private collectionExercisesService: CollectionExercisesService) {}
 
     public retrieveCollectionExercise(link: string) {
 
@@ -29,7 +29,8 @@ export class CollectionExercisesActions {
         observable.subscribe(
             (collectionExercise: CollectionExercise) => {
                 this.receivedCollectionExercise(collectionExercise);
-            }
+            },
+            (err: any) => console.log('Could not dispatch receivedCollectionExercise action, service error: ', err)
         );
         return observable;
     }
@@ -52,7 +53,8 @@ export class CollectionExercisesActions {
             .share();
 
         observable.subscribe(
-            (collectionExercises: CollectionExercise[]) => this.receivedCollectionExercises(collectionExercises)
+            (collectionExercises: CollectionExercise[]) => this.receivedCollectionExercises(collectionExercises),
+            (err: any) => console.log('Could not dispatch receivedCollectionExercises action, service error: ', err)
         );
 
         return observable;

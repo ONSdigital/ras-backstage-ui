@@ -11,10 +11,15 @@ import { DraftMessageEditContainerComponent } from './draft-message-edit/draft-m
 import { UserResolver } from '../user/user.resolver';
 import { DraftMessageEditResolver } from './draft-message-edit/draft-message-edit.resolver.service';
 
+import { SecureMessageCreateResolver } from './secure-message-create/secure-message-create.resolver';
+
+import { CanActivateAuthentication } from '../authentication/shared/authentication-route-guard.resolver';
+
 export const secureMessagesRoutes: Routes = [
     {
         path: 'secure-messages',
         component: SecureMessagesComponent,
+        canActivate: [CanActivateAuthentication],
         data: {
             breadcrumb: 'Secure messages'
         },
@@ -29,6 +34,9 @@ export const secureMessagesRoutes: Routes = [
             {
                 path: 'create-message',
                 component: SecureMessageCreateContainerComponent,
+                resolve: {
+                    exported: SecureMessageCreateResolver
+                },
                 data: {
                     breadcrumb: 'Create message'
                 }
@@ -70,8 +78,9 @@ export function resolveSecureMessagesViewBreadcrumb(dataResolved: {exported: any
         RouterModule
     ],
     providers: [
+        SecureMessageCreateResolver,
         SecureMessageViewResolver,
         DraftMessageEditResolver
     ]
 })
-export class SecureMessagesRoutingModule { }
+export class SecureMessagesRoutingModule {}

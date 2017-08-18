@@ -29,7 +29,8 @@ export class SurveysActions {
         observable.subscribe(
             (survey: Survey) => {
                 this.receivedSurvey(survey);
-            }
+            },
+            (err: any) => console.log('Error: ', err)
         );
 
         return observable;

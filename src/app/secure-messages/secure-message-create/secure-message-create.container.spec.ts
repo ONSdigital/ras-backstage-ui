@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgReduxModule, NgRedux } from '@angular-redux/store';
 
 import { UserActions } from '../../user/user.actions';
@@ -20,7 +20,24 @@ let fixture: ComponentFixture<any>,
 
     mockSecureMessagesActions: any;
 
-const mockSecureMessage: any = {};
+const mockRouteSnapshot: any = {
+    data: {}
+};
+
+function createDefaultSecureMessage() {
+    const msgTo: Array<any> = [];
+
+    return {
+        msg_to: msgTo,
+        msg_from: '',
+        subject: '',
+        body: '',
+        ru_id: '',
+        survey: 'BRES',
+        '@msg_to': [{}],
+        '@ru_id': {}
+    };
+}
 
 describe('SecureMessageCreateContainerComponent', () => {
 
@@ -77,7 +94,13 @@ describe('SecureMessageCreateContainerComponent', () => {
             providers: [
                 { provide: NgRedux, useValue: mockStore},
                 { provide: UserActions, useValue: mockUserActions },
-                { provide: SecureMessagesActions, useValue: mockSecureMessagesActions }
+                { provide: SecureMessagesActions, useValue: mockSecureMessagesActions },
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        snapshot: mockRouteSnapshot
+                    }
+                }
             ]
         })
         .compileComponents();
@@ -86,26 +109,110 @@ describe('SecureMessageCreateContainerComponent', () => {
         // router.initialNavigation();
     });
 
+    afterEach(() => {
+        mockRouteSnapshot.data = {};
+    });
+
     /**
      * TODO - Test routing after sending a message
-     * TODO - Test routing after saveing a message
      */
 
     it('should initialise correctly', async(() => {
         fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
         instance = fixture.componentInstance;
 
+        const comp = fixture.debugElement.componentInstance;
+        spyOn(comp, 'createMessageUpdate').and.callThrough();
+
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
 
-            const comp = fixture.debugElement.componentInstance;
             expect(comp).toBeTruthy();
-            expect(comp.secureMessage.subject).toEqual('');
-            expect(comp.secureMessage.body).toEqual('');
+            expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+            expect(comp.createMessageUpdate).toHaveBeenCalled();
             expect(mockUserActions.getUser).toHaveBeenCalled();
         });
     }));
+
+    describe('when initialising a new secure message', () => {
+
+        describe('and reporting unit & respondent exist on exported route data', () => {
+
+            it('should setup the secureMessage correctly', async(() => {
+                const reportingUnit: any = {
+                        id: 'reportingUnit:123456'
+                    },
+                    respondent: any = {
+                        id: 'respondent: 098765'
+                    };
+
+                mockRouteSnapshot.data = {
+                    exported: {
+                        reportingUnit,
+                        respondent
+                    }
+                };
+
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+
+                    expect(comp.secureMessage).toEqual({
+                        msg_to: [respondent.id],
+                        msg_from: '123',
+                        subject: '',
+                        body: '',
+                        ru_id: reportingUnit.id,
+                        survey: 'BRES',
+                        '@msg_to': [{}],
+                        '@ru_id': {}
+                    });
+                });
+            }));
+        });
+
+        describe('and reporting unit does not exist on exported route data', () => {
+
+            it('should not setup the secureMessage', async(() => {
+
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+
+                    expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                });
+            }));
+        });
+
+        describe('and respondent does not exist on exported route data', () => {
+
+            it('should not setup the secureMessage', async(() => {
+
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+
+                    expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                });
+            }));
+        });
+    });
 
     describe('when the sendSecureMessage_handler is invoked', () => {
 

@@ -11,9 +11,13 @@ import rootReducer from './app.reducer';
 import { AppComponent } from './app.component';
 import { IAppState } from './app-state.interface';
 
+import { AuthenticationModule } from './authentication/authentication.module';
 import { CollectionExerciseModule } from './collection-exercises/collection-exercises.module';
 import { SecureMessagesModule } from './secure-messages/secure-messages.module';
 
+
+import { ServerErrorContainerComponent } from './shared/server-error/server-error.container';
+import { ServerErrorComponent } from './shared/server-error/server-error.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { HomeComponent } from './shared/home/home.component';
 
@@ -32,12 +36,15 @@ import { HomeComponent } from './shared/home/home.component';
         NgReduxRouterModule,
         BrowserModule,
 
+        AuthenticationModule,
         CollectionExerciseModule,
         SecureMessagesModule,
         AppRoutingModule
     ],
     declarations: [
         AppComponent,
+        ServerErrorContainerComponent,
+        ServerErrorComponent,
         PageNotFoundComponent,
         HomeComponent
     ],

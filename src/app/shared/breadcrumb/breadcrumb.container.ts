@@ -20,10 +20,14 @@ export class BreadcrumbContainerComponent implements OnInit {
         private router: Router) { }
 
     ngOnInit() {
-        this.router.events.filter(event => event instanceof NavigationEnd).subscribe(event => {
-            const root: ActivatedRoute = this.route.root;
-            this.breadcrumbTrail = this.breadcrumbItems(root);
-        });
+        this.router.events.filter(event => event instanceof NavigationEnd)
+            .subscribe(
+                event => {
+                    const root: ActivatedRoute = this.route.root;
+                    this.breadcrumbTrail = this.breadcrumbItems(root);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private breadcrumbItems(

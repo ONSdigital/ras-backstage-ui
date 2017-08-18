@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+
+import { CheckRequestAuthenticated } from '../authentication/authentication.service';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -8,41 +11,72 @@ import 'rxjs/add/operator/catch';
 
 import { CollectionExercise } from './shared/collection-exercise.model';
 import { environment } from '../../environments/environment';
+import { attachBadRequestCheck } from '../shared/utils';
 
 @Injectable()
 export class CollectionExercisesService {
 
+    static label = 'Collection exercise service';
+
     private BASE_URL = environment.endpoints.collectionExercise;
 
-    constructor(private http: Http) { }
+    constructor(
+        private http: Http,
+        private router: Router) {}
 
     // Get a single collection exercise
+    @CheckRequestAuthenticated()
     getCollectionExercise(id: string): Observable<CollectionExercise> {
 
-        return this.http.get(this.BASE_URL + 'collectionexercises/' + id)
-            .share()
+        const observable = this.http.get(
+            this.BASE_URL + 'collectionexercises/' + id
+        )
 
-            // Handle the response
-            .map((res: Response) => {
-                return res.json() || {};
-            })
-            .share()
+        .map((res: Response) => {
+            return res.json() || {};
+        })
 
-            // Handle any errors
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response._body, response });
+        })
+        .share();
+
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting collection exercise in collection exercise service',
+            serviceInstance: this,
+            serviceClass: CollectionExercisesService
+        });
+
+        return observable;
     }
 
     // Fetch all existing collection exercises
+    @CheckRequestAuthenticated()
     getCollectionExercises(): Observable<CollectionExercise[]> {
 
-        return this.http.get(this.BASE_URL + 'collectionexercises')
+        const observable = this.http.get(
+            this.BASE_URL + 'collectionexercises'
+        )
 
-            // Handle the response
-            .map((res: Response) => {
-                return res.json() || {};
-            })
+        .map((res: Response) => {
+            return res.json() || {};
+        })
 
-            // Handle any errors
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+        .catch((response: any) => {
+            console.log('Error response: ', response);
+            return Observable.throw({ errorMessage: response._body, response });
+        })
+        .share();
+
+        attachBadRequestCheck({
+            observable: observable,
+            errorHeading: 'Error getting a list of collection exercises from collection exercise service',
+            serviceInstance: this,
+            serviceClass: CollectionExercisesService
+        });
+
+        return observable;
     }
 }

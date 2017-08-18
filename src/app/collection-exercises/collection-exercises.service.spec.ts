@@ -1,4 +1,5 @@
 import { TestBed, async, inject } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import {
     HttpModule,
     Http,
@@ -9,40 +10,47 @@ import {
 
 import { MockBackend } from '@angular/http/testing';
 import { CollectionExercisesService } from './collection-exercises.service';
-import { CollectionExerciseListViewModel, CollectionExercise } from './shared/collection-exercise.model';
+import { CollectionExercise } from './shared/collection-exercise.model';
+
+let mockRouter: any;
 
 describe('CollectionExercisesService', () => {
 
     const mockCollectionExercise: CollectionExercise = {
         id: 'c6467711-21eb-4e78-804c-1db8392f93fb',
-        surveyID: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
+        surveyId: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
         name: '201601',
-        actualExecution: '2017-05-15T14:20:24Z',
-        scheduledExecution: '2017-05-15T00:00:00Z',
-        scheduledStart: '2017-06-01T00:00:00Z',
-        actualPublish: null,
-        completionFor: null,
-        scheduledReturn: '2017-06-30T00:00:00Z',
-        scheduledEnd: '2017-12-31T00:00:00Z',
+        actualExecutionDateTime: '2017-05-15T14:20:24Z',
+        scheduledExecutionDateTime: '2017-05-15T00:00:00Z',
+        scheduledStartDateTime: '2017-06-01T00:00:00Z',
+        actualPublishDateTime: null,
+        periodStartDateTime: '2017-06-01T00:00:00Z',
+        periodEndDateTime: '2017-05-15T00:00:00Z',
+        scheduledReturnDateTime: '2017-06-30T00:00:00Z',
+        scheduledEndDateTime: '2017-12-31T00:00:00Z',
         executedBy: 'Fred Bloggs',
         state: 'EXECUTED',
         caseTypes: [
             {
                 sampleUnitType: 'B',
-                actionPlanID: '60df56d9-f491-4ac8-b256-a10154290a8b'
+                actionPlanId: '60df56d9-f491-4ac8-b256-a10154290a8b'
             }, {
                 sampleUnitType: 'BI',
-                actionPlanID: 'b1f46e33-a3ef-4e50-939d-c18f8a9f11bb'
+                actionPlanId: 'b1f46e33-a3ef-4e50-939d-c18f8a9f11bb'
             }
         ]
     };
 
     beforeEach(() => {
 
+        mockRouter = {
+            navigation: function () {}
+        };
+
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
-
+                { provide: Router, useValue: mockRouter },
                 CollectionExercisesService,
                 { provide: XHRBackend, useClass: MockBackend },
             ]
@@ -62,7 +70,7 @@ describe('CollectionExercisesService', () => {
                 collectionExercisesService.getCollectionExercise('100')
                     .subscribe((collectionExercise: CollectionExercise) => {
                         expect(collectionExercise.id).toBe(mockCollectionExercise.id);
-                        expect(collectionExercise.surveyID).toBe(mockCollectionExercise.surveyID);
+                        expect(collectionExercise.surveyId).toBe(mockCollectionExercise.surveyId);
 
                         // TODO test other properies
                     });

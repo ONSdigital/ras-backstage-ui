@@ -54,6 +54,10 @@ export class SecureMessagesListContainerComponent implements OnInit {
         {
             label: 'Create new message',
             link: '/secure-messages/create-message',
+            queryParams: {
+                respondent: 'db036fd7-ce17-40c2-a8fc-932e7c228397',
+                reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b973'
+            },
             type: 'link',
             selected: false
         }
@@ -68,12 +72,18 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.ngRedux.select(['secureMessages', 'stateMessage'])
             .first()
-            .subscribe((stateMessage: any) => this.stateMessageUpdate(stateMessage));
+            .subscribe(
+                (stateMessage: any) => this.stateMessageUpdate(stateMessage),
+                (err: any) => console.log('Error: ', err)
+            );
 
         this.secureMessagesActions.viewAllMessages();
 
         this.secureMessagesActions.retrieveAllSecureMessages()
-            .subscribe((secureMessages: any) => this.secureMessageListUpdate(secureMessages));
+            .subscribe(
+                (secureMessages: any) => this.secureMessageListUpdate(secureMessages),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private secureMessageListUpdate (secureMessages: any) {

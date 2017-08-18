@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs/Observable';
@@ -13,7 +13,6 @@ import { getDataStoreSecureMessageById } from '../shared/utils';
 export class SecureMessageViewResolver implements Resolve<Observable<any>> {
 
     constructor(
-        private router: Router,
         private ngRedux: NgRedux<any>,
         private secureMessagesActions: SecureMessagesActions) {}
 
@@ -35,11 +34,6 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
 
                 return exported;
             });
-
-        resolve.subscribe(
-            data => {},
-            (err: any) => this.router.navigate(['/404'])
-        );
 
         return resolve;
     }

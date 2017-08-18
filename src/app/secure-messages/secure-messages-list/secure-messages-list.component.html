@@ -15,14 +15,14 @@
             <tr *ngFor="let message of secureMessages; let i = index;"
                 class="secure-messages-list__item {{ message.$isUnread ? 'secure-messages-list__item--unread' : '' }}">
 
-                <td class="secure-messages-list__field">{{ message['@ru_id']?.ru_id }}</td>
-                <td class="secure-messages-list__field">{{ message['@ru_id']?.business_name }}</td>
+                <td class="secure-messages-list__field">{{ message['@ru_id']?.sampleUnitRef }}</td>
+                <td class="secure-messages-list__field">{{ message['@ru_id']?.name }}</td>
                 <td class="secure-messages-list__field secure-messages-list__field--link">
                     <a class="secure-messages-list__link" [routerLink]="[(message.$isDraft ? '/secure-messages/drafts/' : '/secure-messages/message/'), message.msg_id]">{{ message.subject }}</a>
                     <span class="secure-messages-list__label secure-messages-list__label--draft" *ngIf="message.$isDraft">DRAFT</span>
                 </td>
-                <td class="secure-messages-list__field">{{ message['@msg_from']?.firstname }} {{ message['@msg_from']?.surname }}</td>
-                <td class="secure-messages-list__field">{{ message['@msg_to'][0].firstname }} {{ message['@msg_to'][0].surname }}</td>
+                <td class="secure-messages-list__field">{{ message['@msg_from']?.firstName }} {{ message['@msg_from']?.lastName }}</td>
+                <td class="secure-messages-list__field">{{ message['@msg_to'][0].firstName }} {{ message['@msg_to'][0].lastName }}</td>
 
                 <td class="secure-messages-list__field">{{ (!message.$isDraft ? message.sent_date : message.modified_date) | date:'EEE d MMM HH:mm' }}</td>
             </tr>

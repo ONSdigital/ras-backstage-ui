@@ -77,7 +77,7 @@ describe('SecureMessageViewResolver service', () => {
                     activatedRouteSnapShot.params = params;
                     storeData = [createSecureMessage_server('100')];
 
-                    secureMessageViewResolver.resolve(activatedRouteSnapShot);
+                    secureMessageViewResolver.resolve(activatedRouteSnapShot).subscribe();
 
                     expect(mockReduxStore.select).toHaveBeenCalledWith(['secureMessages', 'items']);
                 }));
@@ -97,7 +97,7 @@ describe('SecureMessageViewResolver service', () => {
                         activatedRouteSnapShot.params = params;
                         storeData = [createSecureMessage_server('200')];
 
-                        secureMessageViewResolver.resolve(activatedRouteSnapShot);
+                        secureMessageViewResolver.resolve(activatedRouteSnapShot).subscribe();
 
                         expect(mockSecureMessageActions.retrieveSecureMessage)
                             .not.toHaveBeenCalled();
@@ -122,7 +122,7 @@ describe('SecureMessageViewResolver service', () => {
                         storeData = [];
                         apiData = createSecureMessage_server('300');
 
-                        secureMessageViewResolver.resolve(activatedRouteSnapShot);
+                        secureMessageViewResolver.resolve(activatedRouteSnapShot).subscribe();
 
                         expect(mockSecureMessageActions.retrieveSecureMessage)
                             .toHaveBeenCalled();

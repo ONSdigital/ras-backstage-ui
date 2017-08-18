@@ -43,14 +43,20 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         window.scrollTo(0, 0);
 
         this.routeParamSubscription = this.route.params
-            .subscribe((params: any) => {
-                const secureMessageId: string = params['secure-message-id'];
+            .subscribe(
+                (params: any) => {
+                    const secureMessageId: string = params['secure-message-id'];
 
-                this.secureMessageDataStoreSubscription = this.subscribeToSecureMessageDataStore(
-                    params['secure-message-id'])
-                    .subscribe((secureMessage: SecureMessage) => this.originalSecureMessageUpdate(
-                        secureMessageId, secureMessage));
-            });
+                    this.secureMessageDataStoreSubscription = this.subscribeToSecureMessageDataStore(
+                        params['secure-message-id'])
+                        .subscribe(
+                            (secureMessage: SecureMessage) => this.originalSecureMessageUpdate(
+                                secureMessageId, secureMessage),
+                            (err: any) => console.log('Error: ', err)
+                        );
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     ngOnDestroy() {
@@ -117,10 +123,13 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         this.ngRedux.select(['user', 'item'])
             .first()
-            .subscribe((user: User) => {
-                this.newSecureMessage.msg_from = user.id;
-                this.user = user;
-            });
+            .subscribe(
+                (user: User) => {
+                    this.newSecureMessage.msg_from = user.id;
+                    this.user = user;
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public sendReply_handler() {
@@ -130,9 +139,12 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         }
 
         this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public saveDraft_handler() {
@@ -142,9 +154,10 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         }
 
         this.secureMessagesActions.saveDraft(this.newSecureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => this.router.navigate(['/secure-messages']),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public markMessageRead_click_handler(event: any) {
@@ -155,9 +168,10 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
                 label: 'UNREAD',
                 action: 'add'
             })
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => this.router.navigate(['/secure-messages']),
+                (err: any) => console.log('Error: ', err)
+            );
 
         return false;
     }

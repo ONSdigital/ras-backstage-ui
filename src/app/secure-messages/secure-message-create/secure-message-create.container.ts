@@ -1,12 +1,17 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+
+import { PartyService } from '../../party/party.service';
+import { Business, Respondent } from '../../party/party.model';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { UserActions } from '../../user/user.actions';
 
+import { buildMsgTo } from '../shared/utils';
 import { validateProperties } from '../../shared/utils';
 
 @Component({
@@ -21,20 +26,36 @@ import { validateProperties } from '../../shared/utils';
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
 
-    public to = '(Respondent full name) for (Business name) - (RU reference)';
-
-    public secureMessage: SecureMessage;
+    public to = '';
 
     public getUserSubscription: Subscription;
 
+    public secureMessage: SecureMessage = {
+        msg_to: [],
+        msg_from: '',
+        subject: '',
+        body: '',
+        ru_id: '',
+        survey: 'BRES',
+        '@msg_to': [{}],
+        '@ru_id': {}
+    };
+
+    private reportingUnit: Business;
+    private respondent: Respondent;
+
     constructor(
+        private route: ActivatedRoute,
         private router: Router,
         private userActions: UserActions,
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
         this.getUserSubscription = this.userActions.getUser()
-            .subscribe((user: any) => this.createMessageUpdate(user));
+            .subscribe(
+                (user: any) => this.createMessageUpdate(user),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     ngOnDestroy() {
@@ -48,22 +69,42 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             return;
         }
 
+        const exported = this.route.snapshot.data.exported;
+
+        if (!exported) {
+            console.log('exported data not found on route snapshot');
+            return;
+        }
+
+        if (!exported.reportingUnit || !exported.respondent) {
+            console.log('reportingUnit or respondent not found in exported data: ', exported);
+            return;
+        }
+
         /**
-         * TODO
-         * Object needs to be passed in
+         * Validate response data first for properties
          */
+        this.reportingUnit = exported.reportingUnit;
+        this.respondent = exported.respondent;
+        this.to = buildMsgTo(this.reportingUnit, this.respondent);
+
         const secureMessage = {
-            msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a32'], // Respondent // 0a7ad740-10d5-4ecb-b7ca-3c0384afb882
+            msg_to: [this.respondent.id], // Respondent // ce12b958-2a5f-44f4-a6da-861e59070a32
             // msg_to: ['ce12b958-2a5f-44f4-a6da-861e59070a31'], // Internal user
             msg_from: user.id,
             subject: '',
             body: '',
-            collection_case: 'ACollectionCase',
-            ru_id: 'c614e64e-d981-4eba-b016-d9822f09a4fb',
+            ru_id: this.reportingUnit.id,
             survey: 'BRES',
             '@msg_to': [{}],
             '@ru_id': {}
         };
+
+        const respondentCaseId = exported.respondentCaseId;
+
+        if (respondentCaseId) {
+            secureMessage['collection_case'] = respondentCaseId;
+        }
 
         if (!secureMessageHasAgreggateData(secureMessage)) {
             return;
@@ -79,9 +120,12 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         }
 
         this.secureMessagesActions.createSecureMessage(this.secureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public saveDraft_handler() {
@@ -91,9 +135,12 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         }
 
         this.secureMessagesActions.saveDraft(this.secureMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private isMessageValid() {

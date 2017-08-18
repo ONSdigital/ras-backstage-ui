@@ -9,6 +9,9 @@ import { CollectionExercise } from '../collection-exercise.model';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 
+import { validateSurvey } from '../../../surveys/shared/survey.model-validation';
+import { SurveysActions } from '../../../surveys/surveys.actions';
+
 import { getDataStoreCollectionExerciseByRef } from '../utils';
 import * as moment from 'moment';
 
@@ -27,6 +30,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
 
     constructor(
         private ngRedux: NgRedux<any>,
+        private surveysActions: SurveysActions,
         private collectionExercisesActions: CollectionExercisesActions,
         private collectionInstrumentsService: CollectionInstrumentsService) { }
 
@@ -51,13 +55,29 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
 
             .flatMap((collectionExercise: CollectionExercise) => {
 
-                exported.collectionExercise = collectionExercise;
+                const observable = Observable
+                    .zip(
+                        this.collectionInstrumentsService.getStatus(collectionExercise.id)
+                            .map((res: any) => res.json()),
+                        this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
+                            .map((res: any) => res.json()),
 
-                return this.collectionInstrumentsService.getStatus(collectionExercise.id)
-                    .do((collectionInstrumentStatus: any) => {
+                        (collectionInstrumentStatus: any, survey: any) => {
 
-                        exported.collectionInstrumentStatus = collectionInstrumentStatus;
-                    });
+                            if (!survey || validateSurvey(survey)) {
+                                return;
+                            }
+
+                            return Object.assign(exported, {
+                                collectionExercise,
+                                collectionInstrumentStatus,
+                                survey
+                            });
+                        }
+                    )
+                    .share();
+
+                return observable;
             })
 
             /**

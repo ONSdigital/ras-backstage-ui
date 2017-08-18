@@ -11,19 +11,17 @@ import { CollectionExerciseDetailsContainerComponent } from './collection-exerci
 import { environment } from '../../../../environments/environment';
 
 import { CollectionInstrumentsActions } from '../../../collection-instruments/collection-instruments.actions';
-import { SurveysActions } from '../../../surveys/surveys.actions';
 
+import { createSurvey_server } from '../../../../testing/create_Survey';
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
 
 let fixture: ComponentFixture<any>,
     instance: any,
-    mockSurveysActions: any,
     mockStore: any,
     storeData: any = [],
 
     mockCollectionInstrumentsActions: any,
     mockCollectionExercise: any,
-    mockSurvey: any,
     mockCollectionInstrumentStatus: any;
 
 const mockRouteSnapshot: any = {};
@@ -57,19 +55,12 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             },
         };
 
-        mockSurveysActions = {
-            retrieveSurvey (id: string) {
-                return Observable.of(mockSurvey);
-            }
-        };
-
         mockCollectionInstrumentsActions = {
             loadCollectionInstrumentBatch() {
                 return Observable.of('test status');
             }
         };
 
-        spyOn(mockSurveysActions, 'retrieveSurvey').and.callThrough();
         spyOn(mockCollectionInstrumentsActions, 'loadCollectionInstrumentBatch').and.callThrough();
 
         TestBed.configureTestingModule({
@@ -80,7 +71,6 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             ],
             providers: [
                 { provide: NgRedux, useValue: mockStore },
-                { provide: SurveysActions, useValue: mockSurveysActions },
                 { provide: CollectionInstrumentsActions, useValue: mockCollectionInstrumentsActions },
                 {
                     provide: ActivatedRoute,
@@ -97,7 +87,6 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
     afterEach(() => {
         mockCollectionExercise = undefined;
         mockCollectionInstrumentStatus = undefined;
-        mockSurvey = undefined;
         mockRouteSnapshot.data = {};
         storeData = [];
     });
@@ -121,7 +110,8 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
 
             const comp = fixture.debugElement.componentInstance;
             expect(comp).toBeTruthy();
-            expect(console.log).toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
+            expect(comp.viewModel).toEqual(undefined);
+            // expect(console.log).toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
         });
     }));
 
@@ -147,12 +137,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             describe('and survey exists in the service', () => {
 
                 beforeEach(() => {
-                    mockSurvey = {
-                        id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-                        longName: 'Some test title',
-                        shortName: 'STT',
-                        surveyRef: '123'
-                    };
+                    mockRouteSnapshot.data.exported.survey = createSurvey_server();
                 });
 
                 it('should use data from data store and route to build view', async(() => {
@@ -165,13 +150,12 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                     fixture.whenStable().then(() => {
                         fixture.detectChanges();
 
-                        expect(mockSurveysActions.retrieveSurvey).toHaveBeenCalled();
                         expect(instance.createViewModel).toHaveBeenCalled();
 
                         expect(instance.viewModel).toEqual({
                             id: mockCollectionExercise.id,
-                            surveyTitle: mockSurvey.longName,
-                            inquiryCode: mockSurvey.surveyRef,
+                            surveyTitle: mockRouteSnapshot.data.exported.survey.longName,
+                            inquiryCode: mockRouteSnapshot.data.exported.survey.surveyRef,
                             referencePeriod: CollectionExerciseDetailsContainerComponent.buildReferencePeriod(mockCollectionExercise),
                             surveyAbbr: mockCollectionExercise.name,
                             collectionInstrumentBatch: {
@@ -207,16 +191,11 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         it('should call loadCollectionInstrumentBatch action on CollectionInstrumentsActions', async(() => {
             mockRouteSnapshot.data = {
                 exported: {
-                    collectionInstrumentStatus: createCollectionInstrumentStatus()
+                    collectionInstrumentStatus: createCollectionInstrumentStatus(),
+                    survey: createSurvey_server()
                 }
             };
 
-            mockSurvey = {
-                id: 'cb0711c3-0ac8-41d3-ae0e-567e5ea1ef87',
-                longName: 'Some test title',
-                shortName: 'STT',
-                surveyRef: '123'
-            };
             mockCollectionExercise = createMockCollectionExercise('100');
 
             storeData = [mockCollectionExercise];

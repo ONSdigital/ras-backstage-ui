@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 
 import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
+import { buildMsgTo } from '../shared/utils';
 import { validateProperties } from '../../shared/utils';
 
 @Component({
@@ -43,14 +43,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
             return;
         }
 
-        let msgTo: any;
-
         this.draftMessage = exportedData.draftMessage;
-        msgTo = this.draftMessage['@msg_to'][0];
-
-        this.to = msgTo.firstname + ' ' + msgTo.surname
-            + ' for ' + this.draftMessage['@ru_id'].business_name
-            + ' - ' + this.draftMessage['@ru_id'].ru_id;
+        this.to = buildMsgTo(this.draftMessage['@ru_id'], this.draftMessage['@msg_to'][0]);
     }
 
     public sendMessage_handler() {
@@ -60,9 +54,12 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.secureMessagesActions.createSecureMessage(this.draftMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public saveDraft_handler() {
@@ -72,9 +69,12 @@ export class DraftMessageEditContainerComponent implements OnInit {
         }
 
         this.secureMessagesActions.updateDraft(this.draftMessage)
-            .subscribe(() => {
-                this.router.navigate(['/secure-messages']);
-            });
+            .subscribe(
+                () => {
+                    this.router.navigate(['/secure-messages']);
+                },
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     private isMessageValid() {

@@ -44,6 +44,12 @@ app.get('/api/collection-instrument-bundles', (req, res) => {
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument-bundles.json');
 });
 
+app.get('/collection-instruments/api/status/:id', (req, res) => {
+    res.sendFile(__dirname + '/' + staticFolder + '/mockData/collection-instrument-status.json');
+});
+
+http://ras-api-gateway-test.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/status/14fb3e68-4dca-46db-bf49-04b84e07e77c
+
 app.get('/api/surveys/:id', (req, res) => {
     let id = req.url.split('/').pop();
 
@@ -157,5 +163,26 @@ app.post('/api/cases/:id/events', function(req, res) {
         "createdBy": "Fred Bloggs",
         "createdDateTime": "2017-04-10T08:48:49Z"
     });
+
+});
+
+app.post('/api/authentication/sign-in', (req, res) => {
+
+    if (req.body.username && req.body.password) {
+        if (req.body.username === 'gareththomas' && req.body.password === 'wales') {
+            res.sendFile(__dirname + '/' + staticFolder + '/mockData/authentication-response.json');
+            return;
+        }
+        else {
+            res.send({
+                error: 'Username or password not valid'
+            });
+        }
+    }
+    else {
+        res.send({
+            error: 'Request not valid. username or password missing'
+        });
+    }
 
 });

@@ -1,6 +1,6 @@
 export interface Business {
     id: string;
-    businessRef: string;
+    sampleUnitRef: string;
     contactName: string;
     employeeCount: number;
     enterpriseName: string;
