@@ -11,5 +11,6 @@ import { SecureMessage } from '../shared/secure-message.model';
 export class SecureMessagesListComponent {
 
     @Input() secureMessages: Array<SecureMessage>;
+    @Input() secureMessagesLoading: Boolean;
 
 }

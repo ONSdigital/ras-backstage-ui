@@ -11,7 +11,7 @@
                 <th class="secure-messages-list__header">Date / time</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="secureMessages.length">
             <tr *ngFor="let message of secureMessages; let i = index;"
                 class="secure-messages-list__item {{ message.$isUnread ? 'secure-messages-list__item--unread' : '' }}">
 
@@ -27,6 +27,15 @@
                 <td class="secure-messages-list__field">{{ (!message.$isDraft ? message.sent_date : message.modified_date) | date:'EEE d MMM HH:mm' }}</td>
             </tr>
         </tbody>
+        <tbody *ngIf="!secureMessages.length && secureMessagesLoading">
+            <tr class="secure-messages-list__item secure-messages-list__item--loading">
+                <td class="secure-messages-list__field" colspan="6">Loading messages...</td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="!secureMessages.length && !secureMessagesLoading">
+            <tr class="secure-messages-list__item">
+                <td class="secure-messages-list__field" colspan="6">No messages found</td>
+            </tr>
+        </tbody>
     </table>
-
 </div>

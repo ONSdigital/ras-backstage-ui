@@ -15,7 +15,7 @@ export const environment = {
          * Static routing
          */
         secureMessages:         '//ras-secure-messaging-test.apps.devtest.onsclofo.uk/',
-        party:                  '//ras-party-service-test.apps.devtest.onsclofo.uk/',
+        party:                  '//ras-party-service-test.apps.devtest.onsclofo.uk/party-api/v1/',
 
         authentication:         '//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/'
     }

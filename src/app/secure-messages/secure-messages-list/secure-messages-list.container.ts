@@ -20,12 +20,14 @@ import { validateProperties } from '../../shared/utils';
             [tabs]="navigationTabs"></ons-navigation-tabs>
             
         <ons-secure-messages-list
+            [secureMessagesLoading]="secureMessagesLoadingFlag"
             [secureMessages]="secureMessagesList"></ons-secure-messages-list>
     `,
 })
 export class SecureMessagesListContainerComponent implements OnInit {
 
     public secureMessagesList: Array<SecureMessage> = [];
+    public secureMessagesLoadingFlag: Boolean = true;
 
     public hasSystemFeedback: Boolean = false;
     public systemNotifications: Array<any> = [];
@@ -91,6 +93,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
         if (!secureMessages) {
             return;
         }
+
+        this.secureMessagesLoadingFlag = false;
 
         this.secureMessagesList = secureMessages.map((secureMessage: SecureMessage) => {
 
