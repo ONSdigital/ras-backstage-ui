@@ -90,7 +90,18 @@ app.post('/api/party-api/emailverification/:token', (req, res) => {
 });
 
 // Used by ras-frontstage to obtain a list of cases (surveys)
-app.get('/api/my-surveys/todo/:id', (req, res) => {
+app.get('/api/1.0.0/surveys/todo/:id', (req, res) => {
+
+    const filter = JSON.parse(req.query.status_filter);
+
+    if (filter) {
+
+        if (filter.find((item) => item === 'complete')) {
+            res.sendFile(__dirname + '/' + staticFolder + '/mockData/my-surveys-complete.json');
+            return;
+        }
+    }
+
     res.sendFile(__dirname + '/' + staticFolder + '/mockData/my-surveys.json');
 });
 
