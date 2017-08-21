@@ -16,5 +16,7 @@ export const environment = {
          */
         secureMessages:         '//ras-secure-messaging-sit.apps.devtest.onsclofo.uk/',
         party:                  '//ras-party-service-sit.apps.devtest.onsclofo.uk/',
+
+        authentication:         '//ras-backstage-service-sit.apps.devtest.onsclofo.uk/backstage-api/v1/'
     }
 };
