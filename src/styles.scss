@@ -97,6 +97,24 @@ $static: '/src/assets';
     }
 }
 
+.loading-indicator {
+
+    &.loading-indicator--app {
+        display : block !important;
+        margin-top : 8%;
+        text-align: center;
+    }
+
+    > .loading-indicator--icon,
+    > .loading-indicator--label {
+        vertical-align : middle;
+    }
+
+    > .loading-indicator--label {
+        color : #555;
+    }
+}
+
 .collection-exercise-component,
 .secure-messages-component{
     .breadcrumb-component.breadcrumb {
