@@ -48,32 +48,33 @@
 
             </div>
 
-            <fieldset class="u-mb-m">
-                <label class="venus" for="secure-message-body">Add a message</label>
-                <textarea
-                    id="secure-message-body"
-                    class="input input--textarea input--textarea-message"
-                    rows="10"
-                    name="secure-message-body"
-                    [ngModel]="newMessageBody"
-                    (change)="onTypingReply($event)"
-                    (keyup)="onTypingReply($event)"
-                    aria-labelledby="secure-message-body"></textarea>
-            </fieldset>
+            <form action="#" name="message_reply">
+                <fieldset class="u-mb-m">
+                    <label class="venus" for="secure-message-body">Add a message</label>
+                    <textarea
+                        id="secure-message-body"
+                        class="input input--textarea input--textarea-message"
+                        rows="10"
+                        name="secure-message-body"
+                        [ngModel]="newMessageBody"
+                        (change)="onTypingReply($event)"
+                        (keyup)="onTypingReply($event)"
+                        required
+                        aria-labelledby="secure-message-body"></textarea>
+                </fieldset>
 
-            <button class="btn btn--secondary" type="submit"
-                [disabled]="!isValid()"
-                (click)="save_draft_click_handler.emit($event)"
-                role="button">Save draft</button>
+                <button class="btn btn--secondary" type="submit"
+                    (click)="save_draft_click_handler.emit($event)"
+                    role="button">Save draft</button>
 
-            <button class="btn" type="submit"
-                [disabled]="!isValid()"
-                (click)="send_reply_click_handler.emit($event)"
-                role="button">Send</button>
+                <button class="btn" type="submit"
+                    (click)="send_reply_click_handler.emit($event)"
+                    role="button">Send</button>
 
-            <div class="u-mb-m">
-                <a [routerLink]="'/secure-messages'">Cancel</a>
-            </div>
+                <div class="u-mb-m">
+                    <a [routerLink]="'/secure-messages'">Cancel</a>
+                </div>
+            </form>
         </div>
         <!--<div class="grid__col col-4@m"></div>-->
     </div>
