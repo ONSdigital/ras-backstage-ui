@@ -52,7 +52,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
             label: 'All messages',
             link: '/secure-messages',
             selected: true
-        },
+        }/*,
         {
             label: 'Create new message',
             link: '/secure-messages/create-message',
@@ -62,7 +62,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
             },
             type: 'link',
             selected: false
-        }
+        }*/
     ];
 
     constructor(
