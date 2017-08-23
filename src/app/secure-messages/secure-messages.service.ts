@@ -51,7 +51,7 @@ export class SecureMessagesService {
     public getAllMessages(): Observable<any> {
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'messages?limit=20',
+            SecureMessagesService.BASE_URL + 'messages?limit=1000000',
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
