@@ -15,13 +15,12 @@ export class AuthenticationService {
 
     static BASE_URL = environment.endpoints.authentication;
 
-    private headers = new Headers({ 'Content-Type': 'application/json' });
-    private options = new RequestOptions({ headers: this.headers });
-
+    /**
+     * TODO - Change to static property
+     */
     public encryptedHeaders = new Headers({
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJwYXJ0eV9pZCI6IkJSRVMiLCJyb2xlIjoiaW50ZXJuYWwifQ.UkdnLUQCax-11778hMcpuaZmmLHt31s9Tw9v46gG6ro'
+        'Content-Type': 'application/json'
     });
 
     constructor(
@@ -52,7 +51,7 @@ export class AuthenticationService {
     public authenticateCredentials(username: string, password: string): Observable<any> {
 
         const observable = this.http.post(
-            AuthenticationService.BASE_URL + 'sign-in',
+            AuthenticationService.BASE_URL + 'sign_in',
             { username, password },
             new RequestOptions({
                 method: RequestMethod.Post
@@ -125,7 +124,7 @@ export function CheckRequestAuthenticated() {
                         const router = AuthenticationService.routerCache;
 
                         if (router) {
-                            this.router.navigate(['/sign-in'], {
+                            router.navigate(['/sign-in'], {
                                 queryParams: {
                                     returnUrl: router.url
                                 }

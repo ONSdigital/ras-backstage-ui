@@ -59,6 +59,14 @@ $static: '/src/assets';
 @import "../common/assets/sass/partials/utilities/margin";
 
 
+body {
+    background-color : #eee;
+}
+
+.page {
+    background-color : #fff;
+}
+
 /**
  * Backstage overrides
  */
