@@ -64,12 +64,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
             );
     }
 
-    public saveDraft_handler() {
+    public saveDraft_handler(event: any) {
         event.preventDefault();
-
-        /*if (!this.isMessageValid()) {
-            return;
-        }*/
 
         this.secureMessagesActions.updateDraft(this.draftMessage)
             .subscribe(

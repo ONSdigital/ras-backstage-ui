@@ -131,11 +131,8 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             );
     }
 
-    public saveDraft_handler() {
-
-        if (!this.isMessageValid()) {
-            return;
-        }
+    public saveDraft_handler(event: any) {
+        event.preventDefault();
 
         this.secureMessagesActions.saveDraft(this.secureMessage)
             .subscribe(
@@ -144,6 +141,8 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                 },
                 (err: any) => console.log('Error: ', err)
             );
+
+        return false;
     }
 
     private isMessageValid() {

@@ -150,10 +150,6 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
     public saveDraft_handler(event: any) {
         event.preventDefault();
 
-        /*if (this.newSecureMessage.body === '') {
-            return;
-        }*/
-
         this.secureMessagesActions.saveDraft(this.newSecureMessage)
             .subscribe(
                 () => this.router.navigate(['/secure-messages']),

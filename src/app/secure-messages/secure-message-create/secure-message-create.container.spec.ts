@@ -258,43 +258,27 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     describe('when the saveDraft_handler is invoked', () => {
 
-        describe('and message properties are valid', () => {
+        /**
+         * Always call the service
+         */
+        it('should call saveDraft action method from the SecureMessageActions service.', async(() => {
+            fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+            instance = fixture.componentInstance;
 
-            it('should call saveDraft action method from the SecureMessageActions service.', async(() => {
-                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
-                instance = fixture.componentInstance;
-
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
                 fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    fixture.detectChanges();
 
-                    const comp = fixture.debugElement.componentInstance;
-                    comp.secureMessage.subject = 'Test subject';
-                    comp.secureMessage.body = 'Test body';
+                const comp = fixture.debugElement.componentInstance;
+                comp.secureMessage.subject = '';
+                comp.secureMessage.body = 'Test body';
 
-                    comp.saveDraft_handler();
-
-                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
+                comp.saveDraft_handler({
+                    preventDefault: function () {}
                 });
-            }));
-        });
 
-        describe('and message properties are invalid', () => {
-
-            it('should not call saveDraft action method from the SecureMessageActions service.', async(() => {
-                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
-                instance = fixture.componentInstance;
-
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    fixture.detectChanges();
-
-                    const comp = fixture.debugElement.componentInstance;
-                    comp.saveDraft_handler();
-
-                    expect(mockSecureMessagesActions.saveDraft).not.toHaveBeenCalled();
-                });
-            }));
-        });
+                expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
+            });
+        }));
     });
 });
