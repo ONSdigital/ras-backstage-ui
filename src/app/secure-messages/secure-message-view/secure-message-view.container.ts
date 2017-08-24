@@ -147,17 +147,20 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             );
     }
 
-    public saveDraft_handler() {
+    public saveDraft_handler(event: any) {
+        event.preventDefault();
 
-        if (this.newSecureMessage.body === '') {
+        /*if (this.newSecureMessage.body === '') {
             return;
-        }
+        }*/
 
         this.secureMessagesActions.saveDraft(this.newSecureMessage)
             .subscribe(
                 () => this.router.navigate(['/secure-messages']),
                 (err: any) => console.log('Error: ', err)
             );
+
+        return false;
     }
 
     public markMessageRead_click_handler(event: any) {

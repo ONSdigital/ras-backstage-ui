@@ -29,6 +29,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
 
     ngOnInit() {
 
+        window.scrollTo(0, 0);
+
         this.draftMessageUpdate(this.route.snapshot.data.exported);
     }
 
@@ -63,10 +65,11 @@ export class DraftMessageEditContainerComponent implements OnInit {
     }
 
     public saveDraft_handler() {
+        event.preventDefault();
 
-        if (!this.isMessageValid()) {
+        /*if (!this.isMessageValid()) {
             return;
-        }
+        }*/
 
         this.secureMessagesActions.updateDraft(this.draftMessage)
             .subscribe(
@@ -75,6 +78,8 @@ export class DraftMessageEditContainerComponent implements OnInit {
                 },
                 (err: any) => console.log('Error: ', err)
             );
+
+        return false;
     }
 
     private isMessageValid() {

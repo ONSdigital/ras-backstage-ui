@@ -51,6 +51,9 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
+
+        window.scrollTo(0, 0);
+
         this.getUserSubscription = this.userActions.getUser()
             .subscribe(
                 (user: any) => this.createMessageUpdate(user),
