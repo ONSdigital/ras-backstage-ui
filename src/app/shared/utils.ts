@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 /*export function uiComponentDecoratorHelper(opts: any) {
 
@@ -67,6 +68,59 @@ export function attachBadRequestCheck (options: any): void {
         }
     );
 }
+
+/**
+ * Decorator
+ */
+export function CheckBadRequest(options: any) {
+
+    const { errorHeading, serviceClass } = options;
+
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
+
+        const method = descriptor.value;
+
+        descriptor.value = function () {
+
+            const call = method.apply(this, arguments)
+            .share();
+
+            /**
+             * Check the request was authenticated
+             */
+            call.subscribe(
+                () => {},
+                (error: any) => {
+
+                    if (error.response.status !== 401) {
+
+                        console.log('Bad request: ', error);
+
+                        const router = AuthenticationService.routerCache;
+
+                        if (router) {
+                            router.navigate(['/server-error'], {
+                                queryParams: {
+                                    errorResponseCode: error.response.status,
+                                    errorHeading: errorHeading,
+                                    errorBody: serviceClass.label + ' error: ' + error.errorMessage
+                                }
+                            });
+                        } else {
+                            console.log('Bad request: ', error);
+                            window.location.href = '/server-error?errorResponseCode=' + error.response.status +
+                                '&errorHeading=' + errorHeading + '&errorBody=' + serviceClass.label + ' error: ' +
+                                error.errorMessage;
+                        }
+                    }
+                }
+            );
+
+            return call;
+        };
+    };
+}
+
 
 
 interface Constraint {

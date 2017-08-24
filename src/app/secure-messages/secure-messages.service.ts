@@ -1,12 +1,11 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { attachBadRequestCheck } from '../shared/utils';
+import { CheckBadRequest } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {
@@ -17,13 +16,16 @@ export class SecureMessagesService {
 
     constructor(
         private http: Http,
-        private router: Router,
         private authenticationService: AuthenticationService) {}
 
+    @CheckBadRequest({
+        errorHeading: 'Error creating secure message in secure message service',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
-        const observable = this.http.post(
+        return this.http.post(
             SecureMessagesService.BASE_URL + 'message/send',
             secureMessage,
             new RequestOptions({
@@ -39,22 +41,17 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error creating secure message in secure message service',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error getting a list of secure messages from the secure message service',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
-    public getAllMessages() {
+    public getAllMessages(): Observable<any> {
 
-        const observable = this.http.get(
-            SecureMessagesService.BASE_URL + 'messages',
+        return this.http.get(
+            SecureMessagesService.BASE_URL + 'messages?limit=1000000',
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
@@ -68,21 +65,16 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error getting a list of secure messages from the secure message service',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error getting secure message from secure message service',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
     public getMessage(id: string): Observable<any> {
 
-        const observable = this.http.get(
+        return this.http.get(
             SecureMessagesService.BASE_URL + 'message/' + id,
             new RequestOptions({
                 method: RequestMethod.Get,
@@ -98,21 +90,16 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error getting secure message with id ' + id + ' from secure message service',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error updating secure message labels',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
-        const observable = this.http.put(
+        return this.http.put(
             SecureMessagesService.BASE_URL + 'message/' + id + '/modify',
             labels,
             new RequestOptions({
@@ -128,21 +115,16 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error updating secure message labels',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error saving draft message',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
-        const observable = this.http.post(
+        return this.http.post(
             SecureMessagesService.BASE_URL + 'draft/save',
             draftMessage,
             new RequestOptions({
@@ -158,21 +140,16 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error saving draft message',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error updating draft message',
+        serviceClass: SecureMessagesService
+    })
     @CheckRequestAuthenticated()
     public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
 
-        const observable = this.http.put(
+        return this.http.put(
             SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
             draftMessage,
             new RequestOptions({
@@ -188,14 +165,5 @@ export class SecureMessagesService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error updating draft message',
-            serviceInstance: this,
-            serviceClass: SecureMessagesService
-        });
-
-        return observable;
     }
 }

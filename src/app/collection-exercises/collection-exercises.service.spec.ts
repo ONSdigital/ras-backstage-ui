@@ -1,18 +1,15 @@
 import { TestBed, async, inject } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import {
-    HttpModule,
-    Http,
-    Response,
-    ResponseOptions,
-    XHRBackend
-} from '@angular/http';
+import { HttpModule, Headers, Response, ResponseOptions, XHRBackend } from '@angular/http';
 
 import { MockBackend } from '@angular/http/testing';
 import { CollectionExercisesService } from './collection-exercises.service';
 import { CollectionExercise } from './shared/collection-exercise.model';
 
-let mockRouter: any;
+import { AuthenticationService } from '../authentication/authentication.service';
+
+let mockRouter: any,
+    mockAuthenticationService: any;
 
 describe('CollectionExercisesService', () => {
 
@@ -47,10 +44,20 @@ describe('CollectionExercisesService', () => {
             navigation: function () {}
         };
 
+        mockAuthenticationService = {
+            encryptedHeaders: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            })
+        };
+
         TestBed.configureTestingModule({
-            imports: [HttpModule],
+            imports: [
+                HttpModule
+            ],
             providers: [
                 { provide: Router, useValue: mockRouter },
+                { provide: AuthenticationService, useValue: mockAuthenticationService },
                 CollectionExercisesService,
                 { provide: XHRBackend, useClass: MockBackend },
             ]

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { attachBadRequestCheck } from '../shared/utils';
+import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
+import { CheckBadRequest } from '../shared/utils';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -19,14 +19,24 @@ export class SurveysService {
 
     static BASE_URL = environment.endpoints.survey;
 
-    constructor(private http: Http) { }
+    constructor(
+        private http: Http,
+        private authenticationService: AuthenticationService) {}
 
     // Get a single survey
+    @CheckBadRequest({
+        errorHeading: 'Error loading collection instrument batch in collection instrument service',
+        serviceClass: SurveysService
+    })
     @CheckRequestAuthenticated()
     getSurvey(id: string): Observable<Survey> {
 
-        const observable = this.http.get(
-            SurveysService.BASE_URL + 'surveys/' + id
+        return this.http.get(
+            SurveysService.BASE_URL + 'surveys/' + id,
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
         )
         .do((res: Response) => {
             console.log('Get survey: ', res);
@@ -36,23 +46,22 @@ export class SurveysService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error loading collection instrument batch in collection instrument service',
-            serviceInstance: this,
-            serviceClass: SurveysService
-        });
-
-        return observable;
     }
 
     // Fetch all existing surveys
+    @CheckBadRequest({
+        errorHeading: 'Error loading collection instrument batch in collection instrument service',
+        serviceClass: SurveysService
+    })
     @CheckRequestAuthenticated()
     getSurveys(): Observable<Survey[]> {
 
-        const observable = this.http.get(
-            SurveysService.BASE_URL + 'surveys'
+        return this.http.get(
+            SurveysService.BASE_URL + 'surveys',
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
         )
         .do((res: Response) => {
             console.log('Get surveys: ', res);
@@ -62,14 +71,5 @@ export class SurveysService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error loading collection instrument batch in collection instrument service',
-            serviceInstance: this,
-            serviceClass: SurveysService
-        });
-
-        return observable;
     }
 }

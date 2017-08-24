@@ -1,10 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Http, Response, Headers, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 
-import { CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { attachBadRequestCheck } from '../shared/utils';
+import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
+import { CheckBadRequest } from '../shared/utils';
 
 import { environment } from '../../environments/environment';
 
@@ -17,13 +16,21 @@ export class PartyService {
 
     constructor(
         private http: Http,
-        private router: Router) {}
+        private authenticationService: AuthenticationService) {}
 
+    @CheckBadRequest({
+        errorHeading: 'Error getting reporting unit from party service',
+        serviceClass: PartyService
+    })
     @CheckRequestAuthenticated()
     public getBusiness(id: string): Observable<any> {
 
-        const observable = this.http.get(
-            PartyService.BASE_URL + 'businesses/id/' + id
+        return this.http.get(
+            PartyService.BASE_URL + 'businesses/id/' + id,
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
         )
         .do((res: Response) => {
             console.log('Get business: ', res);
@@ -33,22 +40,21 @@ export class PartyService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error fetching reporting unit',
-            serviceInstance: this,
-            serviceClass: PartyService
-        });
-
-        return observable;
     }
 
+    @CheckBadRequest({
+        errorHeading: 'Error getting respondent from party service',
+        serviceClass: PartyService
+    })
     @CheckRequestAuthenticated()
     public getRespondent(id: string): Observable<any> {
 
-        const observable = this.http.get(
-            PartyService.BASE_URL + 'respondents/id/' + id
+        return this.http.get(
+            PartyService.BASE_URL + 'respondents/id/' + id,
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
         )
         .do((res: Response) => {
             console.log('Get respondent: ', res);
@@ -58,14 +64,5 @@ export class PartyService {
             return Observable.throw({ errorMessage: response._body, response });
         })
         .share();
-
-        attachBadRequestCheck({
-            observable: observable,
-            errorHeading: 'Error fetching respondent',
-            serviceInstance: this,
-            serviceClass: PartyService
-        });
-
-        return observable;
     }
 }
