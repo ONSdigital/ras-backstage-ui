@@ -6,7 +6,6 @@ Version: 0.1.0
 
 Changes for ras-backstage-ui
 ============================================
-* Parameterised create secure message page.
-* Protected routes.
-* Exception handling.
-* JWT Authentication handling.
+* Secure message validation
+* Authentication bug fixes
+* Endpoints pointing to new API
