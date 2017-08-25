@@ -17,8 +17,8 @@ export class SecureMessageFormComponent {
     @Output() primary_button_click: EventEmitter<any> = new EventEmitter();
     @Output() secondary_button_click: EventEmitter<any> = new EventEmitter();
 
-    public subjectMaxLength = 100;
-    public bodyMaxLength = 10000;
+    public subjectMaxLength = 10;
+    public bodyMaxLength = 10;
 
     public isValid () {
         return !!this.subject && !!this.body;

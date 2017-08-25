@@ -53,14 +53,22 @@
                     <label class="venus" for="secure-message-body">Add a message</label>
                     <textarea
                         id="secure-message-body"
+                        #secureMessageReplyBody
                         class="input input--textarea input--textarea-message"
                         rows="10"
                         name="secure-message-body"
+                        [class.input--textarea-error]="secureMessageReplyBody.value.length === bodyMaxLength"
                         [ngModel]="newMessageBody"
                         (change)="onTypingReply($event)"
                         (keyup)="onTypingReply($event)"
                         required
-                        aria-labelledby="secure-message-body"></textarea>
+                        aria-labelledby="secure-message-body"
+                        maxlength="{{ bodyMaxLength }}"></textarea>
+
+                    <em class="pluto"
+                        [class.error-text]="secureMessageReplyBody.value.length === bodyMaxLength">
+                            Maximum {{ bodyMaxLength}} characters
+                            ({{ bodyMaxLength - secureMessageReplyBody.value.length }} remaining)</em>
                 </fieldset>
 
                 <button class="btn btn--secondary" type="submit"
