@@ -38,7 +38,7 @@ export class AuthenticationService {
         const token = window.sessionStorage.getItem('token');
 
         if (token) {
-            this.encryptedHeaders.append('Authorization', token);
+            this.encryptedHeaders.set('Authorization', token);
         }
     }
 
@@ -75,7 +75,7 @@ export class AuthenticationService {
                      * Attach authentication token
                      */
                     window.sessionStorage.setItem('token', token);
-                    this.encryptedHeaders.append('Authorization', token);
+                    this.encryptedHeaders.set('Authorization', token);
 
                     const returnUrl = this.activatedRoute.snapshot.queryParams.returnUrl;
 
