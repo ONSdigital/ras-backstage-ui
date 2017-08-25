@@ -13,6 +13,7 @@ export class SecureMessageViewComponent implements OnInit {
 
     public originalMessageBody: Array<string> = [];
     public newMessageBody: string;
+    public bodyMaxLength = 10000;
 
     @Input() originalSecureMessage: SecureMessage;
     @Input() newSecureMessageModel: SecureMessage;

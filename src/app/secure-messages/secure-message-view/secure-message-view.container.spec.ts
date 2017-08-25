@@ -205,28 +205,35 @@ describe('SecureMessageViewContainerComponent', () => {
                     });
                 }));
             });
+        });
 
-            describe('and the saveDraft_handler is invoked', () => {
+        describe('and the saveDraft_handler is invoked', () => {
 
-                beforeEach(async(() => {
-                    comp.saveDraft_handler();
-                }));
+            beforeEach(async(() => {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+                });
 
-                it('should call saveDraft secure message action', async(() => {
+                comp.saveDraft_handler({
+                    preventDefault: function () {}
+                });
+            }));
 
-                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
-                    expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalledWith({
-                        thread_id: comp.originalSecureMessage.thread_id,
-                        msg_to: comp.originalSecureMessage.msg_to,
-                        msg_from: undefined,
-                        subject: comp.originalSecureMessage.subject,
-                        body: 'Some reply content',
-                        collection_case: comp.originalSecureMessage.collection_case,
-                        ru_id: comp.originalSecureMessage.ru_id,
-                        survey: comp.originalSecureMessage.survey
-                    });
-                }));
-            });
+            it('should call saveDraft secure message action', async(() => {
+
+                expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
+                expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalledWith({
+                    thread_id: comp.originalSecureMessage.thread_id,
+                    msg_to: comp.originalSecureMessage.msg_to,
+                    msg_from: undefined,
+                    subject: comp.originalSecureMessage.subject,
+                    body: '',
+                    collection_case: comp.originalSecureMessage.collection_case,
+                    ru_id: comp.originalSecureMessage.ru_id,
+                    survey: comp.originalSecureMessage.survey
+                });
+            }));
         });
 
         describe('and the reply does not have content', () => {

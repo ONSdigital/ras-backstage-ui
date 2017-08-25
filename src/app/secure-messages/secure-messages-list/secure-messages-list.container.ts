@@ -72,6 +72,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     ngOnInit() {
 
+        window.scrollTo(0, 0);
+
         this.ngRedux.select(['secureMessages', 'stateMessage'])
             .first()
             .subscribe(
@@ -89,6 +91,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
     }
 
     private secureMessageListUpdate (secureMessages: any) {
+
+        window.scrollTo(0, 0);
 
         if (!secureMessages) {
             return;

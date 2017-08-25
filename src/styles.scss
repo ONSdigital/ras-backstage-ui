@@ -144,6 +144,17 @@ body {
     line-height : 1.6;
 }
 
+.input--textarea-error:focus,
+.input--input-error:focus {
+    outline: none;
+    border-color : #D0121E;
+    box-shadow: #ff0000 0px 0px 0px 1px;
+}
+
+.error-text {
+    color : #D0121E;
+}
+
 /**
  * Patches
  */

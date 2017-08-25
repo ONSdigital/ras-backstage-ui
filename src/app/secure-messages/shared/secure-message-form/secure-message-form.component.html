@@ -1,41 +1,55 @@
 <div class="secure-message-form secure-message-form-component" #secureMessage>
-    <form>
+    <form action="#" name="message_create">
         <p>To: {{to}}</p>
 
         <fieldset class="u-mb-m">
             <label for="secure-message-subject">Subject</label>
             <input
                 id="secure-message-subject"
+                #secureMessageSubject
                 class="secure-message-form__subject input input--text"
                 type="text"
                 name="secure-message-subject"
                 required
+                [class.input--textarea-error]="secureMessageSubject.value.length === subjectMaxLength"
                 [(ngModel)]="subject"
                 (change)="subjectChange.emit(subject)"
-                aria-labelledby="secure-message-subject"/>
+                aria-labelledby="secure-message-subject"
+                maxlength="{{ subjectMaxLength }}" />
+
+            <em class="pluto"
+                [class.error-text]="secureMessageSubject.value.length === subjectMaxLength">
+                    Maximum {{ subjectMaxLength }} characters
+                    ({{ subjectMaxLength - secureMessageSubject.value.length }} remaining)</em>
         </fieldset>
 
         <fieldset class="u-mb-m">
             <label for="secure-message-body">Message</label>
             <textarea
                 id="secure-message-body"
+                #secureMessageBody
                 class="secure-message-form__body input"
                 rows="10"
                 name="secure-message-body"
                 required
+                [class.input--textarea-error]="secureMessageBody.value.length === bodyMaxLength"
                 [(ngModel)]="body"
                 (change)="bodyChange.emit(body)"
-                aria-labelledby="secure-message-body"></textarea>
+                aria-labelledby="secure-message-body"
+                maxlength="{{ bodyMaxLength }}"></textarea>
+
+            <em class="pluto"
+                [class.error-text]="secureMessageBody.value.length === bodyMaxLength">
+                    Maximum {{ bodyMaxLength}} characters
+                    ({{ bodyMaxLength - secureMessageBody.value.length }} remaining)</em>
         </fieldset>
 
         <button class="btn btn--secondary" type="submit"
             (click)="secondary_button_click.emit($event);"
-            [disabled]="!isValid()"
             role="button">Save draft</button>
 
         <button class="btn btn--primary" type="submit"
             (click)="primary_button_click.emit($event);"
-            [disabled]="!isValid()"
             role="button">Send</button>
 
         <div class="u-mb-m">

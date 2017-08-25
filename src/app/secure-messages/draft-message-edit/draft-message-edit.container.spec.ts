@@ -134,9 +134,9 @@ describe('DraftMessageEditContainerComponent', () => {
             });
         }));
 
-        describe('when sendMessage_handler is invoked', () => {
+        describe('and sendMessage_handler is invoked', () => {
 
-            describe('when message is valid', () => {
+            describe('and message is valid', () => {
 
                 it('should call createSecureMessage on the SecureMessagesActions service', async(() => {
                     fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
@@ -153,7 +153,7 @@ describe('DraftMessageEditContainerComponent', () => {
                 }));
             });
 
-            describe('when message is invalid', () => {
+            describe('and message is invalid', () => {
 
                 it('should not call the SecureMessagesActions service', async(() => {
                     fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
@@ -175,45 +175,26 @@ describe('DraftMessageEditContainerComponent', () => {
             });
         });
 
-        describe('when saveDraft_handler is invoked', () => {
+        describe('and saveDraft_handler is invoked', () => {
 
-            describe('when message is valid', () => {
+            /**
+             * Always call the service
+             */
+            it('should call updateDraft on the SecureMessagesActions service', async(() => {
+                fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
 
-                it('should call updateDraft on the SecureMessagesActions service', async(() => {
-                    fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
-
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
                     fixture.detectChanges();
-                    fixture.whenStable().then(() => {
-                        fixture.detectChanges();
 
-                        const comp = fixture.debugElement.componentInstance;
-                        comp.saveDraft_handler();
-
-                        expect(mockSecureMessagesActions.updateDraft).toHaveBeenCalled();
+                    const comp = fixture.debugElement.componentInstance;
+                    comp.saveDraft_handler({
+                        preventDefault: function () {}
                     });
-                }));
-            });
 
-            describe('when message is invalid', () => {
-
-                it('should not call the SecureMessagesActions service', async(() => {
-                    fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
-
-                    fixture.detectChanges();
-                    fixture.whenStable().then(() => {
-                        fixture.detectChanges();
-
-                        const comp = fixture.debugElement.componentInstance;
-
-                        comp.draftMessage.subject = '';
-                        comp.draftMessage.body = '';
-
-                        comp.saveDraft_handler();
-
-                        expect(mockSecureMessagesActions.updateDraft).not.toHaveBeenCalled();
-                    });
-                }));
-            });
+                    expect(mockSecureMessagesActions.updateDraft).toHaveBeenCalled();
+                });
+            }));
         });
     });
 });

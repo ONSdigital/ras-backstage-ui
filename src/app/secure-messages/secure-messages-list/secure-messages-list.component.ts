@@ -13,4 +13,12 @@ export class SecureMessagesListComponent {
     @Input() secureMessages: Array<SecureMessage>;
     @Input() secureMessagesLoading: Boolean;
 
+    public extractMsgTo (data: any) {
+
+        if (!data) {
+            return {};
+        }
+
+        return data.length ? data[0] : {};
+    }
 }
