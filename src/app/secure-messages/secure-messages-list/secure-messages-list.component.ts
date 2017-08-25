@@ -19,6 +19,6 @@ export class SecureMessagesListComponent {
             return {};
         }
 
-        return data.length ? data : {};
+        return data.length ? data[0] : {};
     }
 }
