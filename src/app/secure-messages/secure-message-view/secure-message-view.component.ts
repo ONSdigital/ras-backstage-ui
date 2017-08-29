@@ -46,4 +46,13 @@ export class SecureMessageViewComponent implements OnInit {
         return this.originalSecureMessage && this.originalSecureMessage['@msg_to'] && this.originalSecureMessage['@msg_to'][0]
             ? this.originalSecureMessage['@msg_to'][0] : {};
     }
+
+    public personLabel (personData: any) {
+
+        if (!personData.firstName && !personData.lastName) {
+            return '(Name not found)';
+        }
+
+        return personData.firstName + ' ' + personData.lastName;
+    }
 }

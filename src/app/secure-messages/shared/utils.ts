@@ -11,15 +11,10 @@ export function getDataStoreSecureMessageById(store: NgRedux<any>, secureMessage
         .first();
 }
 
-export function buildMsgTo(business: any, respondent: any) {
+export function buildMsgTo(businessData: any, respondentData: any) {
 
-    /**
-     * TODO - validate respondent and business response
-     */
-    if (!business || !respondent) {
-        console.log('Business or respondent not found: ', business, respondent);
-        return '';
-    }
+    const business = businessData || {},
+        respondent = respondentData || {};
 
     const businessNameProp = business.name || business.business_name,
         businessReferenceProp = business.sampleUnitRef || business.id,

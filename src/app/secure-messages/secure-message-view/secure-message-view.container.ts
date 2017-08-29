@@ -10,7 +10,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 import { User } from '../../user/shared/user.model';
 
 import { getDataStoreSecureMessageById } from '../shared/utils';
-import { validateProperties } from '../../shared/utils';
+import { validateProperties, validationOutput } from '../../shared/utils';
 
 @Component({
     template: `
@@ -68,9 +68,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         if (secureMessage) {
 
-            if (!secureMessageHasAgreggateData(secureMessage)) {
-                return;
-            }
+            secureMessageHasAgreggateData(secureMessage);
 
             this.setMessages(secureMessage);
             this.checkSetMessageIsRead();
@@ -185,6 +183,13 @@ function secureMessageHasAgreggateData (secureMessage: any): Boolean {
     ]);
 
     const checkMsgToExistsInArray: Boolean = secureMessage['@msg_to'] && secureMessage['@msg_to'][0];
+
+    if (!checkMsgToExistsInArray) {
+        validationOutput({
+            notification: 'Property @msg_to array empty',
+            subject: secureMessage
+        });
+    }
 
     return !(failedValidation || !checkMsgToExistsInArray);
 }

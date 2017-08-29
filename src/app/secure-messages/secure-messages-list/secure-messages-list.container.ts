@@ -7,7 +7,7 @@ import { PartyService } from '../../party/party.service';
 import { SecureMessage } from '../shared/secure-message.model';
 import { NgRedux } from '@angular-redux/store';
 
-import { validateProperties } from '../../shared/utils';
+import { validateProperties, validationOutput } from '../../shared/utils';
 
 @Component({
     template: `
@@ -112,9 +112,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
             secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
             secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
 
-            if (!messageHasAgreggateData(secureMessage)) {
-                return false;
-            }
+            messageHasAgreggateData(secureMessage);
 
             return secureMessage;
         });
@@ -145,6 +143,13 @@ function messageHasAgreggateData (message: any): Boolean {
     ]);
 
     const checkMsgToExistsInArray: Boolean = message['@msg_to'] && message['@msg_to'][0];
+
+    if (!checkMsgToExistsInArray) {
+        validationOutput({
+            notification: 'Property @msg_to array empty',
+            subject: message
+        });
+    }
 
     return !(failedValidation || !checkMsgToExistsInArray);
 }

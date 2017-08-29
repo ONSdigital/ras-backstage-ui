@@ -5,7 +5,7 @@ import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { buildMsgTo } from '../shared/utils';
-import { validateProperties } from '../../shared/utils';
+import { validateProperties, validationOutput } from '../../shared/utils';
 
 @Component({
     template: `
@@ -14,7 +14,8 @@ import { validateProperties } from '../../shared/utils';
             (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
             [(subject)]="draftMessage.subject"
-            [(body)]="draftMessage.body"></ons-draft-message-edit>`
+            [(body)]="draftMessage.body"
+            [(message)]="draftMessage"></ons-draft-message-edit>`
 })
 export class DraftMessageEditContainerComponent implements OnInit {
 
@@ -41,9 +42,7 @@ export class DraftMessageEditContainerComponent implements OnInit {
             return;
         }
 
-        if (!draftMessageHasAgreggateData(exportedData.draftMessage)) {
-            return;
-        }
+        draftMessageHasAgreggateData(exportedData.draftMessage);
 
         this.draftMessage = exportedData.draftMessage;
         this.to = buildMsgTo(this.draftMessage['@ru_id'], this.draftMessage['@msg_to'][0]);
@@ -91,6 +90,13 @@ function draftMessageHasAgreggateData (draftMessage: any): Boolean {
     ]);
 
     const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
+
+    if (!checkMsgToExistsInArray) {
+        validationOutput({
+            notification: 'Property @msg_to array empty',
+            subject: draftMessage
+        });
+    }
 
     return !(failedValidation || !checkMsgToExistsInArray);
 }

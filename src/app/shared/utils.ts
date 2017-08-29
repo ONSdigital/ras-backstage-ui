@@ -50,7 +50,7 @@ export function validationOutput (err: ValidationError) {
     }
 }
 
-export function attachBadRequestCheck (options: any): void {
+/*export function attachBadRequestCheck (options: any): void {
 
     const { observable, errorHeading, serviceInstance, serviceClass } = options;
 
@@ -67,7 +67,7 @@ export function attachBadRequestCheck (options: any): void {
             });
         }
     );
-}
+}*/
 
 /**
  * Decorator

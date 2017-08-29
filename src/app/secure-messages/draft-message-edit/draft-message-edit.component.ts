@@ -9,6 +9,7 @@ export class DraftMessageEditComponent {
     @Input() to: string;
     @Input() subject: string;
     @Input() body: string;
+    @Input() message: string;
 
     @Output() subjectChange: EventEmitter<any> = new EventEmitter();
     @Output() bodyChange: EventEmitter<any> = new EventEmitter();

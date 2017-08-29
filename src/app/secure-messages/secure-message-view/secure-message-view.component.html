@@ -14,13 +14,13 @@
                                         From:
                                     </dt>
                                     <dd class="grid__col col-10@s secure-message-conversation__field">
-                                        {{ getOriginalSecureMessageMsgFrom().firstName }} {{ getOriginalSecureMessageMsgFrom().lastName }}
+                                        {{ personLabel(getOriginalSecureMessageMsgFrom()) }}
                                     </dd>
                                     <dt class="grid__col col-2@s secure-message-conversation__field">
                                         To:
                                     </dt>
                                     <dd class="grid__col col-10@s secure-message-conversation__field">
-                                        {{ getOriginalSecureMessageMsgTo().firstName }} {{ getOriginalSecureMessageMsgTo().lastName }}
+                                        {{ personLabel(getOriginalSecureMessageMsgTo()) }}
                                     </dd>
                                     <dt class="grid__col col-2@s secure-message-conversation__field">
                                         Sent:

@@ -21,7 +21,8 @@ import { validateProperties } from '../../shared/utils';
             (save_button_click)="saveDraft_handler($event)"
             [(to)]="to"
             [(subject)]="secureMessage.subject"
-            [(body)]="secureMessage.body"></ons-secure-message-create>
+            [(body)]="secureMessage.body"
+            [(message)]="secureMessage"></ons-secure-message-create>
     `,
 })
 export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy {
