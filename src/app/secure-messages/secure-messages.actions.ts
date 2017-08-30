@@ -56,7 +56,7 @@ export class SecureMessagesActions {
         });
     }
 
-    public replyToSecureMessage(secureMessage: SecureMessage) {
+    public replyToSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.REPLY_SINGLE,
