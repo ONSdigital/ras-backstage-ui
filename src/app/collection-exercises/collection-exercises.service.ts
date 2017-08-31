@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
-import { CheckBadRequest } from '../shared/utils';
+import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
 
 // Import RxJs required methods
@@ -38,15 +38,11 @@ export class CollectionExercisesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-
         .map((res: Response) => {
             return res.json() || {};
         })
-
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get collection exercise'))
+        .catch(handleError)
         .share();
     }
 
@@ -69,11 +65,8 @@ export class CollectionExercisesService {
         .map((res: Response) => {
             return res.json() || {};
         })
-
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get collection exercises'))
+        .catch(handleError)
         .share();
     }
 }

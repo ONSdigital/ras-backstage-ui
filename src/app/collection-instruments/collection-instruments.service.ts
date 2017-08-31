@@ -3,7 +3,7 @@ import { Http, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest } from '../shared/utils';
+import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -41,6 +41,8 @@ export class CollectionInstrumentsService {
             console.log('Error response: ', response);
             return Observable.throw({ errorMessage: response._body, response });
         })
+        .do(printResponse.bind(this, 'Get collection instrument status'))
+        .catch(handleError)
         .share();
     }
 
@@ -58,10 +60,8 @@ export class CollectionInstrumentsService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Load collection instrument batch'))
+        .catch(handleError)
         .share();
     }
 }

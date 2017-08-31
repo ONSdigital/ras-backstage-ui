@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response, ResponseOptions, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { environment } from '../../environments/environment';
+import { handleError, printResponse } from '../shared/utils';
 
 @Injectable()
 export class AuthenticationService {
@@ -57,13 +58,8 @@ export class AuthenticationService {
                 method: RequestMethod.Post
             })
         )
-        .do((res: Response) => {
-            console.log('Authenticate credentials: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Authenticate credentials'))
+        .catch(handleError)
         .share();
 
         observable.subscribe(

@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest } from '../shared/utils';
+import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -38,13 +38,8 @@ export class SurveysService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Get survey: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get survey'))
+        .catch(handleError)
         .share();
     }
 
@@ -63,13 +58,8 @@ export class SurveysService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Get surveys: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get surveys'))
+        .catch(handleError)
         .share();
     }
 }

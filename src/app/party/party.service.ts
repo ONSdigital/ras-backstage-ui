@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest } from '../shared/utils';
+import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 
 import { environment } from '../../environments/environment';
 
@@ -32,13 +32,8 @@ export class PartyService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Get business: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get business: '))
+        .catch(handleError)
         .share();
     }
 
@@ -56,13 +51,8 @@ export class PartyService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Get respondent: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get respondent: '))
+        .catch(handleError)
         .share();
     }
 }

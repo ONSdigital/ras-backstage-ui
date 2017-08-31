@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { Response } from '@angular/http';
 
 /*export function uiComponentDecoratorHelper(opts: any) {
 
@@ -50,24 +51,14 @@ export function validationOutput (err: ValidationError) {
     }
 }
 
-/*export function attachBadRequestCheck (options: any): void {
+export function printResponse (printStatement: string, res: Response) {
+    console.log(printStatement + ': ', res);
+}
 
-    const { observable, errorHeading, serviceInstance, serviceClass } = options;
-
-    observable.subscribe(
-        () => {},
-        (err: any) => {
-            console.log('Bad request: ', err);
-            serviceInstance.router.navigate(['/server-error'], {
-                queryParams: {
-                    errorResponseCode: err.response.status,
-                    errorHeading: errorHeading,
-                    errorBody: serviceClass.label + ' error: ' + err.errorMessage
-                }
-            });
-        }
-    );
-}*/
+export function handleError (response: any) {
+    console.log('Error response: ', response);
+    return Observable.throw({ errorMessage: response._body, response });
+}
 
 /**
  * Decorator
@@ -83,7 +74,7 @@ export function CheckBadRequest(options: any) {
         descriptor.value = function () {
 
             const call = method.apply(this, arguments)
-            .share();
+                .share();
 
             /**
              * Check the request was authenticated
@@ -121,7 +112,25 @@ export function CheckBadRequest(options: any) {
     };
 }
 
+export function HandleCommonRequest(options: any) {
 
+    const { printStatement } = options;
+
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
+
+        const method = descriptor.value;
+
+        descriptor.value = function () {
+
+            const call = method.apply(this, arguments).share();
+
+            call.do(printResponse.bind(null, printStatement))
+                .catch(handleError);
+
+            return call.share();
+        };
+    };
+}
 
 interface Constraint {
     propertyName: string;

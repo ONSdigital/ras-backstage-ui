@@ -5,7 +5,7 @@ import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest } from '../shared/utils';
+import { CheckBadRequest, HandleCommonRequest, handleError, printResponse } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {
@@ -33,16 +33,14 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Create one: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Create one message'))
+        .catch(handleError)
         .share();
     }
 
+    /*@HandleCommonRequest({
+        printStatement: 'Get all messages'
+    })*/
     @CheckBadRequest({
         errorHeading: 'Error getting a list of secure messages from the secure message service',
         serviceClass: SecureMessagesService
@@ -57,13 +55,8 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Get all: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get all messages'))
+        .catch(handleError)
         .share();
     }
 
@@ -81,14 +74,8 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .share()
-        .do((res: Response) => {
-            console.log('Get one: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Get one message'))
+        .catch(handleError)
         .share();
     }
 
@@ -107,13 +94,8 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Update message labels: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Update message labels'))
+        .catch(handleError)
         .share();
     }
 
@@ -132,13 +114,8 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Create draft: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Create draft'))
+        .catch(handleError)
         .share();
     }
 
@@ -157,13 +134,8 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do((res: Response) => {
-            console.log('Update draft: ', res);
-        })
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
+        .do(printResponse.bind(this, 'Update draft'))
+        .catch(handleError)
         .share();
     }
 }
