@@ -93,7 +93,7 @@
     "rollup-stream": "^1.19.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript": "^2.2.0-dev.20170116",
+    "typescript": "2.4.0",
     "typings": "^2.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webdriver-manager": "10.2.5"
