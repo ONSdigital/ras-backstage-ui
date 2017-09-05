@@ -27,6 +27,7 @@ export const collectionExercisesRoutes: Routes = [
                     viewModel: CollectionExerciseListResolver
                 },
                 data: {
+                    title: 'Collection exercises - ONS Data Collection',
                     breadcrumb: null
                 }
             },
@@ -37,6 +38,7 @@ export const collectionExercisesRoutes: Routes = [
                     exported: CollectionExerciseDetailsResolver
                 },
                 data: {
+                    title: 'Collection exercise - ONS Data Collection',
                     breadcrumb: resolveCollectionExerciseDetailsBreadcrumb
                 }
             }

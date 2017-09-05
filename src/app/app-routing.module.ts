@@ -20,17 +20,26 @@ export const appRoutes: Routes = [
     {
         path: '404',
         component: PageNotFoundComponent,
-        canActivate: [CanActivateAuthentication]
+        canActivate: [CanActivateAuthentication],
+        data: {
+            title: '404 Not found - ONS Data Collection',
+        }
     },
     {
         path: 'server-error',
         component: ServerErrorContainerComponent,
-        canActivate: [CanActivateAuthentication]
+        canActivate: [CanActivateAuthentication],
+        data: {
+            title: 'Server error - ONS Data Collection',
+        }
     },
     {
         path: '**',
         component: PageNotFoundComponent,
-        canActivate: [CanActivateAuthentication]
+        canActivate: [CanActivateAuthentication],
+        data: {
+            title: '404 Not found - ONS Data Collection',
+        }
     }
 ];
 
