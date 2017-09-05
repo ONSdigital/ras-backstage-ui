@@ -9,7 +9,6 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { User } from '../../user/shared/user.model';
 
-import { getDataStoreSecureMessageById } from '../shared/utils';
 import { validateProperties, validationOutput } from '../../shared/utils';
 
 @Component({

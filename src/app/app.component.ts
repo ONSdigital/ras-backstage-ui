@@ -7,6 +7,14 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { PartyService} from './party/party.service';
 import { Business } from './party/party.model';
 
+import { OnInit } from '@angular/core';
+import { NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+
 @Component({
     selector: 'ons-backstage-ui',
     moduleId: module.id, // For aot compiler relative paths
@@ -14,7 +22,7 @@ import { Business } from './party/party.model';
     // styleUrls: ['app.component.scss'],
     templateUrl: 'app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     public path = '';
     public responseOperationsUrl: string;
     public isAuthenticated: Boolean;
@@ -24,8 +32,10 @@ export class AppComponent {
 
     constructor(
         private router: Router,
+        private activatedRoute: ActivatedRoute,
         private authenticationService: AuthenticationService,
-        private partyService: PartyService) {
+        private partyService: PartyService,
+        private titleService: Title) {
 
         /**
          * Used to assist Angular Augury
@@ -49,6 +59,23 @@ export class AppComponent {
                 },
                 (err: any) => console.log('Router error: ', err)
             );
+    }
+
+    ngOnInit() {
+
+        /**
+         * Page title updates from route
+         */
+        this.router.events
+            .filter((event) => event instanceof NavigationEnd)
+            .map(() => this.activatedRoute)
+            .map((route) => {
+                while (route.firstChild) route = route.firstChild;
+                return route;
+            })
+            .filter((route) => route.outlet === 'primary')
+            .mergeMap((route) => route.data)
+            .subscribe((event) => this.titleService.setTitle(event['title']));
     }
 
     createSiteSearchFormUrl(event: any) {

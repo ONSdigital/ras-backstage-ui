@@ -13,6 +13,7 @@ export const appRoutes: Routes = [
         component: HomeComponent,
         canActivate: [CanActivateAuthentication],
         data: {
+            title: 'Home - ONS Data Collection',
             breadcrumb: 'Home'
         }
     },
@@ -32,6 +33,7 @@ export const appRoutes: Routes = [
         canActivate: [CanActivateAuthentication]
     }
 ];
+
 
 @NgModule({
     imports: [

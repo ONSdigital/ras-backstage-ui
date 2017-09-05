@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';

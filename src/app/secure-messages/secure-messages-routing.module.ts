@@ -28,6 +28,7 @@ export const secureMessagesRoutes: Routes = [
                 path: '',
                 component: SecureMessagesListContainerComponent,
                 data: {
+                    title: 'Secure messages - ONS Data Collection',
                     breadcrumb: null
                 }
             },
@@ -38,6 +39,7 @@ export const secureMessagesRoutes: Routes = [
                     exported: SecureMessageCreateResolver
                 },
                 data: {
+                    title: 'Create message - ONS Data Collection',
                     breadcrumb: 'Create message'
                 }
             },
@@ -49,6 +51,7 @@ export const secureMessagesRoutes: Routes = [
                     exported: SecureMessageViewResolver
                 },
                 data: {
+                    title: 'View message - ONS Data Collection',
                     breadcrumb: resolveSecureMessagesViewBreadcrumb
                 }
             },
@@ -59,6 +62,7 @@ export const secureMessagesRoutes: Routes = [
                     exported: DraftMessageEditResolver
                 },
                 data: {
+                    title: 'Edit draft - ONS Data Collection',
                     breadcrumb: 'Edit draft message'
                 }
             }
