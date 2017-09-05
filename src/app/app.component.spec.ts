@@ -1,12 +1,20 @@
+import { Observable } from 'rxjs/Rx';
+
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
 
+import { PartyService } from './party/party.service';
+import { AuthenticationService } from './authentication/authentication.service';
+
 let fixture: ComponentFixture<any>,
     instance: Component,
-    page: Page;
+    page: Page,
+
+    mockPartyService: any,
+    mockAuthenticationService: any;
 
 class Page {
 
@@ -32,10 +40,29 @@ function createComponent(component: any) {
 
 describe('AppComponent', () => {
 
-    beforeEach(async(() => {
+    beforeEach(() => {
+
+        mockAuthenticationService = {
+            isAuthenticated () {
+                return true;
+            }
+        };
+
+        mockPartyService = {
+            getBusinessByRef () {
+                return Observable.of({});
+            }
+        };
+
+        spyOn(mockAuthenticationService, 'isAuthenticated');
+
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule
+            ],
+            providers: [
+                { provide: AuthenticationService, useValue: mockAuthenticationService },
+                { provide: PartyService, useValue: mockPartyService }
             ],
             declarations: [
                 AppComponent
@@ -44,7 +71,7 @@ describe('AppComponent', () => {
         .compileComponents();
 
         createComponent(AppComponent);
-    }));
+    });
 
     it('should create the app', async(() => {
         const app = fixture.debugElement.componentInstance;
@@ -53,6 +80,6 @@ describe('AppComponent', () => {
 
     it('should render service title in sub heading', async(() => {
         const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('.bar__title').textContent).toContain('Collect the data');
+        expect(compiled.querySelector('.bar__title').textContent).toContain('Response Operations');
     }));
 });
