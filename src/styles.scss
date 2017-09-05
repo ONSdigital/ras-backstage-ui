@@ -218,8 +218,6 @@ dd.grid__col {
     float : right;
 
     .site-search__trigger {
-        position : relative;
-        top : -1px;
         margin-bottom : 0;
         padding : .28rem .5rem;
         font-size : 0.75rem;
@@ -232,6 +230,11 @@ dd.grid__col {
                 background-color : #fff;
             }
         }
+
+        &:active,
+        &:focus {
+            color: #fff;
+        }
     }
 
     .site-search__field-container {
@@ -242,13 +245,14 @@ dd.grid__col {
     .site-search__success-icon {
         z-index : 10;
         position : absolute;
-        right : .25rem;
-        top : .25rem;
+        right : .275rem;
+        top : .275rem;
         color : #0f8243;
     }
 
     .site-search__field {
-        padding : 2px;
+        padding : .3rem;
+        font-size : 0.75rem;
         border : none;
     }
 }
