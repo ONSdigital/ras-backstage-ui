@@ -34,10 +34,50 @@
                     </div>
                 </div>
             </header>
-            <div class="bar " role="banner">
+            <div class="bar" role="banner">
                 <div class="bar__inner container">
-                    <div class="bar__title venus">Collect the data</div>
+                    <div class="bar__title neptune">Response Operations</div>
+
+                    <div class="site-search" *ngIf="isAuthenticated">
+                        <form [action]="siteSearchUrl" method="GET">
+                            <label>RU Reference: </label>
+                            <span class="site-search__field-container">
+                                <input
+                                    #siteSearch
+                                    type="text"
+                                    placeholder="Enter reference"
+                                    class="site-search__field"
+                                    maxlength="11"
+                                    (keyup)="createSiteSearchFormUrl($event)"/>
+
+                                <i *ngIf="reportingUnitFound"
+                                   aria-hidden="true"
+                                   class="fa fa-check-circle site-search__success-icon"></i>
+                            </span>
+
+                            <button
+                                class="btn btn--light site-search__trigger"
+                                [class.site-search__trigger--disabled]="!searchEnabled"
+                                (click)="searchClick_handler($event, siteSearch)">Search</button>
+                        </form>
+                    </div>
                 </div>
+            </div>
+            <div class="site-navigation" *ngIf="isAuthenticated">
+                <ul class="container site-navigation__list">
+                    <li class="site-navigation__list-item">
+                        <a [routerLink]="['/']"
+                           class="site-navigation__list-item-link">Home</a>
+                    </li>
+                    <li class="site-navigation__list-item">
+                        <a href="{{responseOperationsUrl}}reports"
+                           class="site-navigation__list-item-link">Reports</a>
+                    </li>
+                    <li class="site-navigation__list-item">
+                        <a [routerLink]="['/secure-messages']"
+                           class="site-navigation__list-item-link">Secure messages</a>
+                    </li>
+                </ul>
             </div>
             <div class="page__subheader"></div>
 

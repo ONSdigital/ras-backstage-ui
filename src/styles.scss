@@ -161,6 +161,10 @@ body {
 dd.grid__col {
     margin-left : 0;
 }
+
+.bar__title {
+    margin-right : auto;
+}
 /**
  * End Patches
  */
@@ -184,4 +188,67 @@ dd.grid__col {
     -webkit-hyphens: auto;
     hyphens: auto;
 
+}
+
+.site-navigation {
+    display : block;
+    padding-top : .5rem;
+    background-color : #0f8243;
+
+    .site-navigation__list {
+
+        .site-navigation__list-item {
+            display : inline-block;
+
+            + .site-navigation__list-item {
+                margin-left : .5rem;
+            }
+        }
+
+        .site-navigation__list-item-link {
+            padding : .25rem .5rem;
+            text-decoration : none;
+            color : #fff;
+            border : 1px solid #fff;
+        }
+    }
+}
+
+.site-search {
+    float : right;
+
+    .site-search__trigger {
+        position : relative;
+        top : -1px;
+        margin-bottom : 0;
+        padding : .28rem .5rem;
+        font-size : 0.75rem;
+        color : #000;
+
+        &.site-search__trigger--disabled {
+            color : #808080;
+
+            &:hover {
+                background-color : #fff;
+            }
+        }
+    }
+
+    .site-search__field-container {
+        display : inline-block;
+        position : relative;
+    }
+
+    .site-search__success-icon {
+        z-index : 10;
+        position : absolute;
+        right : .25rem;
+        top : .25rem;
+        color : #0f8243;
+    }
+
+    .site-search__field {
+        padding : 2px;
+        border : none;
+    }
 }

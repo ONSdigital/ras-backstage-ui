@@ -27,6 +27,11 @@ export const environment = {
         collectionInstrument:       commonRoot + 'collection-instrument-service/collection-instrument-api/1.0.2/',
         survey:                     commonRoot + 'survey-service/',
         secureMessages:             commonRoot + 'secure-message-service/',
-        party:                      commonRoot + 'party-service/party-api/v1/'
+        party:                      commonRoot + 'party-service/party-api/v1/',
+
+        /**
+         * Response operations
+         */
+        responseOperationsApplication: 'http://response-operations-ui-sit.apps.devtest.onsclofo.uk/'
     }
 };
