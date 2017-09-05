@@ -8,6 +8,7 @@ export const authenticationRoutes: Routes = [
         path: 'sign-in',
         component: SignInContainerComponent,
         data: {
+            title: 'Sign in - ONS Data Collection',
             breadcrumb: 'Sign in'
         }
     }

@@ -37,6 +37,25 @@ export class PartyService {
         .share();
     }
 
+    /*@CheckBadRequest({
+        errorHeading: 'Error getting reporting unit by reference from party service',
+        serviceClass: PartyService
+    })*/
+    @CheckRequestAuthenticated()
+    public getBusinessByRef(ref: string): Observable<any> {
+
+        return this.http.get(
+            PartyService.BASE_URL + 'businesses/ref/' + ref,
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
+        )
+        .do(printResponse.bind(this, 'Get business: '))
+        .catch(handleError)
+        .share();
+    }
+
     @CheckBadRequest({
         errorHeading: 'Error getting respondent from party service',
         serviceClass: PartyService
