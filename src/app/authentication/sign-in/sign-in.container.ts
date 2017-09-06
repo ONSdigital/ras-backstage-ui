@@ -16,7 +16,7 @@ export class SignInContainerComponent {
 
     public email = '';
     public password = '';
-    public signInNotification: string = '';
+    public signInNotification = '';
 
     constructor(
         private authenticationActions: AuthenticationActions) {}
