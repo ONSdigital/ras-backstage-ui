@@ -37,6 +37,12 @@
                             type="submit"
                             (click)="primary_button_click.emit($event)"
                             [disabled]="!primary_button_enabled">Sign in</button>
+
+                        <div class="panel panel--error" *ngIf="signInNotification">
+                            <div class="panel__body">
+                                <div>{{ signInNotification }}</div>
+                            </div>
+                        </div>
                     </fieldset>
                 </form>
             </div>

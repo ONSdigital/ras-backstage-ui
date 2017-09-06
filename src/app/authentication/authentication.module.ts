@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignInContainerComponent } from './sign-in/sign-in.container';
@@ -14,6 +15,7 @@ import { CanActivateAuthentication } from './shared/authentication-route-guard.r
     imports: [
         HttpModule,
         FormsModule,
+        CommonModule,
 
         AuthenticationRoutingModule
     ],

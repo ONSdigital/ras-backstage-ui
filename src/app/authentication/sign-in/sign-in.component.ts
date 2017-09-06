@@ -9,6 +9,7 @@ export class SignInComponent {
 
     @Input() email: string;
     @Input() password: string;
+    @Input() signInNotification: string;
     @Input() primary_button_enabled: Function;
 
     @Output() emailChange: EventEmitter<any> = new EventEmitter();
