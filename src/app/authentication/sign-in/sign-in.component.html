@@ -4,7 +4,8 @@
         </div>
         <div class="grid__col col-7@m pull-1@m">
             <div role="main" id="main" class="page__main">
-                <form method="post" class="form" action="/" role="form">
+                <form method="post" class="form" action="/" role="form"
+                    [class.shake]="signInNotification">
 
                     <h1 class="saturn">Sign in</h1>
                     <fieldset id="sign-in-details">
@@ -37,14 +38,13 @@
                             type="submit"
                             (click)="primary_button_click.emit($event)"
                             [disabled]="!primary_button_enabled">Sign in</button>
-
-                        <div class="panel panel--error" *ngIf="signInNotification">
-                            <div class="panel__body">
-                                <div>{{ signInNotification }}</div>
-                            </div>
-                        </div>
                     </fieldset>
                 </form>
+                <div class="panel panel--error" *ngIf="signInNotification">
+                    <div class="panel__body">
+                        <div>{{ signInNotification }}</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -23,16 +23,15 @@ export class SignInContainerComponent {
 
     public signInClick_handler() {
 
+        this.signInNotification = '';
+
         if (!this.fieldsAreValid()) {
             return;
         }
 
         this.authenticationActions.authenticateCredentials(this.email, this.password)
             .subscribe(
-                () => {
-                    console.log('valid');
-                    this.signInNotification = '';
-                },
+                () => {},
                 () => {
                     console.log('invalid');
                     this.signInNotification = 'Invalid username or password';
