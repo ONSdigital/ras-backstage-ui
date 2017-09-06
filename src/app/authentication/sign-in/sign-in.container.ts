@@ -33,7 +33,6 @@ export class SignInContainerComponent {
             .subscribe(
                 () => {},
                 () => {
-                    console.log('invalid');
                     this.signInNotification = 'Invalid username or password';
                 }
             );
