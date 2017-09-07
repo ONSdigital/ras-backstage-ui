@@ -30,6 +30,14 @@ export class AppComponent implements OnInit {
     public searchEnabled = false;
     public reportingUnitFound = false;
 
+    public searchIgnoreKeys: Array<string> = [
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowUp',
+        'ArrowDown',
+        'Enter'
+    ];
+
     constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -67,16 +75,13 @@ export class AppComponent implements OnInit {
 
     createSiteSearchFormUrl(event: any) {
         const val: string = event.target.value;
-        const ignoreKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter'];
 
-        if (ignoreKeys.find((item: string) => event.key === item)) {
+        if (this.searchIgnoreKeys.find((item: string) => event.key === item)) {
             return false;
         }
 
         this.reportingUnitFound = false;
         this.searchEnabled = val.length !== 0;
-
-        alert(val.length);
 
         if (val.length === 11) {
             this.searchReportingUnit(val);
