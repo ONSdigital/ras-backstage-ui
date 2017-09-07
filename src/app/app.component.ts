@@ -35,33 +35,20 @@ export class AppComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private authenticationService: AuthenticationService,
         private partyService: PartyService,
-        private titleService: Title) {
+        private titleService: Title) {}
 
-        /**
-         * Used to assist Angular Augury
-         */
-        router.events.subscribe(
-            (val) => {
-                this.path = val.url;
-            },
-            () => {});
+    ngOnInit() {
 
-        this.init();
-    }
-
-    init() {
         this.responseOperationsUrl = environment.endpoints.responseOperationsApplication;
 
         this.router.events
             .subscribe(
-                () => {
+                (val: any) => {
+                    this.path = val.url;
                     this.isAuthenticated = this.authenticationService.isAuthenticated();
                 },
                 (err: any) => console.log('Router error: ', err)
             );
-    }
-
-    ngOnInit() {
 
         /**
          * Page title updates from route
@@ -88,6 +75,8 @@ export class AppComponent implements OnInit {
 
         this.reportingUnitFound = false;
         this.searchEnabled = val.length !== 0;
+
+        alert(val.length);
 
         if (val.length === 11) {
             this.searchReportingUnit(val);
