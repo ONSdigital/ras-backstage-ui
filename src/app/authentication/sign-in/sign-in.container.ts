@@ -38,7 +38,7 @@ export class SignInContainerComponent {
             );
     }
 
-    public fieldsAreValid() {
-        return this.email && this.password;
+    public fieldsAreValid(): Boolean {
+        return !!(this.email && this.password);
     }
 }
