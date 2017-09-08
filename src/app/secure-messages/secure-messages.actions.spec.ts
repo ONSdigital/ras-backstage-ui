@@ -82,12 +82,6 @@ describe('SecureMessagesActions', () => {
         console.log = originalLog;
     });
 
-    it('should be injected',
-        inject([SecureMessagesActions],
-            (secureMessagesActions: SecureMessagesActions) => {
-                expect(secureMessagesActions).toBeTruthy();
-            }));
-
     describe('createSecureMessage [method]', () => {
 
         it('should dispatch ' + SecureMessagesActions.CREATE_SINGLE  + ' redux action',
@@ -352,7 +346,7 @@ describe('SecureMessagesActions', () => {
             inject([SecureMessagesActions],
                 (secureMessagesActions: SecureMessagesActions) => {
                     mockObservable_response = Observable.of({
-                        json<T> () {
+                        json<T> (): any {
                             return {
                                 messages: [
                                     createSecureMessage_server('500')
@@ -372,7 +366,7 @@ describe('SecureMessagesActions', () => {
             inject([SecureMessagesActions],
                 (secureMessagesActions: SecureMessagesActions) => {
                     mockObservable_response = Observable.of({
-                        json<T> () {
+                        json<T> (): any {
                             return {
                                 messages: [
                                     createSecureMessage_server('600')
