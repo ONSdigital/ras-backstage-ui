@@ -30,7 +30,7 @@ export class BreadcrumbContainerComponent implements OnInit {
             );
     }
 
-    private breadcrumbItems(
+    public breadcrumbItems(
         route: ActivatedRoute,
         url: String = '',
         breadcrumbItems: Array<BreadcrumbItem> = []): Array<BreadcrumbItem> {
