@@ -69,6 +69,11 @@ export class BreadcrumbContainerComponent implements OnInit {
 
             return this.breadcrumbItems(child, url, breadcrumbItems);
         }
+
+        /**
+         * Catch - if route without 'primary outlet' is the last (loop is skipped over)
+         */
+        return breadcrumbItems;
     }
 
 }

@@ -1,69 +1,14 @@
 import { Observable } from 'rxjs/Observable';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Router, ActivatedRoute, PRIMARY_OUTLET, UrlSegment } from '@angular/router';
+import { ActivatedRoute, NavigationEnd } from '@angular/router';
 
-import { ROUTE_DATA_BREADCRUMB } from './breadcrumb-item.model';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { BreadcrumbContainerComponent } from './breadcrumb.container';
 
-import { MockActivatedRoute } from '../../../testing/ActivatedRouteSnapshot_stub';
+import { createActivatedRoute } from '../../../testing/ActivatedRoute_stub';
 
-let fixture: ComponentFixture<any>,
-    mockRoute: any,
-    mockRouter: any;
-
-function createURLSegment (path: string, label: string): UrlSegment {
-    return new UrlSegment(path, { name: label});
-}
-
-function ActivatedRouteStub () {
-
-}
-
-/*function createDefaultRoute (): ActivatedRoute {
-    return {
-        snapshot: new MockActivatedRoute(),
-        url: Observable.of([
-            createURLSegment('', 'Home')
-        ]),
-        params: Observable.of({}),
-        queryParams: Observable.of({}),
-        fragment: Observable.of(''),
-        data: Observable.of({}),
-        outlet: PRIMARY_OUTLET,
-        component: null,
-
-        routeConfig() {},
-        root() {},
-        parent(): ActivatedRoute|nullxw
-        firstChild(): ActivatedRoute|null
-        children(): ActivatedRoute[]
-        pathFromRoot(): ActivatedRoute[]
-        paramMap(): Observable<ParamMap>
-        queryParamMap(): Observable<ParamMap>
-        toString(): string
-    };
-
-    /!*return {
-        url: Observable.of([
-            {
-                path: 'somewhere-nice'
-            }
-        ])/!*,
-        children: {
-            outlet: PRIMARY_OUTLET,
-            snapshot: {
-                url: [
-                    {
-                        path: 'somewhere-nice'
-                    }
-                ],
-                data: {}
-            }
-        }*!/
-    };*!/
-}*/
+let fixture: ComponentFixture<any>;
 
 const activatedRoutePointer = {
     root: {}
@@ -72,25 +17,11 @@ const activatedRoutePointer = {
 describe('BreadcrumbContainerComponent', () => {
 
     beforeEach(() => {
-
-        mockRoute = {
-
-        };
-
-        mockRouter = {
-            events: {
-                filter: Observable.of({})
-            }
-        };
-
-        spyOn(mockRouter.events.filter, 'subscribe').and.callThrough();
-
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule
             ],
             providers: [
-                { provide: Router, useValue: mockRouter},
                 {
                     provide: ActivatedRoute,
                     useValue: activatedRoutePointer
@@ -107,17 +38,18 @@ describe('BreadcrumbContainerComponent', () => {
     it('should initialise correctly', async(() => {
         fixture = TestBed.createComponent(BreadcrumbContainerComponent);
 
+        const comp = fixture.debugElement.componentInstance;
+
+        activatedRoutePointer.root = {};
+
+        spyOn(comp, 'breadcrumbItems');
+
         fixture.detectChanges();
         fixture.whenStable().then(() => {
             fixture.detectChanges();
 
-            const comp = fixture.debugElement.componentInstance;
+            comp.router.events.next(new NavigationEnd(0, '', ''));
 
-            activatedRoutePointer.root = {};
-
-            spyOn(comp, 'breadcrumbItems');
-
-            expect(mockRouter.events.filter.subscribe).toHaveBeenCalled();
             expect(comp.breadcrumbItems).toHaveBeenCalledWith(activatedRoutePointer.root);
         });
     }));
@@ -126,7 +58,7 @@ describe('BreadcrumbContainerComponent', () => {
 
         describe('when no children exist on route', () => {
 
-            it('should return empty breadcrumb array', () => {
+            it('should return empty breadcrumb array', async(() => {
                 fixture = TestBed.createComponent(BreadcrumbContainerComponent);
 
                 fixture.detectChanges();
@@ -135,47 +67,148 @@ describe('BreadcrumbContainerComponent', () => {
 
                     const comp = fixture.debugElement.componentInstance;
 
-                    const result = comp.breadcrumbItems({});
+                    const result = comp.breadcrumbItems({
+                        children: []
+                    });
 
                     expect(result).toEqual([]);
                 });
-            });
+            }));
         });
 
         describe('when child routes exist on route', () => {
 
-            it('should return an array of BreadcrumbItem objects', () => {
-                fixture = TestBed.createComponent(BreadcrumbContainerComponent);
+            describe('and breadcrumb items exist on route', () => {
+                it('should return an array of BreadcrumbItem objects', async(() => {
+                    fixture = TestBed.createComponent(BreadcrumbContainerComponent);
 
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
                     fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+                        const comp = fixture.debugElement.componentInstance;
 
-                    const comp = fixture.debugElement.componentInstance;
-                    const mockExportedData = {
-                        [ROUTE_DATA_BREADCRUMB]: 'Somewhere Nice'
-                    };
+                        const anotherRoute = createActivatedRoute(
+                            'another',
+                            'Another');
 
-                    const result = comp.breadcrumbItems({
-                        children: {
-                            outlet: PRIMARY_OUTLET,
-                            snapshot: {
-                                url: [
-                                    {
-                                        path: 'somewhere-nice'
-                                    }
-                                ],
-                                data: mockExportedData
+                        const secureMessagesRoute = createActivatedRoute(
+                            'secure-messages',
+                            'Secure messages',
+                            [
+                                anotherRoute
+                            ]);
+
+                        const route = createActivatedRoute(
+                            '',
+                            '',
+                            [
+                                secureMessagesRoute
+                            ]);
+
+                        const result = comp.breadcrumbItems(route);
+
+                        expect(result).toEqual([
+                            {
+                                label: 'Secure messages',
+                                params: undefined,
+                                link: '/secure-messages'
+                            },
+                            {
+                                label: 'Another',
+                                params: undefined,
+                                link: '/secure-messages/another'
                             }
-                        }
+                        ]);
                     });
+                }));
+            });
 
-                    expect(result).toEqual([{
-                        label: mockExportedData[ROUTE_DATA_BREADCRUMB],
-                        params: {},
-                        link: '/somewhere-nice'
-                    }]);
-                });
+            describe('and breadcrumb items do not exist on a ActivatedRoute', () => {
+
+                it('should return an array of BreadcrumbItem objects omitting the non-existent ' +
+                    'breadcrumb item', async(() => {
+
+                    fixture = TestBed.createComponent(BreadcrumbContainerComponent);
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        const comp = fixture.debugElement.componentInstance;
+
+                        const anotherRoute = createActivatedRoute(
+                            'another',
+                            'Another');
+
+                        const secureMessagesRoute = createActivatedRoute(
+                            'secure-messages',
+                            'Secure messages',
+                            [
+                                anotherRoute
+                            ]);
+
+                        secureMessagesRoute.snapshot.data = {};
+
+                        const route = createActivatedRoute(
+                            '',
+                            '',
+                            [
+                                secureMessagesRoute
+                            ]);
+
+                        const result = comp.breadcrumbItems(route);
+
+                        expect(result).toEqual([
+                            {
+                                label: 'Another',
+                                params: undefined,
+                                link: '/another'
+                            }
+                        ]);
+                    });
+                }));
+            });
+
+            describe('and a routed component is not rendered to the primary outlet', () => {
+
+                it('should return an array of BreadcrumbItem objects omitting the routed component not ' +
+                    'rendered to the primary outlet', async(() => {
+
+                    fixture = TestBed.createComponent(BreadcrumbContainerComponent);
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        const comp = fixture.debugElement.componentInstance;
+
+                        const anotherRoute = createActivatedRoute(
+                            'another',
+                            'Another');
+
+                        anotherRoute.outlet = 'different-outlet';
+
+                        const secureMessagesRoute = createActivatedRoute(
+                            'secure-messages',
+                            'Secure messages',
+                            [
+                                anotherRoute
+                            ]);
+
+                        const route = createActivatedRoute(
+                            '',
+                            '',
+                            [
+                                secureMessagesRoute
+                            ]);
+
+                        const result = comp.breadcrumbItems(route);
+
+                        expect(result).toEqual([
+                            {
+                                label: 'Secure messages',
+                                params: undefined,
+                                link: '/secure-messages'
+                            }
+                        ]);
+                    });
+                }));
             });
         });
     });

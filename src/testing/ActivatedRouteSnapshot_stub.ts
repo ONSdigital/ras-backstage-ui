@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import { Type } from '@angular/core';
 import {
     ActivatedRoute,
@@ -12,10 +11,10 @@ import {
 export class MockActivatedRoute implements ActivatedRouteSnapshot {
     snapshot: ActivatedRouteSnapshot;
     url: UrlSegment[];
-    params: Observable<Params>;
-    queryParams: Observable<Params>;
+    params: Params;
+    queryParams: Params;
     fragment: string;
-    data: Observable<Data>;
+    data: Data;
     outlet: string;
     component: Type<any>|string;
     routeConfig: Route;
