@@ -1,4 +1,4 @@
-const commonRoot = '//ras-backstage-service-preprod.apps.prod.cf5.onsclofo.uk/backstage-api/v1/';
+const commonRoot = '//securemessagingdev.ons.statistics.gov.uk/backstage-api/v1/';
 
 export const environment = {
     production: false,
@@ -32,6 +32,6 @@ export const environment = {
         /**
          * Response operations
          */
-        responseOperationsApplication: 'http://response-operations-ui-preprod.apps.prod.cf5.onsclofo.uk/'
+        responseOperationsApplication: '//responseoperationsdev.ons.statistics.gov.uk/'
     }
 };
