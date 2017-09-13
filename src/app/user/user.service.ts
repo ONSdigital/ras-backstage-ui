@@ -24,9 +24,9 @@ export class UserService {
          */
         return this.user = Observable.of({
             id: 'BRES',
-            emailAddress: 'onsuser@ons.com',
-            firstName: 'John',
-            lastName: 'Doe',
+            emailAddress: 'backstage@ons.gov.uk',
+            firstName: 'BRES',
+            lastName: '',
             telephone: '+44 1234 567890',
             status: 'ACTIVE'
         });

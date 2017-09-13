@@ -73,6 +73,9 @@ export class AppComponent implements OnInit {
             .subscribe((event) => this.titleService.setTitle(event['title']));
     }
 
+    /**
+     * TODO - Move to separate component
+     */
     createSiteSearchFormUrl(event: any) {
         const val: string = event.target.value;
 
@@ -90,6 +93,9 @@ export class AppComponent implements OnInit {
         this.siteSearchUrl = this.responseOperationsUrl + 'sampleunitref/' + event.target.value + '/cases';
     }
 
+    /**
+     * TODO - Move to separate component
+     */
     searchClick_handler(event: any, siteSearchEl: any) {
         if (!this.searchEnabled) {
             event.preventDefault();
@@ -98,6 +104,9 @@ export class AppComponent implements OnInit {
         }
     }
 
+    /**
+     * TODO - Move to separate component
+     */
     searchReportingUnit(reference: string) {
 
         this.partyService.getBusinessByRef(reference)

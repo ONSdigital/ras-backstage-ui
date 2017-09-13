@@ -103,7 +103,7 @@ export function CheckRequestAuthenticated() {
 
         const method = descriptor.value;
 
-        descriptor.value = function () {
+        descriptor.value = function (): Observable<any> {
 
             const call = method.apply(this, arguments)
                 .share();
