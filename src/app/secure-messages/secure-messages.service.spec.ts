@@ -20,8 +20,7 @@ import {
     createDraftMessage_server
 } from '../../testing/create_SecureMessage';
 
-let mockRouter: any,
-    mockAuthenticationService: any,
+let mockAuthenticationService: any,
     mockServerSecureMessage: any,
     mockClientSecureMessage: any,
     mockServiceCall: any;
@@ -61,22 +60,16 @@ describe('SecureMessagesService', () => {
     beforeEach(() => {
 
         mockAuthenticationService = {
-            authenticate(observableMethod: any) {
-                return true;
-            }
+            encryptedHeaders: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            })
         };
-
-        mockRouter = {
-            navigate: function () {}
-        };
-
-        spyOn(mockRouter, 'navigate');
 
         TestBed.configureTestingModule({
             imports: [HttpModule],
             providers: [
                 SecureMessagesService,
-                { provide: Router, useValue: mockRouter },
                 { provide: XHRBackend, useClass: MockBackend },
                 { provide: AuthenticationService, useValue: mockAuthenticationService }
             ]
@@ -96,227 +89,170 @@ describe('SecureMessagesService', () => {
 
     describe('createSecureMessage [method]', () => {
 
-        describe('when user is authenticated', () => {
+        it('should successfully POST a secure message',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    mockClientSecureMessage = createSecureMessage_client();
+                    mockServerSecureMessage = createSecureMessage_server('100');
 
-            it('should successfully POST a secure message',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        mockClientSecureMessage = createSecureMessage_client();
-                        mockServerSecureMessage = createSecureMessage_server('100');
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify(mockServerSecureMessage)
+                                })));
+                            });
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        body: JSON.stringify(mockServerSecureMessage)
-                                    })));
-                                });
+                    mockServiceCall = secureMessagesService.createSecureMessage(mockClientSecureMessage);
 
-                        mockServiceCall = secureMessagesService.createSecureMessage(mockClientSecureMessage);
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        console.log('serverResponse: ', serverResponse);
+                        expect(serverResponse.json()).toEqual(mockServerSecureMessage);
+                    });
+                }));
 
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                            console.log('serverResponse: ', serverResponse);
-                            expect(serverResponse.json()).toEqual(mockServerSecureMessage);
-                        });
-                    }));
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    mockClientSecureMessage = createSecureMessage_client();
 
-            it('should catch server error response',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        mockClientSecureMessage = createSecureMessage_client();
-
-                        checkCatchServerError(
-                            secureMessagesService.createSecureMessage(mockClientSecureMessage),
-                            mockBackend);
-                    }));
-        });
-
-        /**
-         * TODO - When user is not authenticated
-         */
-        /*describe('when user is not authenticated', () => {
-        });*/
+                    checkCatchServerError(
+                        secureMessagesService.createSecureMessage(mockClientSecureMessage),
+                        mockBackend);
+                }));
     });
 
     describe('getAllMessages [method]', () => {
 
-        describe('when user is authenticated', () => {
+        it('should successfully GET a list of messages',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            it('should successfully GET a list of messages',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    const message1: any = createSecureMessage_server('200'),
+                        message2: any = createSecureMessage_server('300');
 
-                        const message1: any = createSecureMessage_server('200'),
-                            message2: any = createSecureMessage_server('300');
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify([
+                                        message1,
+                                        message2
+                                    ])
+                                })));
+                    });
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        body: JSON.stringify([
-                                            message1,
-                                            message2
-                                        ])
-                                    })));
-                        });
+                    mockServiceCall = secureMessagesService.getAllMessages();
 
-                        mockServiceCall = secureMessagesService.getAllMessages();
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        const resJSON = serverResponse.json();
+                        expect(resJSON[0]).toEqual(message1);
+                        expect(resJSON[1]).toEqual(message2);
+                    });
+                }));
 
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                            const resJSON = serverResponse.json();
-                            expect(resJSON[0]).toEqual(message1);
-                            expect(resJSON[1]).toEqual(message2);
-                        });
-                    }));
-
-            it('should catch server error response',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        checkCatchServerError(secureMessagesService.getAllMessages(), mockBackend);
-                    }));
-        });
-
-        /**
-         * TODO - When user is not authenticated
-         */
-        /*describe('when user is not authenticated', () => {
-        });*/
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    checkCatchServerError(secureMessagesService.getAllMessages(), mockBackend);
+                }));
     });
 
     describe('getMessage [method]', () => {
 
-        describe('when user is authenticated', () => {
+        it('should successfully GET a single messages',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            it('should successfully GET a single messages',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    mockServerSecureMessage = createSecureMessage_server('400');
 
-                        mockServerSecureMessage = createSecureMessage_server('400');
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify(mockServerSecureMessage)
+                                })));
+                    });
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        body: JSON.stringify(mockServerSecureMessage)
-                                    })));
-                        });
+                    mockServiceCall = secureMessagesService.getMessage('400');
 
-                        mockServiceCall = secureMessagesService.getMessage('400');
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        const resJSON = serverResponse.json();
+                        expect(resJSON).toEqual(mockServerSecureMessage);
+                    });
+                }));
 
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                            const resJSON = serverResponse.json();
-                            expect(resJSON).toEqual(mockServerSecureMessage);
-                        });
-                    }));
-
-            it('should catch server error response',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        checkCatchServerError(secureMessagesService.getMessage('123'), mockBackend);
-                    }));
-        });
-
-        /**
-         * TODO - When user is not authenticated
-         */
-        /*describe('when user is not authenticated', () => {
-        });*/
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    checkCatchServerError(secureMessagesService.getMessage('123'), mockBackend);
+                }));
     });
 
     describe('saveDraft [method]', () => {
 
-        describe('when user is authenticated', () => {
+        it('should successfully POST a draft message',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            it('should successfully POST a draft message',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    const mockClientDraft = createDraftMessage_client(),
+                        mockServerDraftSuccess = {
+                            msg_id: '500',
+                            status: 'OK',
+                            thread_id: 'thread123'
+                        };
 
-                        const mockClientDraft = createDraftMessage_client(),
-                            mockServerDraftSuccess = {
-                                msg_id: '500',
-                                status: 'OK',
-                                thread_id: 'thread123'
-                            };
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify(mockServerDraftSuccess)
+                                })));
+                    });
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        body: JSON.stringify(mockServerDraftSuccess)
-                                    })));
-                        });
+                    mockServiceCall = secureMessagesService.saveDraft(mockClientDraft);
 
-                        mockServiceCall = secureMessagesService.saveDraft(mockClientDraft);
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        const resJSON = serverResponse.json();
+                        expect(resJSON).toEqual(mockServerDraftSuccess);
+                    });
+                }));
 
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                            const resJSON = serverResponse.json();
-                            expect(resJSON).toEqual(mockServerDraftSuccess);
-                        });
-                    }));
-
-            it('should catch server error response',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        checkCatchServerError(secureMessagesService.saveDraft(null), mockBackend);
-                    }));
-        });
-
-        /**
-         * TODO - When user is not authenticated
-         */
-        /*describe('when user is not authenticated', () => {
-         });*/
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    checkCatchServerError(secureMessagesService.saveDraft(null), mockBackend);
+                }));
     });
 
     describe('updateDraft [method]', () => {
 
-        describe('when user is authenticated', () => {
+        it('should successfully update and PUT a draft message',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
 
-            it('should successfully update and PUT a draft message',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    const mockServerDraft = createDraftMessage_server('600');
 
-                        const mockServerDraft = createDraftMessage_server('600');
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify('Updated')
+                                })));
+                    });
 
-                        mockBackend.connections.subscribe((connection: any) => {
-                            connection.mockRespond(
-                                new Response(
-                                    new ResponseOptions({
-                                        body: JSON.stringify('Updated')
-                                    })));
+                    mockServiceCall = secureMessagesService.updateDraft('600', mockServerDraft);
+
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                            const resJSON = serverResponse.json();
+                            expect(resJSON).toEqual('Updated');
                         });
+                }));
 
-                        mockServiceCall = secureMessagesService.updateDraft('600', mockServerDraft);
-
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                                const resJSON = serverResponse.json();
-                                expect(resJSON).toEqual('Updated');
-                            });
-                    }));
-
-            it('should catch server error response',
-                inject([SecureMessagesService, XHRBackend],
-                    (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
-                        checkCatchServerError(secureMessagesService.updateDraft('456', null), mockBackend);
-                    }));
-        });
-
-        /**
-         * TODO - When user is not authenticated
-         */
-        /*describe('when user is not authenticated', () => {
-         });*/
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    checkCatchServerError(secureMessagesService.updateDraft('456', null), mockBackend);
+                }));
     });
-
-    /**
-     * TODO - Refactor/test after security architecture has been decided
-     */
-    /*describe('authenticate [method]', () => {
-    });*/
-
-    /**
-     * TODO - Refactor/test after security architecture has been decided
-     */
-    /*describe('isAuthenticated [method]', () => {
-    });*/
 });
