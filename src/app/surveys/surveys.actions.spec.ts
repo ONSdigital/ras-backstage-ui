@@ -5,7 +5,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 import { SurveysService } from './surveys.service';
 import { SurveysActions } from './surveys.actions';
 import { createSurvey_server } from '../../testing/create_Survey';
-import {Survey} from './shared/survey.model';
+import { Survey } from './shared/survey.model';
 
 let mockReduxStore: any,
     mockObservable_response: any,

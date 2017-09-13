@@ -27,7 +27,7 @@ export class UserActions {
             (user: User) => {
                 this.userReceived(user);
             },
-            (err: any) => console.log('Error: ', err)
+            (err: any) => console.log('Could not dispatch userReceived action, service error: ', err)
         );
 
         return observable;
