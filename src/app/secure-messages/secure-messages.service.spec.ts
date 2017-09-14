@@ -161,6 +161,43 @@ describe('SecureMessagesService', () => {
                 }));
     });
 
+    describe('updateMessageLabels', () => {
+
+        it('should successfully PUT a messages labels',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+
+                    const mockResponse: any = {};
+
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify(mockResponse)
+                                })));
+                    });
+
+                    mockServiceCall = secureMessagesService.updateMessageLabels('410', {
+                        label: 'test label',
+                        action: 'test-action'
+                    });
+
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        const resJSON = serverResponse.json();
+                        expect(resJSON).toEqual(mockResponse);
+                    });
+                }));
+
+        it('should catch server error response',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+                    checkCatchServerError(secureMessagesService.updateMessageLabels('410', {
+                        label: 'test label',
+                        action: 'test-action'
+                    }), mockBackend);
+                }));
+    });
+
     describe('saveDraft [method]', () => {
 
         it('should successfully POST a draft message',
