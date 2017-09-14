@@ -9,10 +9,11 @@ import { CollectionInstrumentsService } from './collection-instruments.service';
 export class CollectionInstrumentsActions {
 
     static LOAD_COLLECTION_INSTRUMENT_BATCH = 'COLLECTION_INSTRUMENT_BATCH_LOAD';
+    static LOADED_COLLECTION_INSTRUMENT_BATCH = 'COLLECTION_INSTRUMENT_BATCH_LOADED';
 
     constructor(
         private ngRedux: NgRedux<any>,
-        private collectionInstrumentsService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) {}
 
     public loadCollectionInstrumentBatch(id: string): Observable<any> {
 
@@ -21,33 +22,25 @@ export class CollectionInstrumentsActions {
             id: id
         });
 
-        return this.collectionInstrumentsService.loadCollectionInstrumentBatch(id);
+        const observable = this.collectionInstrumentsService.loadCollectionInstrumentBatch(id)
+            .share();
+
+        observable.subscribe(
+            (res: any) => {
+                this.loadedCollectionInstrumentBatch(id);
+            },
+            (err: any) => console
+                .log('Could not dispatch loadedCollectionInstrumentBatch action, service error: ', err)
+        );
+
+        return observable;
     }
 
-    // public retrieveSurvey(id: string) {
-    //
-    //     this.ngRedux.dispatch({
-    //         type: SurveysActions.RETRIEVE_SINGLE,
-    //         id: id
-    //     });
-    //
-    //     const observable = this.surveysService.getSurvey(id);
-    //
-    //     observable.subscribe(
-    //         // Normalise data first to keep entities in data store dry before saving
-    //         // Update data store
-    //         (survey: Survey) => {
-    //             this.receivedSurvey(survey);
-    //         }
-    //     );
-    //     return observable;
-    // }
-    //
-    // public receivedSurvey(survey: Survey) {
-    //
-    //     this.ngRedux.dispatch({
-    //         type: SurveysActions.RECEIVED_SINGLE,
-    //         survey: survey
-    //     });
-    // }
+    public loadedCollectionInstrumentBatch(id: string) {
+
+        this.ngRedux.dispatch({
+            type: CollectionInstrumentsActions.LOADED_COLLECTION_INSTRUMENT_BATCH,
+            id: id
+        });
+    }
 }
