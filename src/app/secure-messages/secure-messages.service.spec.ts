@@ -20,7 +20,7 @@ import {
     createDraftMessage_server
 } from '../../testing/create_SecureMessage';
 
-import { checkCatchServerError } from '../../testing/utils';
+import { checkCatchServerError } from '../../../testing-utils';
 
 let mockAuthenticationService: any,
     mockServerSecureMessage: any,

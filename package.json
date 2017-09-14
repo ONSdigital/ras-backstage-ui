@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Client application for internal users (Respondent account services)",
   "engines": {
-    "node": "6.10.2",
+    "node": "6.10.3",
     "npm": "3.10.10"
   },
   "repository": {
@@ -12,7 +12,7 @@
   },
   "author": "",
   "scripts": {
-    "test": "gulp test"
+    "test": "ng test"
   },
   "keywords": [],
   "license": "MIT",

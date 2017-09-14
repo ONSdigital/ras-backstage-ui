@@ -57,6 +57,12 @@
   "test": {
     "karma": {
       "config": "./karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": [
+          "./testing-utils.ts",
+          "./src/testing/**/*.ts"
+      ]
     }
   },
   "defaults": {

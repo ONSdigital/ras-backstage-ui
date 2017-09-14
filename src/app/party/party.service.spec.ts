@@ -15,7 +15,7 @@ import { PartyService } from './party.service';
 import { createRespondent_server } from '../../testing/create_Respondent';
 import { createReportingUnit_server } from '../../testing/create_RerportingUnit';
 
-import { checkCatchServerError } from '../../testing/utils';
+import { checkCatchServerError } from '../../../testing-utils';
 
 let mockAuthenticationService: any,
     mockServerBusiness: any,

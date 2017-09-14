@@ -17,7 +17,7 @@ import { AuthenticationService } from '../authentication/authentication.service'
 import { SurveysService } from './surveys.service';
 import { Survey } from './shared/survey.model';
 
-import { checkCatchServerError } from '../../testing/utils';
+import { checkCatchServerError } from '../../../testing-utils';
 
 let mockSurvey: any,
     mockAuthenticationService: any;
