@@ -37,10 +37,6 @@ export class CollectionInstrumentsService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .catch((response: any) => {
-            console.log('Error response: ', response);
-            return Observable.throw({ errorMessage: response._body, response });
-        })
         .do(printResponse.bind(this, 'Get collection instrument status'))
         .catch(handleError)
         .share();
