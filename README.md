@@ -31,3 +31,13 @@ Using a command line tool, from the project root:
 * `gulp prod` transpiles aot with typescript compiler
 * `node_modules/.bin/rollup -c rollup-config.js` performstree shaking and produces the application bundle
 * (Optional) Run `gulp server`
+
+## Deployment
+Command line configuration for running the application using a customised environment
+npm run environment:set -- --API_ROOT=(API_ROOT argument) --RESPONSE_OPERATIONS_ROOT=(RESPONSE_OPERATIONS_ROOT argument) && npm run build:custom-environment
+
+### API_ROOT arg example
+* Replace '(API_ROOT argument)' with `//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/`
+
+### RESPONSE_OPERATIONS_ROOT arg example
+* Replace '(RESPONSE_OPERATIONS_ROOT argument)' with `http://response-operations-ui-test.apps.devtest.onsclofo.uk/`

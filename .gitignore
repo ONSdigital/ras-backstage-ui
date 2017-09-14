@@ -23,3 +23,6 @@ node_modules
 
 # Optional npm cache directory
 .npm
+
+# Compiled environment config file (for custom set environment variables)
+src/environments/environment.custom.ts

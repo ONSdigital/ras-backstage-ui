@@ -26,6 +26,7 @@
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
+        "custom": "environments/environment.custom.ts",
         "cat": "environments/environment.cat.ts",
         "ci": "environments/environment.ci.ts",
         "dev": "environments/environment.ts",
