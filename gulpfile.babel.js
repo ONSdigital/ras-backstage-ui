@@ -212,24 +212,18 @@ gulp.task('dev', ['clean:css:prod', 'watch:typescript', 'watch:html', 'watch:sas
 
 gulp.task('prod', ['rollup:prod', 'sass:global:prod']);
 
-
 gulp.task('environment:set', () => {
     const envPath = './src/environments/';
-    const apiRoot = argv.API_ROOT;
-    const responseOperationsRoot = argv.RESPONSE_OPERATIONS_ROOT;
-
-    if (!apiRoot) {
-        throw 'Command line argument API_ROOT not defined';
-    }
-
-    if (!responseOperationsRoot) {
-        throw 'Command line argument RESPONSE_OPERATIONS_ROOT not defined';
-    }
 
     const template = fs.readFileSync(envPath + 'environment._template.ts', 'utf8');
-    const output = template
-        .replace('${API_ROOT}', apiRoot)
-        .replace('${RESPONSE_OPERATIONS_ROOT}', responseOperationsRoot);
 
-    fs.writeFileSync(envPath + 'environment.custom.ts', output);
+    let output = template;
+
+    for (let arg in argv) {
+        console.log('Arguments: ', arg, '${' + arg + '}');
+
+        output = output.replace('${' + arg + '}', argv[arg]);
+    }
+
+    fs.writeFileSync(envPath + 'environment._compiled.ts', output);
 });

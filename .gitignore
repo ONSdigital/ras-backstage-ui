@@ -25,4 +25,4 @@ node_modules
 .npm
 
 # Compiled environment config file (for custom set environment variables)
-src/environments/environment.custom.ts
+src/environments/environment._compiled.ts
