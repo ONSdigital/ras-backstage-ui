@@ -1,6 +1,7 @@
 # Backstage UI
 [![Build Status](https://travis-ci.org/ONSdigital/ras-backstage-ui.svg?branch=master)](https://travis-ci.org/ONSdigital/ras-backstage-ui)
 [![codecov](https://codecov.io/gh/ONSdigital/ras-backstage-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/ras-backstage-ui)
+
 Angular application for internal ONS staff to manage collection exercises. Utilises an accompanying microservice-based API.
 
 ## Development

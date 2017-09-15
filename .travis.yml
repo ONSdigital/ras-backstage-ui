@@ -22,7 +22,7 @@ install:
 - npm install
 
 script:
-- ng test --watch=false
+- ng test --watch=false --code-coverage
 
 branches:
   only:
