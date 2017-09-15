@@ -1,4 +1,6 @@
 # Backstage UI
+[![Build Status](https://travis-ci.org/ONSdigital/ras-backstage-ui.svg?branch=master)](https://travis-ci.org/ONSdigital/ras-backstage-ui)
+[![codecov](https://codecov.io/gh/ONSdigital/ras-backstage-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/ras-backstage-ui)
 Angular application for internal ONS staff to manage collection exercises. Utilises an accompanying microservice-based API.
 
 ## Development
@@ -34,7 +36,7 @@ Using a command line tool, from the project root:
 
 ## Deployment
 Command line configuration for running the application using a customised environment
-npm run environment:set -- --API_ROOT=(API_ROOT argument) --RESPONSE_OPERATIONS_ROOT=(RESPONSE_OPERATIONS_ROOT argument) && npm run build:custom-environment
+* `npm run environment:set -- --API_ROOT=(API_ROOT argument) --RESPONSE_OPERATIONS_ROOT=(RESPONSE_OPERATIONS_ROOT argument) && npm run build:custom-environment`
 
 ### API_ROOT arg example
 * Replace '(API_ROOT argument)' with `//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/`
