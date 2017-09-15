@@ -90,6 +90,35 @@ describe('PartyService', () => {
         });
     });
 
+    describe('getBusinessByRef', () => {
+
+        describe('when the business exists in the service', () => {
+
+            it('should successfully retrieve a business',
+                inject([PartyService, XHRBackend],
+                    (partyService: PartyService, mockBackend: MockBackend) => {
+                        let mockServiceCall: any;
+
+                        mockServerBusiness = createReportingUnit_server();
+
+                        mockBackend.connections.subscribe((connection: any) => {
+                            connection.mockRespond(
+                                new Response(
+                                    new ResponseOptions({
+                                        body: JSON.stringify(mockServerBusiness)
+                                    })));
+                        });
+
+                        mockServiceCall = partyService.getBusinessByRef('987');
+
+                        mockServiceCall.subscribe((serverResponse: any) => {
+                            const resJSON = serverResponse.json();
+                            expect(resJSON).toEqual(mockServerBusiness);
+                        });
+                    }));
+        });
+    });
+
     describe('getRespondent [method]', () => {
 
         describe('when the respondent exists in the service', () => {
