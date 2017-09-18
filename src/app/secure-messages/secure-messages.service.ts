@@ -5,7 +5,7 @@ import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest, HandleCommonRequest, handleError, printResponse } from '../shared/utils';
+import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {

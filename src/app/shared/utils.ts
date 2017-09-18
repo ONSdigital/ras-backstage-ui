@@ -23,11 +23,16 @@ import { Response } from '@angular/http';
     );
 }*/
 
-export function isFunction(obj: any) {
+export function isFunction(obj: any): Boolean {
     return !!(obj && obj.constructor && obj.call && obj.apply);
 }
 
-export function validateProperties (entity: Object, constraints: Array<Constraint>) {
+export function validateProperties (entity: Object, constraints: Array<Constraint>): Array<Constraint> | Boolean {
+
+    if (!entity || !constraints || !constraints.length) {
+        return;
+    }
+
     const failedValidation = constraints.filter((constraint: any) => entity[constraint.propertyName] === undefined);
 
     failedValidation.forEach((constraint: any) => validationOutput({
@@ -38,7 +43,7 @@ export function validateProperties (entity: Object, constraints: Array<Constrain
     return failedValidation.length ? failedValidation : false;
 }
 
-export function validationOutput (err: ValidationError) {
+export function validationOutput (err: ValidationError): void {
     console.log(err.notification);
 
     if (err.subject) {
@@ -51,11 +56,11 @@ export function validationOutput (err: ValidationError) {
     }
 }
 
-export function printResponse (printStatement: string, res: Response) {
+export function printResponse (printStatement: string, res: Response): void {
     console.log(printStatement + ': ', res);
 }
 
-export function handleError (response: any) {
+export function handleError (response: any): Observable<any> {
     console.log('Error response: ', response);
     return Observable.throw({ errorMessage: response._body, response });
 }
@@ -112,7 +117,7 @@ export function CheckBadRequest(options: any) {
     };
 }
 
-export function HandleCommonRequest(options: any) {
+/*export function HandleCommonRequest(options: any) {
 
     const { printStatement } = options;
 
@@ -130,7 +135,7 @@ export function HandleCommonRequest(options: any) {
             return call.share();
         };
     };
-}
+}*/
 
 interface Constraint {
     propertyName: string;
