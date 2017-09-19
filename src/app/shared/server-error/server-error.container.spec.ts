@@ -18,7 +18,7 @@ describe('ServerErrorContainerComponent', () => {
 
     beforeEach(() => {
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -43,17 +43,19 @@ describe('ServerErrorContainerComponent', () => {
 
     describe('when route has query parameters', () => {
 
+        const queryParams = {
+            errorResponseCode: '200',
+            errorHeading: 'Heading from route',
+            errorBody: 'Error body here'
+        };
+
         beforeEach(() => {
-            mockQueryParams_observable = Observable.of({
-                errorResponseCode: '200',
-                errorHeading: 'Heading from route',
-                errorBody: 'Error body here'
-            });
+            mockQueryParams_observable = Observable.of(queryParams);
 
             activatedRoutePointer.queryParams = mockQueryParams_observable;
         });
 
-        it('should initialise correctly', () => {
+        it('should initialise correctly', async(() => {
             fixture = TestBed.createComponent(ServerErrorContainerComponent);
 
             fixture.detectChanges();
@@ -62,11 +64,11 @@ describe('ServerErrorContainerComponent', () => {
 
                 const comp = fixture.debugElement.componentInstance;
 
-                expect(comp.errorResponseCode).toEqual(mockQueryParams_observable.errorResponseCode);
-                expect(comp.errorHeading).toEqual(mockQueryParams_observable.errorHeading);
-                expect(comp.errorBody).toEqual(mockQueryParams_observable.errorBody);
+                expect(comp.errorResponseCode).toEqual(queryParams.errorResponseCode);
+                expect(comp.errorHeading).toEqual(queryParams.errorHeading);
+                expect(comp.errorBody).toEqual(queryParams.errorBody);
             });
-        });
+        }));
     });
 
     describe('when route does not have query parameters', () => {
@@ -77,7 +79,7 @@ describe('ServerErrorContainerComponent', () => {
             activatedRoutePointer.queryParams = mockQueryParams_observable;
         });
 
-        it('should log error to console', () => {
+        it('should log error to console', async(() => {
             fixture = TestBed.createComponent(ServerErrorContainerComponent);
 
             fixture.detectChanges();
@@ -91,6 +93,6 @@ describe('ServerErrorContainerComponent', () => {
                 expect(comp.errorBody).toEqual('');
                 expect(console.log).toHaveBeenCalledWith('Error: ', 'Some error');
             });
-        });
+        }));
     });
 });

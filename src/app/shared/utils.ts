@@ -65,12 +65,22 @@ export function handleError (response: any): Observable<any> {
     return Observable.throw({ errorMessage: response._body, response });
 }
 
+export const global = {
+    changeLocation(loc: string) {
+        window.location.href = loc;
+    }
+};
+
 /**
  * Decorator
  */
 export function CheckBadRequest(options: any) {
 
     const { errorHeading, serviceClass } = options;
+
+    if (!errorHeading || !serviceClass) {
+        throw new Error('Invalid configuration of CheckBadRequest. Require errorHeading, serviceClass properties');
+    }
 
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
 
@@ -103,10 +113,9 @@ export function CheckBadRequest(options: any) {
                                 }
                             });
                         } else {
-                            console.log('Bad request: ', error);
-                            window.location.href = '/server-error?errorResponseCode=' + error.response.status +
+                            global.changeLocation('/server-error?errorResponseCode=' + error.response.status +
                                 '&errorHeading=' + errorHeading + '&errorBody=' + serviceClass.label + ' error: ' +
-                                error.errorMessage;
+                                error.errorMessage);
                         }
                     }
                 }

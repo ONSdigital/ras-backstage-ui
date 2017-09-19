@@ -1,20 +1,66 @@
+import { Observable } from 'rxjs/Rx';
 import {
     Response,
     ResponseOptions
 } from '@angular/http';
 
-import { isFunction, validateProperties, validationOutput, printResponse, handleError } from './utils';
+import { AuthenticationService } from '../authentication/authentication.service';
+
+import {
+    isFunction,
+    validateProperties,
+    validationOutput,
+    printResponse,
+    handleError,
+    CheckBadRequest,
+    global
+} from './utils';
 
 const originalConsole: any = console.log;
+const originalWindowLocationHref = window.location.href;
+
+const originalGlobalObj = global;
+
+AuthenticationService.routerCache = undefined;
+
+function createBadRequest (opts: any) {
+    const res: Response = new Response(
+        new ResponseOptions({
+            body: {}
+        }));
+
+    res.ok = false;
+    res.status = 500;
+    res.statusText = '';
+    res.type = 3;
+    res.url = null;
+
+    Object.assign(res, opts);
+
+    return Observable.throw({
+        errorMessage: 'Errored request',
+        response: res
+    });
+}
 
 describe('utils', () => {
 
+    function resetAuthentication () {
+        AuthenticationService.routerCache = {
+            navigate () {}
+        };
+    }
+
     beforeEach(() => {
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
+
+        resetAuthentication();
+        spyOn(AuthenticationService.routerCache, 'navigate');
     });
 
     afterEach(() => {
         console.log = originalConsole;
+        resetAuthentication();
     });
 
     describe('isFunction [function]', () => {
@@ -192,6 +238,160 @@ describe('utils', () => {
 
             expect(errored).toEqual(true);
             expect(console.log).toHaveBeenCalledWith('Error response: ', errorResponse);
+        });
+    });
+
+    describe('CheckBadRequest [decorator]', () => {
+
+        function createCallDecoratorBinding (options: any, errorResponse: any) {
+            const binding: any = CheckBadRequest(options);
+            const method: any = function () {
+                return errorResponse;
+            };
+            const descriptorValue = {
+                value: method
+            };
+
+            /**
+             * Decorate method
+             */
+            binding({}, '', descriptorValue);
+
+            return descriptorValue.value;
+        }
+
+        describe('when supplied with valid option arguments', () => {
+
+            let options: any;
+            let errorResponse: any;
+
+            beforeEach(() => {
+                options = {
+                    errorHeading: 'Test error heading',
+                    serviceClass: 'TestClass'
+                };
+            });
+
+            describe('and response status is equal to 401', () => {
+
+                beforeEach(() => {
+                    errorResponse = createBadRequest({
+                        status: 401
+                    });
+                });
+
+                it('should ignore unauthorized related error', () => {
+                    const result = createCallDecoratorBinding(options, errorResponse)();
+
+                    result.subscribe(
+                        () => {},
+                        () => {
+                            expect(console.log).not.toHaveBeenCalled();
+                            expect(AuthenticationService.routerCache.navigate).not.toHaveBeenCalled();
+                            expect(location.href).toEqual(originalWindowLocationHref);
+                        }
+                    );
+                });
+            });
+
+            describe('and response status is not equal to 401', () => {
+
+                const errorStatus = 500;
+
+                beforeEach(() => {
+                    errorResponse = createBadRequest({
+                        status: errorStatus
+                    });
+                });
+
+                it('should log server error response', () => {
+                    const result = createCallDecoratorBinding(options, errorResponse)();
+
+                    result.subscribe(
+                        () => {},
+                        (err: any) => {
+                            expect(console.log).toHaveBeenCalledWith('Bad request: ', err);
+                        }
+                    );
+                });
+
+                describe('and router exists on AuthenticationService', () => {
+
+                    beforeEach(() => {
+                        AuthenticationService.routerCache = {
+                            navigate: function () {}
+                        };
+
+                        spyOn(AuthenticationService.routerCache, 'navigate');
+                    });
+
+                    afterEach(() => {
+                        AuthenticationService.routerCache = undefined;
+                    });
+
+                    it('should call navigate on router with correct parameters', () => {
+                        const result = createCallDecoratorBinding(options, errorResponse)();
+
+                        result.subscribe(
+                            () => {},
+                            (err: any) => {
+                                expect(AuthenticationService.routerCache.navigate)
+                                    .toHaveBeenCalledWith(['/server-error'], {
+                                        queryParams: {
+                                            errorResponseCode: errorStatus,
+                                            errorHeading: options.errorHeading,
+                                            errorBody: options.serviceClass.label + ' error: ' + err.errorMessage
+                                        }
+                                    });
+                            }
+                        );
+                    });
+                });
+
+                describe('and router does not exist on AuthenticationService', () => {
+
+                    beforeEach(() => {
+                        spyOn(global, 'changeLocation');
+                        AuthenticationService.routerCache = undefined;
+                    });
+
+                    afterEach(() => {
+                        global.changeLocation = originalGlobalObj.changeLocation;
+                    });
+
+                    it('should global changeLocation method', () => {
+                        const result = createCallDecoratorBinding(options, errorResponse)();
+
+                        result.subscribe(
+                            () => {},
+                            (err: any) => {
+                                expect(global.changeLocation).toHaveBeenCalledWith('/server-error?errorResponseCode=' +
+                                    errorStatus +
+                                    '&errorHeading=' + options.errorHeading + '&errorBody=' +
+                                    options.serviceClass.label + ' error: ' +
+                                    err.errorMessage);
+                            }
+                        );
+                    });
+                });
+            });
+        });
+
+        describe('when not supplied with valid option arguments', () => {
+
+            it('should throw an invalid configuration error', () => {
+
+                try {
+                    const binding: any = CheckBadRequest({});
+
+                    expect(binding).toThrowError('Invalid configuration of CheckBadRequest. Require errorHeading, ' +
+                        'serviceClass properties');
+                } catch (e) {
+
+                } finally {
+
+                }
+            });
         });
     });
 });
