@@ -1,9 +1,8 @@
-import { validateProperties } from '../../shared/utils';
-import { Survey } from './survey.model';
+import { global } from '../../shared/utils';
 
-export function validateSurvey (data: Survey) {
+export function validateSurvey (data: any) {
 
-    return validateProperties(data, [
+    return global.validateProperties(data, [
         { propertyName: 'id' },
         { propertyName: 'longName' },
         { propertyName: 'shortName' },

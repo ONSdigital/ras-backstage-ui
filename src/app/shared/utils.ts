@@ -68,7 +68,8 @@ export function handleError (response: any): Observable<any> {
 export const global = {
     changeLocation(loc: string) {
         window.location.href = loc;
-    }
+    },
+    validateProperties: validateProperties
 };
 
 /**
