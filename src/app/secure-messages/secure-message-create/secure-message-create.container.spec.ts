@@ -39,9 +39,21 @@ function createDefaultSecureMessage() {
     };
 }
 
+let mockGetUser_observable: Observable<any>;
+
+const originalConsoleLog = console.log;
+
+function resetGetUserObservable () {
+    mockGetUser_observable = Observable.of({
+        id: '123'
+    });
+}
+
 describe('SecureMessageCreateContainerComponent', () => {
 
     beforeEach(() => {
+
+        spyOn(console, 'log');
 
         mockStore = {
             dispatch(action: any) {},
@@ -53,11 +65,11 @@ describe('SecureMessageCreateContainerComponent', () => {
 
         mockUserActions = {
             getUser: function() {
-                return Observable.of({
-                    id: '123'
-                });
+                return mockGetUser_observable;
             }
         };
+
+        resetGetUserObservable();
 
         mockSecureMessagesActions = {
             createSecureMessage: function() {
@@ -111,6 +123,7 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     afterEach(() => {
         mockRouteSnapshot.data = {};
+        console.log = originalConsoleLog;
     });
 
     /**
@@ -137,15 +150,68 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     describe('when initialising a new secure message', () => {
 
+        describe('and current user is not found', () => {
+
+            beforeEach(() => {
+                mockGetUser_observable = Observable.throw('Error fetching user');
+            });
+
+            afterEach(() => {
+                resetGetUserObservable();
+            });
+
+            it('should not call createMessageUpdate', async(() => {
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+
+                    spyOn(comp, 'createMessageUpdate');
+
+                    expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                    expect(comp.createMessageUpdate).not.toHaveBeenCalled();
+                });
+            }));
+
+            describe('and createMessageUpdate is invoked', () => {
+
+                it('should not intialise a new secure message', async(() => {
+                    fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        const comp = fixture.debugElement.componentInstance;
+
+                        comp.createMessageUpdate(null);
+
+                        expect(console.log).toHaveBeenCalledWith('Logged in user not found');
+                        expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                    });
+                }));
+            });
+        });
+
         describe('and reporting unit & respondent exist on exported route data', () => {
 
-            it('should setup the secureMessage correctly', async(() => {
-                const reportingUnit: any = {
-                        id: 'reportingUnit:123456'
-                    },
-                    respondent: any = {
-                        id: 'respondent: 098765'
-                    };
+            let reportingUnit: any,
+                respondent: any;
+
+            const userId = '123';
+
+            beforeEach(() => {
+                reportingUnit = {
+                    id: 'reportingUnit:123456'
+                };
+                respondent = {
+                    id: 'respondent: 098765'
+                };
 
                 mockRouteSnapshot.data = {
                     exported: {
@@ -153,7 +219,9 @@ describe('SecureMessageCreateContainerComponent', () => {
                         respondent
                     }
                 };
+            });
 
+            it('should setup the secureMessage correctly', async(() => {
                 fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
                 instance = fixture.componentInstance;
 
@@ -165,7 +233,7 @@ describe('SecureMessageCreateContainerComponent', () => {
 
                     expect(comp.secureMessage).toEqual({
                         msg_to: [respondent.id],
-                        msg_from: '123',
+                        msg_from: userId,
                         subject: '',
                         body: '',
                         ru_id: reportingUnit.id,
@@ -175,9 +243,75 @@ describe('SecureMessageCreateContainerComponent', () => {
                     });
                 });
             }));
+
+            describe('and respondentCaseId (aka collection_case property--to the sm service) is found',
+                () => {
+
+                    const respondentCaseId = '5000';
+
+                    beforeEach(() => {
+                        mockRouteSnapshot.data.exported.respondentCaseId = respondentCaseId;
+                    });
+
+                    afterEach(() => {
+                        delete mockRouteSnapshot.data.exported.respondentCaseId;
+                    });
+
+                    it('should add the collection_case property to the new message ', async(() => {
+                        fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                        instance = fixture.componentInstance;
+
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            fixture.detectChanges();
+
+                            const comp = fixture.debugElement.componentInstance;
+
+                            expect(comp.secureMessage).toEqual({
+                                msg_to: [respondent.id],
+                                msg_from: userId,
+                                subject: '',
+                                body: '',
+                                ru_id: reportingUnit.id,
+                                survey: 'BRES',
+                                '@msg_to': [{}],
+                                '@ru_id': {},
+                                collection_case: respondentCaseId
+                            });
+                        });
+                    }));
+                });
+
+            describe('and secure message does not have aggregate data', () => {
+
+                it('should return undefined', async(() => {
+                    fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    const comp = fixture.debugElement.componentInstance;
+
+                    spyOn(comp, 'secureMessageHasAgreggateData').and.callThrough();
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        expect(comp.secureMessageHasAgreggateData).toHaveBeenCalled();
+
+                        const result = comp.createMessageUpdate({ id: '300' });
+                        expect(result ).toEqual(undefined);
+                    });
+                }));
+            });
         });
 
         describe('and reporting unit does not exist on exported route data', () => {
+
+            beforeEach(() => {
+                mockRouteSnapshot.data = {
+                    exported: {}
+                };
+            });
 
             it('should not setup the secureMessage', async(() => {
 
@@ -191,12 +325,25 @@ describe('SecureMessageCreateContainerComponent', () => {
                     const comp = fixture.debugElement.componentInstance;
 
                     expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                    expect(console.log).toHaveBeenCalledWith('reportingUnit or respondent not found in ' +
+                        'exported data: ', {});
+
+                    /**
+                     * Also run in isolation
+                     */
+                    expect(comp.createMessageUpdate({ id: '123' })).toEqual(undefined);
                 });
             }));
         });
 
         describe('and respondent does not exist on exported route data', () => {
 
+            beforeEach(() => {
+                mockRouteSnapshot.data = {
+                    exported: {}
+                };
+            });
+
             it('should not setup the secureMessage', async(() => {
 
                 fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
@@ -209,14 +356,21 @@ describe('SecureMessageCreateContainerComponent', () => {
                     const comp = fixture.debugElement.componentInstance;
 
                     expect(comp.secureMessage).toEqual(createDefaultSecureMessage());
+                    expect(console.log).toHaveBeenCalledWith('reportingUnit or respondent not found in ' +
+                        'exported data: ', {});
+
+                    /**
+                     * Also run in isolation
+                     */
+                    expect(comp.createMessageUpdate({ id: '123' })).toEqual(undefined);
                 });
             }));
         });
     });
 
-    describe('when the sendSecureMessage_handler is invoked', () => {
+    describe('sendSecureMessage_handler [method]', () => {
 
-        describe('and message properties are valid', () => {
+        describe('when message properties are valid', () => {
 
             it('should call createSecureMessage action method from the SecureMessageActions service.', async(() => {
                 fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
@@ -237,7 +391,7 @@ describe('SecureMessageCreateContainerComponent', () => {
             }));
         });
 
-        describe('and message properties are invalid', () => {
+        describe('when message properties are invalid', () => {
 
             it('should not call createSecureMessage action method from the SecureMessageActions service.', async(() => {
                 fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
@@ -256,7 +410,7 @@ describe('SecureMessageCreateContainerComponent', () => {
         });
     });
 
-    describe('when the saveDraft_handler is invoked', () => {
+    describe('saveDraft_handler [method]', () => {
 
         /**
          * Always call the service

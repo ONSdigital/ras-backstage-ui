@@ -1,9 +1,7 @@
-import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { PartyService } from '../../party/party.service';
 import { Business, Respondent } from '../../party/party.model';
 
 import { SecureMessage } from '../shared/secure-message.model';
@@ -110,9 +108,7 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
             secureMessage['collection_case'] = respondentCaseId;
         }
 
-        if (!secureMessageHasAgreggateData(secureMessage)) {
-            return;
-        }
+        this.secureMessageHasAgreggateData(secureMessage);
 
         this.secureMessage = secureMessage;
     }
@@ -149,16 +145,16 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
     private isMessageValid() {
         return !(this.secureMessage.subject === '' || this.secureMessage.body === '');
     }
-}
 
-function secureMessageHasAgreggateData (secureMessage: any): Boolean {
+    public secureMessageHasAgreggateData (secureMessage: any): Boolean {
 
-    const failedValidation = validateProperties(secureMessage, [
-        { propertyName: '@msg_to' },
-        { propertyName: '@ru_id' }
-    ]);
+        const failedValidation = validateProperties(secureMessage, [
+            { propertyName: '@msg_to' },
+            { propertyName: '@ru_id' }
+        ]);
 
-    const checkMsgToExistsInArray: Boolean = secureMessage['@msg_to'] && secureMessage['@msg_to'][0];
+        const checkMsgToExistsInArray: Boolean = secureMessage['@msg_to'] && secureMessage['@msg_to'][0];
 
-    return !(failedValidation || !checkMsgToExistsInArray);
+        return !(failedValidation || !checkMsgToExistsInArray);
+    }
 }
