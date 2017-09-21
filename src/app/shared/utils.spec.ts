@@ -16,32 +16,14 @@ import {
     global
 } from './utils';
 
+import { createBadRequest } from '../../../testing-utils';
+
 const originalConsole: any = console.log;
 const originalWindowLocationHref = window.location.href;
 
 const originalGlobalObj = global;
 
 AuthenticationService.routerCache = undefined;
-
-function createBadRequest (opts: any) {
-    const res: Response = new Response(
-        new ResponseOptions({
-            body: {}
-        }));
-
-    res.ok = false;
-    res.status = 500;
-    res.statusText = '';
-    res.type = 3;
-    res.url = null;
-
-    Object.assign(res, opts);
-
-    return Observable.throw({
-        errorMessage: 'Errored request',
-        response: res
-    });
-}
 
 describe('utils', () => {
 
@@ -280,7 +262,7 @@ describe('utils', () => {
                     });
                 });
 
-                it('should ignore unauthorized related error', () => {
+                it('should ignore unauthorized unrelated error', () => {
                     const result = createCallDecoratorBinding(options, errorResponse)();
 
                     result.subscribe(
@@ -359,7 +341,7 @@ describe('utils', () => {
                         global.changeLocation = originalGlobalObj.changeLocation;
                     });
 
-                    it('should global changeLocation method', () => {
+                    it('should call global changeLocation method', () => {
                         const result = createCallDecoratorBinding(options, errorResponse)();
 
                         result.subscribe(

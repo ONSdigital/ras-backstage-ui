@@ -10,12 +10,18 @@ import {
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { AuthenticationService } from './authentication.service';
+import { global } from '../shared/utils';
+
+import { createBadRequest } from '../../../testing-utils';
+
+import { AuthenticationService, CheckRequestAuthenticated } from './authentication.service';
 
 let mockRouter: any,
     mockActivatedRoute: any;
 
+const originalGlobalObj = global;
 const originalConsoleLog: any = console.log;
+const originalWindowLocationHref = window.location.href;
 
 describe('AuthenticationService', () => {
 
@@ -63,7 +69,7 @@ describe('AuthenticationService', () => {
         it('should initialise correctly',
             inject([AuthenticationService],
                 (authenticationService: AuthenticationService) => {
-                    spyOn(window.sessionStorage, 'getItem')
+                    spyOn(window.sessionStorage, 'getItem');
 
                     authenticationService.init();
 
@@ -225,5 +231,135 @@ describe('AuthenticationService', () => {
 
                     expect(result).toEqual(false);
                 }));
+    });
+
+    describe('CheckRequestAuthenticated [decorator]', () => {
+
+        function resetAuthentication () {
+            AuthenticationService.routerCache = {
+                url: 'someurl',
+                navigate () {}
+            };
+        }
+
+        function createCallDecoratorBinding (errorResponse: any) {
+            const binding: any = CheckRequestAuthenticated();
+            const method: any = function () {
+                return errorResponse;
+            };
+            const descriptorValue = {
+                value: method
+            };
+
+            /**
+             * Decorate method
+             */
+            binding({}, '', descriptorValue);
+
+            return descriptorValue.value;
+        }
+
+        describe('when response status is equal to 401', () => {
+
+            let errorResponse: any;
+
+            beforeEach(() => {
+                errorResponse = createBadRequest({
+                    status: 401
+                });
+            });
+
+            it('should call console log with authorisation error', () => {
+                const result = createCallDecoratorBinding(errorResponse)();
+
+                result.subscribe(
+                    () => {},
+                    (err: any) => {
+                        expect(console.log).toHaveBeenCalledWith('Unauthorised request: ', err);
+                    }
+                );
+            });
+
+            describe('and router exists on AuthenticationService', () => {
+
+                beforeEach(() => {
+                    resetAuthentication();
+                    spyOn(AuthenticationService.routerCache, 'navigate');
+                });
+
+                afterEach(() => {
+                    resetAuthentication();
+                });
+
+
+                it('should navigate to sign-in page with returnUrl query parameter', () => {
+                    const result = createCallDecoratorBinding(errorResponse)();
+
+                    result.subscribe(
+                        () => {},
+                        (err: any) => {
+                            expect(AuthenticationService.routerCache.navigate).toHaveBeenCalledWith(['/sign-in'], {
+                                queryParams: {
+                                    returnUrl: 'someurl'
+                                }
+                            });
+                        }
+                    );
+                });
+            });
+
+            describe('and router does not exist on AuthenticationService', () => {
+
+                beforeEach(() => {
+                    spyOn(global, 'changeLocation');
+                    AuthenticationService.routerCache = undefined;
+                });
+
+                afterEach(() => {
+                    global.changeLocation = originalGlobalObj.changeLocation;
+                });
+
+                it('should call global changeLocation method', () => {
+                    const result = createCallDecoratorBinding(errorResponse)();
+
+                    result.subscribe(
+                        () => {},
+                        () => {
+                            expect(global.changeLocation).toHaveBeenCalledWith('/sign-in');
+                            expect(location.href).toEqual(originalWindowLocationHref);
+                        }
+                    );
+                });
+            });
+        });
+
+        describe('when response status is not equal to 401', () => {
+
+            let errorResponse: any;
+
+            beforeEach(() => {
+                errorResponse = createBadRequest({
+                    status: 500
+                });
+                spyOn(global, 'changeLocation');
+            });
+
+            afterEach(() => {
+                global.changeLocation = originalGlobalObj.changeLocation;
+            });
+
+            it('should ignore unrelated error', () => {
+                const result = createCallDecoratorBinding(errorResponse)();
+
+                result.subscribe(
+                    () => {},
+                    () => {
+                        expect(console.log).not.toHaveBeenCalled();
+                        expect(global.changeLocation).not.toHaveBeenCalled();
+                        expect(location.href).toEqual(originalWindowLocationHref);
+                    }
+                );
+            });
+        });
     });
 });

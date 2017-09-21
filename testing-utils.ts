@@ -6,6 +6,26 @@ import { Observable } from 'rxjs/Rx';
 import { MockBackend } from '@angular/http/testing';
 import { inject } from '@angular/core/testing';
 
+export function createBadRequest (opts: any) {
+    const res: Response = new Response(
+        new ResponseOptions({
+            body: {}
+        }));
+
+    res.ok = false;
+    res.status = 500;
+    res.statusText = '';
+    res.type = 3;
+    res.url = null;
+
+    Object.assign(res, opts);
+
+    return Observable.throw({
+        errorMessage: 'Errored request',
+        response: res
+    });
+}
+
 export function checkCatchServerError (observable: Observable<any>, mockBackend: MockBackend) {
 
     mockBackend.connections.subscribe((connection: any) => {

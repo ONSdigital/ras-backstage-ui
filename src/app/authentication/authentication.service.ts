@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Http, Response, ResponseOptions, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { environment } from '../../environments/environment';
-import { handleError, printResponse } from '../shared/utils';
+import { handleError, printResponse, global } from '../shared/utils';
 
 @Injectable()
 export class AuthenticationService {
@@ -117,6 +117,8 @@ export function CheckRequestAuthenticated() {
 
                     if (error.response.status === 401) {
 
+                        console.log('Unauthorised request: ', error);
+
                         const router = AuthenticationService.routerCache;
 
                         if (router) {
@@ -126,8 +128,7 @@ export function CheckRequestAuthenticated() {
                                 }
                             });
                         } else {
-                            console.log('Unauthorized request: ', error);
-                            window.location.href = '/sign-in';
+                            global.changeLocation('/sign-in');
                         }
                     }
                 }
