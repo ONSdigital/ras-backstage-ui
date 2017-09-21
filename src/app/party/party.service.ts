@@ -41,7 +41,7 @@ export class PartyService {
         errorHeading: 'Error getting reporting unit by reference from party service',
         serviceClass: PartyService
     })*/
-    @CheckRequestAuthenticated()
+    /*@CheckRequestAuthenticated()*/
     public getBusinessByRef(ref: string): Observable<any> {
 
         return this.http.get(
