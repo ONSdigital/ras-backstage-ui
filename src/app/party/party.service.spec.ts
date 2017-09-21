@@ -90,7 +90,7 @@ describe('PartyService', () => {
         });
     });
 
-    describe('getBusinessByRef', () => {
+    describe('getBusinessByRef [method]', () => {
 
         describe('when the business exists in the service', () => {
 
@@ -111,10 +111,24 @@ describe('PartyService', () => {
 
                         mockServiceCall = partyService.getBusinessByRef('987');
 
-                        mockServiceCall.subscribe((serverResponse: any) => {
-                            const resJSON = serverResponse.json();
-                            expect(resJSON).toEqual(mockServerBusiness);
-                        });
+                        mockServiceCall.subscribe(
+                            (serverResponse: any) => {
+                                const resJSON = serverResponse.json();
+                                expect(resJSON).toEqual(mockServerBusiness);
+                            },
+                            () => {}
+                        );
+                    }));
+        });
+
+        describe('when the request is not successful', () => {
+
+            it('should catch server error response',
+                inject([PartyService, XHRBackend],
+                    (partyService: PartyService, mockBackend: MockBackend) => {
+                        checkCatchServerError(
+                            partyService.getBusinessByRef('234').share(),
+                            mockBackend);
                     }));
         });
     });

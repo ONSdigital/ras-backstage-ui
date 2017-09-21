@@ -97,15 +97,15 @@ export class AuthenticationService {
 /**
  * Decorator
  */
-export function CheckRequestAuthenticated() {
+export function CheckRequestAuthenticated(): Function {
 
-    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
+    return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>): void {
 
         const method = descriptor.value;
 
-        descriptor.value = function (): Observable<any> {
+        descriptor.value = function<T> (): Observable<T> {
 
-            const call = method.apply(this, arguments)
+            const call: Observable<T> = method.apply(this, arguments)
                 .share();
 
             /**

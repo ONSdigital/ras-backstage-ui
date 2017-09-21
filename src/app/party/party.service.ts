@@ -6,6 +6,7 @@ import { AuthenticationService, CheckRequestAuthenticated } from '../authenticat
 import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
 
 import { environment } from '../../environments/environment';
+import { Business } from './party.model';
 
 @Injectable()
 export class PartyService {
@@ -41,8 +42,8 @@ export class PartyService {
         errorHeading: 'Error getting reporting unit by reference from party service',
         serviceClass: PartyService
     })*/
-    /*@CheckRequestAuthenticated()*/
-    public getBusinessByRef(ref: string): Observable<any> {
+    @CheckRequestAuthenticated()
+    public getBusinessByRef(ref: string) {
 
         return this.http.get(
             PartyService.BASE_URL + 'businesses/ref/' + ref,

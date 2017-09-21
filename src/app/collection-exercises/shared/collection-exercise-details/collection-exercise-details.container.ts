@@ -17,7 +17,6 @@ import * as moment from 'moment';
             (load_ci_batch_click_handler)="collectionInstrumentBatchLoadClick_handler($event)"></ons-collection-exercise-details>
     `
 })
-
 export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDestroy {
 
     public routeParamSubscription: Subscription;
