@@ -29,7 +29,7 @@ describe('CollectionInstrumentsActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockCollectionInstrumentService, 'loadCollectionInstrumentBatch').and.callThrough();
 

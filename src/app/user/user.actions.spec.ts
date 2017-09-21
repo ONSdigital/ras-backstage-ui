@@ -29,7 +29,7 @@ describe('UserActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockUserService, 'getUser').and.callThrough();
 

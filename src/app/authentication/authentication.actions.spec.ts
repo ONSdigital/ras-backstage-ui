@@ -29,7 +29,7 @@ describe('AuthenticationActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockAuthenticationService, 'authenticateCredentials').and.callThrough();
 

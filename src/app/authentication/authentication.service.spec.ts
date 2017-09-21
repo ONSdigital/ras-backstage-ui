@@ -38,7 +38,7 @@ describe('AuthenticationService', () => {
 
         spyOn(mockRouter, 'navigate');
         spyOn(mockRouter, 'navigateByUrl');
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(window.sessionStorage, 'setItem');
 
         TestBed.configureTestingModule({

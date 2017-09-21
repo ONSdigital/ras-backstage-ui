@@ -124,7 +124,9 @@ export class SecureMessageCreateContainerComponent implements OnInit, OnDestroy 
                 () => {
                     this.router.navigate(['/secure-messages']);
                 },
-                (err: any) => console.log('Error: ', err)
+                (err: any) => {
+                    console.log('Error: ', err);
+                }
             );
     }
 

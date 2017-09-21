@@ -15,7 +15,6 @@ let fixture: ComponentFixture<any>,
     instance: any,
 
     mockStore: any,
-    // mockRouter: any,
     mockUserActions: any,
 
     mockSecureMessagesActions: any;
@@ -39,7 +38,9 @@ function createDefaultSecureMessage() {
     };
 }
 
-let mockGetUser_observable: Observable<any>;
+let mockGetUser_observable: Observable<any>,
+    mockCreateSecureMessage_observable: Observable<any>,
+    mockDraftMessage_observable: Observable<any>;
 
 const originalConsoleLog = console.log;
 
@@ -53,7 +54,9 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     beforeEach(() => {
 
-        spyOn(console, 'log');
+        resetGetUserObservable();
+        mockCreateSecureMessage_observable = Observable.of({});
+        mockDraftMessage_observable = Observable.of({});
 
         mockStore = {
             dispatch(action: any) {},
@@ -69,28 +72,19 @@ describe('SecureMessageCreateContainerComponent', () => {
             }
         };
 
-        resetGetUserObservable();
-
         mockSecureMessagesActions = {
             createSecureMessage: function() {
-                return Observable.of({/*Server status object*/});
+                return mockCreateSecureMessage_observable;
             },
             saveDraft: function() {
-                return Observable.of({/*Server status object*/});
+                return mockDraftMessage_observable;
             }
         };
 
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockUserActions, 'getUser').and.callThrough();
-        spyOn(mockSecureMessagesActions, 'createSecureMessage').and.callFake(function () {
-            return {
-                subscribe: function () {}
-            };
-        });
-        spyOn(mockSecureMessagesActions, 'saveDraft').and.callFake(function () {
-            return {
-                subscribe: function () {}
-            };
-        });
+        spyOn(mockSecureMessagesActions, 'createSecureMessage').and.callThrough();
+        spyOn(mockSecureMessagesActions, 'saveDraft').and.callThrough();
 
         TestBed.configureTestingModule({
             imports: [
@@ -370,6 +364,25 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     describe('sendSecureMessage_handler [method]', () => {
 
+        let reportingUnit: any,
+            respondent: any;
+
+        beforeEach(() => {
+            reportingUnit = {
+                id: 'reportingUnit:123456'
+            };
+            respondent = {
+                id: 'respondent: 098765'
+            };
+
+            mockRouteSnapshot.data = {
+                exported: {
+                    reportingUnit,
+                    respondent
+                }
+            };
+        });
+
         describe('when message properties are valid', () => {
 
             it('should call createSecureMessage action method from the SecureMessageActions service.', async(() => {
@@ -384,11 +397,68 @@ describe('SecureMessageCreateContainerComponent', () => {
                     comp.secureMessage.subject = 'Test subject';
                     comp.secureMessage.body = 'Test body';
 
+                    /**
+                     * Stop DI error when router tries to navigate
+                     */
+                    comp.router.navigate = function () {};
+
                     comp.sendSecureMessage_handler();
 
                     expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
                 });
             }));
+
+            describe('and the secure message was successfully created', () => {
+
+                it('should navigate to the secure messages list page', async(() => {
+                    fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        const comp = fixture.debugElement.componentInstance;
+
+                        comp.secureMessage.subject = 'Test subject';
+                        comp.secureMessage.body = 'Test body';
+
+                        spyOn(comp.router, 'navigate');
+
+                        comp.sendSecureMessage_handler();
+
+                        expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
+                    });
+                }));
+            });
+
+            describe('and secure message was not created by the service', () => {
+
+                const errorMessage = 'Error creating message';
+
+                beforeEach(() => {
+                    mockCreateSecureMessage_observable = Observable.throw(errorMessage);
+                });
+
+                it('should not navigate to the secure messages list page', async(() => {
+                    fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        const comp = fixture.debugElement.componentInstance;
+
+                        comp.secureMessage.subject = 'Test subject';
+                        comp.secureMessage.body = 'Test body';
+
+                        comp.sendSecureMessage_handler();
+
+                        expect(console.log).toHaveBeenCalledWith('Error: ', errorMessage);
+                    });
+                }));
+            });
         });
 
         describe('when message properties are invalid', () => {
@@ -412,6 +482,25 @@ describe('SecureMessageCreateContainerComponent', () => {
 
     describe('saveDraft_handler [method]', () => {
 
+        let reportingUnit: any,
+            respondent: any;
+
+        beforeEach(() => {
+            reportingUnit = {
+                id: 'reportingUnit:123456'
+            };
+            respondent = {
+                id: 'respondent: 098765'
+            };
+
+            mockRouteSnapshot.data = {
+                exported: {
+                    reportingUnit,
+                    respondent
+                }
+            };
+        });
+
         /**
          * Always call the service
          */
@@ -427,6 +516,11 @@ describe('SecureMessageCreateContainerComponent', () => {
                 comp.secureMessage.subject = '';
                 comp.secureMessage.body = 'Test body';
 
+                /**
+                 * Stop DI error when router tries to navigate
+                 */
+                comp.router.navigate = function () {};
+
                 comp.saveDraft_handler({
                     preventDefault: function () {}
                 });
@@ -434,5 +528,62 @@ describe('SecureMessageCreateContainerComponent', () => {
                 expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
             });
         }));
+
+        describe('when the draft was successfully updated', () => {
+
+            it('should navigate to the secure messages list page', async(() => {
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    const evt = {
+                        preventDefault() {}
+                    };
+
+                    spyOn(evt, 'preventDefault');
+                    spyOn(comp.router, 'navigate');
+
+                    comp.saveDraft_handler(evt);
+
+                    expect(evt.preventDefault).toHaveBeenCalled();
+                    expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
+                });
+            }));
+        });
+
+        describe('and secure message was not created by the service', () => {
+
+            const errorMessage = 'Error updating draft';
+
+            beforeEach(() => {
+                mockDraftMessage_observable = Observable.throw(errorMessage);
+            });
+
+            it('should not navigate to the secure messages list page', async(() => {
+                fixture = TestBed.createComponent(SecureMessageCreateContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    const comp = fixture.debugElement.componentInstance;
+                    const evt = {
+                        preventDefault() {}
+                    };
+
+                    spyOn(evt, 'preventDefault');
+
+                    comp.saveDraft_handler(evt);
+
+                    expect(evt.preventDefault).toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', errorMessage);
+                });
+            }));
+        });
     });
 });

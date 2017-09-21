@@ -34,7 +34,7 @@ describe('SurveysActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockSurveysService, 'getSurvey').and.callThrough();
         spyOn(mockSurveysService, 'getSurveys').and.callThrough();

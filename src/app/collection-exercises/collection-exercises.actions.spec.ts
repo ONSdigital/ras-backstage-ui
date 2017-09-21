@@ -35,7 +35,7 @@ describe('CollectionExercisesActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockCollectionExerciseService, 'getCollectionExercise').and.callThrough();
         spyOn(mockCollectionExerciseService, 'getCollectionExercises').and.callThrough();

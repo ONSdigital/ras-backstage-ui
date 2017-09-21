@@ -51,7 +51,7 @@ describe('SecureMessagesActions', () => {
             }
         };
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockReduxStore, 'dispatch');
         spyOn(mockSecureMessageService, 'createSecureMessage').and.callThrough();
         spyOn(mockSecureMessageService, 'getMessage').and.callThrough();
