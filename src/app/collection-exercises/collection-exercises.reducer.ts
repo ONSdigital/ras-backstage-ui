@@ -24,6 +24,7 @@ export default function(state: any = INIT_STATE, action: any) {
 
             if (!collectionExercise) {
                 console.log('CollectionExercise not found on action: ' + CollectionExercisesActions.RECEIVED_SINGLE);
+                return state;
             }
 
             const notValid = validateCollectionExercise(collectionExercise);
@@ -39,7 +40,7 @@ export default function(state: any = INIT_STATE, action: any) {
              * Create new items array of collection exercises for new state
              * @type {Array}
              */
-            const items = Object.assign([], state.items.map((item: CollectionExercise) => {
+            const items = state.items.map((item: CollectionExercise) => {
 
                 const obj: CollectionExercise = Object.assign({}, item);
 
@@ -49,7 +50,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 }
 
                 return obj;
-            }));
+            });
 
             /**
              * If there is an existing item, do merge or add to the collectionExercise data store

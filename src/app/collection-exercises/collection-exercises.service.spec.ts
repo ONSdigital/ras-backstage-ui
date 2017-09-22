@@ -56,12 +56,9 @@ describe('CollectionExercisesService', () => {
                     });
 
                     collectionExercisesService.getCollectionExercise('100')
-                    .subscribe((collectionExercise: CollectionExercise) => {
-                        expect(collectionExercise.id).toBe(mockCollectionExercise.id);
-                        expect(collectionExercise.surveyId).toBe(mockCollectionExercise.surveyId);
-
-                        // TODO test other properies
-                    });
+                        .subscribe((collectionExercise: CollectionExercise) => {
+                            expect(collectionExercise).toEqual(mockCollectionExercise);
+                        });
 
                 }));
     });
