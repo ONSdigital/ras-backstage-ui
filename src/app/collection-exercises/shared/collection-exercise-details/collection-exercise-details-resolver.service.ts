@@ -13,26 +13,17 @@ import { validateSurvey } from '../../../surveys/shared/survey.model-validation'
 import { SurveysActions } from '../../../surveys/surveys.actions';
 
 import { getDataStoreCollectionExerciseByRef } from '../utils';
-import * as moment from 'moment';
 
 @Injectable()
 export class CollectionExerciseDetailsResolver implements Resolve<Observable<any>> {
 
-    public static buildReferencePeriod(collectionExercise: CollectionExercise) {
-        const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
-        const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
-
-        const from = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
-        const to = moment(collectionExercise.scheduledStartDateTime, serviceDateFormat);
-
-        return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
-    }
+    public validateSurvey: Function = validateSurvey;
 
     constructor(
         private ngRedux: NgRedux<any>,
         private surveysActions: SurveysActions,
         private collectionExercisesActions: CollectionExercisesActions,
-        private collectionInstrumentsService: CollectionInstrumentsService) { }
+        private collectionInstrumentsService: CollectionInstrumentsService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
 
@@ -64,7 +55,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
 
                         (collectionInstrumentStatus: any, survey: any) => {
 
-                            if (!survey || validateSurvey(survey)) {
+                            if (!survey || this.validateSurvey(survey)) {
                                 return;
                             }
 

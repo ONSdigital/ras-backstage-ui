@@ -13,12 +13,14 @@ import { CollectionInstrumentsService } from '../../../collection-instruments/co
 import { SurveysActions } from '../../../surveys/surveys.actions';
 
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
+import {createSurvey_server} from "../../../../testing/create_Survey";
 
 let mockCollectionExercise: any,
     mockSurveyActions: any,
     mockCollectionExercisesActions: any,
     mockCollectionInstrumentsService: any,
     mockCollectionInstrumentBatchPending: any,
+    mockSurvey: any,
     resolverSvc: any,
     mockReduxStore: any,
     storeData: any,
@@ -32,6 +34,8 @@ function createMockCollectionInstrumentBatchPending(ceRef: string) {
     };
 }
 
+const originalConsoleLog = console.log;
+
 describe('CollectionExerciseDetailsResolver service', () => {
 
     beforeEach(() => {
@@ -39,7 +43,9 @@ describe('CollectionExerciseDetailsResolver service', () => {
         mockSurveyActions = {
             retrieveSurvey: function () {
                 return Observable.of({
-                    json: function () {}
+                    json: function () {
+                        return mockSurvey;
+                    }
                 });
             }
         };
@@ -68,6 +74,8 @@ describe('CollectionExerciseDetailsResolver service', () => {
             },
         };
 
+        spyOn(console, 'log').and.callThrough();
+        spyOn(mockSurveyActions, 'retrieveSurvey').and.callThrough();
         spyOn(mockCollectionExercisesActions, 'retrieveCollectionExercise').and.callThrough();
         spyOn(mockCollectionInstrumentsService, 'getStatus').and.callThrough();
 
@@ -89,6 +97,7 @@ describe('CollectionExerciseDetailsResolver service', () => {
     afterEach(() => {
         storeData = undefined;
         apiData = undefined;
+        console.log = originalConsoleLog;
     });
 
     describe('resolve [method]', () => {
@@ -113,79 +122,134 @@ describe('CollectionExerciseDetailsResolver service', () => {
 
             expect(mockReduxStore.select).toHaveBeenCalledWith(['collectionExercises', 'items']);
         });
-    });
 
-    describe('when a collection exercise does not exist in the store', () => {
+        describe('when a collection exercise does not exist in the store', () => {
 
-        it('should call the collection exercises service to retrieve a collection exercise',
-            inject([CollectionExerciseDetailsResolver],
-                (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
-                    mockCollectionExercise = createMockCollectionExercise('200');
-                    mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('200');
+            it('should call the collection exercises service to retrieve a collection exercise',
+                inject([CollectionExerciseDetailsResolver],
+                    (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                        mockCollectionExercise = createMockCollectionExercise('200');
+                        mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('200');
 
-                    const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
-                        params = {
-                            'collection-exercise-ref': '200'
-                        };
+                        const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
+                            params = {
+                                'collection-exercise-ref': '200'
+                            };
 
-                    activatedRouteSnapShot.params = params;
+                        activatedRouteSnapShot.params = params;
 
-                    storeData = [];
-                    apiData = createMockCollectionExercise('200');
+                        storeData = [];
+                        apiData = createMockCollectionExercise('200');
 
-                    collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+                        collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
 
-                    expect(mockCollectionExercisesActions.retrieveCollectionExercise)
-                    .toHaveBeenCalled();
-                    expect(mockCollectionExercisesActions.retrieveCollectionExercise)
-                    .toHaveBeenCalledWith(params['collection-exercise-ref']);
-                }));
-    });
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                        .toHaveBeenCalled();
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                        .toHaveBeenCalledWith(params['collection-exercise-ref']);
+                    }));
+        });
 
-    describe('when a collection exercise does exist in the store', () => {
+        describe('when a collection exercise does exist in the store', () => {
 
-        it('should not call the collection exercises service',
-            inject([CollectionExerciseDetailsResolver],
-                (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
-                    mockCollectionExercise = createMockCollectionExercise('225');
-                    mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('225');
+            it('should not call the collection exercises service',
+                inject([CollectionExerciseDetailsResolver],
+                    (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                        mockCollectionExercise = createMockCollectionExercise('225');
+                        mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('225');
 
-                    const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
-                        params = {
-                            'collection-exercise-ref': '225'
-                        };
+                        const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
+                            params = {
+                                'collection-exercise-ref': '225'
+                            };
 
-                    activatedRouteSnapShot.params = params;
+                        activatedRouteSnapShot.params = params;
 
-                    storeData = [createMockCollectionExercise('225')];
+                        storeData = [createMockCollectionExercise('225')];
 
-                    collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+                        collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
 
-                    expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
                         .not.toHaveBeenCalled();
-                    expect(mockCollectionExercisesActions.retrieveCollectionExercise)
+                        expect(mockCollectionExercisesActions.retrieveCollectionExercise)
                         .not.toHaveBeenCalledWith(params['collection-exercise-ref']);
-                }));
+                    }));
+        });
+
+        describe('when a collection exercise is found', () => {
+
+            const collectionExerciseId = '1000';
+            const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute();
+
+            activatedRouteSnapShot.params = {
+                'collection-exercise-ref': collectionExerciseId
+            };
+
+            beforeEach(() => {
+                mockCollectionExercise = createMockCollectionExercise(collectionExerciseId);
+                storeData = [createMockCollectionExercise(collectionExerciseId)];
+            });
+
+            describe('and collection instrument is found', () => {
+
+                beforeEach(() => {
+                    mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending(
+                        collectionExerciseId);
+                });
+
+                it('should call the collection instrument service to retrieve collection instrument details',
+                    inject([CollectionExerciseDetailsResolver],
+                        (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                            collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+
+                            expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalled();
+                            expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalledWith(mockCollectionExercise.id);
+                        }));
+
+                it('should call survey actions to get a survey from the service',
+                    inject([CollectionExerciseDetailsResolver],
+                        (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                            collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+
+                            expect(mockSurveyActions.retrieveSurvey).toHaveBeenCalledWith(mockCollectionExercise.surveyId);
+                        }));
+
+                describe('when survey is valid', () => {
+
+                    beforeEach(() => {
+                        mockSurvey = createSurvey_server();
+                    });
+
+                    it('should return exported object on route data',
+                        inject([CollectionExerciseDetailsResolver],
+                            (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                                collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
+
+                                expect(mockSurveyActions.retrieveSurvey).toHaveBeenCalledWith(mockCollectionExercise.surveyId);
+                            }));
+                });
+
+                describe('when survey is not valid', () => {
+
+                    beforeEach(() => {
+                        mockSurvey = {
+                            rubbishProperty: 'Gibberish'
+                        };
+                    });
+
+                    it('should return empty exported object',
+                        inject([CollectionExerciseDetailsResolver],
+                            (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
+                                collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot)
+                                    .subscribe(
+                                        (exported: any) => {
+                                            expect(exported).toEqual({});
+                                        },
+                                        () => {}
+                                    );
+                            }));
+                });
+            });
+        });
     });
-
-    it('should call the collection instrument service to retrieve collection instrument details',
-        inject([CollectionExerciseDetailsResolver],
-            (collectionExerciseDetailsResolver: CollectionExerciseDetailsResolver) => {
-                mockCollectionExercise = createMockCollectionExercise('250');
-                mockCollectionInstrumentBatchPending = createMockCollectionInstrumentBatchPending('250');
-
-                const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
-                    params = {
-                        'collection-exercise-ref': '250'
-                    };
-
-                activatedRouteSnapShot.params = params;
-
-                storeData = [createMockCollectionExercise('225')];
-
-                collectionExerciseDetailsResolver.resolve(activatedRouteSnapShot).subscribe();
-
-                expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalled();
-                expect(mockCollectionInstrumentsService.getStatus).toHaveBeenCalledWith(mockCollectionExercise.id);
-            }));
 });
