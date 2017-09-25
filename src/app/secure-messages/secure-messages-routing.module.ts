@@ -52,7 +52,7 @@ export const secureMessagesRoutes: Routes = [
                 },
                 data: {
                     title: 'View message - ONS Data Collection',
-                    breadcrumb: resolveSecureMessagesViewBreadcrumb
+                    breadcrumb: SecureMessageViewContainerComponent.resolveBreadcrumb
                 }
             },
             {
@@ -69,10 +69,6 @@ export const secureMessagesRoutes: Routes = [
         ]
     }
 ];
-
-export function resolveSecureMessagesViewBreadcrumb(dataResolved: {exported: any}): string {
-    return dataResolved.exported.secureMessage.subject;
-}
 
 @NgModule({
     imports: [

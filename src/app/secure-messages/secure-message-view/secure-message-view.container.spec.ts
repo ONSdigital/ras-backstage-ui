@@ -259,6 +259,58 @@ describe('SecureMessageViewContainerComponent', () => {
                 });
             });
         });
+
+        describe('resolveBreadcrumb [method]', () => {
+
+            beforeEach(async(() => {
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+                });
+            }));
+
+            describe('when supplied valid data', () => {
+
+                it('should return correct breadcrumb string label', () => {
+                    const label = 'Test breadcrumb message';
+                    expect(SecureMessageViewContainerComponent.resolveBreadcrumb({
+                            exported: {
+                                secureMessage: {
+                                    subject: label
+                                }
+                            }
+                        }))
+                        .toEqual(label);
+                });
+            });
+
+            describe('when supplied invalid data', () => {
+
+                it('should return an empty string', () => {
+                    expect(SecureMessageViewContainerComponent.resolveBreadcrumb({
+                        exported: {}
+                    }))
+                    .toEqual('');
+
+                    expect(SecureMessageViewContainerComponent.resolveBreadcrumb({
+                        exported: {
+                            secureMessage: {}
+                        }
+                    }))
+                    .toEqual('');
+
+                    expect(SecureMessageViewContainerComponent.resolveBreadcrumb({
+                        exported: {
+                            secureMessage: {
+                                body: 'Test body'
+                            }
+                        }
+                    }))
+                    .toEqual('');
+                });
+            });
+        });
     });
 
     describe('when the message being replied to is not found', () => {

@@ -31,6 +31,17 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
     public newSecureMessage: SecureMessage;
     public user: User;
 
+    public static resolveBreadcrumb(dataResolved: {exported: any}): string {
+        if (!dataResolved.exported ||
+            !dataResolved.exported.secureMessage ||
+            !dataResolved.exported.secureMessage.subject) {
+
+            return '';
+        }
+
+        return dataResolved.exported.secureMessage.subject;
+    }
+
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
