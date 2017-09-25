@@ -18,6 +18,7 @@ export default function(state: any = INIT_STATE, action: any) {
 
             if (!secureMessage) {
                 console.log('SecureMessage not found on action: ' + SecureMessagesActions.RECEIVED_SINGLE);
+                return state;
             }
 
             const notValid = validateSecureMessage(secureMessage);
@@ -100,7 +101,7 @@ export default function(state: any = INIT_STATE, action: any) {
     }
 }
 
-function isSuccessfulResponse (action: any) {
+export function isSuccessfulResponse (action: any) {
 
     const payload = action.payload;
 

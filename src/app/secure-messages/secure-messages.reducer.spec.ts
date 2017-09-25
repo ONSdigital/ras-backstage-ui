@@ -1,9 +1,10 @@
 import * as Immutable from 'immutable';
 
-import secureMessagesReducer from './secure-messages.reducer';
+import { default as secureMessagesReducer, isSuccessfulResponse } from './secure-messages.reducer';
 import { SecureMessagesActions } from './secure-messages.actions';
 
 import { createSecureMessage_server } from '../../testing/create_SecureMessage';
+import { SecureMessage } from './shared/secure-message.model';
 
 const DEFAULT_STATE: Immutable.Map<string, any> = Immutable.Map({
     isFetching: false,
@@ -11,117 +12,368 @@ const DEFAULT_STATE: Immutable.Map<string, any> = Immutable.Map({
     items: Immutable.List([]),
 });
 
+function createState (listArr: Array<SecureMessage> = []) {
+    return Immutable.Map({
+        isFetching: false,
+        stateMessage: null,
+        items: Immutable.List(listArr),
+    });
+}
+
+const originalConsoleLog = console.log;
+
 describe('Secure messages reducer', () => {
 
-    describe('when receiving a ' + SecureMessagesActions.RECEIVED_SINGLE + ' action type', () => {
+    beforeEach(() => {
+        spyOn(console, 'log').and.callThrough();
+    });
 
-        describe('and receiving a valid action object', () => {
+    afterEach(() => {
+        console.log = originalConsoleLog;
+    });
 
-            it('should return a new state of the secure messages data store with the new secure message ' +
-                'model added', () => {
-                const secureMessage = createSecureMessage_server('100'),
-                    action = {
-                        type: SecureMessagesActions.RECEIVED_SINGLE,
-                        secureMessage: secureMessage
+    /**
+     * RECEIVED_SINGLE action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.RECEIVED_SINGLE;
+
+        describe(reducerAction + ' [action]', () => {
+
+            describe('and receiving a valid action object', () => {
+
+                describe('and secure message does not already exist in store', () => {
+
+                    it('should return a new state of the secure messages data store with the new secure message ' +
+                        'model added', () => {
+                        const secureMessage1 = createSecureMessage_server('100'),
+                            secureMessage2 = createSecureMessage_server('101'),
+                            secureMessage3 = createSecureMessage_server('102'),
+                            action = {
+                                type: reducerAction,
+                                secureMessage: secureMessage3
+                            };
+
+                        let existingState: any,
+                            state: any;
+
+                        existingState = createState([
+                            secureMessage1,
+                            secureMessage2
+                        ]);
+
+                        state = secureMessagesReducer(existingState, action);
+
+                        expect(state.get('isFetching')).toEqual(false);
+                        expect(state.get('stateMessage')).toEqual(null);
+                        expect(state.get('items').size).toEqual(3);
+                    });
+                });
+
+                describe('and data for secure message already exists in data store', () => {
+
+                    it('should merge new properties found onto existing secure message object', () => {
+                        const secureMessage1 = createSecureMessage_server('100'),
+                            secureMessage2 = createSecureMessage_server('101'),
+                            secureMessage1_update = createSecureMessage_server('101'),
+                            action = {
+                                type: SecureMessagesActions.RECEIVED_SINGLE,
+                                secureMessage: secureMessage1_update
+                            };
+
+                        let existingState: any,
+                            state: any;
+
+                        secureMessage1_update.subject = 'A different subject to update message data';
+
+                        existingState = createState([
+                            secureMessage1,
+                            secureMessage2
+                        ]);
+
+                        state = secureMessagesReducer(existingState, action);
+
+                        const newStateItems = state.get('items');
+
+                        expect(state.get('isFetching')).toEqual(false);
+                        expect(state.get('stateMessage')).toEqual(null);
+                        expect(newStateItems.size).toEqual(2);
+
+                        const newStored = newStateItems.findEntry((item: SecureMessage) =>
+                            item.msg_id === action.secureMessage.msg_id);
+
+                        expect(newStored[1]).toEqual(secureMessage1_update);
+                    });
+                });
+            });
+
+            describe('and receiving an invalid action object', () => {
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction,
+                    secureMessage: {}
+                });
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction
+                });
+
+                it('should log message not found to console', () => {
+                    secureMessagesReducer(DEFAULT_STATE, {
+                        type: reducerAction
+                    });
+
+                    expect(console.log).toHaveBeenCalledWith('SecureMessage not found on action: ' +
+                        reducerAction);
+                });
+            });
+        });
+    })();
+
+
+    /**
+     * VIEW_ALL action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.VIEW_ALL;
+
+        describe(reducerAction + ' [action]', () => {
+
+            let existingState: any;
+            const stateMessage = {
+                notification: 'Test notification',
+                action: {
+                    label: 'Test label',
+                    link: '/test-link'
+                }
+            };
+
+            beforeEach(() => {
+                existingState = createState();
+                existingState.set('stateMessage', stateMessage);
+            });
+
+            it('should clear the stateMessage', () => {
+                const action = {
+                        type: reducerAction
                     },
-                    state = secureMessagesReducer(DEFAULT_STATE, action);
+                    state: any = secureMessagesReducer(existingState, action);
 
-                expect(state.get('isFetching')).toEqual(false);
                 expect(state.get('stateMessage')).toEqual(null);
-                expect(state.get('items').findLast(() => true)).toEqual(secureMessage);
+            });
+        });
+    })();
+
+
+    /**
+     * CREATED_SINGLE action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.CREATED_SINGLE;
+
+        describe(reducerAction  + ' [action]', () => {
+
+            describe('and receiving a valid action object', () => {
+
+                assertStateMessageChange('200', reducerAction, {
+                    notification: 'Message sent',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/message/200'
+                    }
+                });
+            });
+
+            describe('and receiving an invalid action object', () => {
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction,
+                    payload: null
+                });
+            });
+        });
+    })();
+
+
+    /**
+     * DRAFT_SAVED action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.DRAFT_SAVED;
+
+        describe(reducerAction  + ' [action]', () => {
+
+            describe('and receiving a valid action object', () => {
+
+                assertStateMessageChange('300', reducerAction, {
+                    notification: 'Draft saved',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/drafts/300'
+                    }
+                });
+            });
+
+            describe('and receiving an invalid action object', () => {
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction,
+                    payload: null
+                });
+            });
+        });
+    })();
+
+
+    /**
+     * REPLIED_SINGLE action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.REPLIED_SINGLE;
+
+        describe(reducerAction  + ' [action]', () => {
+
+            describe('and receiving a valid action object', () => {
+
+                assertStateMessageChange('400', reducerAction, {
+                    notification: 'Message sent',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/message/400'
+                    }
+                });
+            });
+
+            describe('and receiving an invalid action object', () => {
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction,
+                    payload: null
+                });
+            });
+        });
+    })();
+
+
+    /**
+     * DRAFT_UPDATED action
+     */
+    (() => {
+
+        const reducerAction = SecureMessagesActions.DRAFT_UPDATED;
+
+        describe(reducerAction  + ' [action]', () => {
+
+            describe('and receiving a valid action object', () => {
+
+                assertStateMessageChange('500', reducerAction, {
+                    notification: 'Draft saved',
+                    action: {
+                        label: 'View message',
+                        link: '/secure-messages/drafts/500'
+                    }
+                });
+            });
+
+            describe('and receiving an invalid action object', () => {
+
+                assertStateMaintainedWithinvalidAction({
+                    type: reducerAction,
+                    payload: null
+                });
+            });
+        });
+    })();
+
+
+    describe('isSuccessfulResponse [function]', () => {
+
+        describe('when payload object is valid on action', () => {
+
+            it('should return true', () => {
+                const action = {
+                        type: 'irrelevant here',
+                        payload: {
+                            json(): any {
+                                return createSecureMessage_server('1000');
+                            }
+                        }
+                    },
+                    result = isSuccessfulResponse(action);
+
+                expect(result).toEqual(true);
+                expect(console.log).not.toHaveBeenCalled();
             });
         });
 
-        assertStateMaintainedWithinvalidAction({
-            type: SecureMessagesActions.RECEIVED_SINGLE,
-            secureMessage: {}
-        });
-    });
+        describe('when JSON property does not exist in payload', () => {
 
-    describe('when receiving a ' + SecureMessagesActions.CREATED_SINGLE  + ' action type', () => {
+            it('should return false', () => {
+                const action = {
+                        type: 'irrelevant here',
+                        payload: {}
+                    },
+                    result = isSuccessfulResponse(action);
 
-        describe('and receiving a valid action object', () => {
-
-            assertStateMessageChange('200', SecureMessagesActions.CREATED_SINGLE, {
-                notification: 'Message sent',
-                action: {
-                    label: 'View message',
-                    link: '/secure-messages/message/200'
-                }
+                expect(result).toEqual(false);
+                expect(console.log).toHaveBeenCalledWith('Payload or json property does not exist on action: ',
+                    action);
             });
         });
 
-        assertStateMaintainedWithinvalidAction({
-            type: SecureMessagesActions.CREATED_SINGLE,
-            payload: null
-        });
-    });
+        describe('when data is not found in from JSON response', () => {
 
-    describe('when receiving a ' + SecureMessagesActions.DRAFT_SAVED  + ' action type', () => {
+            it('should return false', () => {
+                const action = {
+                        type: 'irrelevant here',
+                        payload: {
+                            json(): any {
+                                return undefined;
+                            }
+                        }
+                    },
+                    result = isSuccessfulResponse(action);
 
-        describe('and receiving a valid action object', () => {
-
-            assertStateMessageChange('300', SecureMessagesActions.DRAFT_SAVED, {
-                notification: 'Draft saved',
-                action: {
-                    label: 'View message',
-                    link: '/secure-messages/drafts/300'
-                }
+                expect(result).toEqual(false);
+                expect(console.log).toHaveBeenCalledWith('JSON data undefined in payload: ',
+                    action);
             });
         });
 
-        assertStateMaintainedWithinvalidAction({
-            type: SecureMessagesActions.CREATED_SINGLE,
-            payload: null
-        });
-    });
+        describe('when data does not include a msg_id property', () => {
 
-    describe('when receiving a ' + SecureMessagesActions.REPLIED_SINGLE  + ' action type', () => {
+            it('should return false', () => {
+                const action = {
+                        type: 'irrelevant here',
+                        payload: {
+                            json(): any {
+                                return {
+                                    subject: 'A subject',
+                                    body: 'A body',
+                                    messageObjectMalformedWithout_msg_id: true
+                                };
+                            }
+                        }
+                    },
+                    result = isSuccessfulResponse(action);
 
-        describe('and receiving a valid action object', () => {
-
-            assertStateMessageChange('400', SecureMessagesActions.REPLIED_SINGLE, {
-                notification: 'Message sent',
-                action: {
-                    label: 'View message',
-                    link: '/secure-messages/message/400'
-                }
+                expect(result).toEqual(false);
+                expect(console.log).toHaveBeenCalledWith('msg_id does not exist in JSON data: ',
+                    action);
             });
-        });
-
-        assertStateMaintainedWithinvalidAction({
-            type: SecureMessagesActions.CREATED_SINGLE,
-            payload: null
-        });
-    });
-
-    describe('when receiving a ' + SecureMessagesActions.DRAFT_UPDATED  + ' action type', () => {
-
-        describe('and receiving a valid action object', () => {
-
-            assertStateMessageChange('500', SecureMessagesActions.DRAFT_UPDATED, {
-                notification: 'Draft saved',
-                action: {
-                    label: 'View message',
-                    link: '/secure-messages/drafts/500'
-                }
-            });
-        });
-
-        assertStateMaintainedWithinvalidAction({
-            type: SecureMessagesActions.CREATED_SINGLE,
-            payload: null
         });
     });
 });
 
 function assertStateMaintainedWithinvalidAction (action: any) {
 
-    describe('and receiving an invalid action object', () => {
-
-        it('should return the existing state of the secure message data store', () => {
-            expect(secureMessagesReducer(DEFAULT_STATE, action)).toEqual(DEFAULT_STATE);
-        });
+    it('should return the existing state of the secure message data store', () => {
+        expect(secureMessagesReducer(DEFAULT_STATE, action)).toEqual(DEFAULT_STATE);
     });
 }
 
