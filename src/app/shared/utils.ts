@@ -69,7 +69,8 @@ export const global = {
     changeLocation(loc: string) {
         window.location.href = loc;
     },
-    validateProperties: validateProperties
+    validateProperties: validateProperties,
+    validationOutput: validationOutput
 };
 
 /**

@@ -8,7 +8,7 @@ import { PartyService } from '../../party/party.service';
 import { SecureMessage } from '../shared/secure-message.model';
 import { NgRedux } from '@angular-redux/store';
 
-import { validateProperties, validationOutput } from '../../shared/utils';
+import { validateProperties, global } from '../../shared/utils';
 
 @Component({
     template: `
@@ -105,13 +105,14 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
             if (!secureMessage.labels) {
                 console.log('labels property missing on msg: ', secureMessage);
-            }
+            } else {
 
-            /**
-             * Attach view-only label
-             */
-            secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
-            secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
+                /**
+                 * Attach view-only label
+                 */
+                secureMessage['$isDraft'] = !!secureMessage.labels.find(label => label === 'DRAFT');
+                secureMessage['$isUnread'] = !!secureMessage.labels.find(label => label === 'UNREAD');
+            }
 
             messageHasAgreggateData(secureMessage);
 
@@ -135,7 +136,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
     }
 }
 
-function messageHasAgreggateData (message: any): Boolean {
+export function messageHasAgreggateData (message: any): Boolean {
 
     const failedValidation = validateProperties(message, [
         { propertyName: '@msg_to' },
@@ -146,7 +147,7 @@ function messageHasAgreggateData (message: any): Boolean {
     const checkMsgToExistsInArray: Boolean = message['@msg_to'] && message['@msg_to'][0];
 
     if (!checkMsgToExistsInArray) {
-        validationOutput({
+        global.validationOutput({
             notification: 'Property @msg_to array empty',
             subject: message
         });
