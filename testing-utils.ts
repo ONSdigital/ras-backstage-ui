@@ -5,7 +5,11 @@ import {
 import { Observable } from 'rxjs/Rx';
 import { MockBackend } from '@angular/http/testing';
 import { inject } from '@angular/core/testing';
+import construct = Reflect.construct;
 
+import { global } from './src/app/shared/utils';
+
+const originalValidationOutput = global.validationOutput;
 export function createBadRequest (opts: any) {
     const res: Response = new Response(
         new ResponseOptions({

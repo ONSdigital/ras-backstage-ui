@@ -9,7 +9,7 @@ import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { User } from '../../user/shared/user.model';
 
-import { validateProperties, validationOutput } from '../../shared/utils';
+import { validateProperties, global } from '../../shared/utils';
 
 @Component({
     template: `
@@ -52,26 +52,29 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         window.scrollTo(0, 0);
 
+        this.subscribeToRouteParams();
+    }
+
+    ngOnDestroy() {
+        this.routeParamSubscription && this.routeParamSubscription.unsubscribe();
+        this.secureMessageDataStoreSubscription && this.secureMessageDataStoreSubscription.unsubscribe();
+    }
+
+    public subscribeToRouteParams () {
         this.routeParamSubscription = this.route.params
             .subscribe(
-                (params: any) => {
-                    const secureMessageId: string = params['secure-message-id'];
-
-                    this.secureMessageDataStoreSubscription = this.subscribeToSecureMessageDataStore(
-                        params['secure-message-id'])
-                        .subscribe(
-                            (secureMessage: SecureMessage) => this.originalSecureMessageUpdate(
-                                secureMessageId, secureMessage),
-                            (err: any) => console.log('Error: ', err)
-                        );
-                },
+                (params: any) => this.subscribeToSecureMessageDataStore(params['secure-message-id']),
                 (err: any) => console.log('Error: ', err)
             );
     }
 
-    ngOnDestroy() {
-        this.routeParamSubscription.unsubscribe();
-        this.secureMessageDataStoreSubscription.unsubscribe();
+    public subscribeToSecureMessageDataStore (id: string) {
+        this.secureMessageDataStoreSubscription = this.findSecureMessageDataStore(id)
+            .subscribe(
+                (secureMessage: SecureMessage) => this.originalSecureMessageUpdate(
+                    id, secureMessage),
+                (err: any) => console.log('Error: ', err)
+            );
     }
 
     public originalSecureMessageUpdate (secureMessageId: string, secureMessage: SecureMessage) {
@@ -87,7 +90,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
         }
     }
 
-    public subscribeToSecureMessageDataStore (secureMessageId: string) {
+    public findSecureMessageDataStore (secureMessageId: string) {
 
         return this.ngRedux.select(['secureMessages', 'items'])
             .map((secureMessages: any) => secureMessages.find((item: any) => item.msg_id === secureMessageId));
@@ -107,6 +110,9 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         let msgTo: string | Array<any>;
 
+        /**
+         * @description: If I sent this message...
+         */
         if (originalSecureMessage.labels.find((label: string) => label === 'SENT')) {
             msgTo = originalSecureMessage.msg_to;
         } else {
@@ -115,9 +121,6 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
 
         this.originalSecureMessage = originalSecureMessage;
 
-        /**
-         * TOOO - msg_to
-         */
         this.newSecureMessage = {
             thread_id: this.originalSecureMessage.thread_id,
             msg_to: msgTo,
@@ -184,7 +187,7 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
     }
 }
 
-function secureMessageHasAgreggateData (secureMessage: any): Boolean {
+export function secureMessageHasAgreggateData (secureMessage: any): Boolean {
 
     const failedValidation = validateProperties(secureMessage, [
         { propertyName: '@msg_to' },
@@ -195,7 +198,7 @@ function secureMessageHasAgreggateData (secureMessage: any): Boolean {
     const checkMsgToExistsInArray: Boolean = secureMessage['@msg_to'] && secureMessage['@msg_to'][0];
 
     if (!checkMsgToExistsInArray) {
-        validationOutput({
+        global.validationOutput({
             notification: 'Property @msg_to array empty',
             subject: secureMessage
         });

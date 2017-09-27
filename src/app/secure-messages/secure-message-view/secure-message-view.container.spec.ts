@@ -8,7 +8,11 @@ import { SecureMessagesModule } from '../secure-messages.module';
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { SecureMessageViewContainerComponent } from './secure-message-view.container';
 
+import { secureMessageHasAgreggateData } from './secure-message-view.container';
+
 import { createSecureMessage_server } from '../../../testing/create_SecureMessage';
+
+import { global } from '../../shared/utils';
 
 let fixture: ComponentFixture<any>,
     comp: any,
@@ -16,10 +20,16 @@ let fixture: ComponentFixture<any>,
     mockStore: any,
     mockOriginalSecureMessage: any,
     mockSecureMessagesActions: any,
+    mockUserItems_observable: any,
+    mockReplyToSecureMessage_observable: any,
+    mockSaveDraft_observable: any,
+    mockUpdateSingleMessageLabels_observable: any,
 
     storeData: any = [];
 
 const mockParamSecureMessageId = '100';
+const originalConsoleLog = console.log;
+const originalValidationOutput = global.validationOutput;
 
 describe('SecureMessageViewContainerComponent', () => {
 
@@ -28,29 +38,28 @@ describe('SecureMessageViewContainerComponent', () => {
         mockStore = {
             dispatch(action: any) {},
             configureStore() {},
-            select() {
-                return Observable.of(storeData);
-            },
+            select(arr: Array<string>) {
+                if (arr[0] === 'secureMessages' && arr[1] === 'items') {
+                    return Observable.of(storeData);
+                } else if (arr[0] === 'user' && arr[1] === 'item') {
+                    return mockUserItems_observable || Observable.of({ id: '123' });
+                }
+            }
         };
 
         mockSecureMessagesActions = {
             replyToSecureMessage: function() {
-                return {
-                    subscribe: function () {}
-                };
+                return mockReplyToSecureMessage_observable || Observable.of(null);
             },
             saveDraft: function() {
-                return {
-                    subscribe: function () {}
-                };
+                return mockSaveDraft_observable || Observable.of(null);
             },
             updateSingleMessageLabels: function() {
-                return {
-                    subscribe: function () {}
-                };
+                return mockUpdateSingleMessageLabels_observable || Observable.of(null);
             }
         };
 
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockSecureMessagesActions, 'replyToSecureMessage').and.callThrough();
         spyOn(mockSecureMessagesActions, 'updateSingleMessageLabels').and.callThrough();
         spyOn(mockSecureMessagesActions, 'saveDraft').and.callThrough();
@@ -72,17 +81,18 @@ describe('SecureMessageViewContainerComponent', () => {
                 { provide: SecureMessagesActions, useValue: mockSecureMessagesActions }
             ]
         })
-        .compileComponents();
+            .compileComponents();
+
+        fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
+        comp = fixture.debugElement.componentInstance;
     }));
 
     afterEach(async(() => {
         storeData = [];
+        console.log = originalConsoleLog;
     }));
 
     it('should initialise correctly', async(() => {
-        fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
-        comp = fixture.debugElement.componentInstance;
-
         spyOn(comp, 'subscribeToSecureMessageDataStore').and.callThrough();
 
         fixture.detectChanges();
@@ -99,9 +109,6 @@ describe('SecureMessageViewContainerComponent', () => {
     describe('when the message being replied to is found', () => {
 
         beforeEach(async(() => {
-            fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
-            comp = fixture.debugElement.componentInstance;
-
             mockOriginalSecureMessage = createSecureMessage_server('100');
             storeData = [mockOriginalSecureMessage];
 
@@ -160,21 +167,55 @@ describe('SecureMessageViewContainerComponent', () => {
 
         describe(('and markMessageRead_click_handler is invoked'), () => {
 
-            it('should call updateSingleMessageLabels action on the SecureMessagesActions service', () => {
+            const mouseEvt: any = new MouseEvent('click', {bubbles: true});
+
+            let routerNavigateCache: any;
+
+            beforeEach(() => {
+                routerNavigateCache = comp.router.navigate;
+                spyOn(comp.router, 'navigate');
+
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
+                });
+            });
 
-                    comp.markMessageRead_click_handler(new MouseEvent('click', {bubbles: true}));
+            afterEach(() => {
+                comp.router.navigate = routerNavigateCache;
+            });
 
-                    expect(mockSecureMessagesActions.updateSingleMessageLabels).toHaveBeenCalled();
+            it('should call updateSingleMessageLabels action on the SecureMessagesActions service', () => {
+                comp.markMessageRead_click_handler(mouseEvt);
+
+                expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
+                expect(mockSecureMessagesActions.updateSingleMessageLabels).toHaveBeenCalled();
+            });
+
+            describe('when updateSingleMessageLabels fails', () => {
+
+                const updateLabelsError = 'Error updating message labels';
+
+                beforeEach(() => {
+                    mockUpdateSingleMessageLabels_observable = Observable.throw(updateLabelsError);
+                });
+
+                afterEach(() => {
+                    mockUpdateSingleMessageLabels_observable = undefined;
+                });
+
+                it('should handle error', () => {
+                    comp.markMessageRead_click_handler(mouseEvt);
+
+                    expect(comp.router.navigate).not.toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', updateLabelsError);
                 });
             });
         });
 
         describe('and the reply has content', () => {
 
-            beforeEach(async(() => {
+            beforeEach(() => {
 
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
@@ -182,21 +223,30 @@ describe('SecureMessageViewContainerComponent', () => {
                 });
 
                 comp.newSecureMessage.body = 'Some reply content';
-            }));
+            });
 
             describe('and the sendReply_handler is invoked', () => {
 
-                beforeEach(async(() => {
-                    comp.sendReply_handler();
-                }));
+                let routerNavigateCache: any;
+
+                beforeEach(() => {
+                    routerNavigateCache = comp.router.navigate;
+                    spyOn(comp.router, 'navigate');
+                });
+
+                afterEach(() => {
+                    comp.router.navigate = routerNavigateCache;
+                });
 
                 it('should call replyToSecureMessage secure message action', async(() => {
+                    comp.sendReply_handler();
 
+                    expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalled();
                     expect(mockSecureMessagesActions.replyToSecureMessage).toHaveBeenCalledWith({
                         thread_id: comp.originalSecureMessage.thread_id,
                         msg_to: comp.originalSecureMessage.msg_to,
-                        msg_from: undefined,
+                        msg_from: '123',
                         subject: comp.originalSecureMessage.subject,
                         body: 'Some reply content',
                         collection_case: comp.originalSecureMessage.collection_case,
@@ -204,29 +254,58 @@ describe('SecureMessageViewContainerComponent', () => {
                         survey: comp.originalSecureMessage.survey
                     });
                 }));
+
+                describe('when replyToSecureMessage fails', () => {
+
+                    const replyError = 'Error sending reply';
+
+                    beforeEach(() => {
+                        mockReplyToSecureMessage_observable = Observable.throw(replyError);
+                    });
+
+                    afterEach(() => {
+                        mockReplyToSecureMessage_observable = undefined;
+                    });
+
+                    it('should handle error', () => {
+                        comp.sendReply_handler();
+
+                        expect(comp.router.navigate).not.toHaveBeenCalled();
+                        expect(console.log).toHaveBeenCalledWith('Error: ', replyError);
+                    });
+                });
             });
         });
 
         describe('and the saveDraft_handler is invoked', () => {
 
-            beforeEach(async(() => {
+            let routerNavigateCache: any;
+
+            beforeEach(() => {
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
                 });
 
+                routerNavigateCache = comp.router.navigate;
+                spyOn(comp.router, 'navigate');
+            });
+
+            afterEach(() => {
+                comp.router.navigate = routerNavigateCache;
+            });
+
+            it('should call saveDraft secure message action', async(() => {
                 comp.saveDraft_handler({
                     preventDefault: function () {}
                 });
-            }));
 
-            it('should call saveDraft secure message action', async(() => {
-
+                expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
                 expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalled();
                 expect(mockSecureMessagesActions.saveDraft).toHaveBeenCalledWith({
                     thread_id: comp.originalSecureMessage.thread_id,
                     msg_to: comp.originalSecureMessage.msg_to,
-                    msg_from: undefined,
+                    msg_from: '123',
                     subject: comp.originalSecureMessage.subject,
                     body: '',
                     collection_case: comp.originalSecureMessage.collection_case,
@@ -234,6 +313,28 @@ describe('SecureMessageViewContainerComponent', () => {
                     survey: comp.originalSecureMessage.survey
                 });
             }));
+
+            describe('when saveDraft fails', () => {
+
+                const saveDraftError = 'Error sending reply';
+
+                beforeEach(() => {
+                    mockSaveDraft_observable = Observable.throw(saveDraftError);
+                });
+
+                afterEach(() => {
+                    mockSaveDraft_observable = undefined;
+                });
+
+                it('should handle error', () => {
+                    comp.saveDraft_handler({
+                        preventDefault: function () {}
+                    });
+
+                    expect(comp.router.navigate).not.toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', saveDraftError);
+                });
+            });
         });
 
         describe('and the reply does not have content', () => {
@@ -316,14 +417,10 @@ describe('SecureMessageViewContainerComponent', () => {
     describe('when the message being replied to is not found', () => {
 
         beforeEach(async(() => {
-            fixture = TestBed.createComponent(SecureMessageViewContainerComponent);
-
             storeData = [];
         }));
 
         it('should log to console that it is not found', async(() => {
-
-            spyOn(console, 'log').and.callThrough();
 
             fixture.detectChanges();
             fixture.whenStable().then(() => {
@@ -346,7 +443,167 @@ describe('SecureMessageViewContainerComponent', () => {
         }));
     });
 
-    /**
-     * TODO - test routing after sending reply
-     */
+    describe('subscribeToRouteParams [method]', () => {
+
+        describe('when route param subscription errors', () => {
+
+            const routeParamErr = 'Error reading route params';
+            let routeParamCache: any ;
+
+            beforeEach(() => {
+                routeParamCache = comp.route.params;
+                comp.route.params = Observable.throw(routeParamErr);
+            });
+
+            afterEach(() => {
+                comp.route.params = routeParamCache;
+            });
+
+            it('should log error to console', async(() => {
+                spyOn(comp, 'subscribeToSecureMessageDataStore').and.callThrough();
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(comp.subscribeToSecureMessageDataStore).not.toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', routeParamErr);
+                });
+            }));
+        });
+    });
+
+    describe('subscribeToSecureMessageDataStore [method] ', () => {
+
+        describe('when checking secure message in data store errors', () => {
+
+            const dataStoreErr = 'Error reading secure message from data store';
+
+            beforeEach(() => {
+                comp.findSecureMessageDataStore = function () {
+                    return Observable.throw(dataStoreErr);
+                };
+            });
+
+            it('should log error to console', async(() => {
+                spyOn(comp, 'originalSecureMessageUpdate').and.callThrough();
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(comp.originalSecureMessageUpdate).not.toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', dataStoreErr);
+                });
+            }));
+        });
+    });
+
+    describe('setMessages [method]', () => {
+
+        let originalMessage: any;
+
+        beforeEach(() => {
+            originalMessage = createSecureMessage_server('500');
+            originalMessage.msg_to = 'new-message-id';
+        });
+
+        describe('when the SENT label is present for a message', () => {
+
+            beforeEach(() => {
+                originalMessage.labels = ['SENT'];
+            });
+
+            it('should assign msg_to of the original message to the msg_to of the new message', async(() => {
+                comp.setMessages(originalMessage);
+
+                expect(comp.newSecureMessage.msg_to).toEqual(originalMessage.msg_to);
+            }));
+        });
+
+        describe('when failing to retrieve a user item from the data store', () => {
+
+            const userError = 'Error fetching user item';
+
+            beforeEach(() => {
+                mockUserItems_observable = Observable.throw(userError);
+            });
+
+            it('should handle subscription error', async(() => {
+                comp.setMessages(originalMessage);
+
+                expect(console.log).toHaveBeenCalledWith('Error: ', userError);
+                expect(comp.newSecureMessage.msg_from).toEqual('');
+                expect(comp.user).toEqual(undefined);
+            }));
+        });
+    });
+});
+
+describe('secureMessageHasAgreggateData [function]', () => {
+
+    let message: any;
+
+    afterEach(() => {
+        message = undefined;
+    });
+
+    describe('when message has aggregated data', () => {
+
+        beforeEach(() => {
+
+            message = {
+                '@msg_to': [
+                    {}
+                ],
+                '@msg_from': '',
+                '@ru_id': ''
+            };
+        });
+
+        it('should return true', () => {
+            expect(secureMessageHasAgreggateData(message)).toEqual(true);
+        });
+    });
+
+    describe('when message does not have aggregated data', () => {
+
+        beforeEach(() => {
+
+            message = {
+                '@msg_to': [
+                    {}
+                ]
+            };
+        });
+
+        it('should return false', () => {
+            expect(secureMessageHasAgreggateData(message)).toEqual(false);
+        });
+
+        describe('and has empty @msg_to array', () => {
+
+            beforeEach(() => {
+
+                message = {
+                    '@msg_to': []
+                };
+
+                spyOn(global, 'validationOutput').and.callThrough();
+            });
+
+            afterEach(() => {
+                global.validationOutput = originalValidationOutput;
+            });
+
+            it('should call global validationOutput [method]', () => {
+
+                expect(secureMessageHasAgreggateData(message)).toEqual(false);
+                expect(global.validationOutput).toHaveBeenCalledWith({
+                    notification: 'Property @msg_to array empty',
+                    subject: message
+                });
+            });
+        });
+    });
 });
