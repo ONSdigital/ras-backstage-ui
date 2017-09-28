@@ -1,4 +1,5 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { SecureMessage } from "../secure-message.model";
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,7 @@ export class SecureMessageFormComponent {
     @Input() to: string;
     @Input() subject: string;
     @Input() body: string;
-    @Input() message: string;
+    @Input() message: SecureMessage;
 
     @Output() subjectChange: EventEmitter<any> = new EventEmitter();
     @Output() bodyChange: EventEmitter<any> = new EventEmitter();
@@ -24,5 +25,4 @@ export class SecureMessageFormComponent {
     public isValid () {
         return !!this.subject && !!this.body;
     }
-
 }
