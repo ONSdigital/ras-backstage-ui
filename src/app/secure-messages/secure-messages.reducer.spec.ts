@@ -6,6 +6,8 @@ import { SecureMessagesActions } from './secure-messages.actions';
 import { createSecureMessage_server } from '../../testing/create_SecureMessage';
 import { SecureMessage } from './shared/secure-message.model';
 
+import { assertStateMaintainedWithinvalidAction } from '../../../testing-utils';
+
 const DEFAULT_STATE: Immutable.Map<string, any> = Immutable.Map({
     isFetching: false,
     stateMessage: null,
@@ -113,11 +115,11 @@ describe('Secure messages reducer', () => {
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction,
                     secureMessage: {}
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
 
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
 
                 it('should log message not found to console', () => {
                     secureMessagesReducer(DEFAULT_STATE, {
@@ -192,7 +194,7 @@ describe('Secure messages reducer', () => {
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction,
                     payload: null
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
             });
         });
     })();
@@ -223,7 +225,7 @@ describe('Secure messages reducer', () => {
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction,
                     payload: null
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
             });
         });
     })();
@@ -254,7 +256,7 @@ describe('Secure messages reducer', () => {
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction,
                     payload: null
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
             });
         });
     })();
@@ -285,7 +287,7 @@ describe('Secure messages reducer', () => {
                 assertStateMaintainedWithinvalidAction({
                     type: reducerAction,
                     payload: null
-                });
+                }, secureMessagesReducer, DEFAULT_STATE);
             });
         });
     })();
@@ -369,13 +371,6 @@ describe('Secure messages reducer', () => {
         });
     });
 });
-
-function assertStateMaintainedWithinvalidAction (action: any) {
-
-    it('should return the existing state of the secure message data store', () => {
-        expect(secureMessagesReducer(DEFAULT_STATE, action)).toEqual(DEFAULT_STATE);
-    });
-}
 
 function assertStateMessageChange (msgId: string, actionConst: string, resultStateMessage: any) {
 

@@ -59,6 +59,13 @@ export function checkCatchServerError (observable: Observable<any>, mockBackend:
     );
 }
 
+export function assertStateMaintainedWithinvalidAction (action: any, reducer: any, state: any) {
+
+    it('should return the existing state of the data store', () => {
+        expect(reducer(state, action)).toEqual(state);
+    });
+}
+
 /*
 export const describeService = {
 
