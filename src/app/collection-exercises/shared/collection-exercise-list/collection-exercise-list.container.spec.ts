@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import 'rxjs/add/operator/filter';
@@ -9,6 +10,7 @@ import { CollectionExerciseListContainerComponent } from './collection-exercise-
 let fixture: ComponentFixture<any>,
     instance: any;
 
+const oriiginalConsoleLog = console.log;
 
 function createActivatedRouteData() {
     return {
@@ -31,17 +33,23 @@ function createViewModel() {
 
 describe('CollectionExerciseListContainerComponent component', () => {
 
-    describe('when testing a default component setup', () => {
+    beforeEach(async(() => {
+        spyOn(console, 'log').and.callThrough();
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [
-                    RouterTestingModule,
-                    CollectionExerciseModule
-                ]
-            })
-            .compileComponents();
-        }));
+        TestBed.configureTestingModule({
+            imports: [
+                RouterTestingModule,
+                CollectionExerciseModule
+            ]
+        })
+        .compileComponents();
+    }));
+
+    afterEach(() => {
+        console.log = oriiginalConsoleLog;
+    });
+
+    describe('when testing a default component setup', () => {
 
         it('should create the component', async(() => {
             fixture = TestBed.createComponent(CollectionExerciseListContainerComponent);
@@ -70,7 +78,23 @@ describe('CollectionExerciseListContainerComponent component', () => {
                 expect(instance.viewModel).toEqual(routeData.viewModel);
             });
         }));
-
     });
 
+    describe('when failing to get route data', () => {
+
+        it('should log error to console', () => {
+            fixture = TestBed.createComponent(CollectionExerciseListContainerComponent);
+            instance = fixture.componentInstance;
+
+            instance.route.data = Observable.throw('Error reading route data');
+
+            fixture.detectChanges();
+
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+
+                expect(instance.viewModel).toEqual({collectionExercises: []});
+            });
+        });
+    });
 });
