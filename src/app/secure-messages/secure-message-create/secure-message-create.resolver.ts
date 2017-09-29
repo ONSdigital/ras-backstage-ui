@@ -21,13 +21,13 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
         const collectionExerciseId: string = route.queryParams.collection_exercise;
 
         if (!respondentId) {
-            console.log('\'respondent\' parameter not found in URL query');
+            console.log('\'respondent\' parameter not found in URL query params: ', route.queryParams);
             this.router.navigate(['/404']);
             return;
         }
 
         if (!reportingUnitId) {
-            console.log('\'reporting_unit\' parameter not found in URL query');
+            console.log('\'reporting_unit\' parameter not found in URL query params: ', route.queryParams);
             this.router.navigate(['/404']);
             return;
         }
@@ -47,7 +47,7 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
         const reportingUnitObservable = this.partyService.getBusiness(reportingUnitId).share();
         const respondentObservable = this.partyService.getRespondent(respondentId).share();
 
-        const resolve = Observable
+        return Observable
             .zip(
                 reportingUnitObservable
                     .map((res: any) => res.json()),
@@ -59,7 +59,5 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
                 }))
             )
             .share();
-
-        return resolve;
     }
 }

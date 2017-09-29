@@ -20,6 +20,8 @@ let mockRouter: any,
     mockRespondentObservable: any,
     mockReportingUnitObservable: any;
 
+const originalConsoleLog = console.log;
+
 describe('SecureMessageCreateResolver', () => {
 
     beforeEach(() => {
@@ -49,6 +51,7 @@ describe('SecureMessageCreateResolver', () => {
             }
         });
 
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockPartyService, 'getBusiness').and.callThrough();
         spyOn(mockPartyService, 'getRespondent').and.callThrough();
 
@@ -68,6 +71,7 @@ describe('SecureMessageCreateResolver', () => {
     afterEach(() => {
         mockReportingUnit = undefined;
         mockRespondent = undefined;
+        console.log = originalConsoleLog;
     });
 
     describe('resolve [method]', () => {
@@ -181,6 +185,8 @@ describe('SecureMessageCreateResolver', () => {
 
                         secureMessageCreateResolver.resolve(activatedRouteSnapShot);
 
+                        expect(console.log).toHaveBeenCalledWith('\'respondent\' parameter not found in ' +
+                            'URL query params: ', queryParams);
                         expect(mockPartyService.getRespondent).not.toHaveBeenCalled();
                         expect(mockPartyService.getBusiness).not.toHaveBeenCalled();
                     }));
@@ -194,7 +200,7 @@ describe('SecureMessageCreateResolver', () => {
             beforeEach(() => {
 
                 queryParams = {
-                    repondent: '200'
+                    respondent: '200'
                 };
 
                 activatedRouteSnapShot = new MockActivatedRoute();
@@ -209,6 +215,101 @@ describe('SecureMessageCreateResolver', () => {
 
                         expect(mockPartyService.getRespondent).not.toHaveBeenCalled();
                         expect(mockPartyService.getBusiness).not.toHaveBeenCalled();
+                        expect(console.log).toHaveBeenCalledWith('\'reporting_unit\' parameter not found in ' +
+                            'URL query params: ', queryParams);
+                    }));
+        });
+
+        describe('when supplied a survey id', () => {
+
+            let queryParams: any,
+                activatedRouteSnapShot: ActivatedRouteSnapshot;
+
+            beforeEach(() => {
+
+                queryParams = {
+                    respondent: '300',
+                    reporting_unit: '301',
+                    survey: '302'
+                };
+
+                activatedRouteSnapShot = new MockActivatedRoute();
+                activatedRouteSnapShot.queryParams = queryParams;
+            });
+
+            it('should attach survey id in the observable response',
+                inject([SecureMessageCreateResolver],
+                    (secureMessageCreateResolver: SecureMessageCreateResolver) => {
+
+                        secureMessageCreateResolver.resolve(activatedRouteSnapShot)
+                            .subscribe(
+                                (res: any) => {
+                                    expect(res.surveyId).toEqual(queryParams.survey);
+                                },
+                                () => {}
+                            );
+                    }));
+        });
+
+        describe('when supplied a collection exercise id', () => {
+
+            let queryParams: any,
+                activatedRouteSnapShot: ActivatedRouteSnapshot;
+
+            beforeEach(() => {
+
+                queryParams = {
+                    respondent: '400',
+                    reporting_unit: '401',
+                    collection_exercise: '402'
+                };
+
+                activatedRouteSnapShot = new MockActivatedRoute();
+                activatedRouteSnapShot.queryParams = queryParams;
+            });
+
+            it('should attach collection exercise id in the observable response',
+                inject([SecureMessageCreateResolver],
+                    (secureMessageCreateResolver: SecureMessageCreateResolver) => {
+
+                        secureMessageCreateResolver.resolve(activatedRouteSnapShot)
+                            .subscribe(
+                                (res: any) => {
+                                    expect(res.collectionExerciseId).toEqual(queryParams.collection_exercise);
+                                },
+                                () => {}
+                            );
+                    }));
+        });
+
+        describe('when supplied a respondent case id', () => {
+
+            let queryParams: any,
+                activatedRouteSnapShot: ActivatedRouteSnapshot;
+
+            beforeEach(() => {
+
+                queryParams = {
+                    respondent: '500',
+                    reporting_unit: '501',
+                    respondent_case: '502'
+                };
+
+                activatedRouteSnapShot = new MockActivatedRoute();
+                activatedRouteSnapShot.queryParams = queryParams;
+            });
+
+            it('should attach respdondent case id in the observable response',
+                inject([SecureMessageCreateResolver],
+                    (secureMessageCreateResolver: SecureMessageCreateResolver) => {
+
+                        secureMessageCreateResolver.resolve(activatedRouteSnapShot)
+                            .subscribe(
+                                (res: any) => {
+                                    expect(res.collectionExerciseId).toEqual(queryParams.respondentCaseId);
+                                },
+                                () => {}
+                            );
                     }));
         });
     });
