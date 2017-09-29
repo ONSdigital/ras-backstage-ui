@@ -4,13 +4,11 @@ export class NotificationListItem {
     public action?: { label: string, link: string };
     public status: NotificationStatus;
 
-    static create(opts: { label: string, action: any, status: NotificationStatus }) {
-
-        opts = opts || {
-            label: undefined,
-            status: undefined,
-            action: null
-        };
+    static create(opts: {
+        label: string,
+        action: any,
+        status: NotificationStatus
+    }) {
 
         if (!opts.label) {
             throw Error('label field missing for new NotificationListItem');
@@ -23,7 +21,10 @@ export class NotificationListItem {
         const instance = new NotificationListItem();
         instance.label = opts.label;
         instance.status = opts.status;
-        instance.action = opts.action;
+
+        if (opts.action) {
+            instance.action = opts.action;
+        }
 
         return instance;
     }
