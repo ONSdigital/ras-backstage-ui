@@ -6,7 +6,7 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { MockActivatedRoute } from '../../../../testing/ActivatedRouteSnapshot_stub';
 
 import { CollectionExerciseModule } from '../../collection-exercises.module';
-import { CollectionExerciseDetailsResolver } from './collection-exercise-details-resolver.service';
+import { CollectionExerciseDetailsResolver } from './collection-exercise-details.resolver.service';
 import { CollectionExercisesActions } from '../../collection-exercises.actions';
 import { CollectionInstrumentsService } from '../../../collection-instruments/collection-instruments.service';
 

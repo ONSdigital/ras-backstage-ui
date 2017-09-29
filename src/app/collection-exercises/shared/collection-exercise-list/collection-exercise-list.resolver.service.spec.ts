@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { CollectionExerciseListResolver } from './collection-exercise-list-resolver.service';
+import { CollectionExerciseListResolver } from './collection-exercise-list.resolver.service';
 
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
 

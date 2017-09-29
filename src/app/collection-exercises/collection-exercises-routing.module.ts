@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { CollectionExercisesComponent } from './collection-exercises.component';
 import { CollectionExerciseListContainerComponent } from './shared/collection-exercise-list/collection-exercise-list.container';
 import { CollectionExerciseDetailsContainerComponent } from './shared/collection-exercise-details/collection-exercise-details.container';
-import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details-resolver.service';
-import { CollectionExerciseListResolver } from './shared/collection-exercise-list/collection-exercise-list-resolver.service';
+import { CollectionExerciseDetailsResolver } from './shared/collection-exercise-details/collection-exercise-details.resolver.service';
+import { CollectionExerciseListResolver } from './shared/collection-exercise-list/collection-exercise-list.resolver.service';
 
 import { CollectionExerciseDetailsViewModel } from './shared/collection-exercise.model';
 
