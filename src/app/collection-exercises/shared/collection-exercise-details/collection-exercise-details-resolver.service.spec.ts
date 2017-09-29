@@ -13,7 +13,7 @@ import { CollectionInstrumentsService } from '../../../collection-instruments/co
 import { SurveysActions } from '../../../surveys/surveys.actions';
 
 import { createMockCollectionExercise } from '../../../../testing/create_CollectionExercise';
-import {createSurvey_server} from "../../../../testing/create_Survey";
+import { createSurvey_server } from '../../../../testing/create_Survey';
 
 let mockCollectionExercise: any,
     mockSurveyActions: any,
