@@ -18,7 +18,7 @@
                 <td class="secure-messages-list__field">{{ message['@ru_id']?.sampleUnitRef }}</td>
                 <td class="secure-messages-list__field">{{ message['@ru_id']?.name }}</td>
                 <td class="secure-messages-list__field secure-messages-list__field--link">
-                    <a class="secure-messages-list__link" [routerLink]="[(message.$isDraft ? '/secure-messages/drafts/' : '/secure-messages/message/'), message.msg_id]">{{ message.subject }}</a>
+                    <a class="secure-messages-list__link" [routerLink]="[(message.$isDraft ? '/secure-messages/drafts/' : '/secure-messages/message/'), message.msg_id]">{{ message.subject.trim() ? message.subject : '[no subject]'}}</a>
                     <span class="secure-messages-list__label secure-messages-list__label--draft" *ngIf="message.$isDraft">DRAFT</span>
                 </td>
                 <td class="secure-messages-list__field">{{ message['@msg_from']?.firstName }} {{ message['@msg_from']?.lastName }}</td>
