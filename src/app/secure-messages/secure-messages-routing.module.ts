@@ -33,6 +33,30 @@ export const secureMessagesRoutes: Routes = [
                 }
             },
             {
+                path: 'inbox',
+                component: SecureMessagesListContainerComponent,
+                data: {
+                    title: 'Secure messages - ONS Data Collection',
+                    breadcrumb: 'Sent'
+                }
+            },
+            {
+                path: 'sent',
+                component: SecureMessagesListContainerComponent,
+                data: {
+                    title: 'Secure messages - ONS Data Collection',
+                    breadcrumb: 'Inbox'
+                }
+            },
+            {
+                path: 'drafts',
+                component: SecureMessagesListContainerComponent,
+                data: {
+                    title: 'Secure messages - ONS Data Collection',
+                    breadcrumb: 'Drafts'
+                }
+            },
+            {
                 path: 'create-message',
                 component: SecureMessageCreateContainerComponent,
                 resolve: {

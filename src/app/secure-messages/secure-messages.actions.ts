@@ -113,32 +113,32 @@ export class SecureMessagesActions {
         });
     }
 
-    public retrieveAllSecureMessages(): Observable<any> {
+    public retrieveAllSecureMessages(label?: string, page?: string): Observable<any> {
 
-        this.ngRedux.dispatch({
-            type: SecureMessagesActions.RETRIEVE_ALL
-        });
+        // this.ngRedux.dispatch({
+        //     type: SecureMessagesActions.RETRIEVE_ALL
+        // });
 
-        const observable = this.secureMessagesService.getAllMessages()
-            .map((res: any) => res.json().messages)
+        const observable = this.secureMessagesService.getAllMessages(label, page)
+            .map((res: any) => res)
             .share();
 
-        observable.subscribe(
-            (secureMessages: Array<SecureMessage>) => {
-                this.receivedAllSecureMessages(secureMessages);
-            },
-            (err: any) => console.log('Could not dispatch receivedAllSecureMessages action, service error: ', err)
-        );
+        // observable.subscribe(
+        //     (secureMessages: Array<SecureMessage>) => {
+        //         this.receivedAllSecureMessages(secureMessages);
+        //     },
+        //     (err: any) => console.log('Could not dispatch receivedAllSecureMessages action, service error: ', err)
+        // );
 
         return observable;
     }
 
     public receivedAllSecureMessages(secureMessages: Array<SecureMessage>) {
 
-        this.ngRedux.dispatch({
-            type: SecureMessagesActions.RECEIVED_ALL,
-            payload: secureMessages
-        });
+        // this.ngRedux.dispatch({
+        //     type: SecureMessagesActions.RECEIVED_ALL,
+        //     payload: secureMessages
+        // });
     }
 
     public saveDraft(draftMessage: DraftMessage): Observable<any> {

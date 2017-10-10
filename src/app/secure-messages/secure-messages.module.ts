@@ -26,6 +26,7 @@ import { DraftMessageEditContainerComponent } from './draft-message-edit/draft-m
 
 import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-tabs.component';
 import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedback.component';
+import {PaginationComponent} from './pagination/pagination.component';
 
 @NgModule({
     imports: [
@@ -50,7 +51,8 @@ import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedba
         DraftMessageEditComponent,
         DraftMessageEditContainerComponent,
         NavigationTabsComponent,
-        SystemFeedbackComponent
+        SystemFeedbackComponent,
+        PaginationComponent
     ],
     providers: [
         PartyService,

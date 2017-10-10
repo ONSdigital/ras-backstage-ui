@@ -46,10 +46,20 @@ export class SecureMessagesService {
         serviceClass: SecureMessagesService
     })
     @CheckRequestAuthenticated()
-    public getAllMessages(): Observable<any> {
+    public getAllMessages(label?: string, page?: string): Observable<any> {
+
+        let url = SecureMessagesService.BASE_URL + 'messages?limit=10';
+
+        if (label) {
+            url = url + '&label=' + label;
+        }
+
+        if (page) {
+            url = url + '&page=' + page;
+        }
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'messages?limit=1000000',
+            url,
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders

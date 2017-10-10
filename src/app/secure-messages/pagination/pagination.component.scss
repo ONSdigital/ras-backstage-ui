@@ -1,0 +1,58 @@
+@import "../../../../common/assets/sass/partials/vars/colors";
+
+.pagination-links {
+    margin-bottom : 1.5rem;
+    padding : 0;
+    list-style-type : none;
+    border-bottom : 1px solid #555;
+
+    &:after
+    {
+        content: ".";
+        display: block;
+        clear: both;
+        visibility: hidden;
+        line-height: 0;
+        height: 0;
+    }
+
+    .pagination-links__item {
+        margin-bottom : 0;
+
+        .pagination-links__tab {
+            margin-bottom : 0;
+            padding : .5rem 1rem;
+            border : 1px solid transparent;
+            border-bottom-left-radius : 0;
+            border-bottom-right-radius : 0;
+            border-bottom : none;
+
+            &.pagination-links__tab--link {
+                font-weight : normal;
+                text-decoration : underline;
+                color : $color-blue;
+
+                &:hover {
+                    color : #fff;
+                }
+            }
+
+            &.pagination-links__tab--active {
+                border-color : inherit;
+            }
+        }
+        &.pagination-links__item--primary {
+            float : left;
+        }
+
+        &.pagination-links__item--secondary {
+            float : right;
+        }
+
+        &.pagination-links__item--active {
+            margin-bottom : -1px;
+            padding-bottom : 1px;
+            background-color : #fff;
+        }
+    }
+}
