@@ -335,12 +335,11 @@ describe('DraftMessageEditContainerComponent', () => {
 });
 
 testMessageHasAggregatedData(
-    'draftMessageHasAgreggateData',
+    'draftMessageHasAgreggateData [function]',
     draftMessageHasAgreggateData,
     {
         '@msg_to': [
             {}
         ],
         '@ru_id': ''
-    },
-    global);
+    });

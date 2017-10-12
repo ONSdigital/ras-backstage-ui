@@ -31,6 +31,8 @@ const mockParamSecureMessageId = '100';
 const originalConsoleLog = console.log;
 const originalValidationOutput = global.validationOutput;
 
+import { testMessageHasAggregatedData } from '../../../../testing-utils';
+
 describe('SecureMessageViewContainerComponent', () => {
 
     beforeEach(async(() => {
@@ -540,70 +542,13 @@ describe('SecureMessageViewContainerComponent', () => {
     });
 });
 
-describe('secureMessageHasAgreggateData [function]', () => {
-
-    let message: any;
-
-    afterEach(() => {
-        message = undefined;
+testMessageHasAggregatedData(
+    'secureMessageHasAgreggateData [function]',
+    secureMessageHasAgreggateData,
+    {
+        '@msg_to': [
+            {}
+        ],
+        '@msg_from': '',
+        '@ru_id': ''
     });
-
-    describe('when message has aggregated data', () => {
-
-        beforeEach(() => {
-
-            message = {
-                '@msg_to': [
-                    {}
-                ],
-                '@msg_from': '',
-                '@ru_id': ''
-            };
-        });
-
-        it('should return true', () => {
-            expect(secureMessageHasAgreggateData(message)).toEqual(true);
-        });
-    });
-
-    describe('when message does not have aggregated data', () => {
-
-        beforeEach(() => {
-
-            message = {
-                '@msg_to': [
-                    {}
-                ]
-            };
-        });
-
-        it('should return false', () => {
-            expect(secureMessageHasAgreggateData(message)).toEqual(false);
-        });
-
-        describe('and has empty @msg_to array', () => {
-
-            beforeEach(() => {
-
-                message = {
-                    '@msg_to': []
-                };
-
-                spyOn(global, 'validationOutput').and.callThrough();
-            });
-
-            afterEach(() => {
-                global.validationOutput = originalValidationOutput;
-            });
-
-            it('should call global validationOutput [method]', () => {
-
-                expect(secureMessageHasAgreggateData(message)).toEqual(false);
-                expect(global.validationOutput).toHaveBeenCalledWith({
-                    notification: 'Property @msg_to array empty',
-                    subject: message
-                });
-            });
-        });
-    });
-});

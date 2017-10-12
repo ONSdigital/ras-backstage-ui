@@ -12,6 +12,8 @@ import { NotificationListItem, NotificationStatus } from '../../shared/system-fe
 
 import { global } from '../../shared/utils';
 
+import { testMessageHasAggregatedData } from '../../../../testing-utils';
+
 let fixture: ComponentFixture<any>,
     comp: any,
 
@@ -291,70 +293,13 @@ describe('SecureMessagesListContainerComponent', () => {
     });
 });
 
-describe('messageHasAgreggateData [function]', () => {
-
-    let message: any;
-
-    afterEach(() => {
-        message = undefined;
+testMessageHasAggregatedData(
+    'messageHasAgreggateData [function]',
+    messageHasAgreggateData,
+    {
+        '@msg_to': [
+            {}
+        ],
+        '@msg_from': '',
+        '@ru_id': ''
     });
-
-    describe('when message has aggregated data', () => {
-
-        beforeEach(() => {
-
-            message = {
-                '@msg_to': [
-                    {}
-                ],
-                '@msg_from': '',
-                '@ru_id': ''
-            };
-        });
-
-        it('should return true', () => {
-            expect(messageHasAgreggateData(message)).toEqual(true);
-        });
-    });
-
-    describe('when message does not have aggregated data', () => {
-
-        beforeEach(() => {
-
-            message = {
-                '@msg_to': [
-                    {}
-                ]
-            };
-        });
-
-        it('should return false', () => {
-            expect(messageHasAgreggateData(message)).toEqual(false);
-        });
-
-        describe('and has empty @msg_to array', () => {
-
-            beforeEach(() => {
-
-                message = {
-                    '@msg_to': []
-                };
-
-                spyOn(global, 'validationOutput').and.callThrough();
-            });
-
-            afterEach(() => {
-                global.validationOutput = originalValidationOutput;
-            });
-
-            it('should call global validationOutput [method]', () => {
-
-                expect(messageHasAgreggateData(message)).toEqual(false);
-                expect(global.validationOutput).toHaveBeenCalledWith({
-                    notification: 'Property @msg_to array empty',
-                    subject: message
-                });
-            });
-        });
-    });
-});
