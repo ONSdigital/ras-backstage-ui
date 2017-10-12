@@ -66,6 +66,71 @@ export function assertStateMaintainedWithinvalidAction (action: any, reducer: an
     });
 }
 
+export function testMessageHasAggregatedData (describeFunctionName: string, FUNC: Function, validData: Object) {
+
+    describe(describeFunctionName, () => {
+
+        let message: any;
+
+        afterEach(() => {
+            message = undefined;
+        });
+
+        describe('when message has aggregated data', () => {
+
+            beforeEach(() => {
+
+                message = validData;
+            });
+
+            it('should return true', () => {
+                expect(FUNC(message)).toEqual(true);
+            });
+        });
+
+        describe('when message does not have aggregated data', () => {
+
+            beforeEach(() => {
+
+                message = {
+                    '@msg_to': [
+                        {}
+                    ]
+                };
+            });
+
+            it('should return false', () => {
+                expect(FUNC(message)).toEqual(false);
+            });
+
+            describe('and has empty @msg_to array', () => {
+
+                beforeEach(() => {
+
+                    message = {
+                        '@msg_to': []
+                    };
+
+                    spyOn(global, 'validationOutput').and.callThrough();
+                });
+
+                afterEach(() => {
+                    global.validationOutput = originalValidationOutput;
+                });
+
+                it('should call global validationOutput [method]', () => {
+
+                    expect(FUNC(message)).toEqual(false);
+                    expect(global.validationOutput).toHaveBeenCalledWith({
+                        notification: 'Property @msg_to array empty',
+                        subject: message
+                    });
+                });
+            });
+        });
+    });
+}
+
 /*
 export const describeService = {
 

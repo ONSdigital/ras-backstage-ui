@@ -7,30 +7,38 @@ import { AppComponent } from '../../app.component';
 import { secureMessagesRoutes } from '../secure-messages-routing.module';
 import { SecureMessagesModule } from '../secure-messages.module';
 import { SecureMessagesActions } from '../secure-messages.actions';
-import { DraftMessageEditContainerComponent } from './draft-message-edit.container';
+import { DraftMessageEditContainerComponent, draftMessageHasAgreggateData } from './draft-message-edit.container';
 
 import { createDraftMessage_server } from '../../../testing/create_SecureMessage';
+
+import { testMessageHasAggregatedData } from '../../../../testing-utils';
+
+import { global } from '../../shared/utils';
 
 let fixture: ComponentFixture<any>,
 
     mockExportedData: any,
     mockSecureMessagesActions: any,
-    mockCreateSecureMessage_observable: any;
+    mockCreateSecureMessage_observable: any,
+    mockUpdateDraft_observable: any;
+
+const originalConsoleLog: any = console.log;
+const originalValidationOutput = global.validationOutput;
 
 describe('DraftMessageEditContainerComponent', () => {
 
     beforeEach(() => {
 
+        spyOn(console, 'log');
         mockCreateSecureMessage_observable = Observable.of({});
+        mockUpdateDraft_observable = Observable.of({});
 
         mockSecureMessagesActions = {
-            createSecureMessage: function() {
+            createSecureMessage () {
                 return mockCreateSecureMessage_observable;
             },
-            updateDraft: function() {
-                return {
-                    subscribe: function (){}
-                };
+            updateDraft () {
+                return mockUpdateDraft_observable;
             }
         };
 
@@ -40,6 +48,7 @@ describe('DraftMessageEditContainerComponent', () => {
 
     afterEach(() => {
         mockExportedData = undefined;
+        console.log = originalConsoleLog;
     });
 
     describe('when draft message is not exported on to route data', () => {
@@ -164,7 +173,7 @@ describe('DraftMessageEditContainerComponent', () => {
                         });
                     }));
 
-                    /*it('should navigate to secure message list view', async(() => {
+                    it('should navigate to secure message list view', async(() => {
                         mockCreateSecureMessage_observable = Observable.of({});
 
                         fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
@@ -175,20 +184,47 @@ describe('DraftMessageEditContainerComponent', () => {
 
                             const comp = fixture.debugElement.componentInstance;
 
+                            comp.router = {
+                                navigate: function () {}
+                            };
+
+                            spyOn(comp.router, 'navigate');
+
                             comp.sendMessage_handler();
 
-                            // expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
+                            expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
                             expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
                         });
-                    }));*/
+                    }));
                 });
 
-                /*describe('after failing to send a draft', () => {
+                describe('after failing to send a draft', () => {
 
-                    beforeEach(() => {
+                    it('should log error to console', async(() => {
                         mockCreateSecureMessage_observable = Observable.throw('Error sending draft message');
-                    });
-                });*/
+
+                        fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
+
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            fixture.detectChanges();
+
+                            const comp = fixture.debugElement.componentInstance;
+
+                            comp.router = {
+                                navigate: function () {}
+                            };
+
+                            spyOn(comp.router, 'navigate');
+
+                            comp.sendMessage_handler();
+
+                            expect(comp.router.navigate).not.toHaveBeenCalledWith();
+                            expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
+                            expect(console.log).toHaveBeenCalledWith('Error: ', 'Error sending draft message');
+                        });
+                    }));
+                });
             });
 
             describe('and message is invalid', () => {
@@ -215,10 +251,18 @@ describe('DraftMessageEditContainerComponent', () => {
 
         describe('and saveDraft_handler is invoked', () => {
 
+            let syntheticMouseEvt: MouseEvent;
+
+            beforeEach(() => {
+                syntheticMouseEvt = new MouseEvent('click', {bubbles: true});
+            });
+
             /**
              * Always call the service
              */
             it('should call updateDraft on the SecureMessagesActions service', async(() => {
+                mockUpdateDraft_observable = Observable.of();
+
                 fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
 
                 fixture.detectChanges();
@@ -226,35 +270,77 @@ describe('DraftMessageEditContainerComponent', () => {
                     fixture.detectChanges();
 
                     const comp = fixture.debugElement.componentInstance;
-                    comp.saveDraft_handler({
-                        preventDefault: function () {}
-                    });
+                    comp.saveDraft_handler(syntheticMouseEvt);
 
                     expect(mockSecureMessagesActions.updateDraft).toHaveBeenCalled();
                 });
             }));
 
-            /*describe('after successfully saving a draft', () => {
+            describe('after successfully saving a draft', () => {
 
                 it('should navigate to secure message list view', async(() => {
+                    mockUpdateDraft_observable = Observable.of({});
+
                     fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
-
-                    const comp = fixture.debugElement.componentInstance;
-
-                    spyOn(comp.router, 'navigate').and.callThrough();
 
                     fixture.detectChanges();
                     fixture.whenStable().then(() => {
                         fixture.detectChanges();
 
-                        comp.sendMessage_handler();
+                        const comp = fixture.debugElement.componentInstance;
+
+                        comp.router = {
+                            navigate: function () {}
+                        };
+
+                        spyOn(comp.router, 'navigate');
+
+                        comp.saveDraft_handler(syntheticMouseEvt);
 
                         expect(comp.router.navigate).toHaveBeenCalledWith(['/secure-messages']);
-                        expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
+                        expect(mockSecureMessagesActions.updateDraft).toHaveBeenCalled();
                     });
                 }));
-            });*/
+            });
+
+            describe('after failing to save a draft', () => {
+
+                it('should log error to console', async(() => {
+                    mockUpdateDraft_observable = Observable.throw('Error saving draft message');
+
+                    fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+
+                        const comp = fixture.debugElement.componentInstance;
+
+                        comp.router = {
+                            navigate: function () {}
+                        };
+
+                        spyOn(comp.router, 'navigate');
+
+                        comp.saveDraft_handler(syntheticMouseEvt);
+
+                        expect(comp.router.navigate).not.toHaveBeenCalledWith();
+                        expect(mockSecureMessagesActions.updateDraft).toHaveBeenCalled();
+                        expect(console.log).toHaveBeenCalledWith('Error: ', 'Error saving draft message');
+                    });
+                }));
+            });
         });
     });
-
 });
+
+testMessageHasAggregatedData(
+    'draftMessageHasAgreggateData',
+    draftMessageHasAgreggateData,
+    {
+        '@msg_to': [
+            {}
+        ],
+        '@ru_id': ''
+    },
+    global);

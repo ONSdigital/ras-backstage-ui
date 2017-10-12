@@ -5,7 +5,7 @@ import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
 
 import { buildMsgTo } from '../shared/utils';
-import { validateProperties, validationOutput } from '../../shared/utils';
+import { validateProperties, global } from '../../shared/utils';
 
 @Component({
     template: `
@@ -82,7 +82,7 @@ export class DraftMessageEditContainerComponent implements OnInit {
     }
 }
 
-function draftMessageHasAgreggateData (draftMessage: any): Boolean {
+export function draftMessageHasAgreggateData (draftMessage: any): Boolean {
 
     const failedValidation = validateProperties(draftMessage, [
         { propertyName: '@msg_to' },
@@ -92,7 +92,7 @@ function draftMessageHasAgreggateData (draftMessage: any): Boolean {
     const checkMsgToExistsInArray: Boolean = draftMessage['@msg_to'] && draftMessage['@msg_to'][0];
 
     if (!checkMsgToExistsInArray) {
-        validationOutput({
+        global.validationOutput({
             notification: 'Property @msg_to array empty',
             subject: draftMessage
         });
