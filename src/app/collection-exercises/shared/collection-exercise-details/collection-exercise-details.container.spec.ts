@@ -22,7 +22,8 @@ let fixture: ComponentFixture<any>,
 
     mockCollectionInstrumentsActions: any,
     mockCollectionExercise: any,
-    mockCollectionInstrumentStatus: any;
+    mockCollectionInstrumentStatus: any,
+    mockStoreData_observable: any;
 
 const mockRouteSnapshot: any = {};
 
@@ -44,14 +45,21 @@ function createCollectionInstrumentStatus () {
     };
 }
 
+const originalConsoleLog = console.log;
+
 describe('CollectionExerciseDetailsContainerComponent component', () => {
 
     beforeEach(() => {
+
+        spyOn(console, 'log').and.callThrough();
+
+        mockStoreData_observable = Observable.of(storeData);
+
         mockStore = {
             dispatch(action: any) {},
             configureStore() {},
             select() {
-                return Observable.of(storeData);
+                return mockStoreData_observable;
             },
         };
 
@@ -89,6 +97,8 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         mockCollectionInstrumentStatus = undefined;
         mockRouteSnapshot.data = {};
         storeData = [];
+
+        console.log = originalConsoleLog;
     });
 
     it('should create the component', async(() => {
@@ -101,8 +111,6 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
 
         fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
         instance = fixture.componentInstance;
-
-        spyOn(console, 'log').and.callThrough();
 
         fixture.detectChanges();
         fixture.whenStable().then(() => {
@@ -121,6 +129,8 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             mockCollectionExercise = createMockCollectionExercise('100');
 
             storeData = [mockCollectionExercise];
+
+            mockStoreData_observable = Observable.of(storeData);
         });
 
         describe('and collectionInstrumentStatus is exported on route', () => {
@@ -167,6 +177,50 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                         });
                     });
                 }));
+
+                describe('and failing to retrieve a collection exercise from the data store', () => {
+
+                    const collectionExerciseFailErr = 'Could not retrieve collection exercise from data store';
+
+                    beforeEach(() => {
+                        mockStoreData_observable = Observable.throw(collectionExerciseFailErr);
+                    });
+
+                    it('should log error to console', async(() => {
+                        fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                        instance = fixture.componentInstance;
+
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            fixture.detectChanges();
+
+                            expect(console.log).toHaveBeenCalledWith('Error: ', collectionExerciseFailErr);
+                        });
+                    }));
+                });
+
+                describe('and collection exercise model does not exist in the data store', () => {
+
+                    beforeEach(() => {
+                        storeData = [];
+                        mockStoreData_observable = Observable.of(storeData);
+                    });
+
+                    checkViewModelNotCreated();
+
+                    it('should log error to console', async(() => {
+                        fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                        instance = fixture.componentInstance;
+
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            fixture.detectChanges();
+
+                            expect(console.log)
+                                .toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
+                        });
+                    }));
+                });
             });
 
             describe('and survey is not successfully retrieved from the service', () => {
@@ -177,38 +231,76 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
 
         describe('and collectionInstrumentStatus is not exported on route', () => {
 
+            beforeEach(() => {
+                mockCollectionInstrumentStatus = createCollectionInstrumentStatus();
+                mockRouteSnapshot.data = {
+                    exported: {}
+                };
+            });
+
             checkViewModelNotCreated();
+
+            it('should log error to console', async(() => {
+                fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(console.log)
+                        .toHaveBeenCalledWith(
+                            'collectionInstrumentStatus not found on route data: ',
+                            mockRouteSnapshot.data);
+                });
+            }));
+        });
+
+        describe('and the collectionInstrumentBatchLoadClick_handler method is invoked', () => {
+
+            it('should call loadCollectionInstrumentBatch action on CollectionInstrumentsActions',
+                async(() => {
+
+                mockRouteSnapshot.data = {
+                    exported: {
+                        collectionInstrumentStatus: createCollectionInstrumentStatus(),
+                        survey: createSurvey_server()
+                    }
+                };
+
+                mockCollectionExercise = createMockCollectionExercise('100');
+
+                storeData = [mockCollectionExercise];
+
+                mockStoreData_observable = Observable.of(storeData);
+
+                fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                instance = fixture.componentInstance;
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+                    instance.collectionInstrumentBatchLoadClick_handler();
+
+                    expect(mockCollectionInstrumentsActions.loadCollectionInstrumentBatch).toHaveBeenCalled();
+                });
+            }));
         });
     });
 
-    describe('when a collection exercise does not exist in the store', () => {
+    describe('when exported data is not found on route', () => {
 
-        checkViewModelNotCreated();
-    });
-
-    describe(('when the collectionInstrumentBatchLoadClick_handler method is invoked'), () => {
-
-        it('should call loadCollectionInstrumentBatch action on CollectionInstrumentsActions', async(() => {
-            mockRouteSnapshot.data = {
-                exported: {
-                    collectionInstrumentStatus: createCollectionInstrumentStatus(),
-                    survey: createSurvey_server()
-                }
-            };
-
-            mockCollectionExercise = createMockCollectionExercise('100');
-
-            storeData = [mockCollectionExercise];
-
+        it('should log error to console', async(() => {
             fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
             instance = fixture.componentInstance;
 
             fixture.detectChanges();
             fixture.whenStable().then(() => {
                 fixture.detectChanges();
-                instance.collectionInstrumentBatchLoadClick_handler();
 
-                expect(mockCollectionInstrumentsActions.loadCollectionInstrumentBatch).toHaveBeenCalled();
+                expect(console.log).toHaveBeenCalledWith(
+                    'exported data not found on route: ',
+                    mockRouteSnapshot.data);
             });
         }));
     });

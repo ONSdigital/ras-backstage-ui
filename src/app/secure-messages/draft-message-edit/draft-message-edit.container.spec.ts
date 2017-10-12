@@ -29,7 +29,7 @@ describe('DraftMessageEditContainerComponent', () => {
 
     beforeEach(() => {
 
-        spyOn(console, 'log');
+        spyOn(console, 'log').and.callThrough();
         mockCreateSecureMessage_observable = Observable.of({});
         mockUpdateDraft_observable = Observable.of({});
 
