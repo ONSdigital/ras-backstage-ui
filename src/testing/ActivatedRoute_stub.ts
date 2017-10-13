@@ -7,13 +7,13 @@ import { MockActivatedRoute } from './ActivatedRouteSnapshot_stub';
 
 export function createActivatedRoute (
     path: string,
-    breadcrumbLabel: string,
+    breadcrumbLabel: any,
     children: ActivatedRoute[] = []): ActivatedRoute {
 
     const urlSegment = [];
 
     if (path !== '') {
-        urlSegment.push(createURLSegment(path, breadcrumbLabel));
+        urlSegment.push(createURLSegment(path, breadcrumbLabel.length ? breadcrumbLabel : breadcrumbLabel()));
     }
 
     const mockActivatedRoute = new MockActivatedRoute();
