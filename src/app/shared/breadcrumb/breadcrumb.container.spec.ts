@@ -10,6 +10,8 @@ import { createActivatedRoute } from '../../../testing/ActivatedRoute_stub';
 
 let fixture: ComponentFixture<any>;
 
+const originalConsoleLog: any = console.log;
+
 const activatedRoutePointer = {
     root: {}
 };
@@ -17,6 +19,9 @@ const activatedRoutePointer = {
 describe('BreadcrumbContainerComponent', () => {
 
     beforeEach(() => {
+
+        spyOn(console, 'log').and.callThrough();
+
         TestBed.configureTestingModule({
             imports: [
                 RouterTestingModule
@@ -33,6 +38,10 @@ describe('BreadcrumbContainerComponent', () => {
             ]
         })
         .compileComponents();
+    });
+
+    afterEach(() => {
+        console.log = originalConsoleLog;
     });
 
     it('should initialise correctly', async(() => {
@@ -53,6 +62,33 @@ describe('BreadcrumbContainerComponent', () => {
             expect(comp.breadcrumbItems).toHaveBeenCalledWith(activatedRoutePointer.root);
         });
     }));
+
+    describe('ngOnInit [method]', () => {
+
+        describe('when router filter fails', () => {
+
+            it('should log error to console', async(() => {
+                fixture = TestBed.createComponent(BreadcrumbContainerComponent);
+
+                const filterErr = 'Error with router events filter';
+                const comp = fixture.debugElement.componentInstance;
+
+                comp.router = {
+                    events: Observable.throw(filterErr)
+                };
+
+                spyOn(comp, 'breadcrumbItems');
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(comp.breadcrumbItems).not.toHaveBeenCalled();
+                    expect(console.log).toHaveBeenCalledWith('Error: ', filterErr);
+                });
+            }));
+        });
+    });
 
     describe('breadcrumbItems [method]', () => {
 
@@ -121,6 +157,54 @@ describe('BreadcrumbContainerComponent', () => {
                         ]);
                     });
                 }));
+
+                describe('and breadcrumb label is a function', () => {
+
+                    it('should return an array of BreadcrumbItem objects', async(() => {
+                        fixture = TestBed.createComponent(BreadcrumbContainerComponent);
+
+                        fixture.detectChanges();
+                        fixture.whenStable().then(() => {
+                            fixture.detectChanges();
+                            const comp = fixture.debugElement.componentInstance;
+
+                            const anotherRoute = createActivatedRoute(
+                                'another',
+                                'Another');
+
+                            const secureMessagesRoute = createActivatedRoute(
+                                'secure-messages',
+                                () => {
+                                    return 'This string was return from a function';
+                                },
+                                [
+                                    anotherRoute
+                                ]);
+
+                            const route = createActivatedRoute(
+                                '',
+                                '',
+                                [
+                                    secureMessagesRoute
+                                ]);
+
+                            const result = comp.breadcrumbItems(route);
+
+                            expect(result).toEqual([
+                                {
+                                    label: 'This string was return from a function',
+                                    params: undefined,
+                                    link: '/secure-messages'
+                                },
+                                {
+                                    label: 'Another',
+                                    params: undefined,
+                                    link: '/secure-messages/another'
+                                }
+                            ]);
+                        });
+                    }));
+                });
             });
 
             describe('and breadcrumb items do not exist on a ActivatedRoute', () => {
