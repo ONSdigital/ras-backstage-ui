@@ -121,7 +121,7 @@ describe('AuthenticationService', () => {
                 (authenticationService: AuthenticationService, mockBackend: MockBackend) => {
 
                     const mockResponse: any = {
-                        token: '9876'
+                        token: '100'
                     };
 
                     mockBackend.connections.subscribe((connection: any) => {
@@ -147,7 +147,7 @@ describe('AuthenticationService', () => {
                     (authenticationService: AuthenticationService, mockBackend: MockBackend) => {
 
                         const mockResponse: any = {
-                            token: '9876'
+                            token: '200'
                         };
 
                         mockBackend.connections.subscribe((connection: any) => {
@@ -170,6 +170,57 @@ describe('AuthenticationService', () => {
                         expect(mockRouter.navigateByUrl)
                             .toHaveBeenCalledWith(mockActivatedRoute.snapshot.queryParams.returnUrl);
                     }));
+
+            describe('and token does not exist in the response', () => {
+
+                it('should log error to console',
+                    inject([AuthenticationService, XHRBackend],
+                        (authenticationService: AuthenticationService, mockBackend: MockBackend) => {
+                            const mockResponse: any = {};
+
+                            mockBackend.connections.subscribe((connection: any) => {
+                                connection.mockRespond(
+                                    new Response(
+                                        new ResponseOptions({
+                                            body: JSON.stringify(mockResponse)
+                                        })));
+                            });
+
+                            authenticationService
+                                .authenticateCredentials('someUser', 'somePassword').subscribe();
+
+                            expect(console.log).toHaveBeenCalledWith('Problem retrieving token from successful response');
+                        }));
+            });
+
+            describe('and returnUrl is not specified in the query parameters', () => {
+
+                beforeEach(() => {
+                    mockActivatedRoute.snapshot.queryParams = {};
+                });
+
+                it('should redirect to site root',
+                    inject([AuthenticationService, XHRBackend],
+                        (authenticationService: AuthenticationService, mockBackend: MockBackend) => {
+                            const mockResponse: any = {
+                                token: '300'
+                            };
+
+                            mockBackend.connections.subscribe((connection: any) => {
+                                connection.mockRespond(
+                                    new Response(
+                                        new ResponseOptions({
+                                            body: JSON.stringify(mockResponse)
+                                        })));
+                            });
+
+                            authenticationService
+                                .authenticateCredentials('someUser', 'somePassword').subscribe();
+
+                            expect(mockRouter.navigateByUrl)
+                                .toHaveBeenCalledWith('/');
+                        }));
+            });
         });
 
         describe('when user does not authenticate', () => {
@@ -185,7 +236,7 @@ describe('AuthenticationService', () => {
                                 }));
 
                             res.ok = false;
-                            res.status = 500;
+                            res.status = 401;
                             res.statusText = '';
                             res.type = 3;
                             res.url = null;
