@@ -20,6 +20,8 @@ import { ServerErrorContainerComponent } from './shared/server-error/server-erro
 import { ServerErrorComponent } from './shared/server-error/server-error.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { HomeComponent } from './shared/home/home.component';
+import { SiteSearchContainerComponent } from './shared/site-search/site-search.container';
+import { SiteSearchComponent } from './shared/site-search/site-search.component';
 
 // const createLogger = require('redux-logger');
 
@@ -46,7 +48,9 @@ import { HomeComponent } from './shared/home/home.component';
         ServerErrorContainerComponent,
         ServerErrorComponent,
         PageNotFoundComponent,
-        HomeComponent
+        HomeComponent,
+        SiteSearchContainerComponent,
+        SiteSearchComponent
     ],
     bootstrap: [
         AppComponent

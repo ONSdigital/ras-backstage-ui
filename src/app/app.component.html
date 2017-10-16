@@ -38,29 +38,7 @@
                 <div class="bar__inner container">
                     <div class="bar__title neptune">Response Operations</div>
 
-                    <div class="site-search" *ngIf="isAuthenticated">
-                        <form [action]="siteSearchUrl" method="GET">
-                            <label>RU Reference: </label>
-                            <span class="site-search__field-container">
-                                <input
-                                    #siteSearch
-                                    type="text"
-                                    placeholder="Enter reference"
-                                    class="site-search__field"
-                                    maxlength="11"
-                                    (keyup)="createSiteSearchFormUrl($event)"/>
-
-                                <i *ngIf="reportingUnitFound"
-                                   aria-hidden="true"
-                                   class="fa fa-check-circle site-search__success-icon"></i>
-                            </span>
-
-                            <button
-                                class="btn btn--light site-search__trigger"
-                                [class.site-search__trigger--disabled]="!searchEnabled"
-                                (click)="searchClick_handler($event, siteSearch)">Search</button>
-                        </form>
-                    </div>
+                    <ons-site-search-container></ons-site-search-container>
                 </div>
             </div>
             <div class="site-navigation" *ngIf="isAuthenticated">

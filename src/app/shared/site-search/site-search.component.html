@@ -1,0 +1,23 @@
+<div class="site-search" *ngIf="showSearch">
+    <form [action]="siteSearchUrl" method="GET">
+        <label>RU Reference: </label>
+        <span class="site-search__field-container">
+            <input
+                #siteSearch
+                type="text"
+                placeholder="Enter reference"
+                class="site-search__field"
+                maxlength="11"
+                (keyup)="searchValueChange.emit($event)"/>
+
+            <i *ngIf="showMatchIndicator"
+               aria-hidden="true"
+               class="fa fa-check-circle site-search__success-icon"></i>
+        </span>
+
+        <button
+            class="btn btn--light site-search__trigger"
+            [class.site-search__trigger--disabled]="!searchEnabled"
+            (click)="searchClick_handler.emit($event, siteSearch)">Search</button>
+    </form>
+</div>
