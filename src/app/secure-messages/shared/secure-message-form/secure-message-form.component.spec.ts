@@ -55,22 +55,23 @@ describe('SecureMessageFormComponent', () => {
             }));
         });
 
-
-        /*describe('when form is not valid', () => {
+        describe('when form is not valid', () => {
 
             it('should return false', async(() => {
+                comp.subject = '';
+                comp.body = 'Test body';
+                comp.message = {
+                    thread_id: '123',
+                    msg_id: '123'
+                };
+
                 fixture.detectChanges();
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
 
-                    const comp = fixture.debugElement.componentInstance;
-
-                    comp.subject = '';
-                    comp.body = 'Test body';
-
                     expect(comp.isValid()).toEqual(false);
                 });
             }));
-        });*/
+        });
     });
 });

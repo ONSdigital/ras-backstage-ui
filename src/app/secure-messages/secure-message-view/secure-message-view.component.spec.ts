@@ -93,11 +93,7 @@ describe('SecureMessageViewComponent', () => {
 
                     const bodyText = 'Example body text';
 
-                    comp.onTypingReply({
-                        target: {
-                            value: bodyText
-                        }
-                    });
+                    comp.onTypingReply(bodyText);
 
                     expect(comp.newSecureMessageModel.body).toEqual(bodyText);
                 });
@@ -115,11 +111,7 @@ describe('SecureMessageViewComponent', () => {
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
 
-                    comp.onTypingReply({
-                        target: {
-                            value: 'Example body text'
-                        }
-                    });
+                    comp.onTypingReply('Example body text');
 
                     expect(comp.newSecureMessageModel).toEqual(undefined);
                 });

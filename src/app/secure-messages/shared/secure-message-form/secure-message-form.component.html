@@ -2,31 +2,12 @@
     <form action="#" name="message_create">
         <p>To: {{to}}</p>
 
-        <fieldset class="u-mb-m">
-            <label class="venus" for="secure-message-subject">Subject</label>
-
-            <!-- Allow changing the subject of a draft for a new conversation. Subject can't be changed for a reply -->
-            <span *ngIf="message.thread_id === message.msg_id">
-                <input
-                    id="secure-message-subject"
-                    #secureMessageSubject
-                    class="secure-message-form__subject input input--text"
-                    type="text"
-                    name="secure-message-subject"
-                    required
-                    [class.input--textarea-error]="secureMessageSubject.value.length === subjectMaxLength"
-                    [(ngModel)]="subject"
-                    (change)="subjectChange.emit(subject)"
-                    aria-labelledby="secure-message-subject"
-                    maxlength="{{ subjectMaxLength }}" />
-
-                <em class="pluto"
-                    [class.error-text]="secureMessageSubject.value.length === subjectMaxLength">
-                        Maximum {{ subjectMaxLength }} characters
-                        ({{ subjectMaxLength - secureMessageSubject.value.length }} remaining)</em>
-            </span>
-            <span *ngIf="message.thread_id !== message.msg_id"><br />{{ message.subject }}</span><br />
-        </fieldset>
+        <ons-secure-message-form-subject
+            [(subjectText)]="subject"
+            (subjectTextChange)="subjectChange.emit(subject)"
+            [maxLength]="subjectMaxLength"
+            [fieldLabel]="'Subject'"
+            [subjectEditable]="message.thread_id === message.msg_id"></ons-secure-message-form-subject>
 
         <ons-secure-message-form-body
             [(bodyText)]="body"
