@@ -3,7 +3,7 @@
         <p>To: {{to}}</p>
 
         <fieldset class="u-mb-m">
-            <label for="secure-message-subject">Subject</label>
+            <label class="venus" for="secure-message-subject">Subject</label>
 
             <!-- Allow changing the subject of a draft for a new conversation. Subject can't be changed for a reply -->
             <span *ngIf="message.thread_id === message.msg_id">
@@ -28,26 +28,11 @@
             <span *ngIf="message.thread_id !== message.msg_id"><br />{{ message.subject }}</span><br />
         </fieldset>
 
-        <fieldset class="u-mb-m">
-            <label for="secure-message-body">Message</label>
-            <textarea
-                id="secure-message-body"
-                #secureMessageBody
-                class="secure-message-form__body input"
-                rows="10"
-                name="secure-message-body"
-                required
-                [class.input--textarea-error]="secureMessageBody.value.length === bodyMaxLength"
-                [(ngModel)]="body"
-                (change)="bodyChange.emit(body)"
-                aria-labelledby="secure-message-body"
-                maxlength="{{ bodyMaxLength }}"></textarea>
-
-            <em class="pluto"
-                [class.error-text]="secureMessageBody.value.length === bodyMaxLength">
-                    Maximum {{ bodyMaxLength}} characters
-                    ({{ bodyMaxLength - secureMessageBody.value.length }} remaining)</em>
-        </fieldset>
+        <ons-secure-message-form-body
+            [(bodyText)]="body"
+            (bodyTextChange)="bodyChange.emit(body)"
+            [maxLength]="bodyMaxLength"
+            [fieldLabel]="'Message'"></ons-secure-message-form-body>
 
         <button class="btn btn--secondary" type="submit"
             (click)="secondary_button_click.emit($event);"

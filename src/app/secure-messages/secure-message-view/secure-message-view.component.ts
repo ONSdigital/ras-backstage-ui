@@ -33,13 +33,13 @@ export class SecureMessageViewComponent implements OnInit {
         return !!this.newSecureMessageModel && !!this.newSecureMessageModel.subject && !!this.newSecureMessageModel.body;
     }
 
-    public onTypingReply(event: KeyboardEvent) {
+    public onTypingReply(message: string) {
 
         if (!this.newSecureMessageModel) {
             return;
         }
 
-        this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
+        this.newSecureMessageModel.body = message;
     }
 
     public getOriginalSecureMessageMsgFrom() {

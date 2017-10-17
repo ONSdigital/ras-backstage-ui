@@ -1,0 +1,21 @@
+<fieldset class="u-mb-m">
+    <label class="venus" for="secure-message-body">{{ fieldLabel }}</label>
+    <textarea
+        id="secure-message-body"
+        #secureMessageBody
+        class="secure-message-form__body input"
+        rows="10"
+        name="secure-message-body"
+        required
+        [class.input--textarea-error]="secureMessageBody.value.length === maxLength"
+        [(ngModel)]="bodyText"
+        (change)="bodyTextChange.emit(bodyText)"
+        (keyup)="bodyTextChange.emit(bodyText)"
+        aria-labelledby="secure-message-body"
+        maxlength="{{ maxLength }}"></textarea>
+
+    <em class="pluto"
+        [class.error-text]="secureMessageBody.value.length === maxLength">
+        Maximum {{ maxLength}} characters
+        ({{ maxLength - secureMessageBody.value.length }} remaining)</em>
+</fieldset>
