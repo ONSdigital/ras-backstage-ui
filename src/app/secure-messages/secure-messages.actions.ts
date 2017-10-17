@@ -120,7 +120,7 @@ export class SecureMessagesActions {
         });
 
         const observable = this.secureMessagesService.getAllMessages(label, page)
-            .map((res: any) => res)
+            .map((res: any) => res.json())
             .share();
 
         observable.subscribe(

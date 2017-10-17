@@ -48,7 +48,7 @@ export class SecureMessagesService {
     @CheckRequestAuthenticated()
     public getAllMessages(label?: string, page?: string): Observable<any> {
 
-        let url = SecureMessagesService.BASE_URL + 'messages?limit=10';
+        let url = SecureMessagesService.BASE_URL + 'messages?limit=15';
 
         if (label) {
             url = url + '&label=' + label;

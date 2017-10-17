@@ -44,7 +44,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
     public navigationTabs: Array<NavigationTab> = [
         {
-            label: 'All Messages',
+            label: 'All',
             link: '/secure-messages',
             selected: false
         },
@@ -104,8 +104,8 @@ export class SecureMessagesListContainerComponent implements OnInit {
             this.secureMessagesActions.retrieveAllSecureMessages(this.getLabel(), this.page)
                 .subscribe(
                     (res: any) => {
-                        this.secureMessageListUpdate(res.json().messages);
-                        this.paginationUpdate(res.json()._links);
+                        this.secureMessageListUpdate(res.messages);
+                        this.paginationUpdate(res._links);
                     },
                     (err: any) => console.log('Error: ', err)
                 );
@@ -118,7 +118,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
     private updateNavTabs () {
         for (const index in this.navigationTabs) {
 
-            if (this.navigationTabs[index]['label'] === 'All Messages' && !this.path) {
+            if (this.navigationTabs[index]['label'] === 'All' && !this.path) {
                 this.navigationTabs[index]['selected'] = true;
             } else if (this.path && this.navigationTabs[index]['link'].includes(this.path)) {
                 this.navigationTabs[index]['selected'] = true;

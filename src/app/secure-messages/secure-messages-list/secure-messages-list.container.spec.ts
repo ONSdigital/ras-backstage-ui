@@ -23,7 +23,7 @@ let fixture: ComponentFixture<any>,
     mockSecureMessagesActions_observable: any,
 
     storeDataStateMessage: any = null,
-    apiData: any = [];
+    apiData: any = {};
 
 const originalConsoleLog = console.log;
 const originalValidationOutput = global.validationOutput;
@@ -38,7 +38,7 @@ describe('SecureMessagesListContainerComponent', () => {
          * Default if not reassigned
          */
         mockStore_observable = Observable.of(null);
-        mockSecureMessagesActions_observable = Observable.of([]);
+        mockSecureMessagesActions_observable = Observable.of(apiData);
 
         mockStore = {
             dispatch(action: any) {},
@@ -75,7 +75,10 @@ describe('SecureMessagesListContainerComponent', () => {
 
     afterEach(() => {
         storeDataStateMessage = null;
-        apiData = null;
+        apiData = {
+            '_links': {},
+            'messages': []
+        };
         console.log = originalConsoleLog;
     });
 
@@ -190,10 +193,12 @@ describe('SecureMessagesListContainerComponent', () => {
                 message1 = createSecureMessage_server('200');
                 message2 = createSecureMessage_server('300');
 
-                apiData = [
+                apiData = {
+                    '_links': {},
+                    'messages': [
                     message1,
                     message2
-                ];
+                ]};
 
                 mockSecureMessagesActions_observable = Observable.of(apiData);
             });
