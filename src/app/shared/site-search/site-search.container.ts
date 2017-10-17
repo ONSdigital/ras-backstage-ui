@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
             [searchEnabled]="searchEnabled"
             [siteSearchUrl]="siteSearchUrl"
             (searchValueChange)="createSiteSearchFormUrl($event)"
-            (searchClick_handler)="searchClick_handler"></ons-site-search>
+            (searchClick_handler)="searchClick_handler($event)"></ons-site-search>
     `,
 })
 export class SiteSearchContainerComponent implements OnInit {
@@ -68,10 +68,11 @@ export class SiteSearchContainerComponent implements OnInit {
         this.siteSearchUrl = this.responseOperationsUrl + 'sampleunitref/' + event.target.value + '/cases';
     }
 
-    searchClick_handler(event: any, siteSearchEl: any) {
+    searchClick_handler(eventContainer: any) {
+
         if (!this.searchEnabled) {
-            event.preventDefault();
-            siteSearchEl.focus();
+            eventContainer.$event.preventDefault();
+            eventContainer.siteSearchEl.focus();
             return false;
         }
     }

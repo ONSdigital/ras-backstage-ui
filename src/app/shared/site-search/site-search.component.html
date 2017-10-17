@@ -18,6 +18,6 @@
         <button
             class="btn btn--light site-search__trigger"
             [class.site-search__trigger--disabled]="!searchEnabled"
-            (click)="searchClick_handler.emit($event, siteSearch)">Search</button>
+            (click)="searchClick_handler.emit({$event: $event, siteSearchEl: siteSearch})">Search</button>
     </form>
 </div>
