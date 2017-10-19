@@ -41,23 +41,4 @@ export class SecureMessageViewComponent implements OnInit {
 
         this.newSecureMessageModel.body = message;
     }
-
-    public getOriginalSecureMessageMsgFrom() {
-        return this.originalSecureMessage && this.originalSecureMessage['@msg_from']
-            ? this.originalSecureMessage['@msg_from'] : {};
-    }
-
-    public getOriginalSecureMessageMsgTo() {
-        return this.originalSecureMessage && this.originalSecureMessage['@msg_to'] && this.originalSecureMessage['@msg_to'][0]
-            ? this.originalSecureMessage['@msg_to'][0] : {};
-    }
-
-    public personLabel (personData: any): string {
-
-        if (!personData.firstName && !personData.lastName) {
-            return '(Name not found)';
-        }
-
-        return personData.firstName + ' ' + personData.lastName;
-    }
 }
