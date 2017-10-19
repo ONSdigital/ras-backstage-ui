@@ -5,6 +5,7 @@
 
         <ons-secure-message-conversation-message
             [secureMessage]="message"
+            [me]="me"
             (mark_message_read_click_handler)="mark_message_read_click_handler.emit($event)">
         </ons-secure-message-conversation-message>
 

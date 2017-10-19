@@ -38,6 +38,8 @@ import { DraftMessageEditContainerComponent } from './draft-message-edit/draft-m
 
 import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-tabs.component';
 import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedback.component';
+import { ButtonPrimaryComponent } from '../shared/buttons/button-primary/button-primary.component';
+import { ButtonSecondaryComponent } from '../shared/buttons/button-secondary/button-secondary.component';
 
 @NgModule({
     imports: [
@@ -66,7 +68,9 @@ import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedba
         DraftMessageEditComponent,
         DraftMessageEditContainerComponent,
         NavigationTabsComponent,
-        SystemFeedbackComponent
+        SystemFeedbackComponent,
+        ButtonPrimaryComponent,
+        ButtonSecondaryComponent
     ],
     providers: [
         PartyService,

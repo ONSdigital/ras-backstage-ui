@@ -15,7 +15,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { CollectionExerciseModule } from './collection-exercises/collection-exercises.module';
 import { SecureMessagesModule } from './secure-messages/secure-messages.module';
 
-
 import { ServerErrorContainerComponent } from './shared/server-error/server-error.container';
 import { ServerErrorComponent } from './shared/server-error/server-error.component';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';

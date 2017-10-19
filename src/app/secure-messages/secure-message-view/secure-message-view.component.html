@@ -4,6 +4,7 @@
             <ons-secure-message-conversation
                 [title]="originalSecureMessage?.subject"
                 [secureMessages]="[originalSecureMessage]"
+                [me]="user"
                 (mark_message_read_click_handler)="mark_message_read_click_handler.emit($event)"></ons-secure-message-conversation>
 
             <form action="#" name="message_reply">
@@ -13,13 +14,13 @@
                     [maxLength]="bodyMaxLength"
                     [fieldLabel]="'Add a message'"></ons-secure-message-form-body>
 
-                <button class="btn btn--secondary" type="submit"
-                    (click)="save_draft_click_handler.emit($event)"
-                    role="button">Save draft</button>
+                <ons-button-secondary
+                    (click_handler)="save_draft_click_handler.emit($event)"
+                    [label]="'Save draft'"></ons-button-secondary>
 
-                <button class="btn btn--primary" type="submit"
-                    (click)="send_reply_click_handler.emit($event)"
-                    role="button">Send</button>
+                <ons-button-primary
+                    (click_handler)="send_reply_click_handler.emit($event)"
+                    [label]="'Send'"></ons-button-primary>
 
                 <div class="u-mb-m">
                     <a [routerLink]="'/secure-messages'">Cancel</a>
