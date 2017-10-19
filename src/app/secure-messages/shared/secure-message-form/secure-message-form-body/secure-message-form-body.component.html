@@ -1,5 +1,6 @@
 <fieldset class="u-mb-m">
     <label class="venus" for="secure-message-body">{{ fieldLabel }}</label>
+
     <textarea
         id="secure-message-body"
         #secureMessageBody
@@ -14,8 +15,7 @@
         aria-labelledby="secure-message-body"
         maxlength="{{ maxLength }}"></textarea>
 
-    <em class="pluto"
-        [class.error-text]="secureMessageBody.value.length === maxLength">
-        Maximum {{ maxLength}} characters
-        ({{ maxLength - secureMessageBody.value.length }} remaining)</em>
+    <ons-remaining-character-count
+        [currentValue]="secureMessageBody.value"
+        [maxLength]="maxLength"></ons-remaining-character-count>
 </fieldset>

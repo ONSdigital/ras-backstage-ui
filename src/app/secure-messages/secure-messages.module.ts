@@ -40,6 +40,9 @@ import { NavigationTabsComponent } from '../shared/navigation-tabs/navigation-ta
 import { SystemFeedbackComponent } from '../shared/system-feedback/system-feedback.component';
 import { ButtonPrimaryComponent } from '../shared/buttons/button-primary/button-primary.component';
 import { ButtonSecondaryComponent } from '../shared/buttons/button-secondary/button-secondary.component';
+import {
+    RemainingCharacterCountComponent
+} from '../shared/remaining-character-count/remaining-character-count.component';
 
 @NgModule({
     imports: [
@@ -70,7 +73,8 @@ import { ButtonSecondaryComponent } from '../shared/buttons/button-secondary/but
         NavigationTabsComponent,
         SystemFeedbackComponent,
         ButtonPrimaryComponent,
-        ButtonSecondaryComponent
+        ButtonSecondaryComponent,
+        RemainingCharacterCountComponent
     ],
     providers: [
         PartyService,
