@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { PartyService } from '../../party/party.service';
@@ -18,13 +19,15 @@ import { environment } from '../../../environments/environment';
             (searchClick_handler)="searchClick_handler($event)"></ons-site-search>
     `,
 })
-export class SiteSearchContainerComponent implements OnInit {
+export class SiteSearchContainerComponent implements OnInit, OnDestroy {
 
     public responseOperationsUrl: string;
     public siteSearchUrl = '';
     public searchEnabled = false;
     public reportingUnitFound = false;
     public isAuthenticated: Boolean;
+
+    private partyServiceGetBusinessByRefSubscription: Subscription;
 
     public searchIgnoreKeys: Array<string> = [
         'ArrowLeft',
@@ -51,6 +54,10 @@ export class SiteSearchContainerComponent implements OnInit {
             );
     }
 
+    ngOnDestroy() {
+        this.partyServiceGetBusinessByRefSubscription && this.partyServiceGetBusinessByRefSubscription.unsubscribe();
+    }
+
     createSiteSearchFormUrl(event: any) {
         const val: string = event.target.value;
 
@@ -63,6 +70,8 @@ export class SiteSearchContainerComponent implements OnInit {
 
         if (val.length === 11) {
             this.searchReportingUnit(val);
+        } else {
+            this.cancelSearchReportingUnit();
         }
 
         this.siteSearchUrl = this.responseOperationsUrl + 'sampleunitref/' + event.target.value + '/cases';
@@ -79,12 +88,16 @@ export class SiteSearchContainerComponent implements OnInit {
 
     searchReportingUnit(reference: string) {
 
-        this.partyService.getBusinessByRef(reference)
+        this.partyServiceGetBusinessByRefSubscription = this.partyService.getBusinessByRef(reference)
             .subscribe(
                 () => {
                     this.reportingUnitFound = true;
                 },
                 () => console.log('Business not found')
             );
+    }
+
+    cancelSearchReportingUnit() {
+        this.partyServiceGetBusinessByRefSubscription && this.partyServiceGetBusinessByRefSubscription.unsubscribe();
     }
 }
