@@ -12,6 +12,7 @@ import { createDraftMessage_server } from '../../../testing/create_SecureMessage
 
 let mockDraftMessage: any,
     mockSecureMessageService: any,
+    mockSecureMessageService_observable: any,
 
     apiData: any;
 
@@ -19,13 +20,15 @@ describe('DraftMessageEditResolver service', () => {
 
     beforeEach(() => {
 
+        mockSecureMessageService_observable = Observable.of({
+            json: function () {
+                return mockDraftMessage;
+            }
+        });
+
         mockSecureMessageService = {
             getMessage: function () {
-                return Observable.of({
-                    json: function () {
-                        return mockDraftMessage;
-                    }
-                });
+                return mockSecureMessageService_observable;
             }
         };
 
@@ -67,5 +70,36 @@ describe('DraftMessageEditResolver service', () => {
 
                     expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith('100');
                 }));
+
+        describe('when draft not found', () => {
+
+            const getDraftError = 'Error getting draft message';
+
+            beforeEach(() => {
+                mockSecureMessageService_observable = Observable.throw(getDraftError);
+            });
+
+            it('should route the user to a 404 page',
+                inject([DraftMessageEditResolver],
+                    (draftMessageEditResolver: DraftMessageEditResolver) => {
+
+                        spyOn(draftMessageEditResolver.router, 'navigate');
+
+                        const activatedRouteSnapShot: ActivatedRouteSnapshot = new MockActivatedRoute(),
+                            params = {
+                                'draft-message-id': '200'
+                            };
+
+                        activatedRouteSnapShot.params = params;
+
+                        try {
+                            draftMessageEditResolver.resolve(activatedRouteSnapShot)
+                                .subscribe(() => {
+                                    expect(draftMessageEditResolver.router.navigate).toHaveBeenCalledWith(['/404']);
+                                });
+                        } catch (e) {}
+                        finally {}
+                    }));
+        });
     });
 });
