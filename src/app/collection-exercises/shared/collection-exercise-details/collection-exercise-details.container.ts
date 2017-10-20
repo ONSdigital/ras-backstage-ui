@@ -21,21 +21,21 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
 
     public routeParamSubscription: Subscription;
     public viewModel: CollectionExerciseDetailsViewModel;
-    private BASE_URL = environment.endpoints.collectionInstrument;
+    public BASE_URL = environment.endpoints.collectionInstrument;
 
     public static buildReferencePeriod(collectionExercise: CollectionExercise) {
-        const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';       // e.g. 2017-05-15T00:00:00Z
-        const outputDateFormat = 'D MMM YYYY';                  // e.g. 15 May 2017
+        const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';
+        const outputDataFormat = 'D MMM YYYY';
         const from = moment(collectionExercise.periodStartDateTime, serviceDateFormat);
         const to = moment(collectionExercise.periodEndDateTime, serviceDateFormat);
 
-        return from.format(outputDateFormat) + ' - ' + to.format(outputDateFormat);
+        return from.format(outputDataFormat) + ' - ' + to.format(outputDataFormat);
     }
 
     constructor(
         private ngRedux: NgRedux<any>,
         private route: ActivatedRoute,
-        private collectionInstrumentsActions: CollectionInstrumentsActions) { }
+        private collectionInstrumentsActions: CollectionInstrumentsActions) {}
 
     ngOnInit() {
 
@@ -43,9 +43,11 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             collectionInstrumentStatus: any,
             survey: any;
 
-        if (this.route.snapshot.data && this.route.snapshot.data.exported) {
-            collectionInstrumentStatus = this.route.snapshot.data.exported.collectionInstrumentStatus;
-            survey = this.route.snapshot.data.exported.survey;
+        const routeData = this.route.snapshot.data;
+
+        if (routeData && routeData.exported) {
+            collectionInstrumentStatus = routeData.exported.collectionInstrumentStatus;
+            survey = routeData.exported.survey;
 
             if (!collectionInstrumentStatus) {
                 console.log('collectionInstrumentStatus not found on route data: ', this.route.snapshot.data);
@@ -63,19 +65,18 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
         }
 
         this.routeParamSubscription = this.route.params
-            .flatMap((params: any) => {  
-                collectionExerciseRef = params['collection-exercise-ref']; 
+            .flatMap((params: any) => {
+                collectionExerciseRef = params['collection-exercise-ref'];
 
-                return getDataStoreCollectionExerciseByRef(this.ngRedux, collectionExerciseRef); 
-            }) 
+                return getDataStoreCollectionExerciseByRef(this.ngRedux, collectionExerciseRef);
+            })
             .subscribe(
                 (collectionExercise: any) => {
 
-                     if (collectionExercise) {
+                    if (collectionExercise) {
                         this.viewModel = this.createViewModel(collectionExercise, survey, collectionInstrumentStatus);
-
                     } else {
-                        console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store.'); 
+                        console.log('Collection exercise with ref "' + collectionExerciseRef + '" not found in store');
                     }
                 },
                 (err: any) => console.log('Error: ', err)
@@ -99,9 +100,8 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
             );
     }
 
-    private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrumentBatch: any):
-
-        CollectionExerciseDetailsViewModel {
+    private createViewModel(collectionExercise: CollectionExercise, survey: Survey, collectionInstrumentBatch: any
+        ): CollectionExerciseDetailsViewModel {
 
         return {
             id: collectionExercise.id,
