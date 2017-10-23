@@ -39,16 +39,12 @@ export const collectionExercisesRoutes: Routes = [
                 },
                 data: {
                     title: 'Collection exercise - ONS Data Collection',
-                    breadcrumb: resolveCollectionExerciseDetailsBreadcrumb
+                    breadcrumb: CollectionExerciseDetailsContainerComponent.resolveBreadcrumb
                 }
             }
         ]
     }
 ];
-
-export function resolveCollectionExerciseDetailsBreadcrumb(dataResolved: {exported: any}): string {
-    return dataResolved.exported.collectionExercise.name;
-}
 
 @NgModule({
     imports: [

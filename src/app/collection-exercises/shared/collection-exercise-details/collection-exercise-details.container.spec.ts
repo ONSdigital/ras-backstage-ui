@@ -120,9 +120,47 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             const comp = fixture.debugElement.componentInstance;
             expect(comp).toBeTruthy();
             expect(comp.viewModel).toEqual(undefined);
-            // expect(console.log).toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
         });
     }));
+
+    describe('resolveBreadcrumb [static method]', () => {
+
+        const testMethod = CollectionExerciseDetailsContainerComponent.resolveBreadcrumb;
+
+        describe('when supplied valid exported data', () => {
+
+            it('should return correct breadcrumb string value', async(() => {
+                expect(testMethod({
+                        exported: {
+                            collectionExercise: {
+                                name: 'BRES'
+                            }
+                        }
+                    }))
+                    .toEqual('BRES');
+            }));
+        });
+
+        describe('when supplied invalid exported data', () => {
+
+            it('should return empty string', async(() => {
+                expect(testMethod({}))
+                    .toEqual('');
+
+                expect(testMethod({
+                        exported: {}
+                    }))
+                    .toEqual('');
+
+                expect(testMethod({
+                        exported: {
+                            collectionExercise: {}
+                        }
+                    }))
+                    .toEqual('');
+            }));
+        });
+    });
 
     describe('when a collection exercise exists in the store', () => {
 

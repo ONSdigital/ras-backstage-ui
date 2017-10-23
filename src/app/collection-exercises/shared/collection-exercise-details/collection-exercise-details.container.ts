@@ -23,6 +23,17 @@ export class CollectionExerciseDetailsContainerComponent implements OnInit, OnDe
     public viewModel: CollectionExerciseDetailsViewModel;
     public BASE_URL = environment.endpoints.collectionInstrument;
 
+    public static resolveBreadcrumb(dataResolved: {exported: any}): string {
+        if (!dataResolved.exported ||
+            !dataResolved.exported.collectionExercise ||
+            !dataResolved.exported.collectionExercise.name) {
+
+            return '';
+        }
+
+        return dataResolved.exported.collectionExercise.name;
+    }
+
     public static buildReferencePeriod(collectionExercise: CollectionExercise) {
         const serviceDateFormat = 'YYYY-MM-DDThh:mm:ssZ';
         const outputDataFormat = 'D MMM YYYY';
