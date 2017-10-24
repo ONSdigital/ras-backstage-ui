@@ -9,7 +9,7 @@ import { SecureMessagesService } from '../secure-messages.service';
 export class DraftMessageEditResolver implements Resolve<Observable<any>> {
 
     constructor(
-        private router: Router,
+        public router: Router,
         private secureMessagesService: SecureMessagesService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<any> {

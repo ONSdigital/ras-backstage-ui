@@ -1,0 +1,42 @@
+<div class="secure-message-conversation__message">
+    <div class="secure-message-conversation__metadata">
+        <div class="grid">
+            <div class="grid__col col-9@s">
+                <dl class="grid">
+                    <dt class="grid__col col-2@s secure-message-conversation__field">
+                        From:
+                    </dt>
+                    <dd class="grid__col col-10@s secure-message-conversation__field">
+                        {{ personLabel(getOriginalSecureMessageMsgFrom()) }}
+                    </dd>
+                    <dt class="grid__col col-2@s secure-message-conversation__field">
+                        To:
+                    </dt>
+                    <dd class="grid__col col-10@s secure-message-conversation__field">
+                        {{ personLabel(getOriginalSecureMessageMsgTo()) }}
+                    </dd>
+                    <dt class="grid__col col-2@s secure-message-conversation__field">
+                        Sent:
+                    </dt>
+                    <dd class="grid__col col-10@s secure-message-conversation__field">
+                        {{ (secureMessage?.sent_date === 'N/A') ? 'N/A' : (secureMessage?.sent_date | date:'HH:mm EEE d MMM y') }}
+                    </dd>
+                </dl>
+            </div>
+            <div class="grid__col col-3@s">
+                <div class="secure-message-conversation__message-actions" *ngIf="me?.id !== secureMessage?.msg_from">
+                    <a href="/secure-messages"
+                       (click)="mark_message_read_click_handler.emit($event)">
+                        Mark as unread
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p class="u-mb-l secure-message-conversation__message-body">
+        <ng-container *ngFor="let line of messageBody; let i = index">
+            {{ line }}<br />
+        </ng-container>
+    </p>
+</div>

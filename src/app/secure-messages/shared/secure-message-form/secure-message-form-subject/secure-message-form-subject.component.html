@@ -1,0 +1,23 @@
+<fieldset class="u-mb-m">
+    <label class="venus" for="secure-message-subject">{{ fieldLabel }}</label>
+
+    <ng-container *ngIf="subjectEditable">
+        <input
+            id="secure-message-subject"
+            #secureMessageSubject
+            class="secure-message-form__subject input input--text"
+            type="text"
+            name="secure-message-subject"
+            required
+            [class.input--textarea-error]="secureMessageSubject.value.length === subjectMaxLength"
+            [(ngModel)]="subjectText"
+            (change)="subjectTextChange.emit(subjectText)"
+            aria-labelledby="secure-message-subject"
+            maxlength="{{ maxLength }}" />
+
+        <ons-remaining-character-count
+            [currentValue]="secureMessageSubject.value"
+            [maxLength]="maxLength"></ons-remaining-character-count>
+    </ng-container>
+    <ng-container *ngIf="!subjectEditable"><br />{{ subjectText }}</ng-container><br />
+</fieldset>

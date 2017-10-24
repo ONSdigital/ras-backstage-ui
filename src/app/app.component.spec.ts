@@ -22,7 +22,8 @@ let fixture: ComponentFixture<any>,
     mockPartyService: any,
     mockAuthenticationService: any;
 
-const responseOperationsUrl = environment.endpoints.responseOperationsApplication;
+const responseOperationsUrl = environment.endpoints.responseOperationsApplication,
+    originalConsoleLog = console.log;
 
 class Page {
 
@@ -62,6 +63,7 @@ describe('AppComponent', () => {
             }
         };
 
+        spyOn(console, 'log').and.callThrough();
         spyOn(mockAuthenticationService, 'isAuthenticated').and.callThrough();
         spyOn(mockPartyService, 'getBusinessByRef').and.callThrough();
 
@@ -81,6 +83,10 @@ describe('AppComponent', () => {
             ]
         })
         .compileComponents();
+    });
+
+    afterEach(() => {
+        console.log = originalConsoleLog;
     });
 
     it('should create the app', async(() => {
@@ -124,4 +130,28 @@ describe('AppComponent', () => {
             expect(compiled.querySelector('.bar__title').textContent).toContain('Response Operations');
         });
     }));
+
+    describe('when router events fails', () => {
+
+        it('should log related error to console', async(() => {
+            fixture = TestBed.createComponent(AppComponent);
+
+            const comp = fixture.debugElement.componentInstance;
+            const routerEventsErr = 'Error calling router events';
+
+            comp.router = {
+                events: Observable.throw(routerEventsErr)
+            };
+
+            try {
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    expect(console.log).toHaveBeenCalledWith('Router error: ', routerEventsErr);
+                });
+            } catch (e) {
+            } finally {}
+        }));
+    });
 });

@@ -376,4 +376,26 @@ describe('utils', () => {
             });
         });
     });
+
+    describe('global [singleton]', () => {
+
+        describe('changeLocation [method]', () => {
+
+            beforeEach(() => {
+
+                global.view = {
+                    location: {
+                        href: ''
+                    }
+                };
+            });
+
+            it('should ', () => {
+                const loc = 'some different page';
+
+                global.changeLocation(loc);
+                expect(global.view.location.href).toEqual(loc);
+            });
+        });
+    });
 });

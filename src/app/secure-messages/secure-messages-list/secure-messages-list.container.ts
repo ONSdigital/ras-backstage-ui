@@ -3,13 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SecureMessagesActions } from '../secure-messages.actions';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
+import { PaginationLink } from '../../shared/pagination/pagination-link.model';
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
-import { PartyService } from '../../party/party.service';
 import { SecureMessage } from '../shared/secure-message.model';
 import { NgRedux } from '@angular-redux/store';
 
 import { validateProperties, global } from '../../shared/utils';
-import {PaginationLink} from '../pagination/pagination-link.model';
 
 @Component({
     template: `
@@ -42,31 +41,39 @@ export class SecureMessagesListContainerComponent implements OnInit {
     public path: string;
     public page: string;
 
+    public rootPathLink = '/secure-messages';
+
+    private labelMap: any = {
+        'inbox': 'INBOX',
+        'sent': 'SENT',
+        'drafts': 'DRAFT'
+    };
+
     public navigationTabs: Array<NavigationTab> = [
         {
             label: 'All',
-            link: '/secure-messages',
+            link: this.rootPathLink,
             selected: false
         },
         {
             label: 'Inbox',
-            link: '/secure-messages/inbox',
+            link: this.rootPathLink + '/inbox',
             selected: false
         },
         {
             label: 'Sent',
-            link: '/secure-messages/sent',
+            link: this.rootPathLink + '/sent',
             selected: false
         },
         {
             label: 'Drafts',
-            link: '/secure-messages/drafts',
+            link: this.rootPathLink + '/drafts',
             selected: false
         }
         /*,
         {
             label: 'Create new message',
-            link: '/secure-messages/create-message',
+            link: this.rootPathLink + '/create-message',
             queryParams: {
                 respondent: 'db036fd7-ce17-40c2-a8fc-932e7c228397',
                 reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b973'
@@ -96,10 +103,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
         this.route.url.map(segments => segments.join(''))
             .subscribe(urlRoute => this.path = urlRoute);
 
-        console.log(this.path);
-
         this.route.queryParams.subscribe(params => {
-            console.log(params);
             this.page = params['page'] || '1';
             this.secureMessagesActions.retrieveAllSecureMessages(this.getLabel(), this.page)
                 .subscribe(
@@ -109,41 +113,32 @@ export class SecureMessagesListContainerComponent implements OnInit {
                     },
                     (err: any) => console.log('Error: ', err)
                 );
-        } );
+        });
 
-        console.log(this.page);
+        const pathFromRootCopy = Object.assign([], this.route.pathFromRoot);
+        const pathSegment = pathFromRootCopy.pop().snapshot.url[0];
+
+        this.path = pathSegment ? pathSegment.path : undefined;
+        this.rootPathLink = pathFromRootCopy.map(item => item.snapshot.url[0]).join('/');
+
         this.updateNavTabs();
     }
 
     private updateNavTabs () {
-        for (const index in this.navigationTabs) {
-
-            if (this.navigationTabs[index]['label'] === 'All' && !this.path) {
-                this.navigationTabs[index]['selected'] = true;
-            } else if (this.path && this.navigationTabs[index]['link'].includes(this.path)) {
-                this.navigationTabs[index]['selected'] = true;
-            } else {
-                this.navigationTabs[index]['selected'] = false;
-            }
-        }
+        this.navigationTabs.forEach((tab: NavigationTab) => {
+            tab['selected'] = !!(
+                (!this.path && tab['label'] === 'All') ||
+                (this.path && tab['link'].includes(this.path))
+            );
+        });
     }
 
     private getLabel(): string {
-        let label = null;
-
-        if (this.path === 'inbox') {
-            label = 'INBOX';
-        } else if (this.path === 'sent') {
-            label = 'SENT';
-        } else if (this.path === 'drafts') {
-            label = 'DRAFT';
-        }
-
-        return label;
+        return this.labelMap[this.path] || '';
     }
 
     private paginationUpdate (links: any) {
-        let link = '/secure-messages';
+        let link: string;
         this.paginationLinks = [];
 
         if (!links) {
@@ -151,26 +146,24 @@ export class SecureMessagesListContainerComponent implements OnInit {
         }
 
         if (this.path) {
-            link = link + '/' + this.path;
-        }
-
-        if ('next' in links) {
-            this.paginationLinks.push({
-                label: 'Next',
-                link: link,
-                queryParams: { 'page': String(+this.page + 1)}
-            });
+            link = this.rootPathLink + '/' + this.path;
         }
 
         if ('prev' in links) {
             this.paginationLinks.push({
-                label: 'Prev',
+                label: '< Previous',
                 link: link,
                 queryParams: { 'page': String(+this.page - 1) }
-
             });
         }
 
+        if ('next' in links) {
+            this.paginationLinks.push({
+                label: 'Next >',
+                link: link,
+                queryParams: { 'page': String(+this.page + 1)}
+            });
+        }
     }
 
     private secureMessageListUpdate (secureMessages: any) {

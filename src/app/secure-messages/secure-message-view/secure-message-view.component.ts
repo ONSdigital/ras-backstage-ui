@@ -33,31 +33,12 @@ export class SecureMessageViewComponent implements OnInit {
         return !!this.newSecureMessageModel && !!this.newSecureMessageModel.subject && !!this.newSecureMessageModel.body;
     }
 
-    public onTypingReply(event: KeyboardEvent) {
+    public onTypingReply(message: string) {
 
         if (!this.newSecureMessageModel) {
             return;
         }
 
-        this.newSecureMessageModel.body = (<HTMLInputElement>event.target).value;
-    }
-
-    public getOriginalSecureMessageMsgFrom() {
-        return this.originalSecureMessage && this.originalSecureMessage['@msg_from']
-            ? this.originalSecureMessage['@msg_from'] : {};
-    }
-
-    public getOriginalSecureMessageMsgTo() {
-        return this.originalSecureMessage && this.originalSecureMessage['@msg_to'] && this.originalSecureMessage['@msg_to'][0]
-            ? this.originalSecureMessage['@msg_to'][0] : {};
-    }
-
-    public personLabel (personData: any): string {
-
-        if (!personData.firstName && !personData.lastName) {
-            return '(Name not found)';
-        }
-
-        return personData.firstName + ' ' + personData.lastName;
+        this.newSecureMessageModel.body = message;
     }
 }

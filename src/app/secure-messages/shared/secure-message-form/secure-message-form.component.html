@@ -2,60 +2,26 @@
     <form action="#" name="message_create">
         <p>To: {{to}}</p>
 
-        <fieldset class="u-mb-m">
-            <label for="secure-message-subject">Subject</label>
+        <ons-secure-message-form-subject
+            [(subjectText)]="subject"
+            (subjectTextChange)="subjectChange.emit(subject)"
+            [maxLength]="subjectMaxLength"
+            [fieldLabel]="'Subject'"
+            [subjectEditable]="message.thread_id === message.msg_id"></ons-secure-message-form-subject>
 
-            <!-- Allow changing the subject of a draft for a new conversation. Subject can't be changed for a reply -->
-            <span *ngIf="message.thread_id === message.msg_id">
-                <input
-                    id="secure-message-subject"
-                    #secureMessageSubject
-                    class="secure-message-form__subject input input--text"
-                    type="text"
-                    name="secure-message-subject"
-                    required
-                    [class.input--textarea-error]="secureMessageSubject.value.length === subjectMaxLength"
-                    [(ngModel)]="subject"
-                    (change)="subjectChange.emit(subject)"
-                    aria-labelledby="secure-message-subject"
-                    maxlength="{{ subjectMaxLength }}" />
+        <ons-secure-message-form-body
+            [(bodyText)]="body"
+            (bodyTextChange)="bodyChange.emit(body)"
+            [maxLength]="bodyMaxLength"
+            [fieldLabel]="'Message'"></ons-secure-message-form-body>
 
-                <em class="pluto"
-                    [class.error-text]="secureMessageSubject.value.length === subjectMaxLength">
-                        Maximum {{ subjectMaxLength }} characters
-                        ({{ subjectMaxLength - secureMessageSubject.value.length }} remaining)</em>
-            </span>
-            <span *ngIf="message.thread_id !== message.msg_id"><br />{{ message.subject }}</span><br />
-        </fieldset>
+        <ons-button-secondary
+            (click_handler)="secondary_button_click.emit($event)"
+            [label]="'Save draft'"></ons-button-secondary>
 
-        <fieldset class="u-mb-m">
-            <label for="secure-message-body">Message</label>
-            <textarea
-                id="secure-message-body"
-                #secureMessageBody
-                class="secure-message-form__body input"
-                rows="10"
-                name="secure-message-body"
-                required
-                [class.input--textarea-error]="secureMessageBody.value.length === bodyMaxLength"
-                [(ngModel)]="body"
-                (change)="bodyChange.emit(body)"
-                aria-labelledby="secure-message-body"
-                maxlength="{{ bodyMaxLength }}"></textarea>
-
-            <em class="pluto"
-                [class.error-text]="secureMessageBody.value.length === bodyMaxLength">
-                    Maximum {{ bodyMaxLength}} characters
-                    ({{ bodyMaxLength - secureMessageBody.value.length }} remaining)</em>
-        </fieldset>
-
-        <button class="btn btn--secondary" type="submit"
-            (click)="secondary_button_click.emit($event);"
-            role="button">Save draft</button>
-
-        <button class="btn btn--primary" type="submit"
-            (click)="primary_button_click.emit($event);"
-            role="button">Send</button>
+        <ons-button-primary
+            (click_handler)="primary_button_click.emit($event)"
+            [label]="'Send'"></ons-button-primary>
 
         <div class="u-mb-m">
             <a [routerLink]="'/secure-messages'">Cancel</a>

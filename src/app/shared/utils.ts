@@ -65,13 +65,17 @@ export function handleError (response: any): Observable<any> {
     return Observable.throw({ errorMessage: response._body, response });
 }
 
+const defaultGlobalView: any = window;
+
 export const global = {
     changeLocation(loc: string) {
-        window.location.href = loc;
+        this.view.location.href = loc;
     },
     validateProperties: validateProperties,
-    validationOutput: validationOutput
+    validationOutput: validationOutput,
+    view: defaultGlobalView
 };
+
 
 /**
  * Decorator

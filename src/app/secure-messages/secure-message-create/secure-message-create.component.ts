@@ -1,4 +1,5 @@
 import { Component, Output, Input, EventEmitter } from '@angular/core';
+import { SecureMessage } from '../shared/secure-message.model';
 
 @Component({
     moduleId: module.id,
@@ -10,7 +11,7 @@ export class SecureMessageCreateComponent {
     @Input() to: string;
     @Input() subject: string;
     @Input() body: string;
-    @Input() message: string;
+    @Input() message: SecureMessage;
 
     @Output() subjectChange: EventEmitter<any> = new EventEmitter();
     @Output() bodyChange: EventEmitter<any> = new EventEmitter();

@@ -93,11 +93,7 @@ describe('SecureMessageViewComponent', () => {
 
                     const bodyText = 'Example body text';
 
-                    comp.onTypingReply({
-                        target: {
-                            value: bodyText
-                        }
-                    });
+                    comp.onTypingReply(bodyText);
 
                     expect(comp.newSecureMessageModel.body).toEqual(bodyText);
                 });
@@ -115,60 +111,9 @@ describe('SecureMessageViewComponent', () => {
                 fixture.whenStable().then(() => {
                     fixture.detectChanges();
 
-                    comp.onTypingReply({
-                        target: {
-                            value: 'Example body text'
-                        }
-                    });
+                    comp.onTypingReply('Example body text');
 
                     expect(comp.newSecureMessageModel).toEqual(undefined);
-                });
-            }));
-        });
-    });
-
-    describe('personLabel [method]', () => {
-
-        let personData: any;
-
-        beforeEach(() => {
-            comp.newSecureMessageModel = {};
-        });
-
-        describe('when personData has the correct properties', () => {
-
-            beforeEach(() => {
-                personData = {
-                    firstName: 'My first name',
-                    lastName: 'My last name'
-                };
-            });
-
-            it('should return the correctly formatted person label', async(() => {
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    fixture.detectChanges();
-
-                    expect(comp.personLabel(personData)).toEqual(personData.firstName + ' ' +
-                        personData.lastName);
-                });
-            }));
-        });
-
-        describe('when personData does not have the correct properties', () => {
-
-            beforeEach(() => {
-                personData = {
-                    nope: 'invalid data'
-                };
-            });
-
-            it('should return not found notice', async(() => {
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    fixture.detectChanges();
-
-                    expect(comp.personLabel(personData)).toEqual('(Name not found)');
                 });
             }));
         });

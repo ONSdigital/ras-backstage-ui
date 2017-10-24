@@ -1,0 +1,13 @@
+<div class="secure-message-conversation">
+    <h1 class="saturn">{{ title }}</h1>
+
+    <ng-container *ngFor="let message of secureMessages; let i = index;">
+
+        <ons-secure-message-conversation-message
+            [secureMessage]="message"
+            [me]="me"
+            (mark_message_read_click_handler)="mark_message_read_click_handler.emit($event)">
+        </ons-secure-message-conversation-message>
+
+    </ng-container>
+</div>

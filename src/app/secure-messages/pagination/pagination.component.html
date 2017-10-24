@@ -1,9 +1,0 @@
-<ul class="pagination-links pagination-links-component">
-    <li *ngFor="let link of links"
-        class="pagination-links__item pagination-links__item--primary pagination-links__item--secondary">
-
-        <a [routerLink]="link.link"
-           [queryParams]="link.queryParams"
-           class="btn btn--secondary btn--border pagination-links__tab pagination-links__tab--link">{{ link.label }}</a>
-    </li>
-</ul>

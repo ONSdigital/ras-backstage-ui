@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,7 +22,8 @@ let fixture: ComponentFixture<any>,
     mockCollectionInstrumentsActions: any,
     mockCollectionExercise: any,
     mockCollectionInstrumentStatus: any,
-    mockStoreData_observable: any;
+    mockStoreData_observable: any,
+    mockLoadCollectionInstrumentBatch_observable: any;
 
 const mockRouteSnapshot: any = {};
 
@@ -54,6 +54,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         spyOn(console, 'log').and.callThrough();
 
         mockStoreData_observable = Observable.of(storeData);
+        mockLoadCollectionInstrumentBatch_observable = Observable.of('test status')
 
         mockStore = {
             dispatch(action: any) {},
@@ -65,7 +66,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
 
         mockCollectionInstrumentsActions = {
             loadCollectionInstrumentBatch() {
-                return Observable.of('test status');
+                return mockLoadCollectionInstrumentBatch_observable;
             }
         };
 
@@ -119,9 +120,47 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
             const comp = fixture.debugElement.componentInstance;
             expect(comp).toBeTruthy();
             expect(comp.viewModel).toEqual(undefined);
-            // expect(console.log).toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
         });
     }));
+
+    describe('resolveBreadcrumb [static method]', () => {
+
+        const testMethod = CollectionExerciseDetailsContainerComponent.resolveBreadcrumb;
+
+        describe('when supplied valid exported data', () => {
+
+            it('should return correct breadcrumb string value', async(() => {
+                expect(testMethod({
+                        exported: {
+                            collectionExercise: {
+                                name: 'BRES'
+                            }
+                        }
+                    }))
+                    .toEqual('BRES');
+            }));
+        });
+
+        describe('when supplied invalid exported data', () => {
+
+            it('should return empty string', async(() => {
+                expect(testMethod({}))
+                    .toEqual('');
+
+                expect(testMethod({
+                        exported: {}
+                    }))
+                    .toEqual('');
+
+                expect(testMethod({
+                        exported: {
+                            collectionExercise: {}
+                        }
+                    }))
+                    .toEqual('');
+            }));
+        });
+    });
 
     describe('when a collection exercise exists in the store', () => {
 
@@ -160,9 +199,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                     fixture.whenStable().then(() => {
                         fixture.detectChanges();
 
-                        expect(instance.createViewModel).toHaveBeenCalled();
-
-                        expect(instance.viewModel).toEqual({
+                        const result = {
                             id: mockCollectionExercise.id,
                             surveyTitle: mockRouteSnapshot.data.exported.survey.longName,
                             inquiryCode: mockRouteSnapshot.data.exported.survey.surveyRef,
@@ -174,7 +211,16 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                             },
                             isButtonDisabled: false,
                             csvEndpoint: environment.endpoints.collectionInstrument + 'download_csv/' + mockCollectionExercise.id
-                        });
+                        };
+
+                        expect(instance.createViewModel).toHaveBeenCalled();
+
+                        expect(instance.viewModel).toEqual(result);
+
+                        expect(instance.createViewModel(
+                            mockCollectionExercise,
+                            mockRouteSnapshot.data.exported.survey,
+                            mockCollectionInstrumentStatus)).toEqual(result);
                     });
                 }));
 
@@ -217,7 +263,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                             fixture.detectChanges();
 
                             expect(console.log)
-                                .toHaveBeenCalledWith('Collection exercise with ref "100" not found in store.');
+                                .toHaveBeenCalledWith('Collection exercise with ref "100" not found in store');
                         });
                     }));
                 });
@@ -285,6 +331,42 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
                     expect(mockCollectionInstrumentsActions.loadCollectionInstrumentBatch).toHaveBeenCalled();
                 });
             }));
+
+            describe('and loadCollectionInstrumentBatch service call fails', () => {
+
+                const batchError = 'Error loading batch';
+
+                beforeEach(() => {
+                    mockLoadCollectionInstrumentBatch_observable = Observable.throw(batchError);
+                });
+
+                it('should log error to console', async(() => {
+                    mockRouteSnapshot.data = {
+                        exported: {
+                            collectionInstrumentStatus: createCollectionInstrumentStatus(),
+                            survey: createSurvey_server()
+                        }
+                    };
+
+                    mockCollectionExercise = createMockCollectionExercise('100');
+
+                    storeData = [mockCollectionExercise];
+
+                    mockStoreData_observable = Observable.of(storeData);
+
+
+                    fixture = TestBed.createComponent(CollectionExerciseDetailsContainerComponent);
+                    instance = fixture.componentInstance;
+
+                    fixture.detectChanges();
+                    fixture.whenStable().then(() => {
+                        fixture.detectChanges();
+                        instance.collectionInstrumentBatchLoadClick_handler();
+
+                        expect(console.log).toHaveBeenCalledWith(batchError);
+                    });
+                }));
+            });
         });
     });
 

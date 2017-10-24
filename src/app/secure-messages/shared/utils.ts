@@ -1,8 +1,6 @@
 import { NgRedux } from '@angular-redux/store';
 import 'rxjs/add/operator/first';
 
-import { Business, Respondent } from '../../party/party.model';
-
 export function getDataStoreSecureMessageById(store: NgRedux<any>, secureMessageId: string) {
 
     return store.select(['secureMessages', 'items'])
