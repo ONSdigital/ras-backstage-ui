@@ -74,6 +74,30 @@ describe('ServerErrorContainerComponent', () => {
     describe('when route does not have query parameters', () => {
 
         beforeEach(() => {
+            mockQueryParams_observable = Observable.of({});
+
+            activatedRoutePointer.queryParams = mockQueryParams_observable;
+        });
+
+        it('should initialise correctly', async(() => {
+            fixture = TestBed.createComponent(ServerErrorContainerComponent);
+
+            fixture.detectChanges();
+            fixture.whenStable().then(() => {
+                fixture.detectChanges();
+
+                const comp = fixture.debugElement.componentInstance;
+
+                expect(comp.errorResponseCode).toEqual('');
+                expect(comp.errorHeading).toEqual('');
+                expect(comp.errorBody).toEqual('');
+            });
+        }));
+    });
+
+    describe('when route fails to read query params', () => {
+
+        beforeEach(() => {
             mockQueryParams_observable = Observable.throw('Some error');
 
             activatedRoutePointer.queryParams = mockQueryParams_observable;
