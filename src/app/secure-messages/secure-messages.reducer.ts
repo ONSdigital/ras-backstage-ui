@@ -1,15 +1,27 @@
-import { SecureMessage } from './shared/secure-message.model';
-import { validateSecureMessage } from './shared/secure-message.model-validation';
-import { SecureMessagesActions } from './secure-messages.actions';
 import * as Immutable from 'immutable';
 
-const INIT_STATE: Immutable.Map<string, any> = Immutable.Map({
-    isFetching: false,
-    stateMessage: null,
-    items: Immutable.List([])
-});
+import { State, StateCollection, StateMessageSchema } from '../shared/redux-state.driver';
 
-export default function(state: any = INIT_STATE, action: any) {
+import { SecureMessage } from './shared/secure-message.model';
+import { SecureMessagesActions } from './secure-messages.actions';
+
+import { validateSecureMessage } from './shared/secure-message.model-validation';
+
+export interface SecureMessagesStateSchema extends StateCollection<SecureMessage> {
+    stateMessage: StateMessageSchema;
+}
+
+console.log(State.create({
+    stateMessage: 'stateMessage',
+    _containerType: 'collection'
+}));
+
+export default function(
+    state: Immutable.Map<string, any> = State.create({
+        stateMessage: 'stateMessage',
+        _containerType: 'collection'
+    }),
+    action: any) {
 
     switch (action.type) {
         case SecureMessagesActions.RECEIVED_SINGLE:
@@ -27,16 +39,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            const items = state.get('items');
-
-            return state.set('items', items.withMutations((list: any) => {
-
-                const existingItem = items.findEntry((item: SecureMessage) => item.msg_id === secureMessage.msg_id);
-
-                existingItem ?
-                    list.set(existingItem[0], Object.assign({}, existingItem[1], secureMessage)) :
-                    list.push(secureMessage);
-            }));
+            return State.updateCollection(state, 'msg_id', secureMessage);
 
         case SecureMessagesActions.CREATED_SINGLE:
 
@@ -44,7 +47,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return state.set('stateMessage', {
+            return State.updateDictionary(state, 'stateMessage', <StateMessageSchema>{
                 notification: 'Message sent',
                 action: {
                     label: 'View message',
@@ -53,7 +56,7 @@ export default function(state: any = INIT_STATE, action: any) {
             });
 
         case SecureMessagesActions.VIEW_ALL:
-            return state.set('stateMessage', null);
+            return State.updateDictionary(state, 'stateMessage', null);
 
         case SecureMessagesActions.DRAFT_SAVED:
 
@@ -61,7 +64,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return state.set('stateMessage', {
+            return State.updateDictionary(state, 'stateMessage', <StateMessageSchema>{
                 notification: 'Draft saved',
                 action: {
                     label: 'View message',
@@ -75,7 +78,7 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return state.set('stateMessage', {
+            return State.updateDictionary(state, 'stateMessage', <StateMessageSchema>{
                 notification: 'Message sent',
                 action: {
                     label: 'View message',
@@ -89,13 +92,14 @@ export default function(state: any = INIT_STATE, action: any) {
                 return state;
             }
 
-            return state.set('stateMessage', {
+            return State.updateDictionary(state, 'stateMessage', <StateMessageSchema>{
                 notification: 'Draft saved',
                 action: {
                     label: 'View message',
                     link: '/secure-messages/drafts/' + action.payload.json().msg_id
                 }
             });
+
         default:
             return state;
     }

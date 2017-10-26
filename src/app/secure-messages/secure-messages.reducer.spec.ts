@@ -1,6 +1,6 @@
 import * as Immutable from 'immutable';
 
-import { default as secureMessagesReducer, isSuccessfulResponse } from './secure-messages.reducer';
+import { default as secureMessagesReducer, isSuccessfulResponse, SecureMessagesStateSchema } from './secure-messages.reducer';
 import { SecureMessagesActions } from './secure-messages.actions';
 
 import { createSecureMessage_server } from '../../testing/create_SecureMessage';
@@ -8,7 +8,7 @@ import { SecureMessage } from './shared/secure-message.model';
 
 import { assertStateMaintainedWithinvalidAction } from '../../../testing-utils';
 
-const DEFAULT_STATE: Immutable.Map<string, any> = Immutable.Map({
+const DEFAULT_STATE: any = Immutable.Map({
     isFetching: false,
     stateMessage: null,
     items: Immutable.List([]),
