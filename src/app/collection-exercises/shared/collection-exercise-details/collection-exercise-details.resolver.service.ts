@@ -50,8 +50,7 @@ export class CollectionExerciseDetailsResolver implements Resolve<Observable<any
                     .zip(
                         this.collectionInstrumentsService.getStatus(collectionExercise.id)
                             .map((res: any) => res.json()),
-                        this.surveysActions.retrieveSurvey(collectionExercise.surveyId)
-                            .map((res: any) => res.json()),
+                        this.surveysActions.retrieveSurvey(collectionExercise.surveyId),
 
                         (collectionInstrumentStatus: any, survey: any) => {
 
