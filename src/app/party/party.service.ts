@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
+import { CheckBadRequest, HandleCommonRequest, handleError, printResponse } from '../shared/utils';
 
 import { environment } from '../../environments/environment';
 import { Business } from './party.model';
@@ -24,6 +24,9 @@ export class PartyService {
         serviceClass: PartyService
     })
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get business'
+    })
     public getBusiness(id: string): Observable<any> {
 
         return this.http.get(
@@ -33,8 +36,6 @@ export class PartyService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get business: '))
-        .catch(handleError)
         .share();
     }
 
@@ -43,6 +44,9 @@ export class PartyService {
         serviceClass: PartyService
     })*/
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get business by ref'
+    })
     public getBusinessByRef(ref: string) {
 
         return this.http.get(
@@ -52,8 +56,6 @@ export class PartyService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get business: '))
-        .catch(handleError)
         .share();
     }
 
@@ -62,6 +64,9 @@ export class PartyService {
         serviceClass: PartyService
     })
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get respondent'
+    })
     public getRespondent(id: string): Observable<any> {
 
         return this.http.get(
@@ -71,8 +76,6 @@ export class PartyService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get respondent: '))
-        .catch(handleError)
         .share();
     }
 }

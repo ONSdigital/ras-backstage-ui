@@ -24,6 +24,7 @@ export class SurveysActions {
         });
 
         const observable = this.surveysService.getSurvey(id)
+            .map((res: any) => res.json())
             .share();
 
         observable.subscribe(
