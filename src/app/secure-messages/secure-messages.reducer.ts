@@ -11,10 +11,10 @@ export interface SecureMessagesStateSchema extends StateCollection<SecureMessage
     stateMessage: StateMessageSchema;
 }
 
-console.log(State.create({
+/*console.log(State.create({
     stateMessage: 'stateMessage',
     _containerType: 'collection'
-}));
+}));*/
 
 export default function(
     state: Immutable.Map<string, any> = State.create({

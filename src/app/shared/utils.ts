@@ -132,7 +132,10 @@ export function CheckBadRequest(options: any) {
     };
 }
 
-/*export function HandleCommonRequest(options: any) {
+/**
+ * Decorator
+ */
+export function HandleCommonRequest(options: any) {
 
     const { printStatement } = options;
 
@@ -142,15 +145,13 @@ export function CheckBadRequest(options: any) {
 
         descriptor.value = function () {
 
-            const call = method.apply(this, arguments).share();
-
-            call.do(printResponse.bind(null, printStatement))
-                .catch(handleError);
-
-            return call.share();
+            return method.apply(this, arguments)
+                .do(printResponse.bind(null, printStatement))
+                .catch(handleError)
+                .share();
         };
     };
-}*/
+}
 
 interface Constraint {
     propertyName: string;
