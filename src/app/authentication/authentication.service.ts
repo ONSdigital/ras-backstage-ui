@@ -112,7 +112,7 @@ export function CheckRequestAuthenticated(): Function {
                 () => {},
                 (error: any) => {
 
-                    if (error.response.status === 401) {
+                    if (error.response &&  error.response.status === 401) {
 
                         console.log('Unauthorised request: ', error);
 

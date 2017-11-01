@@ -104,7 +104,7 @@ export function CheckBadRequest(options: any) {
                 () => {},
                 (error: any) => {
 
-                    if (error.response.status !== 401) {
+                    if (error.response && error.response.status !== 401) {
 
                         console.log('Bad request: ', error);
 
@@ -146,7 +146,9 @@ export function HandleCommonRequest(options: any) {
         descriptor.value = function () {
 
             return method.apply(this, arguments)
+                .share()
                 .do(printResponse.bind(null, printStatement))
+                .share()
                 .catch(handleError)
                 .share();
         };

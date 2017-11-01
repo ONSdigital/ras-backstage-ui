@@ -98,7 +98,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
     })
     @CheckRequestAuthenticated()
     @HandleCommonRequest({
-        printStatement: 'Get all messages999'
+        printStatement: 'Get all messages'
     })
     private serviceGetAllMessages () {
         return this.secureMessagesActions.retrieveAllSecureMessages().share();

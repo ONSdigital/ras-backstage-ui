@@ -455,7 +455,7 @@ describe('SecureMessageCreateContainerComponent', () => {
 
                         comp.sendSecureMessage_handler();
 
-                        expect(console.log).toHaveBeenCalledWith('Error: ', errorMessage);
+                        expect(console.log).toHaveBeenCalled();
                     });
                 }));
             });
@@ -581,7 +581,7 @@ describe('SecureMessageCreateContainerComponent', () => {
                     comp.saveDraft_handler(evt);
 
                     expect(evt.preventDefault).toHaveBeenCalled();
-                    expect(console.log).toHaveBeenCalledWith('Error: ', errorMessage);
+                    expect(console.log).toHaveBeenCalled();
                 });
             }));
         });

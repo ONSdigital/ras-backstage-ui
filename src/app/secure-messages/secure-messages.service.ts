@@ -18,14 +18,6 @@ export class SecureMessagesService {
         private http: Http,
         private authenticationService: AuthenticationService) {}
 
-    @CheckBadRequest({
-        errorHeading: 'Error creating secure message in secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
-    @HandleCommonRequest({
-        printStatement: 'Create one message'
-    })
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         return this.http.post(
