@@ -6,6 +6,10 @@ import { Observable } from 'rxjs/Observable';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
+import { SecureMessagesService } from '../secure-messages.service';
+
+import { CheckBadRequest, HandleCommonRequest } from '../../shared/utils';
+import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
 
 import { getDataStoreSecureMessageById } from '../shared/utils';
 
@@ -20,13 +24,13 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
         const id = route.params['secure-message-id'];
         const exported: any = {};
 
-        const resolve = getDataStoreSecureMessageById(this.ngRedux, id)
+        return getDataStoreSecureMessageById(this.ngRedux, id)
 
             .flatMap((existingSecureMessage: any) => {
 
                 return existingSecureMessage
                     ? Observable.of(existingSecureMessage)
-                    : this.secureMessagesActions.retrieveSecureMessage(id);
+                    : this.actionGetMessage(id);
             })
 
             .map((secureMessage: SecureMessage) => {
@@ -34,7 +38,20 @@ export class SecureMessageViewResolver implements Resolve<Observable<any>> {
 
                 return exported;
             });
+    }
 
-        return resolve;
+    /**
+     * Decorate service call based on its calling context
+     */
+    @CheckBadRequest({
+        errorHeading: 'Error getting secure message from secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get one message'
+    })
+    private actionGetMessage (id: string) {
+        return this.secureMessagesActions.retrieveSecureMessage(id).share();
     }
 }

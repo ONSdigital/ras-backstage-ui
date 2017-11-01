@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { DraftMessage } from '../shared/secure-message.model';
 import { SecureMessagesService } from '../secure-messages.service';
+import { CheckBadRequest, HandleCommonRequest } from '../../shared/utils';
+import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
 
 @Injectable()
 export class DraftMessageEditResolver implements Resolve<Observable<any>> {
@@ -16,7 +18,7 @@ export class DraftMessageEditResolver implements Resolve<Observable<any>> {
         const id = route.params['draft-message-id'];
         const exported: any = {};
 
-        const resolve = this.secureMessagesService.getMessage(id)
+        const resolve = this.serviceGetMessage(id)
             .map(res => res.json())
             .share()
             .map((draftMessage: DraftMessage) => {
@@ -31,5 +33,17 @@ export class DraftMessageEditResolver implements Resolve<Observable<any>> {
         );
 
         return resolve;
+    }
+
+    @CheckBadRequest({
+        errorHeading: 'Error getting secure message from secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get one message'
+    })
+    private serviceGetMessage (id: string) {
+        return this.secureMessagesService.getMessage(id).share();
     }
 }

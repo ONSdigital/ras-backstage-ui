@@ -10,6 +10,8 @@ import { DraftMessageEditResolver } from './draft-message-edit.resolver.service'
 import { MockActivatedRoute } from '../../../testing/ActivatedRouteSnapshot_stub';
 import { createDraftMessage_server } from '../../../testing/create_SecureMessage';
 
+import { global } from '../../shared/utils';
+
 let mockDraftMessage: any,
     mockSecureMessageService: any,
     mockSecureMessageService_observable: any,
@@ -19,6 +21,12 @@ let mockDraftMessage: any,
 describe('DraftMessageEditResolver service', () => {
 
     beforeEach(() => {
+
+        global.view = {
+            location: {
+                href: ''
+            }
+        };
 
         mockSecureMessageService_observable = Observable.of({
             json: function () {
@@ -32,6 +40,7 @@ describe('DraftMessageEditResolver service', () => {
             }
         };
 
+        spyOn(global, 'changeLocation');
         spyOn(mockSecureMessageService, 'getMessage').and.callThrough();
 
         TestBed.configureTestingModule({

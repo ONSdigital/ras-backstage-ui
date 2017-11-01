@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, RequestOptions, RequestMethod } from '@angular/http';
 
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest, HandleCommonRequest, handleError, printResponse } from '../shared/utils';
+import { CheckBadRequest, HandleCommonRequest } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {
@@ -59,14 +59,6 @@ export class SecureMessagesService {
         .share();
     }
 
-    @CheckBadRequest({
-        errorHeading: 'Error getting secure message from secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
-    @HandleCommonRequest({
-        printStatement: 'Get one message'
-    })
     public getMessage(id: string): Observable<any> {
 
         return this.http.get(

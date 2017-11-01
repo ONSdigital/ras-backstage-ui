@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Http, Response, ResponseOptions, Headers, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, Headers, RequestOptions, RequestMethod } from '@angular/http';
 
 import { environment } from '../../environments/environment';
 import { handleError, printResponse, global } from '../shared/utils';
@@ -16,9 +16,6 @@ export class AuthenticationService {
 
     static BASE_URL = environment.endpoints.authentication;
 
-    /**
-     * TODO - Change to static property
-     */
     public encryptedHeaders = new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/json'
