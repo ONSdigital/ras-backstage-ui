@@ -39,14 +39,6 @@ export class SecureMessagesService {
         .share();
     }
 
-    @CheckBadRequest({
-        errorHeading: 'Error getting a list of secure messages from the secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
-    @HandleCommonRequest({
-        printStatement: 'Get all messages'
-    })
     public getAllMessages(): Observable<any> {
 
         return this.http.get(

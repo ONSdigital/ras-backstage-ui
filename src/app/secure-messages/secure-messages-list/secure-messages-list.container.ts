@@ -1,14 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-import { SecureMessagesActions } from '../secure-messages.actions';
-import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
-import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
-import { PartyService } from '../../party/party.service';
-import { SecureMessage } from '../shared/secure-message.model';
 import { NgRedux } from '@angular-redux/store';
 
-import { validateProperties, global } from '../../shared/utils';
+import { SecureMessagesActions } from '../secure-messages.actions';
+import { SecureMessagesService } from '../secure-messages.service';
+import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
+import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
+import { SecureMessage } from '../shared/secure-message.model';
+
+import { CheckBadRequest, HandleCommonRequest, validateProperties, global } from '../../shared/utils';
+import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
 
 @Component({
     template: `
@@ -84,11 +85,23 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.secureMessagesActions.viewAllMessages();
 
-        this.secureMessagesActions.retrieveAllSecureMessages()
+        this.serviceGetAllMessages()
             .subscribe(
                 (secureMessages: any) => this.secureMessageListUpdate(secureMessages),
                 (err: any) => console.log('Error: ', err)
             );
+    }
+
+    @CheckBadRequest({
+        errorHeading: 'Error getting a list of secure messages from the secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get all messages999'
+    })
+    private serviceGetAllMessages () {
+        return this.secureMessagesActions.retrieveAllSecureMessages().share();
     }
 
     private secureMessageListUpdate (secureMessages: any) {
