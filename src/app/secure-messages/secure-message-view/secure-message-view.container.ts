@@ -6,10 +6,12 @@ import { NgRedux } from '@angular-redux/store';
 
 import { SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
+import { SecureMessagesService } from '../secure-messages.service';
 
 import { User } from '../../user/shared/user.model';
 
-import { validateProperties, global } from '../../shared/utils';
+import { CheckBadRequest, HandleCommonRequest, validateProperties, global } from '../../shared/utils';
+import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
 
 @Component({
     template: `
@@ -149,13 +151,25 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.secureMessagesActions.replyToSecureMessage(this.newSecureMessage)
+        this.serviceCreateMessage(this.newSecureMessage)
             .subscribe(
                 () => {
                     this.router.navigate(['/secure-messages']);
                 },
                 (err: any) => console.log('Error: ', err)
             );
+    }
+
+    @CheckBadRequest({
+        errorHeading: 'Error creating secure message in secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Create one message'
+    })
+    private serviceCreateMessage (message: SecureMessage) {
+        return this.secureMessagesActions.replyToSecureMessage(message).share();
     }
 
     public saveDraft_handler(event: any) {

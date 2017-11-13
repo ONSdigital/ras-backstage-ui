@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { DraftMessage } from '../shared/secure-message.model';
+import { DraftMessage, SecureMessage } from '../shared/secure-message.model';
 import { SecureMessagesActions } from '../secure-messages.actions';
+import { SecureMessagesService } from '../secure-messages.service';
 
 import { buildMsgTo } from '../shared/utils';
-import { validateProperties, global } from '../../shared/utils';
+import { CheckBadRequest, HandleCommonRequest, validateProperties, global } from '../../shared/utils';
+import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
 
 @Component({
     template: `
@@ -54,13 +56,25 @@ export class DraftMessageEditContainerComponent implements OnInit {
             return;
         }
 
-        this.secureMessagesActions.createSecureMessage(this.draftMessage)
+        this.actionCreateMessage(this.draftMessage)
             .subscribe(
                 () => {
                     this.router.navigate(['/secure-messages']);
                 },
                 (err: any) => console.log('Error: ', err)
             );
+    }
+
+    @CheckBadRequest({
+        errorHeading: 'Error creating secure message in secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Create one message'
+    })
+    private actionCreateMessage(message: SecureMessage) {
+        return this.secureMessagesActions.createSecureMessage(message).share();
     }
 
     public saveDraft_handler(event: any) {

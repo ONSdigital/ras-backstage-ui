@@ -144,9 +144,6 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         describe('when supplied invalid exported data', () => {
 
             it('should return empty string', async(() => {
-                expect(testMethod({}))
-                    .toEqual('');
-
                 expect(testMethod({
                         exported: {}
                     }))

@@ -3,7 +3,7 @@ import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
+import { CheckBadRequest, HandleCommonRequest, handleError, printResponse } from '../shared/utils';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -29,7 +29,10 @@ export class SurveysService {
         serviceClass: SurveysService
     })
     @CheckRequestAuthenticated()
-    getSurvey(id: string): Observable<Survey> {
+    @HandleCommonRequest({
+        printStatement: 'Get survey'
+    })
+    getSurvey(id: string): Observable<Response> {
 
         return this.http.get(
             SurveysService.BASE_URL + 'surveys/' + id,
@@ -38,8 +41,6 @@ export class SurveysService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get survey'))
-        .catch(handleError)
         .share();
     }
 
@@ -49,7 +50,10 @@ export class SurveysService {
         serviceClass: SurveysService
     })
     @CheckRequestAuthenticated()
-    getSurveys(): Observable<Survey[]> {
+    @HandleCommonRequest({
+        printStatement: 'Get surveysw'
+    })
+    getSurveys(): Observable<Response> {
 
         return this.http.get(
             SurveysService.BASE_URL + 'surveys',
@@ -58,8 +62,6 @@ export class SurveysService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get surveys'))
-        .catch(handleError)
         .share();
     }
 }

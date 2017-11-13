@@ -29,6 +29,12 @@ describe('DraftMessageEditContainerComponent', () => {
 
     beforeEach(() => {
 
+        global.view = {
+            location: {
+                href: ''
+            }
+        };
+
         spyOn(console, 'log').and.callThrough();
         mockCreateSecureMessage_observable = Observable.of({});
         mockUpdateDraft_observable = Observable.of({});
@@ -201,7 +207,7 @@ describe('DraftMessageEditContainerComponent', () => {
                 describe('after failing to send a draft', () => {
 
                     it('should log error to console', async(() => {
-                        mockCreateSecureMessage_observable = Observable.throw('Error sending draft message');
+                        mockCreateSecureMessage_observable = Observable.throw('Error sending draft message').share();
 
                         fixture = TestBed.createComponent(DraftMessageEditContainerComponent);
 
@@ -219,9 +225,9 @@ describe('DraftMessageEditContainerComponent', () => {
 
                             comp.sendMessage_handler();
 
-                            expect(comp.router.navigate).not.toHaveBeenCalledWith();
+                            expect(comp.router.navigate).not.toHaveBeenCalled();
                             expect(mockSecureMessagesActions.createSecureMessage).toHaveBeenCalled();
-                            expect(console.log).toHaveBeenCalledWith('Error: ', 'Error sending draft message');
+                            expect(console.log).toHaveBeenCalled();
                         });
                     }));
                 });

@@ -10,7 +10,7 @@ import { Survey } from './shared/survey.model';
 let mockReduxStore: any,
     mockObservable_response: any,
     mockSurveysService: any,
-    successResponse: any = {},
+    successResponse: any,
     failResponse = 'Erroring';
 
 const originalLog = console.log;
@@ -23,6 +23,12 @@ describe('SurveysActions', () => {
             dispatch(action: any) {},
             configureStore() {},
             select() {}
+        };
+
+        successResponse = {
+            json() {
+                return {};
+            }
         };
 
         mockSurveysService = {
@@ -66,7 +72,11 @@ describe('SurveysActions', () => {
         it('should dispatch ' + SurveysActions.RETRIEVE_SINGLE  + ' redux action',
             inject([SurveysActions],
                 (surveyActions: SurveysActions) => {
-                    mockObservable_response = Observable.of({});
+                    mockObservable_response = Observable.of({
+                        json(): any {
+                            return {};
+                        }
+                    });
 
                     surveyActions.retrieveSurvey('100').subscribe();
 
@@ -79,7 +89,11 @@ describe('SurveysActions', () => {
         it('should call surveysService getSurvey method to get a survey',
             inject([SurveysActions],
                 (surveyActions: SurveysActions) => {
-                    mockObservable_response = Observable.of({});
+                    mockObservable_response = Observable.of({
+                        json(): any {
+                            return {};
+                        }
+                    });
 
                     surveyActions.retrieveSurvey('200').subscribe();
 
@@ -95,11 +109,12 @@ describe('SurveysActions', () => {
             it('should call receivedSurvey',
                 inject([SurveysActions],
                     (surveyActions: SurveysActions) => {
+
                         spyOn(surveyActions, 'receivedSurvey');
 
                         surveyActions.retrieveSurvey('300').subscribe();
 
-                        expect(surveyActions.receivedSurvey).toHaveBeenCalledWith(successResponse);
+                        expect(surveyActions.receivedSurvey).toHaveBeenCalledWith({});
                     }));
         });
 

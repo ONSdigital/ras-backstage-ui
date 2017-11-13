@@ -273,7 +273,7 @@ describe('SecureMessageViewContainerComponent', () => {
                         comp.sendReply_handler();
 
                         expect(comp.router.navigate).not.toHaveBeenCalled();
-                        expect(console.log).toHaveBeenCalledWith('Error: ', replyError);
+                        expect(console.log).toHaveBeenCalled();
                     });
                 });
             });

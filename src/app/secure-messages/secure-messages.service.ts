@@ -1,11 +1,11 @@
 import { Observable } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, RequestMethod } from '@angular/http';
+import { Http, RequestOptions, RequestMethod } from '@angular/http';
 
 import { SecureMessage, DraftMessage, MessageLabels } from './shared/secure-message.model';
 import { environment } from '../../environments/environment';
 import { AuthenticationService, CheckRequestAuthenticated } from '../authentication/authentication.service';
-import { CheckBadRequest, handleError, printResponse } from '../shared/utils';
+import { CheckBadRequest, HandleCommonRequest } from '../shared/utils';
 
 @Injectable()
 export class SecureMessagesService {
@@ -18,11 +18,6 @@ export class SecureMessagesService {
         private http: Http,
         private authenticationService: AuthenticationService) {}
 
-    @CheckBadRequest({
-        errorHeading: 'Error creating secure message in secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         return this.http.post(
@@ -33,8 +28,6 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Create one message'))
-        .catch(handleError)
         .share();
     }
 
@@ -65,16 +58,9 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get all messages'))
-        .catch(handleError)
         .share();
     }
 
-    @CheckBadRequest({
-        errorHeading: 'Error getting secure message from secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
     public getMessage(id: string): Observable<any> {
 
         return this.http.get(
@@ -84,8 +70,6 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Get one message'))
-        .catch(handleError)
         .share();
     }
 
@@ -94,6 +78,9 @@ export class SecureMessagesService {
         serviceClass: SecureMessagesService
     })
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Update message labels'
+    })
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
         return this.http.put(
@@ -104,8 +91,6 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Update message labels'))
-        .catch(handleError)
         .share();
     }
 
@@ -114,6 +99,9 @@ export class SecureMessagesService {
         serviceClass: SecureMessagesService
     })
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Create draft'
+    })
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
         return this.http.post(
@@ -124,8 +112,6 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Create draft'))
-        .catch(handleError)
         .share();
     }
 
@@ -134,6 +120,9 @@ export class SecureMessagesService {
         serviceClass: SecureMessagesService
     })
     @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Update draft'
+    })
     public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
 
         return this.http.put(
@@ -144,8 +133,6 @@ export class SecureMessagesService {
                 headers: this.authenticationService.encryptedHeaders
             })
         )
-        .do(printResponse.bind(this, 'Update draft'))
-        .catch(handleError)
         .share();
     }
 }
