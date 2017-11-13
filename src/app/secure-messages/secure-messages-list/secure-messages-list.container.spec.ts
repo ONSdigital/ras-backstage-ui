@@ -345,7 +345,7 @@ describe('SecureMessagesListContainerComponent', () => {
                     fixture.detectChanges();
 
                     comp = fixture.debugElement.componentInstance;
-                    link = comp.rootPathLink + '/';
+                    link = comp.rootPathLink;
                     prevLink.link = link;
                     nextLink.link = link;
                     prevLink.queryParams.page = String(+comp.page - 1);

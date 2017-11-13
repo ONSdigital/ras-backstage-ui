@@ -144,7 +144,10 @@ export class SecureMessagesListContainerComponent implements OnInit {
             return;
         }
 
-        link = this.rootPathLink + '/' + this.path;
+        link = this.rootPathLink;
+        if (this.path) {
+            link = link + '/' + this.path;
+        }
 
         if ('prev' in links) {
             this.paginationLinks.push({
