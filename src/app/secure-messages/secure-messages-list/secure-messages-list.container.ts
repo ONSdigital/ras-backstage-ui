@@ -119,7 +119,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
         const pathSegment = pathFromRootCopy.pop().snapshot.url[0];
 
         this.path = pathSegment ? pathSegment.path : undefined;
-        this.rootPathLink = pathFromRootCopy.map(item => item.snapshot.url[0]).join('/');
 
         this.updateNavTabs();
     }
@@ -145,9 +144,7 @@ export class SecureMessagesListContainerComponent implements OnInit {
             return;
         }
 
-        if (this.path) {
-            link = this.rootPathLink + '/' + this.path;
-        }
+        link = this.rootPathLink + '/' + this.path;
 
         if ('prev' in links) {
             this.paginationLinks.push({

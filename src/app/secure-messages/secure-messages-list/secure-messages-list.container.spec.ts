@@ -100,6 +100,7 @@ describe('SecureMessagesListContainerComponent', () => {
                 expect(comp.hasSystemFeedback).toEqual(false);
                 expect(comp.systemNotifications.length).toEqual(0);
 
+                expect(comp.updateNavTabs).toHaveBeenCalled();
                 expect(mockStore.select).toHaveBeenCalledWith(['secureMessages', 'stateMessage']);
                 expect(mockSecureMessagesActions.viewAllMessages).toHaveBeenCalled();
                 expect(mockSecureMessagesActions.retrieveAllSecureMessages).toHaveBeenCalled();
@@ -293,6 +294,96 @@ describe('SecureMessagesListContainerComponent', () => {
                     expect(comp.secureMessageListUpdate(undefined))
                         .toEqual(undefined);
                 });
+            });
+        });
+    });
+
+    describe('paginationUpdate [method]', () => {
+
+        describe('when secure messages page links exist in the service', () => {
+
+            let message1: any,
+                message2: any;
+            let link: String;
+            let prevLink: any;
+            let nextLink: any;
+
+            beforeEach(() => {
+                message1 = createSecureMessage_server('200');
+                message2 = createSecureMessage_server('300');
+
+                prevLink = {
+                    label: '< Previous',
+                    link: '',
+                    queryParams: {'page': ''}
+                };
+                nextLink = {
+                    label: 'Next >',
+                    link: '',
+                    queryParams: {'page': ''}
+                };
+
+                apiData = {
+                    '_links': {
+                        'prev': '',
+                        'next': ''
+                    },
+                    'messages': [
+                        message1,
+                        message2
+                    ]
+                };
+
+                mockSecureMessagesActions_observable = Observable.of(apiData);
+            });
+
+            it('should successfully assign them to the paginationLinks property', () => {
+                fixture = TestBed.createComponent(SecureMessagesListContainerComponent);
+
+                fixture.detectChanges();
+                fixture.whenStable().then(() => {
+                    fixture.detectChanges();
+
+                    comp = fixture.debugElement.componentInstance;
+                    link = comp.rootPathLink + '/';
+                    prevLink.link = link;
+                    nextLink.link = link;
+                    prevLink.queryParams.page = String(+comp.page - 1);
+                    nextLink.queryParams.page = String(+comp.page + 1);
+                    expect(mockSecureMessagesActions.retrieveAllSecureMessages).toHaveBeenCalled();
+                    expect(comp.paginationLinks.length).toEqual(2);
+                    expect(comp.paginationLinks).toEqual([prevLink, nextLink]);
+                });
+            });
+        });
+    });
+
+    describe('updateNavTabs [method]', () => {
+
+        describe('when no children exist on route', () => {
+
+            it('should set navigation tab All to selected', () => {
+                fixture = TestBed.createComponent(SecureMessagesListContainerComponent);
+                comp = fixture.debugElement.componentInstance;
+                comp.updateNavTabs();
+                expect(comp.navigationTabs[0].selected).toBe(true);
+                expect(comp.navigationTabs[1].selected).toBe(false);
+                expect(comp.navigationTabs[2].selected).toBe(false);
+                expect(comp.navigationTabs[3].selected).toBe(false);
+            });
+        });
+
+        describe('when a child exist on route', () => {
+
+            it('should set navigation tabs accordingly', () => {
+                fixture = TestBed.createComponent(SecureMessagesListContainerComponent);
+                comp = fixture.debugElement.componentInstance;
+                comp.path = 'inbox';
+                comp.updateNavTabs();
+                expect(comp.navigationTabs[0].selected).toBe(false);
+                expect(comp.navigationTabs[1].selected).toBe(true);
+                expect(comp.navigationTabs[2].selected).toBe(false);
+                expect(comp.navigationTabs[3].selected).toBe(false);
             });
         });
     });
