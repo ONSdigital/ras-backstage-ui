@@ -355,6 +355,24 @@ describe('SecureMessagesListContainerComponent', () => {
                     expect(comp.paginationLinks).toEqual([prevLink, nextLink]);
                 });
             });
+
+            describe('when a child exist on route', () => {
+
+                it('should successfully assign child path to link', () => {
+                    fixture = TestBed.createComponent(SecureMessagesListContainerComponent);
+                    comp = fixture.debugElement.componentInstance;
+                    comp.path = 'inbox';
+                    comp.page = 1;
+                    comp.paginationUpdate(apiData._links);
+                    link = comp.rootPathLink + '/' + 'inbox';
+                    prevLink.link = link;
+                    nextLink.link = link;
+                    prevLink.queryParams.page = String(+comp.page - 1);
+                    nextLink.queryParams.page = String(+comp.page + 1);
+                    expect(comp.paginationLinks.length).toEqual(2);
+                    expect(comp.paginationLinks).toEqual([prevLink, nextLink]);
+                });
+            });
         });
     });
 
