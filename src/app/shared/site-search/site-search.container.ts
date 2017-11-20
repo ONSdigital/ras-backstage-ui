@@ -55,7 +55,9 @@ export class SiteSearchContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.partyServiceGetBusinessByRefSubscription && this.partyServiceGetBusinessByRefSubscription.unsubscribe();
+        if (this.partyServiceGetBusinessByRefSubscription) {
+            this.partyServiceGetBusinessByRefSubscription.unsubscribe();
+        }
     }
 
     createSiteSearchFormUrl(event: any) {
@@ -98,6 +100,8 @@ export class SiteSearchContainerComponent implements OnInit, OnDestroy {
     }
 
     cancelSearchReportingUnit() {
-        this.partyServiceGetBusinessByRefSubscription && this.partyServiceGetBusinessByRefSubscription.unsubscribe();
+        if (this.partyServiceGetBusinessByRefSubscription) {
+            this.partyServiceGetBusinessByRefSubscription.unsubscribe();
+        }
     }
 }

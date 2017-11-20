@@ -58,8 +58,8 @@ export class SecureMessageViewContainerComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.routeParamSubscription && this.routeParamSubscription.unsubscribe();
-        this.secureMessageDataStoreSubscription && this.secureMessageDataStoreSubscription.unsubscribe();
+        if (this.routeParamSubscription) { this.routeParamSubscription.unsubscribe(); }
+        if (this.secureMessageDataStoreSubscription) { this.secureMessageDataStoreSubscription.unsubscribe(); }
     }
 
     public subscribeToRouteParams () {

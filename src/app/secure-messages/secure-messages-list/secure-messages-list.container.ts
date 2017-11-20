@@ -1,16 +1,14 @@
-import { Component, OnInit, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgRedux } from '@angular-redux/store';
 
 import { SecureMessagesActions } from '../secure-messages.actions';
-import { SecureMessagesService } from '../secure-messages.service';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
 import { PaginationLink } from '../../shared/pagination/pagination-link.model';
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
 import { SecureMessage } from '../shared/secure-message.model';
 
-import { CheckBadRequest, HandleCommonRequest, validateProperties, global } from '../../shared/utils';
-import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
+import { validateProperties, global } from '../../shared/utils';
 
 @Component({
     template: `
