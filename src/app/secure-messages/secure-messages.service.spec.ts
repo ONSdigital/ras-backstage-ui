@@ -123,6 +123,34 @@ describe('SecureMessagesService', () => {
                     });
                 }));
 
+        it('should successfully GET a list of messages with correct parameters',
+            inject([SecureMessagesService, XHRBackend],
+                (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {
+
+                    const message1: any = createSecureMessage_server('200'),
+                        message2: any = createSecureMessage_server('300');
+                    let url: string;
+                    mockBackend.connections.subscribe((connection: any) => {
+                        connection.mockRespond(
+                            new Response(
+                                new ResponseOptions({
+                                    body: JSON.stringify([
+                                        message1,
+                                        message2
+                                    ])
+                                })));
+                        url = connection.request.url;
+                    });
+
+                    mockServiceCall = secureMessagesService.getAllMessages('inbox', '1');
+                    mockServiceCall.subscribe((serverResponse: any) => {
+                        const resJSON = serverResponse.json();
+                        expect(resJSON[0]).toEqual(message1);
+                        expect(resJSON[1]).toEqual(message2);
+                        expect(url).toContain('&label=inbox&page=1');
+                    });
+                }));
+
         it('should catch server error response',
             inject([SecureMessagesService, XHRBackend],
                 (secureMessagesService: SecureMessagesService, mockBackend: MockBackend) => {

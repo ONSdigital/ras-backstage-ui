@@ -43,6 +43,7 @@ import { ButtonSecondaryComponent } from '../shared/buttons/button-secondary/but
 import {
     RemainingCharacterCountComponent
 } from '../shared/remaining-character-count/remaining-character-count.component';
+import { PaginationComponent } from '../shared/pagination/pagination.component';
 
 @NgModule({
     imports: [
@@ -74,7 +75,8 @@ import {
         SystemFeedbackComponent,
         ButtonPrimaryComponent,
         ButtonSecondaryComponent,
-        RemainingCharacterCountComponent
+        RemainingCharacterCountComponent,
+        PaginationComponent
     ],
     providers: [
         PartyService,

@@ -42,7 +42,7 @@
     "express": "^4.14.0",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.2",
-    "moment": "^2.18.1",
+    "moment": "~2.18.1",
     "ng2-redux": "^4.1.0",
     "ng2-redux-router": "^2.0.0",
     "preboot": "^4.5.2",

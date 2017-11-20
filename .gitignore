@@ -26,3 +26,9 @@ node_modules
 
 # Compiled environment config file (for custom set environment variables)
 src/environments/environment._compiled.ts
+
+
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store

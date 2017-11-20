@@ -384,6 +384,7 @@ describe('SecureMessagesActions', () => {
 
             beforeEach(() => {
                 successResponse = {
+                    _links: {},
                     messages: [
                         createSecureMessage_server('700')
                     ]
@@ -403,7 +404,7 @@ describe('SecureMessagesActions', () => {
                         secureMessagesActions.retrieveAllSecureMessages().subscribe();
 
                         expect(secureMessagesActions.receivedAllSecureMessages)
-                            .toHaveBeenCalledWith(successResponse.messages);
+                            .toHaveBeenCalledWith(successResponse);
                     }));
         });
 

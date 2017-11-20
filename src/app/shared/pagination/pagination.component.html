@@ -1,0 +1,9 @@
+<ul class="pagination-links pagination-links-component">
+    <li *ngFor="let link of links"
+        class="pagination-links__item">
+
+        <a [routerLink]="link.link"
+           [queryParams]="link.queryParams"
+           class="pagination-links__link">{{ link.label }}</a>
+    </li>
+</ul>

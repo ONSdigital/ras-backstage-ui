@@ -1,15 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgRedux } from '@angular-redux/store';
 
 import { SecureMessagesActions } from '../secure-messages.actions';
-import { SecureMessagesService } from '../secure-messages.service';
 import { NavigationTab } from '../../shared/navigation-tabs/navigation-tab.model';
+import { PaginationLink } from '../../shared/pagination/pagination-link.model';
 import { NotificationListItem, NotificationStatus } from '../../shared/system-feedback/system-feedback.model';
 import { SecureMessage } from '../shared/secure-message.model';
 
-import { CheckBadRequest, HandleCommonRequest, validateProperties, global } from '../../shared/utils';
-import { CheckRequestAuthenticated } from '../../authentication/authentication.service';
+import { validateProperties, global } from '../../shared/utils';
 
 @Component({
     template: `
@@ -24,6 +23,9 @@ import { CheckRequestAuthenticated } from '../../authentication/authentication.s
         <ons-secure-messages-list
             [secureMessagesLoading]="secureMessagesLoadingFlag"
             [secureMessages]="secureMessagesList"></ons-secure-messages-list>
+
+        <ons-pagination
+            [links]="paginationLinks"></ons-pagination>
     `,
 })
 export class SecureMessagesListContainerComponent implements OnInit {
@@ -31,33 +33,47 @@ export class SecureMessagesListContainerComponent implements OnInit {
     public secureMessagesList: Array<SecureMessage> = [];
     public secureMessagesLoadingFlag: Boolean = true;
 
+    public paginationLinks: Array<PaginationLink> = [];
+
     public hasSystemFeedback: Boolean = false;
     public systemNotifications: Array<any> = [];
 
+    public path: string;
+    public page: string;
+
+    public rootPathLink = '/secure-messages';
+
+    private labelMap: any = {
+        'inbox': 'INBOX',
+        'sent': 'SENT',
+        'drafts': 'DRAFT'
+    };
+
     public navigationTabs: Array<NavigationTab> = [
-        /*{
+        {
+            label: 'All',
+            link: this.rootPathLink,
+            selected: false
+        },
+        {
             label: 'Inbox',
-            link: 'inbox',
-            selected: true
+            link: this.rootPathLink + '/inbox',
+            selected: false
         },
         {
             label: 'Sent',
-            link: 'sent',
+            link: this.rootPathLink + '/sent',
             selected: false
         },
         {
             label: 'Drafts',
-            link: 'drafts',
+            link: this.rootPathLink + '/drafts',
             selected: false
-        },*/
-        {
-            label: 'All messages',
-            link: '/secure-messages',
-            selected: true
-        }/*,
+        }
+        /*,
         {
             label: 'Create new message',
-            link: '/secure-messages/create-message',
+            link: this.rootPathLink + '/create-message',
             queryParams: {
                 respondent: 'db036fd7-ce17-40c2-a8fc-932e7c228397',
                 reporting_unit: '3b136c4b-7a14-4904-9e01-13364dd7b973'
@@ -73,7 +89,6 @@ export class SecureMessagesListContainerComponent implements OnInit {
         private secureMessagesActions: SecureMessagesActions) {}
 
     ngOnInit() {
-
         window.scrollTo(0, 0);
 
         this.ngRedux.select(['secureMessages', 'stateMessage'])
@@ -85,28 +100,73 @@ export class SecureMessagesListContainerComponent implements OnInit {
 
         this.secureMessagesActions.viewAllMessages();
 
-        this.serviceGetAllMessages()
-            .subscribe(
-                (secureMessages: any) => this.secureMessageListUpdate(secureMessages),
-                (err: any) => console.log('Error: ', err)
-            );
+        this.route.url.map(segments => segments.join(''))
+            .subscribe(urlRoute => this.path = urlRoute);
+
+        this.route.queryParams.subscribe(params => {
+            this.page = params['page'] || '1';
+            this.secureMessagesActions.retrieveAllSecureMessages(this.getLabel(), this.page)
+                .subscribe(
+                    (res: any) => {
+                        this.secureMessageListUpdate(res.messages);
+                        this.paginationUpdate(res._links);
+                    },
+                    (err: any) => console.log('Error: ', err)
+                );
+        });
+
+        const pathFromRootCopy = Object.assign([], this.route.pathFromRoot);
+        const pathSegment = pathFromRootCopy.pop().snapshot.url[0];
+
+        this.path = pathSegment ? pathSegment.path : undefined;
+
+        this.updateNavTabs();
     }
 
-    @CheckBadRequest({
-        errorHeading: 'Error getting a list of secure messages from the secure message service',
-        serviceClass: SecureMessagesService
-    })
-    @CheckRequestAuthenticated()
-    @HandleCommonRequest({
-        printStatement: 'Get all messages'
-    })
-    private serviceGetAllMessages () {
-        return this.secureMessagesActions.retrieveAllSecureMessages().share();
+    private updateNavTabs () {
+        this.navigationTabs.forEach((tab: NavigationTab) => {
+            tab['selected'] = !!(
+                (!this.path && tab['label'] === 'All') ||
+                (this.path && tab['link'].includes(this.path)));
+        });
+    }
+
+    private getLabel(): string {
+        return this.labelMap[this.path] || '';
+    }
+
+
+    private paginationUpdate (links: any) {
+        let link: string;
+        this.paginationLinks = [];
+
+        if (!links) {
+            return;
+        }
+
+        link = this.rootPathLink;
+        if (this.path) {
+            link = link + '/' + this.path;
+        }
+
+        if ('prev' in links) {
+            this.paginationLinks.push({
+                label: '< Previous',
+                link: link,
+                queryParams: { 'page': String(+this.page - 1) }
+            });
+        }
+
+        if ('next' in links) {
+            this.paginationLinks.push({
+                label: 'Next >',
+                link: link,
+                queryParams: { 'page': String(+this.page + 1)}
+            });
+        }
     }
 
     private secureMessageListUpdate (secureMessages: any) {
-
-        window.scrollTo(0, 0);
 
         if (!secureMessages) {
             return;

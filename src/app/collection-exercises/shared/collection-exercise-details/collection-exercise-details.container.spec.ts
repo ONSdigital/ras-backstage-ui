@@ -54,7 +54,7 @@ describe('CollectionExerciseDetailsContainerComponent component', () => {
         spyOn(console, 'log').and.callThrough();
 
         mockStoreData_observable = Observable.of(storeData);
-        mockLoadCollectionInstrumentBatch_observable = Observable.of('test status')
+        mockLoadCollectionInstrumentBatch_observable = Observable.of('test status');
 
         mockStore = {
             dispatch(action: any) {},

@@ -113,14 +113,14 @@ export class SecureMessagesActions {
         });
     }
 
-    public retrieveAllSecureMessages(): Observable<any> {
+    public retrieveAllSecureMessages(label?: string, page?: string): Observable<any> {
 
         this.ngRedux.dispatch({
             type: SecureMessagesActions.RETRIEVE_ALL
         });
 
-        const observable = this.secureMessagesService.getAllMessages()
-            .map((res: any) => res.json().messages)
+        const observable = this.secureMessagesService.getAllMessages(label, page)
+            .map((res: any) => res.json())
             .share();
 
         observable.subscribe(

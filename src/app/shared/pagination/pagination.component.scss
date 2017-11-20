@@ -1,0 +1,32 @@
+@import "../../../../common/assets/sass/partials/vars/colors";
+
+.pagination-links {
+    margin-bottom : 0;
+    padding : 0;
+    list-style-type : none;
+    text-align : center;
+    background-color : #fff;
+
+    .pagination-links__item {
+        display : inline-block;
+        margin-bottom : 0;
+
+        .pagination-links__link {
+            display : inline-block;
+            margin-bottom : 0;
+            padding : .5rem 1rem;
+            border : 1px solid transparent;
+            border-bottom-left-radius : 0;
+            border-bottom-right-radius : 0;
+            border-bottom : none;
+            font-weight : normal;
+            text-decoration : underline;
+            color : $color-blue;
+
+            &:hover {
+                background-color: #eee;
+            }
+        }
+
+    }
+}

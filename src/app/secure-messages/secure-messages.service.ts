@@ -31,10 +31,28 @@ export class SecureMessagesService {
         .share();
     }
 
-    public getAllMessages(): Observable<any> {
+    /*@HandleCommonRequest({
+        printStatement: 'Get all messages'
+    })*/
+    @CheckBadRequest({
+        errorHeading: 'Error getting a list of secure messages from the secure message service',
+        serviceClass: SecureMessagesService
+    })
+    @CheckRequestAuthenticated()
+    public getAllMessages(label?: string, page?: string): Observable<any> {
+
+        let url = SecureMessagesService.BASE_URL + 'messages?limit=10000';
+
+        if (label) {
+            url = url + '&label=' + label;
+        }
+
+        if (page) {
+            url = url + '&page=' + page;
+        }
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'messages?limit=1000000',
+            url,
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
