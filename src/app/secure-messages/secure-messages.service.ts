@@ -21,7 +21,7 @@ export class SecureMessagesService {
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         return this.http.post(
-            SecureMessagesService.BASE_URL + 'message/send',
+            SecureMessagesService.BASE_URL + 'send',
             secureMessage,
             new RequestOptions({
                 method: RequestMethod.Post,
@@ -105,7 +105,7 @@ export class SecureMessagesService {
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
         return this.http.post(
-            SecureMessagesService.BASE_URL + 'draft/save',
+            SecureMessagesService.BASE_URL + 'send?is_draft=True',
             draftMessage,
             new RequestOptions({
                 method: RequestMethod.Post,
@@ -125,11 +125,11 @@ export class SecureMessagesService {
     })
     public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
 
-        return this.http.put(
-            SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
+        return this.http.post(
+            SecureMessagesService.BASE_URL + 'send?is_draft=True',
             draftMessage,
             new RequestOptions({
-                method: RequestMethod.Put,
+                method: RequestMethod.Post,
                 headers: this.authenticationService.encryptedHeaders
             })
         )
