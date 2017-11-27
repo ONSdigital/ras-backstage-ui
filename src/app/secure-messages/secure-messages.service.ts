@@ -64,7 +64,7 @@ export class SecureMessagesService {
     public getMessage(id: string): Observable<any> {
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'message/' + id,
+            SecureMessagesService.BASE_URL + 'message?message_id=' + id + '&label=INBOX',
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
@@ -84,7 +84,7 @@ export class SecureMessagesService {
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
         return this.http.put(
-            SecureMessagesService.BASE_URL + 'message/' + id + '/modify',
+            SecureMessagesService.BASE_URL + 'remove-unread?message_id=' + id,
             labels,
             new RequestOptions({
                 method: RequestMethod.Put,

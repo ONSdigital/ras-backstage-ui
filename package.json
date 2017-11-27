@@ -15,7 +15,8 @@
     "test": "ng test",
     "environment:set": "gulp environment:set",
     "build:custom-environment": "ng build --env=custom",
-    "serve:custom-environment": "ng serve --env=custom --open"
+    "serve:custom-environment": "ng serve --env=custom --open",
+    "dev": "ng serve"
   },
   "keywords": [],
   "license": "MIT",
