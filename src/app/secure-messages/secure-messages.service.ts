@@ -61,10 +61,10 @@ export class SecureMessagesService {
         .share();
     }
 
-    public getMessage(id: string): Observable<any> {
+    public getMessage(id: string, isDraft: boolean): Observable<any> {
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'message?message_id=' + id + '&label=INBOX',
+            SecureMessagesService.BASE_URL + 'message?message_id=' + id + '&is_draft=' + isDraft,
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
