@@ -1,4 +1,4 @@
-const commonRoot = '//localhost:8888/backstage-api/v1/';
+const commonRoot = '//ras-backstage-service-test.apps.devtest.onsclofo.uk/backstage-api/v1/';
 
 export const environment = {
     production: false,
