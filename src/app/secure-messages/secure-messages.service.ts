@@ -84,7 +84,7 @@ export class SecureMessagesService {
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
         return this.http.put(
-            SecureMessagesService.BASE_URL + 'remove-unread?message_id=' + id,
+            SecureMessagesService.BASE_URL + 'update-label/' + id,
             labels,
             new RequestOptions({
                 method: RequestMethod.Put,
