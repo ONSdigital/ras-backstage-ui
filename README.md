@@ -11,6 +11,7 @@ Angular application for internal ONS staff to manage collection exercises. Utili
 * Install the Gulp: `npm install -g gulp`
 * Install the Angular CLI: `npm install -g @angular/cli`
 * Git clone the sdc-global-design-patterns repo and checkout the update-patterns-sdc branch
+* Install the project dependencies: (from project root)`npm install`
 * Run the local Node.js dev server (in the backstage UI project root): `node server.js`
 
 ### Development Environment tasks
