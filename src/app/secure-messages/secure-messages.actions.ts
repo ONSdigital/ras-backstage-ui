@@ -91,7 +91,7 @@ export class SecureMessagesActions {
             id: id
         });
 
-        const observable = this.secureMessagesService.getMessage(id)
+        const observable = this.secureMessagesService.getMessage(id, false)
             .map(res => res.json())
             .share();
 

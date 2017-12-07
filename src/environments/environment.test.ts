@@ -4,24 +4,6 @@ export const environment = {
     production: false,
     endpoints: {
 
-        /**
-         * Gateway
-         */
-        // collectionExercise:     '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
-        // collectionInstrument:   '//ras-api-gateway-test.apps.devtest.onsclofo.uk/collection-instrument-api/1.0.2/',
-        // survey:                 '//ras-api-gateway-test.apps.devtest.onsclofo.uk/',
-        // secureMessages:      '//ras-api-gateway-test.apps.devtest.onsclofo.uk/'
-        // party:               '//ras-api-gateway-test.apps.devtest.onsclofo.uk/'
-
-        /**
-         * Static routing
-         */
-        // secureMessages:         '//ras-secure-messaging-test.apps.devtest.onsclofo.uk/',
-        // party:                  '//ras-party-service-test.apps.devtest.onsclofo.uk/party-api/v1/',
-
-        /**
-         * API
-         */
         authentication:             commonRoot,
         collectionExercise:         commonRoot + 'collection-exercise-service/',
         collectionInstrument:       commonRoot + 'collection-instrument-service/collection-instrument-api/1.0.2/',
@@ -29,9 +11,6 @@ export const environment = {
         secureMessages:             commonRoot + 'secure-message-service/',
         party:                      commonRoot + 'party-service/party-api/v1/',
 
-        /**
-         * Response operations
-         */
         responseOperationsApplication: 'http://response-operations-ui-test.apps.devtest.onsclofo.uk/'
     }
 };

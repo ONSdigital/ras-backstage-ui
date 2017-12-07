@@ -49,7 +49,7 @@ export class AuthenticationService {
     public authenticateCredentials(username: string, password: string): Observable<any> {
 
         const observable = this.http.post(
-            AuthenticationService.BASE_URL + 'sign_in',
+            AuthenticationService.BASE_URL + 'sign-in',
             { username, password },
             new RequestOptions({
                 method: RequestMethod.Post

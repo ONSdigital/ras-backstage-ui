@@ -278,7 +278,7 @@ describe('SecureMessagesActions', () => {
 
                     secureMessagesActions.retrieveSecureMessage(id).subscribe();
 
-                    expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith(id);
+                    expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith(id, false);
                 }));
 
         describe('after successfully getting a message', () => {

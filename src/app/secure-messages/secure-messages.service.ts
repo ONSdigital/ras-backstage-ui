@@ -21,7 +21,7 @@ export class SecureMessagesService {
     public createSecureMessage(secureMessage: SecureMessage): Observable<any> {
 
         return this.http.post(
-            SecureMessagesService.BASE_URL + 'message/send',
+            SecureMessagesService.BASE_URL + 'send-message',
             secureMessage,
             new RequestOptions({
                 method: RequestMethod.Post,
@@ -61,10 +61,10 @@ export class SecureMessagesService {
         .share();
     }
 
-    public getMessage(id: string): Observable<any> {
+    public getMessage(id: string, isDraft: boolean): Observable<any> {
 
         return this.http.get(
-            SecureMessagesService.BASE_URL + 'message/' + id,
+            SecureMessagesService.BASE_URL + 'message?message_id=' + id + '&is_draft=' + isDraft,
             new RequestOptions({
                 method: RequestMethod.Get,
                 headers: this.authenticationService.encryptedHeaders
@@ -84,7 +84,7 @@ export class SecureMessagesService {
     public updateMessageLabels(id: string, labels: MessageLabels): Observable<any> {
 
         return this.http.put(
-            SecureMessagesService.BASE_URL + 'message/' + id + '/modify',
+            SecureMessagesService.BASE_URL + 'update-label/' + id,
             labels,
             new RequestOptions({
                 method: RequestMethod.Put,
@@ -105,7 +105,7 @@ export class SecureMessagesService {
     public saveDraft(draftMessage: DraftMessage): Observable<any> {
 
         return this.http.post(
-            SecureMessagesService.BASE_URL + 'draft/save',
+            SecureMessagesService.BASE_URL + 'save-draft',
             draftMessage,
             new RequestOptions({
                 method: RequestMethod.Post,
@@ -126,7 +126,7 @@ export class SecureMessagesService {
     public updateDraft(id: string, draftMessage: DraftMessage): Observable<any> {
 
         return this.http.put(
-            SecureMessagesService.BASE_URL + 'draft/' + id + '/modify',
+            SecureMessagesService.BASE_URL + 'save-draft',
             draftMessage,
             new RequestOptions({
                 method: RequestMethod.Put,

@@ -44,6 +44,6 @@ export class DraftMessageEditResolver implements Resolve<Observable<any>> {
         printStatement: 'Get one message'
     })
     private serviceGetMessage (id: string) {
-        return this.secureMessagesService.getMessage(id).share();
+        return this.secureMessagesService.getMessage(id, true).share();
     }
 }

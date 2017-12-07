@@ -77,7 +77,7 @@ describe('DraftMessageEditResolver service', () => {
                             expect(exportedData).toEqual({ draftMessage: mockDraftMessage });
                         });
 
-                    expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith('100');
+                    expect(mockSecureMessageService.getMessage).toHaveBeenCalledWith('100', true);
                 }));
 
         describe('when draft not found', () => {
