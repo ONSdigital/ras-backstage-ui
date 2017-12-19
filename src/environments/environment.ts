@@ -3,7 +3,7 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-const commonRoot = '//ras-backstage-service-sit.apps.devtest.onsclofo.uk/backstage-api/v1/';
+const commonRoot = '//localhost:8001/backstage-api/v1/';
 
 export const environment = {
     production: false,
@@ -16,6 +16,6 @@ export const environment = {
         secureMessages:             commonRoot + 'secure-message/',
         party:                      commonRoot + 'party-service/party-api/v1/',
 
-        responseOperationsApplication: 'http://response-operations-ui-sit.apps.devtest.onsclofo.uk/'
+        responseOperationsApplication: 'http://localhost:9292/'
     }
 };
