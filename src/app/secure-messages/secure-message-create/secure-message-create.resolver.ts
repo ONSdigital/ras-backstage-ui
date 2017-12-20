@@ -44,15 +44,16 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
             exported.respondentCaseId = respondentCaseId;
         }
 
-        const reportingUnitObservable = this.partyService.getBusiness(reportingUnitId).share();
-        const respondentObservable = this.partyService.getRespondent(respondentId).share();
+        // const reportingUnitObservable = this.partyService.getBusiness(reportingUnitId).share();
+        // const respondentObservable = this.partyService.getRespondent(respondentId).share();
+        const partyDetails = this.partyService.getPartyDetails(reportingUnitId, respondentId).share();
 
         return Observable
             .zip(
-                reportingUnitObservable
-                    .map((res: any) => res.json()),
-                respondentObservable
-                    .map((res: any) => res.json()),
+                partyDetails
+                    .map((res: any) => res.json().business_party),
+                partyDetails
+                    .map((res: any) => res.json().respondent_party),
                 (reportingUnit: Business, respondent: Respondent) => (Object.assign(exported, {
                     reportingUnit,
                     respondent

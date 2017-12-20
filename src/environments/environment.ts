@@ -14,7 +14,7 @@ export const environment = {
         collectionInstrument:       commonRoot + 'collection-instrument-service/collection-instrument-api/1.0.2/',
         survey:                     commonRoot + 'survey-service/',
         secureMessages:             commonRoot + 'secure-message/',
-        party:                      commonRoot + 'party-service/party-api/v1/',
+        party:                      commonRoot + 'party/',
 
         responseOperationsApplication: 'http://localhost:9292/'
     }
