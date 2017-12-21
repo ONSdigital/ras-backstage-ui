@@ -16,6 +16,6 @@ export const environment = {
         secureMessages:             commonRoot + 'secure-message/',
         party:                      commonRoot + 'party/',
 
-        responseOperationsApplication: 'http://localhost:9292/'
+        responseOperationsApplication: 'http://response-operations-ui-sit.apps.devtest.onsclofo.uk/'
     }
 };
