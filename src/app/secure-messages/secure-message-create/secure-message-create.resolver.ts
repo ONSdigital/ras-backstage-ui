@@ -43,9 +43,7 @@ export class SecureMessageCreateResolver implements Resolve<Observable<any>> {
         if (respondentCaseId) {
             exported.respondentCaseId = respondentCaseId;
         }
-
-        // const reportingUnitObservable = this.partyService.getBusiness(reportingUnitId).share();
-        // const respondentObservable = this.partyService.getRespondent(respondentId).share();
+        
         const partyDetails = this.partyService.getPartyDetails(reportingUnitId, respondentId).share();
 
         return Observable
