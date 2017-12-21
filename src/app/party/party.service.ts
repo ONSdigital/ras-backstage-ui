@@ -78,4 +78,26 @@ export class PartyService {
         )
         .share();
     }
+
+    @CheckBadRequest({
+        errorHeading: 'Error getting party details from party service',
+        serviceClass: PartyService
+    })
+    @CheckRequestAuthenticated()
+    @HandleCommonRequest({
+        printStatement: 'Get party details'
+    })
+    public getPartyDetails(business_party_id: string, respondent_party_id: string): Observable<any> {
+
+        let url = PartyService.BASE_URL + 'party-details'
+        url = url + '?business_party_id=' + business_party_id + '&respondent_party_id=' + respondent_party_id
+
+        return this.http.get(
+            url,
+            new RequestOptions({
+                method: RequestMethod.Get,
+                headers: this.authenticationService.encryptedHeaders
+            })
+        ).share();
+    }
 }
