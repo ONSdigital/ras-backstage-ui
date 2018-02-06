@@ -15,8 +15,6 @@ pipeline {
                 }
             }
             steps {
-                git(url: 'https://github.com/ONSdigital/ras-backstage-ui.git', branch: 'jenkins-pipeline')
-                sh 'ls -l'
                 sh './build.sh'
             }
         }
