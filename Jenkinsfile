@@ -7,6 +7,19 @@ pipeline {
 
     stages {
 
+        stage('build') {
+            agent {
+                docker {
+                    image 'node'
+                    args '-u root'
+                }
+            }
+            steps {
+                git(url: 'https://github.com/ONSdigital/ras-backstage-ui.git', branch: 'jenkins-pipeline')
+                sh 'build.sh'
+            }
+        }
+
         stage('dev') {
             agent {
                 docker {
@@ -21,8 +34,6 @@ pipeline {
                 CF_USER = credentials('CF_USER')
             }
             steps {
-                git(url: 'https://github.com/ONSdigital/ras-backstage-ui.git', branch: 'jenkins-pipeline')
-                sh 'build.sh'
                 sh "cf login -a https://${env.CLOUDFOUNDRY_API} --skip-ssl-validation -u ${CF_USER_USR} -p ${CF_USER_PSW} -o rmras -s dev"
                 sh 'cf push --no-start ras-backstage-dev'
                 sh 'cf set-env ras-backstage-dev ONS_ENV dev'
@@ -65,7 +76,6 @@ pipeline {
                 CF_USER = credentials('CF_USER')
             }
             steps {
-                sh 'build.sh'
                 sh "cf login -a https://${env.CLOUDFOUNDRY_API} --skip-ssl-validation -u ${CF_USER_USR} -p ${CF_USER_PSW} -o rmras -s ci"
                 sh 'cf push --no-start ras-backstage-ci'
                 sh 'cf set-env ras-backstage-test ONS_ENV ci'
@@ -109,7 +119,6 @@ pipeline {
                 CF_USER = credentials('CF_USER')
             }
             steps {
-                sh 'build.sh'
                 sh "cf login -a https://${env.CLOUDFOUNDRY_API} --skip-ssl-validation -u ${CF_USER_USR} -p ${CF_USER_PSW} -o rmras -s test"
                 sh 'cf push --no-start ras-backstage-test'
                 sh 'cf set-env ras-backstage-test ONS_ENV test'
