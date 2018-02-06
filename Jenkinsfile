@@ -21,6 +21,7 @@ pipeline {
                 CF_USER = credentials('CF_USER')
             }
             steps {
+                git(url: 'https://github.com/ONSdigital/ras-backstage.git', branch: 'jenkins-pipeline')
                 sh 'build.sh'
                 sh "cf login -a https://${env.CLOUDFOUNDRY_API} --skip-ssl-validation -u ${CF_USER_USR} -p ${CF_USER_PSW} -o rmras -s dev"
                 sh 'cf push --no-start ras-backstage-dev'
